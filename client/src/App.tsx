@@ -5,16 +5,30 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
+import BrowseEvents from "./pages/BrowseEvents";
+import SubmitEvent from "./pages/SubmitEvent";
+import EventDetail from "./pages/EventDetail";
+import AdminDashboard from "./pages/AdminDashboard";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 function Router() {
-  // make sure to consider if you need authentication for certain routes
   return (
-    <Switch>
-      <Route path={"/"} component={Home} />
-      <Route path={"/404"} component={NotFound} />
-      {/* Final fallback route */}
-      <Route component={NotFound} />
-    </Switch>
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      <main className="flex-1">
+        <Switch>
+          <Route path="/" component={Home} />
+          <Route path="/browse" component={BrowseEvents} />
+          <Route path="/submit" component={SubmitEvent} />
+          <Route path="/event/:id" component={EventDetail} />
+          <Route path="/admin" component={AdminDashboard} />
+          <Route path="/404" component={NotFound} />
+          <Route component={NotFound} />
+        </Switch>
+      </main>
+      <Footer />
+    </div>
   );
 }
 

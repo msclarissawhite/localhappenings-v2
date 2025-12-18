@@ -1,0 +1,263 @@
+import { and, desc, eq, gte, lte, or, sql } from "drizzle-orm";
+import { events, eventTypes, eventToEventTypes, collections, collectionToEvents } from "../drizzle/schema";
+import { getDb } from "./db";
+import type { EventFilters } from "../shared/types";
+
+/**
+ * Get all published events with optional filtering
+ */
+export async function getEvents(filters: EventFilters = {}) {
+  const db = await getDb();
+  if (!db) return [];
+
+  const conditions = [eq(events.status, "published")];
+
+  // Location filters
+  if (filters.province) {
+    conditions.push(eq(events.province, filters.province));
+  }
+  if (filters.city) {
+    conditions.push(eq(events.city, filters.city));
+  }
+  if (filters.neighborhood) {
+    conditions.push(eq(events.neighborhood, filters.neighborhood));
+  }
+
+  // Date filters
+  if (filters.dateFrom) {
+    conditions.push(gte(events.startDate, filters.dateFrom));
+  }
+  if (filters.dateTo) {
+    conditions.push(lte(events.startDate, filters.dateTo));
+  }
+
+  // Quick date filters
+  if (filters.today) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    conditions.push(and(gte(events.startDate, today), lte(events.startDate, tomorrow))!);
+  }
+
+  // Time of day
+  if (filters.timeOfDay) {
+    conditions.push(eq(events.timeOfDay, filters.timeOfDay));
+  }
+
+  // Cost filters
+  if (filters.isFree) {
+    conditions.push(eq(events.isFree, 1));
+  }
+  if (filters.costMax !== undefined) {
+    conditions.push(or(eq(events.isFree, 1), lte(events.costMin, filters.costMax))!);
+  }
+
+  // Age filters
+  if (filters.familyFriendly) {
+    conditions.push(eq(events.familyFriendly, 1));
+  }
+  if (filters.youngChildren) {
+    conditions.push(eq(events.youngChildren, 1));
+  }
+  if (filters.kids) {
+    conditions.push(eq(events.kids, 1));
+  }
+  if (filters.teens) {
+    conditions.push(eq(events.teens, 1));
+  }
+  if (filters.seniors) {
+    conditions.push(eq(events.seniors, 1));
+  }
+
+  // Attribute filters
+  if (filters.isIndoor) {
+    conditions.push(eq(events.isIndoor, 1));
+  }
+  if (filters.isOutdoor) {
+    conditions.push(eq(events.isOutdoor, 1));
+  }
+
+  let query = db.select().from(events).where(and(...conditions)).$dynamic();
+
+  // Sorting
+  if (filters.sortBy === "soonest") {
+    query = query.orderBy(events.startDate);
+  } else if (filters.sortBy === "name-az") {
+    query = query.orderBy(events.name);
+  } else {
+    // Default: newest first
+    query = query.orderBy(desc(events.createdAt));
+  }
+
+  // Pagination
+  if (filters.limit) {
+    query = query.limit(filters.limit);
+  }
+  if (filters.offset) {
+    query = query.offset(filters.offset);
+  }
+
+  return await query;
+}
+
+/**
+ * Get event by ID
+ */
+export async function getEventById(id: number) {
+  const db = await getDb();
+  if (!db) return null;
+
+  const result = await db.select().from(events).where(eq(events.id, id)).limit(1);
+  return result[0] || null;
+}
+
+/**
+ * Get event types for an event
+ */
+export async function getEventTypes(eventId: number) {
+  const db = await getDb();
+  if (!db) return [];
+
+  const result = await db
+    .select({ eventType: eventTypes })
+    .from(eventToEventTypes)
+    .innerJoin(eventTypes, eq(eventToEventTypes.eventTypeId, eventTypes.id))
+    .where(eq(eventToEventTypes.eventId, eventId));
+
+  return result.map((r) => r.eventType);
+}
+
+/**
+ * Get all event types
+ */
+export async function getAllEventTypes() {
+  const db = await getDb();
+  if (!db) return [];
+
+  return await db.select().from(eventTypes).orderBy(eventTypes.name);
+}
+
+/**
+ * Create a new event submission
+ */
+export async function createEvent(eventData: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const [result] = await db.insert(events).values(eventData);
+  return Number(result.insertId);
+}
+
+/**
+ * Get pending events for admin review
+ */
+export async function getPendingEvents() {
+  const db = await getDb();
+  if (!db) return [];
+
+  return await db
+    .select()
+    .from(events)
+    .where(eq(events.status, "pending"))
+    .orderBy(desc(events.createdAt));
+}
+
+/**
+ * Update event status (admin moderation)
+ */
+export async function updateEventStatus(
+  eventId: number,
+  status: "published" | "rejected" | "needs-clarification",
+  reviewedBy: number,
+  reviewNotes?: string
+) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const updateData: any = {
+    status,
+    reviewedBy,
+    reviewNotes,
+    updatedAt: new Date(),
+  };
+
+  if (status === "published") {
+    updateData.publishedAt = new Date();
+  }
+
+  await db.update(events).set(updateData).where(eq(events.id, eventId));
+}
+
+/**
+ * Update an event
+ */
+export async function updateEvent(eventId: number, eventData: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  await db.update(events).set({ ...eventData, updatedAt: new Date() }).where(eq(events.id, eventId));
+}
+
+/**
+ * Delete an event
+ */
+export async function deleteEvent(eventId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  await db.delete(events).where(eq(events.id, eventId));
+}
+
+/**
+ * Get all collections
+ */
+export async function getCollections() {
+  const db = await getDb();
+  if (!db) return [];
+
+  return await db
+    .select()
+    .from(collections)
+    .where(eq(collections.isActive, 1))
+    .orderBy(collections.sortOrder);
+}
+
+/**
+ * Get events for a collection
+ */
+export async function getCollectionEvents(collectionId: number) {
+  const db = await getDb();
+  if (!db) return [];
+
+  const result = await db
+    .select({ event: events })
+    .from(collectionToEvents)
+    .innerJoin(events, eq(collectionToEvents.eventId, events.id))
+    .where(and(eq(collectionToEvents.collectionId, collectionId), eq(events.status, "published"))!);
+
+  return result.map((r) => r.event);
+}
+
+/**
+ * Get unique locations for filtering
+ */
+export async function getLocations() {
+  const db = await getDb();
+  if (!db) return { provinces: [], cities: [], neighborhoods: [] };
+
+  const publishedEvents = await db
+    .select({
+      province: events.province,
+      city: events.city,
+      neighborhood: events.neighborhood,
+    })
+    .from(events)
+    .where(eq(events.status, "published"));
+
+  const provinces = Array.from(new Set(publishedEvents.map((e) => e.province))).filter(Boolean).sort();
+  const cities = Array.from(new Set(publishedEvents.map((e) => e.city))).filter(Boolean).sort();
+  const neighborhoods = Array.from(new Set(publishedEvents.map((e) => e.neighborhood))).filter(Boolean).sort();
+
+  return { provinces, cities, neighborhoods };
+}

@@ -25,4 +25,130 @@ export const users = mysqlTable("users", {
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
-// TODO: Add your tables here
+/**
+ * Events table - Core event listings with moderation workflow
+ */
+export const events = mysqlTable("events", {
+  id: int("id").autoincrement().primaryKey(),
+  
+  // Basic Info
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  
+  // Location
+  province: varchar("province", { length: 100 }).notNull(),
+  city: varchar("city", { length: 100 }).notNull(),
+  neighborhood: varchar("neighborhood", { length: 100 }),
+  venue: text("venue"),
+  address: text("address"),
+  
+  // Date & Time
+  startDate: timestamp("startDate").notNull(),
+  endDate: timestamp("endDate"),
+  timeOfDay: mysqlEnum("timeOfDay", ["morning", "afternoon", "evening", "all-day"]),
+  
+  // Recurrence
+  isRecurring: int("isRecurring").default(0).notNull(), // 0 = false, 1 = true
+  recurrenceType: mysqlEnum("recurrenceType", ["one-time", "weekly", "monthly", "seasonal"]).default("one-time"),
+  
+  // Cost
+  isFree: int("isFree").default(0).notNull(),
+  costMin: int("costMin"), // in cents
+  costMax: int("costMax"), // in cents
+  costType: mysqlEnum("costType", ["fixed", "range", "donation", "pay-what-you-can", "sliding-scale"]),
+  kidsFree: int("kidsFree").default(0).notNull(),
+  freeCompanion: int("freeCompanion").default(0).notNull(),
+  
+  // Age Suitability
+  allAges: int("allAges").default(0).notNull(),
+  familyFriendly: int("familyFriendly").default(0).notNull(),
+  youngChildren: int("youngChildren").default(0).notNull(), // 0-5
+  kids: int("kids").default(0).notNull(), // 6-12
+  teens: int("teens").default(0).notNull(),
+  adultsOnly: int("adultsOnly").default(0).notNull(),
+  seniors: int("seniors").default(0).notNull(),
+  
+  // Basic Attributes
+  isIndoor: int("isIndoor").default(0).notNull(),
+  isOutdoor: int("isOutdoor").default(0).notNull(),
+  shortDuration: int("shortDuration").default(0).notNull(), // under 2 hours
+  dropIn: int("dropIn").default(0).notNull(),
+  canReenter: int("canReenter").default(0).notNull(),
+  
+  // Accessibility (stored as JSON for flexibility)
+  // Structure: { caregiver: {}, mobility: {}, sensory: {}, cognitive: {}, social: {} }
+  accessibility: text("accessibility").notNull(), // JSON string
+  
+  // Organizer Info
+  organizerName: varchar("organizerName", { length: 255 }),
+  organizerType: mysqlEnum("organizerType", ["business", "nonprofit", "community", "municipality", "school-library", "other"]),
+  organizerEmail: varchar("organizerEmail", { length: 320 }),
+  organizerPhone: varchar("organizerPhone", { length: 50 }),
+  organizerWebsite: text("organizerWebsite"),
+  
+  // Additional Info
+  notes: text("notes"),
+  imageUrl: text("imageUrl"),
+  
+  // Moderation
+  status: mysqlEnum("status", ["pending", "published", "rejected", "needs-clarification"]).default("pending").notNull(),
+  submittedBy: int("submittedBy"), // user id if logged in, null if anonymous
+  reviewedBy: int("reviewedBy"), // admin user id
+  reviewNotes: text("reviewNotes"),
+  
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  publishedAt: timestamp("publishedAt"),
+});
+
+export type Event = typeof events.$inferSelect;
+export type InsertEvent = typeof events.$inferInsert;
+
+/**
+ * Event types/tags - Many-to-many relationship with events
+ */
+export const eventTypes = mysqlTable("eventTypes", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 100 }).notNull().unique(),
+  category: mysqlEnum("category", ["core", "family", "cultural", "seasonal"]).default("core").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type EventType = typeof eventTypes.$inferSelect;
+export type InsertEventType = typeof eventTypes.$inferInsert;
+
+/**
+ * Junction table for events and event types
+ */
+export const eventToEventTypes = mysqlTable("eventToEventTypes", {
+  id: int("id").autoincrement().primaryKey(),
+  eventId: int("eventId").notNull(),
+  eventTypeId: int("eventTypeId").notNull(),
+});
+
+/**
+ * Curated collections for seasonal/themed event groupings
+ */
+export const collections = mysqlTable("collections", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  slug: varchar("slug", { length: 255 }).notNull().unique(),
+  description: text("description"),
+  imageUrl: text("imageUrl"),
+  isActive: int("isActive").default(1).notNull(),
+  sortOrder: int("sortOrder").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Collection = typeof collections.$inferSelect;
+export type InsertCollection = typeof collections.$inferInsert;
+
+/**
+ * Junction table for collections and events
+ */
+export const collectionToEvents = mysqlTable("collectionToEvents", {
+  id: int("id").autoincrement().primaryKey(),
+  collectionId: int("collectionId").notNull(),
+  eventId: int("eventId").notNull(),
+});
