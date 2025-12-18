@@ -13,30 +13,22 @@ export default function Header() {
       <div className="container">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/">
-            <a className="flex items-center gap-2 text-xl font-bold text-primary hover:text-primary/80 transition-colors">
-              <Calendar className="w-6 h-6" />
-              <span>Local Happenings</span>
-            </a>
+          <Link href="/" className="flex items-center gap-2 text-xl font-bold text-primary hover:text-primary/80 transition-colors">
+            <Calendar className="w-6 h-6" />
+            <span>Local Happenings</span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
-            <Link href="/browse">
-              <a className="text-foreground hover:text-primary font-medium transition-colors">
-                Browse Events
-              </a>
+            <Link href="/browse" className="text-foreground hover:text-primary font-medium transition-colors">
+              Browse Events
             </Link>
-            <Link href="/submit">
-              <a className="text-foreground hover:text-primary font-medium transition-colors">
-                Submit Event
-              </a>
+            <Link href="/submit" className="text-foreground hover:text-primary font-medium transition-colors">
+              Submit Event
             </Link>
             {isAuthenticated && user?.role === "admin" && (
-              <Link href="/admin">
-                <a className="text-foreground hover:text-primary font-medium transition-colors">
-                  Admin
-                </a>
+              <Link href="/admin" className="text-foreground hover:text-primary font-medium transition-colors">
+                Admin
               </Link>
             )}
           </nav>
@@ -55,30 +47,15 @@ export default function Header() {
         {mobileMenuOpen && (
           <nav className="md:hidden py-4 border-t border-border">
             <div className="flex flex-col gap-3">
-              <Link href="/browse">
-                <a
-                  className="text-foreground hover:text-primary font-medium transition-colors py-2"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Browse Events
-                </a>
+              <Link href="/browse" className="text-foreground hover:text-primary font-medium transition-colors py-2" onClick={() => setMobileMenuOpen(false)}>
+                Browse Events
               </Link>
-              <Link href="/submit">
-                <a
-                  className="text-foreground hover:text-primary font-medium transition-colors py-2"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Submit Event
-                </a>
+              <Link href="/submit" className="text-foreground hover:text-primary font-medium transition-colors py-2" onClick={() => setMobileMenuOpen(false)}>
+                Submit Event
               </Link>
               {isAuthenticated && user?.role === "admin" && (
-                <Link href="/admin">
-                  <a
-                    className="text-foreground hover:text-primary font-medium transition-colors py-2"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Admin
-                  </a>
+                <Link href="/admin" className="text-foreground hover:text-primary font-medium transition-colors py-2" onClick={() => setMobileMenuOpen(false)}>
+                  Admin
                 </Link>
               )}
             </div>

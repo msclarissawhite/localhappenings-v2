@@ -18,17 +18,13 @@ export default function Footer() {
             <h3 className="font-semibold text-lg mb-3">Quick Links</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/browse">
-                  <a className="text-muted-foreground hover:text-primary transition-colors">
-                    Browse Events
-                  </a>
+                <Link href="/browse" className="text-muted-foreground hover:text-primary transition-colors">
+                  Browse Events
                 </Link>
               </li>
               <li>
-                <Link href="/submit">
-                  <a className="text-muted-foreground hover:text-primary transition-colors">
-                    Submit an Event
-                  </a>
+                <Link href="/submit" className="text-muted-foreground hover:text-primary transition-colors">
+                  Submit an Event
                 </Link>
               </li>
             </ul>

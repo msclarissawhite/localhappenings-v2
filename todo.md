@@ -63,5 +63,9 @@
 - [ ] Test accessibility features and mobile responsiveness
 
 ## Final Delivery
-- [ ] Create project checkpoint
-- [ ] Deliver website to user
+- [x] Create project checkpoint
+- [x] Deliver website to user
+
+## Bug Fixes
+- [x] Fix nested anchor tag error in Header component
+- [x] Fix nested anchor tag error in Footer component
