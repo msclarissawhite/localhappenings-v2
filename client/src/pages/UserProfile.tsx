@@ -7,25 +7,36 @@ import { Label } from "../components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import { Separator } from "../components/ui/separator";
 import { toast } from "sonner";
-import { Loader2, Mail, User, Bookmark, Bell } from "lucide-react";
-import { Link } from "wouter";
+import { Loader2, Mail, User, Bookmark, Bell, LogOut } from "lucide-react";
+import { Link, useLocation } from "wouter";
 
 export default function UserProfile() {
-  const { user, isLoading: authLoading } = useUserAuth();
-
+  const { user, isLoading: authLoading, logout } = useUserAuth();
+  const [, setLocation] = useLocation();
   const utils = trpc.useUtils();
 
   const [name, setName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
 
-  // Update profile mutation
+  // Update profile mutation (name only)
   const updateProfileMutation = trpc.userAuth.updateProfile.useMutation({
     onSuccess: () => {
-      toast.success("Profile updated successfully");
+      toast.success("Name updated successfully");
       utils.userAuth.me.invalidate();
     },
     onError: (error: any) => {
-      toast.error(error.message || "Failed to update profile");
+      toast.error(error.message || "Failed to update name");
+    },
+  });
+
+  // Request email change mutation (sends verification)
+  const requestEmailChangeMutation = trpc.userAuth.requestEmailChange.useMutation({
+    onSuccess: (data: any) => {
+      toast.success(data.message);
+      setEmail(user?.email || ""); // Reset email field to current email
+    },
+    onError: (error: any) => {
+      toast.error(error.message || "Failed to send verification email");
     },
   });
 
@@ -36,7 +47,16 @@ export default function UserProfile() {
 
   const handleUpdateProfile = (e: React.FormEvent) => {
     e.preventDefault();
-    updateProfileMutation.mutate({ name, email });
+    
+    // Only update name through updateProfile
+    if (name !== user?.name) {
+      updateProfileMutation.mutate({ name });
+    }
+    
+    // If email changed, trigger verification flow
+    if (email !== user?.email && email) {
+      requestEmailChangeMutation.mutate({ newEmail: email });
+    }
   };
 
   if (authLoading) {
@@ -125,8 +145,16 @@ export default function UserProfile() {
                       onChange={(e) => setEmail(e.target.value)}
                       required
                     />
+                    {user?.pendingEmail && (
+                      <div className="text-sm p-3 bg-yellow-50 dark:bg-yellow-950 border border-yellow-200 dark:border-yellow-800 rounded-md mt-2">
+                        <p className="font-medium text-yellow-900 dark:text-yellow-100">Email change pending</p>
+                        <p className="text-yellow-700 dark:text-yellow-300 mt-1">
+                          We sent a verification link to <strong>{user.pendingEmail}</strong>. Please check your email to confirm the change.
+                        </p>
+                      </div>
+                    )}
                     <p className="text-sm text-muted-foreground mt-1">
-                      We'll send a verification link if you change your email
+                      We'll send a verification link to your new email address before applying the change
                     </p>
                   </div>
                 </div>
@@ -134,9 +162,9 @@ export default function UserProfile() {
 
               <Button
                 type="submit"
-                disabled={updateProfileMutation.isPending}
+                disabled={updateProfileMutation.isPending || requestEmailChangeMutation.isPending}
               >
-                {updateProfileMutation.isPending ? (
+                {(updateProfileMutation.isPending || requestEmailChangeMutation.isPending) ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Saving...
@@ -257,6 +285,30 @@ export default function UserProfile() {
               <strong>Saved Events:</strong> Your bookmarked events and reminder preferences are
               private and only visible to you.
             </p>
+          </CardContent>
+        </Card>
+
+        {/* Sign Out */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Account Actions</CardTitle>
+            <CardDescription>
+              Manage your session
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={async () => {
+                await logout();
+                toast.success("Signed out successfully");
+                setLocation("/");
+              }}
+            >
+              <LogOut className="mr-2 h-4 w-4" />
+              Sign Out
+            </Button>
           </CardContent>
         </Card>
       </div>

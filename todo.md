@@ -377,3 +377,13 @@
 - [x] Include privacy and security information
 - [x] Add Profile link to Header navigation (desktop and mobile)
 - [x] Test complete user login and profile workflow
+
+## User Profile Enhancements
+- [x] Add "Sign Out" button to user profile page
+- [x] Implement logout functionality with redirect to home
+- [x] Add email change verification system
+- [x] Send verification link to new email address before applying change
+- [x] Create pending email change tracking in database (pendingEmail field)
+- [x] Add email verification endpoint (verifyEmailChange mutation)
+- [x] Test logout functionality
+- [x] Test email change verification workflow
