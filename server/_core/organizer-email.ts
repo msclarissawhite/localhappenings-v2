@@ -1,4 +1,5 @@
 import { notifyOwner } from "./notification";
+import { sendEventStatusEmail } from "./resend-email";
 
 /**
  * Send email notification to organizer about their event status change
@@ -54,13 +55,25 @@ Thank you for using Local Happenings!
 This email would be sent to: ${organizerEmail}
 `;
 
-  // For now, notify the owner so they can manually send the email
-  // In production, this would use a real email service
+  // Send via Resend (falls back to owner notification if not configured)
   try {
-    await notifyOwner({
-      title: `[Organizer Notification] ${subject}`,
-      content: emailContent,
+    const emailSent = await sendEventStatusEmail({
+      to: organizerEmail,
+      name: organizerName,
+      eventName,
+      eventId,
+      status,
+      reviewNotes,
     });
+    
+    // Fallback to owner notification if Resend fails
+    if (!emailSent) {
+      await notifyOwner({
+        title: `[Organizer Notification] ${subject}`,
+        content: emailContent,
+      });
+    }
+    
     return true;
   } catch (error) {
     console.error("Failed to send organizer notification:", error);

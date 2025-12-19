@@ -20,6 +20,7 @@ import { format } from "date-fns";
 import { Calendar, MapPin, CheckCircle, XCircle, AlertCircle } from "lucide-react";
 import type { Event } from "@shared/types";
 import { EventEditDialog } from "@/components/EventEditDialog";
+import { DuplicateWarning } from "@/components/DuplicateWarning";
 
 export default function AdminDashboard() {
   const { user, isAuthenticated } = useAuth();
@@ -201,6 +202,16 @@ export default function AdminDashboard() {
                   />
                   <div className="flex-1 flex flex-col lg:flex-row gap-6">
                   <div className="flex-1">
+                    {/* Duplicate Warning */}
+                    <DuplicateWarning
+                      eventId={event.id}
+                      eventName={event.name}
+                      startDate={event.startDate}
+                      province={event.province}
+                      municipality={event.city}
+                      venue={event.venue}
+                    />
+
                     <div className="flex items-start justify-between mb-4">
                       <div>
                         <h3 className="text-xl font-semibold mb-2">{event.name}</h3>

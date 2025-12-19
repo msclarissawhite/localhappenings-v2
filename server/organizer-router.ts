@@ -9,6 +9,7 @@ import {
   getOrganizerEvents,
 } from "./organizer-db";
 import { notifyOwner } from "./_core/notification";
+import { sendMagicLinkEmail } from "./_core/resend-email";
 
 export const organizerRouter = router({
   /**
@@ -36,14 +37,22 @@ export const organizerRouter = router({
       // Generate magic link token
       const token = await createMagicLinkToken(organizer.id);
       
-      // In a real app, you'd send an email here
-      // For now, we'll use the notification system to send to owner
+      // Send magic link via Resend
       const magicLink = `${process.env.VITE_APP_URL || 'http://localhost:3000'}/organizer/verify?token=${token}`;
       
-      await notifyOwner({
-        title: `Magic Link Request from ${email}`,
-        content: `Organizer ${email} requested a magic link. Link: ${magicLink}\n\nThis is a temporary notification - in production, this would be sent directly to the organizer's email.`,
+      const emailSent = await sendMagicLinkEmail({
+        to: email,
+        name: name || null,
+        magicLink,
       });
+      
+      // Fallback to owner notification if Resend not configured or fails
+      if (!emailSent) {
+        await notifyOwner({
+          title: `Magic Link Request from ${email}`,
+          content: `Organizer ${email} requested a magic link. Link: ${magicLink}\n\nResend not configured - please forward this link manually.`,
+        });
+      }
       
       return {
         success: true,

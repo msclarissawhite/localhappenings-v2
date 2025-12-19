@@ -8,6 +8,7 @@ import { notifySubmitterStatusChange } from "./_core/email-notification";
 import { notifyOrganizerStatusChange } from "./_core/organizer-email";
 import { generateEventInstances, generateRecurringDates, type RecurrencePattern } from "./recurring-events";
 import * as analyticsDb from "./analytics-db";
+import { findPotentialDuplicates } from "./duplicate-detection";
 
 // Validation schemas
 const accessibilitySchema = z.object({
@@ -167,6 +168,30 @@ export const eventsRouter = router({
   list: publicProcedure.input(eventFiltersSchema).query(async ({ input }) => {
     return await eventsDb.getEvents(input);
   }),
+
+  // Check for potential duplicates
+  checkDuplicates: protectedProcedure
+    .input(
+      z.object({
+        eventId: z.number(),
+        name: z.string(),
+        startDate: z.date(),
+        province: z.string(),
+        municipality: z.string(),
+        venue: z.string().optional().nullable(),
+      })
+    )
+    .query(async ({ input }) => {
+      const duplicates = await findPotentialDuplicates(
+        input.eventId,
+        input.name,
+        input.startDate,
+        input.province,
+        input.municipality,
+        input.venue
+      );
+      return duplicates;
+    }),
 
   // Preview recurring event dates
   previewRecurring: publicProcedure

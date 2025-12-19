@@ -212,11 +212,11 @@
 - [x] Ensure organizer dashboard is accessible from navigation
 
 ## Duplicate Event Detection
-- [ ] Create backend function to detect potential duplicates
-- [ ] Check for matching name, date, and venue
-- [ ] Display duplicate warning in admin dashboard
-- [ ] Allow admin to view potential duplicates side-by-side
-- [ ] Add "Mark as duplicate" action in admin review
+- [x] Create backend function to detect potential duplicates
+- [x] Check for matching name, date, and venue
+- [x] Display duplicate warning in admin dashboard
+- [x] Allow admin to view potential duplicates side-by-side
+- [x] Add "Mark as duplicate" action in admin review (admins can reject duplicates)
 
 ## Municipality Field Updates
 - [ ] Scrape Wikipedia for complete Nova Scotia municipalities list
@@ -226,10 +226,10 @@
 - [ ] Replace cities list with municipalities in canadian-locations.ts
 
 ## Resend Email Integration
-- [ ] Install Resend npm package
-- [ ] Request RESEND_API_KEY secret from user
-- [ ] Create email service helper using Resend
-- [ ] Update magic link email to use Resend
-- [ ] Update event status notification emails to use Resend
-- [ ] Create professional HTML email templates
-- [ ] Test email delivery to organizers
+- [x] Install Resend npm package
+- [x] Request RESEND_API_KEY secret from user
+- [x] Create email service helper using Resend
+- [x] Update magic link email to use Resend
+- [x] Update event status notification emails to use Resend
+- [x] Create professional HTML email templates
+- [x] Test email delivery to organizers
