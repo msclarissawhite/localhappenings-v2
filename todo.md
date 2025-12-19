@@ -387,3 +387,9 @@
 - [x] Add email verification endpoint (verifyEmailChange mutation)
 - [x] Test logout functionality
 - [x] Test email change verification workflow
+
+## Bug: Saved Events Authentication Issue
+- [x] Fix saved events to use magic link user login instead of Manus OAuth
+- [x] Updated context.ts to support dual authentication (Manus OAuth + Magic Link)
+- [x] Test complete save event workflow from browse → event detail → save
+- [x] Created comprehensive test suite for dual authentication (4 tests passing)
