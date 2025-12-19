@@ -242,3 +242,49 @@ export const savedEvents = mysqlTable("savedEvents", {
 
 export type SavedEvent = typeof savedEvents.$inferSelect;
 export type InsertSavedEvent = typeof savedEvents.$inferInsert;
+
+/**
+ * Feature requests - User-submitted feature ideas with upvoting
+ */
+export const featureRequests = mysqlTable("featureRequests", {
+  id: int("id").autoincrement().primaryKey(),
+  
+  // Request details
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+  
+  // Submitter info (optional - can be anonymous or authenticated)
+  userId: int("userId"), // null if anonymous
+  submitterName: varchar("submitterName", { length: 100 }), // For anonymous submissions
+  submitterEmail: varchar("submitterEmail", { length: 255 }), // For notifications
+  
+  // Status management
+  status: mysqlEnum("status", ["pending", "under_review", "planned", "in_progress", "completed", "declined"]).default("pending").notNull(),
+  adminNotes: text("adminNotes"), // Internal notes for admins
+  
+  // ClickUp integration
+  clickupTaskId: varchar("clickupTaskId", { length: 100 }), // ClickUp task ID for two-way sync
+  clickupTaskUrl: text("clickupTaskUrl"), // Direct link to ClickUp task
+  
+  // Metrics
+  upvoteCount: int("upvoteCount").default(0).notNull(),
+  
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type FeatureRequest = typeof featureRequests.$inferSelect;
+export type InsertFeatureRequest = typeof featureRequests.$inferInsert;
+
+/**
+ * Feature request upvotes - Track which users upvoted which requests
+ */
+export const featureRequestUpvotes = mysqlTable("featureRequestUpvotes", {
+  id: int("id").autoincrement().primaryKey(),
+  featureRequestId: int("featureRequestId").notNull(),
+  userId: int("userId").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type FeatureRequestUpvote = typeof featureRequestUpvotes.$inferSelect;
+export type InsertFeatureRequestUpvote = typeof featureRequestUpvotes.$inferInsert;

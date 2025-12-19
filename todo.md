@@ -294,12 +294,12 @@
 - [x] Test reminder email delivery
 
 ### 2. Feature Request Board with ClickUp Integration
-- [ ] Add feature_requests table to database schema
-- [ ] Create backend API for feature requests and upvotes
-- [ ] Set up ClickUp API integration
-- [ ] Implement two-way sync (create tasks, sync status, sync upvotes)
-- [ ] Build public feature request submission form
-- [ ] Create feature request board with upvoting UI
+- [x] Add feature_requests table to database schema
+- [x] Create backend API for feature requests and upvotes
+- [x] Set up ClickUp API integration
+- [x] Implement two-way sync (create tasks, sync status, sync upvotes)
+- [x] Build public feature request submission form
+- [x] Create feature request board with upvoting UI
 - [ ] Add admin controls for status management
 - [ ] Test ClickUp integration end-to-end
 
@@ -317,3 +317,9 @@
 - [ ] Document how to edit email templates
 - [ ] Document how to configure email settings
 - [ ] Document how to test email delivery
+
+## Current Sprint Tasks
+- [x] Create email reminder customization guide
+- [x] Add "My Saved Events" link to header navigation
+- [ ] Implement feature request board with upvoting
+- [ ] Set up ClickUp API integration for feature requests

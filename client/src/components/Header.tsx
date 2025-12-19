@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { Button } from "./ui/button";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { useOrganizer } from "@/contexts/OrganizerContext";
-import { Calendar, Menu, X, User } from "lucide-react";
+import { Calendar, Menu, X, User, Bookmark } from "lucide-react";
 import { useState } from "react";
 
 export default function Header() {
@@ -31,6 +31,12 @@ export default function Header() {
             <Link href="/archive" className="text-foreground hover:text-primary font-medium transition-colors">
               Archive
             </Link>
+            {isAuthenticated && (
+              <Link href="/my-saved-events" className="text-foreground hover:text-primary font-medium transition-colors flex items-center gap-1">
+                <Bookmark className="w-4 h-4" />
+                My Saved Events
+              </Link>
+            )}
             {isOrganizerLoggedIn && (
               <Link href="/organizer/dashboard" className="text-foreground hover:text-primary font-medium transition-colors flex items-center gap-1">
                 <User className="w-4 h-4" />
@@ -72,6 +78,12 @@ export default function Header() {
               <Link href="/archive" className="text-foreground hover:text-primary font-medium transition-colors py-2" onClick={() => setMobileMenuOpen(false)}>
                 Archive
               </Link>
+              {isAuthenticated && (
+                <Link href="/my-saved-events" className="text-foreground hover:text-primary font-medium transition-colors py-2 flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>
+                  <Bookmark className="w-4 h-4" />
+                  My Saved Events
+                </Link>
+              )}
               {isOrganizerLoggedIn && (
                 <Link href="/organizer/dashboard" className="text-foreground hover:text-primary font-medium transition-colors py-2 flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>
                   <User className="w-4 h-4" />

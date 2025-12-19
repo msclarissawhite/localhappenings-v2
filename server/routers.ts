@@ -8,6 +8,7 @@ import { contactRouter } from "./contact-router";
 import { organizerRouter } from "./organizer-router";
 import { savedLocationsRouter } from "./saved-locations-router";
 import { savedEventsRouter } from "./saved-events-router";
+import { featureRequestsRouter } from "./feature-requests-router";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -29,6 +30,7 @@ export const appRouter = router({
   organizer: organizerRouter,
   savedLocations: savedLocationsRouter,
   savedEvents: savedEventsRouter,
+  featureRequests: featureRequestsRouter,
 });
 
 export type AppRouter = typeof appRouter;
