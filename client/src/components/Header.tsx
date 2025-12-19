@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { useOrganizer } from "@/contexts/OrganizerContext";
 import { useUserAuth } from "@/hooks/useUserAuth";
-import { Calendar, Menu, X, User, Bookmark } from "lucide-react";
+import { Calendar, Menu, X, User, Bookmark, LogIn } from "lucide-react";
 import { useState } from "react";
 
 export default function Header() {
@@ -55,6 +55,12 @@ export default function Header() {
                 </Link>
               </>
             )}
+            {!isUserAuthenticated && (
+              <a href={getLoginUrl()} className="text-foreground hover:text-primary font-medium transition-colors flex items-center gap-1">
+                <LogIn className="w-4 h-4" />
+                Sign In
+              </a>
+            )}
           </nav>
 
           {/* Mobile Menu Button */}
@@ -101,6 +107,12 @@ export default function Header() {
                     Analytics
                   </Link>
                 </>
+              )}
+              {!isUserAuthenticated && (
+                <a href={getLoginUrl()} className="text-foreground hover:text-primary font-medium transition-colors py-2 flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>
+                  <LogIn className="w-4 h-4" />
+                  Sign In
+                </a>
               )}
             </div>
           </nav>

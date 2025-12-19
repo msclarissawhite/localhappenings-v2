@@ -339,3 +339,8 @@
 - [ ] Test user login and event saving workflow
 - [x] Create comprehensive organizer quickstart guide (PDF/web)
 - [x] Include screenshots and step-by-step instructions in guide
+
+## Priority UX Improvements
+- [x] Add "Sign In" button to header navigation for unauthenticated users
+- [x] Set up email reminder cron job and provide deployment instructions
+- [x] Create welcome email template for new organizers
