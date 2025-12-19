@@ -124,3 +124,6 @@
 ## Bug Fixes
 - [x] Fix analytics query DATE_FORMAT compatibility issue
 - [x] Fix event submission validation error (expected number, received object)
+
+## Current Bug Fixes
+- [x] Fix missing useState import in ShareButtons component
