@@ -120,3 +120,6 @@
 
 ## Documentation Updates
 - [x] Update USER_MANUAL.md with all new features since initial creation
+
+## Bug Fixes
+- [x] Fix analytics query DATE_FORMAT compatibility issue

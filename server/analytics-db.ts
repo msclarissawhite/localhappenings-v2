@@ -63,24 +63,41 @@ export async function getAnalytics(): Promise<AnalyticsData> {
     .orderBy(sql`COUNT(*) DESC`)
     .limit(10);
 
-  // Get events by month (last 6 months)
-  const eventsByMonth = await db
+  // Get events by month - simplified to avoid DATE_FORMAT compatibility issues
+  // Fetch all published events and group by month in JavaScript
+  const allPublishedEvents = await db
     .select({
-      month: sql<string>`DATE_FORMAT(${events.startDate}, '%Y-%m')`,
-      count: sql<number>`COUNT(*)`,
+      startDate: events.startDate,
     })
     .from(events)
-    .where(sql`${events.status} = 'published' AND ${events.startDate} >= DATE_SUB(NOW(), INTERVAL 6 MONTH)`)
-    .groupBy(sql`DATE_FORMAT(${events.startDate}, '%Y-%m')`)
-    .orderBy(sql`DATE_FORMAT(${events.startDate}, '%Y-%m') ASC`);
+    .where(sql`${events.status} = 'published'`);
+
+  // Group by month in JavaScript
+  const monthCounts = new Map<string, number>();
+  const sixMonthsAgo = new Date();
+  sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+
+  allPublishedEvents.forEach((event) => {
+    if (event.startDate && event.startDate >= sixMonthsAgo) {
+      const month = `${event.startDate.getFullYear()}-${String(event.startDate.getMonth() + 1).padStart(2, '0')}`;
+      monthCounts.set(month, (monthCounts.get(month) || 0) + 1);
+    }
+  });
+
+  const eventsByMonth = Array.from(monthCounts.entries())
+    .map(([month, count]) => ({ month, count }))
+    .sort((a, b) => a.month.localeCompare(b.month));
 
   // Get recent submissions (last 7 days)
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  
   const recentResult = await db
     .select({
       count: sql<number>`COUNT(*)`,
     })
     .from(events)
-    .where(sql`${events.createdAt} >= DATE_SUB(NOW(), INTERVAL 7 DAY)`);
+    .where(sql`${events.createdAt} >= ${sevenDaysAgo.toISOString()}`);
 
   const recentSubmissions = recentResult[0]?.count || 0;
 
