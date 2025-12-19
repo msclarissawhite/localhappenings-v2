@@ -32,6 +32,11 @@ export default function Footer() {
                   Organizer Login
                 </Link>
               </li>
+              <li>
+                <Link href="/feature-requests" className="text-muted-foreground hover:text-primary transition-colors">
+                  Feature Requests
+                </Link>
+              </li>
             </ul>
           </div>
 

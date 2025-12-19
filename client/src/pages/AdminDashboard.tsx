@@ -41,6 +41,10 @@ export default function AdminDashboard() {
     enabled: isAuthenticated && user?.role === "admin" && activeTab === "organizers",
   });
 
+  const { data: featureRequests, isLoading: featureRequestsLoading, refetch: refetchFeatureRequests } = trpc.featureRequests.list.useQuery(undefined, {
+    enabled: isAuthenticated && user?.role === "admin" && activeTab === "feature-requests",
+  });
+
   const toggleVerificationMutation = trpc.organizer.toggleVerification.useMutation({
     onSuccess: () => {
       toast.success("Organizer verification status updated");
@@ -48,6 +52,16 @@ export default function AdminDashboard() {
     },
     onError: (error) => {
       toast.error(error.message || "Failed to update verification status");
+    },
+  });
+
+  const updateFeatureRequestStatusMutation = trpc.featureRequests.updateStatus.useMutation({
+    onSuccess: () => {
+      toast.success("Feature request status updated");
+      refetchFeatureRequests();
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to update status");
     },
   });
 
@@ -180,6 +194,14 @@ export default function AdminDashboard() {
           >
             <Users className="w-4 h-4 mr-2" />
             Manage Organizers
+          </Button>
+          <Button
+            variant={activeTab === "feature-requests" ? "default" : "ghost"}
+            onClick={() => setActiveTab("feature-requests")}
+            className="rounded-b-none"
+          >
+            <AlertCircle className="w-4 h-4 mr-2" />
+            Feature Requests
           </Button>
         </div>
 
@@ -392,6 +414,73 @@ export default function AdminDashboard() {
                 <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                 <h3 className="text-lg font-semibold mb-2">No organizers yet</h3>
                 <p className="text-muted-foreground">Organizers will appear here once they submit events.</p>
+              </Card>
+            )}
+          </>
+        )}
+
+        {activeTab === "feature-requests" && (
+          <>
+            {featureRequestsLoading ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Loading feature requests...</p>
+              </div>
+            ) : featureRequests && featureRequests.length > 0 ? (
+              <div className="space-y-4">
+                {featureRequests.map((request) => (
+                  <Card key={request.id} className="p-6">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1">
+                        <h3 className="text-lg font-semibold mb-2">{request.title}</h3>
+                        <p className="text-muted-foreground text-sm mb-4 whitespace-pre-wrap">
+                          {request.description}
+                        </p>
+                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                          <span className="flex items-center gap-1">
+                            <Users className="w-4 h-4" />
+                            {request.upvoteCount} upvotes
+                          </span>
+                          {request.clickupTaskUrl && (
+                            <a
+                              href={request.clickupTaskUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-primary hover:underline flex items-center gap-1"
+                            >
+                              View in ClickUp
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <select
+                          value={request.status}
+                          onChange={(e) => {
+                            updateFeatureRequestStatusMutation.mutate({
+                              featureRequestId: request.id,
+                              status: e.target.value as any,
+                            });
+                          }}
+                          className="px-3 py-2 border rounded-md text-sm"
+                          disabled={updateFeatureRequestStatusMutation.isPending}
+                        >
+                          <option value="pending">Pending</option>
+                          <option value="under_review">Under Review</option>
+                          <option value="planned">Planned</option>
+                          <option value="in_progress">In Progress</option>
+                          <option value="completed">Completed</option>
+                          <option value="declined">Declined</option>
+                        </select>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <Card className="p-12 text-center">
+                <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">No feature requests yet</h3>
+                <p className="text-muted-foreground">Feature requests will appear here when users submit them.</p>
               </Card>
             )}
           </>

@@ -1061,10 +1061,16 @@ export default function SubmitEvent() {
 
           {/* Accessibility Section */}
           <Card className="p-6 border-2 border-primary/20">
-            <div className="mb-4">
-              <h2 className="text-xl font-semibold mb-2">Accessibility Information *</h2>
+            <div className="bg-primary/5 border-l-4 border-primary p-4 rounded-r-lg mb-6">
+              <h2 className="text-xl font-semibold mb-2 flex items-center gap-2">
+                <Info className="w-5 h-5 text-primary" />
+                Accessibility Information * — Why This Matters
+              </h2>
+              <p className="text-sm text-muted-foreground mb-2">
+                <strong>Detailed accessibility information helps families make informed decisions about attending your event.</strong> Parents of children with disabilities, sensory sensitivities, or specific needs rely on this information to know if their family can participate safely and comfortably.
+              </p>
               <p className="text-sm text-muted-foreground">
-                This section is required, but "Unknown" is always acceptable. Honest information helps families plan with confidence. Select "Not Relevant" for features that don't apply to your venue or event type.
+                This section is required, but "Unknown" is always acceptable. Honest information helps families plan with confidence. Select "Not Relevant" for features that don't apply to your venue or event type. Each field includes a tooltip (ℹ️) explaining why it matters.
               </p>
             </div>
 
