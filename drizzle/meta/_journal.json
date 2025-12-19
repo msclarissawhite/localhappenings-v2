@@ -15,6 +15,13 @@
       "when": 1766098952987,
       "tag": "0001_ambitious_cassandra_nova",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1766108938136,
+      "tag": "0002_early_bloodstorm",
+      "breakpoints": true
     }
   ]
 }

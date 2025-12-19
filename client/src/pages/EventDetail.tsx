@@ -3,10 +3,83 @@ import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, MapPin, DollarSign, Users, Clock, Building, Mail, Phone, Globe, ArrowLeft } from "lucide-react";
+import { Calendar, MapPin, DollarSign, Users, Clock, Building, Mail, Phone, Globe, ArrowLeft, Share2, Link2, Check } from "lucide-react";
 import { format } from "date-fns";
 import { Link } from "wouter";
 import type { AccessibilityData } from "@shared/types";
+
+// Share Buttons Component
+function ShareButtons({ eventName, eventId }: { eventName: string; eventId: number }) {
+  const [copied, setCopied] = useState(false);
+  const eventUrl = `${window.location.origin}/event/${eventId}`;
+
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(eventUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
+  };
+
+  const shareToFacebook = () => {
+    window.open(
+      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(eventUrl)}`,
+      "_blank",
+      "width=600,height=400"
+    );
+  };
+
+  const shareToTwitter = () => {
+    window.open(
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(eventName)}&url=${encodeURIComponent(eventUrl)}`,
+      "_blank",
+      "width=600,height=400"
+    );
+  };
+
+  return (
+    <div className="flex items-center gap-2">
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={copyToClipboard}
+        className="gap-2"
+      >
+        {copied ? (
+          <>
+            <Check className="w-4 h-4" />
+            Copied!
+          </>
+        ) : (
+          <>
+            <Link2 className="w-4 h-4" />
+            Copy Link
+          </>
+        )}
+      </Button>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={shareToFacebook}
+        className="gap-2"
+      >
+        <Share2 className="w-4 h-4" />
+        Facebook
+      </Button>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={shareToTwitter}
+        className="gap-2"
+      >
+        <Share2 className="w-4 h-4" />
+        Twitter
+      </Button>
+    </div>
+  );
+}
 
 export default function EventDetail() {
   const [, params] = useRoute("/event/:id");
@@ -89,7 +162,10 @@ export default function EventDetail() {
 
         {/* Event Header */}
         <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">{event.name}</h1>
+          <div className="flex items-start justify-between gap-4 mb-4">
+            <h1 className="text-3xl md:text-4xl font-bold flex-1">{event.name}</h1>
+            <ShareButtons eventName={event.name} eventId={event.id} />
+          </div>
           <div className="flex flex-wrap gap-3">
             {!!event.isFree && (
               <Badge variant="secondary" className="text-base px-3 py-1">
@@ -427,7 +503,7 @@ export default function EventDetail() {
           )}
 
           {/* Organizer Info */}
-          {(event.organizerName || event.organizerEmail || event.organizerPhone || event.organizerWebsite) && (
+          {!!event.displayOrganizerInfo && (event.organizerName || event.organizerEmail || event.organizerPhone || event.organizerWebsite) && (
             <Card className="p-6">
               <h2 className="text-xl font-semibold mb-4">Organizer Information</h2>
               <div className="space-y-3">

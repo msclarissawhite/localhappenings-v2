@@ -86,6 +86,9 @@ export async function getEvents(filters: EventFilters = {}) {
 
   let query = db.select().from(events).where(and(...conditions)).$dynamic();
 
+  // Text search - filter in-memory after fetching
+  const hasSearchTerm = filters.search && filters.search.trim().length > 0;
+  
   // Accessibility filters - filter in-memory since accessibility is JSON
   const accessibilityFilters = {
     changeTablesPresent: filters.changeTablesPresent,
@@ -128,7 +131,20 @@ export async function getEvents(filters: EventFilters = {}) {
 
   let results = await query;
 
-  // Apply accessibility filters in-memory (since accessibility is stored as JSON)
+  // Apply text search filter
+  if (hasSearchTerm) {
+    const searchLower = filters.search!.toLowerCase().trim();
+    results = results.filter(event => {
+      return (
+        event.name?.toLowerCase().includes(searchLower) ||
+        event.description?.toLowerCase().includes(searchLower) ||
+        event.venue?.toLowerCase().includes(searchLower) ||
+        event.organizerName?.toLowerCase().includes(searchLower)
+      );
+    });
+  }
+  
+  // Apply accessibility filters in-memory
   if (hasAccessibilityFilters) {
     results = results.filter((event) => {
       try {

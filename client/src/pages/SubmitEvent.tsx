@@ -43,11 +43,22 @@ const submitEventSchema = z.object({
   seniors: z.boolean(),
   isIndoor: z.boolean(),
   isOutdoor: z.boolean(),
-  organizerName: z.string().optional(),
-  organizerEmail: z.string().optional(),
+  organizerName: z.string().min(1, "Organizer name is required"),
+  organizerEmail: z.string().email("Invalid email").optional().or(z.literal("")),
+  organizerPhone: z.string().optional(),
   organizerWebsite: z.string().optional(),
+  displayOrganizerInfo: z.boolean(),
   notes: z.string().optional(),
-});
+}).refine(
+  (data) => {
+    // Require either email or phone
+    return (data.organizerEmail && data.organizerEmail.length > 0) || (data.organizerPhone && data.organizerPhone.length > 0);
+  },
+  {
+    message: "Please provide either an email or phone number for contact",
+    path: ["organizerEmail"],
+  }
+);
 
 type FormData = z.infer<typeof submitEventSchema>;
 
@@ -931,19 +942,52 @@ export default function SubmitEvent() {
 
           {/* Organizer Information */}
           <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Organizer Information (Optional)</h2>
+            <h2 className="text-xl font-semibold mb-4">Organizer Information *</h2>
+            <p className="text-sm text-muted-foreground mb-4">
+              We need contact information to reach you about this event if needed. At least one contact method (email or phone) is required.
+            </p>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="organizerName">Organization/Contact Name</Label>
+                <Label htmlFor="organizerName">Organization/Contact Name *</Label>
                 <Input id="organizerName" {...register("organizerName")} />
+                {errors.organizerName && (
+                  <p className="text-sm text-destructive mt-1">{errors.organizerName.message}</p>
+                )}
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="organizerEmail">Contact Email *</Label>
+                  <Input id="organizerEmail" type="email" {...register("organizerEmail")} />
+                  {errors.organizerEmail && (
+                    <p className="text-sm text-destructive mt-1">{errors.organizerEmail.message}</p>
+                  )}
+                </div>
+                <div>
+                  <Label htmlFor="organizerPhone">Contact Phone *</Label>
+                  <Input id="organizerPhone" type="tel" {...register("organizerPhone")} placeholder="(902) 555-1234" />
+                  {errors.organizerPhone && (
+                    <p className="text-sm text-destructive mt-1">{errors.organizerPhone.message}</p>
+                  )}
+                </div>
               </div>
               <div>
-                <Label htmlFor="organizerEmail">Contact Email</Label>
-                <Input id="organizerEmail" type="email" {...register("organizerEmail")} />
-              </div>
-              <div>
-                <Label htmlFor="organizerWebsite">Website</Label>
+                <Label htmlFor="organizerWebsite">Website (Optional)</Label>
                 <Input id="organizerWebsite" type="url" {...register("organizerWebsite")} placeholder="https://" />
+              </div>
+              <div className="flex items-start gap-3 pt-2">
+                <Checkbox
+                  id="displayOrganizerInfo"
+                  {...register("displayOrganizerInfo")}
+                  defaultChecked
+                />
+                <div className="space-y-1">
+                  <Label htmlFor="displayOrganizerInfo" className="cursor-pointer font-normal">
+                    Display organizer contact information publicly
+                  </Label>
+                  <p className="text-sm text-muted-foreground">
+                    If checked, your contact information will be visible on the event page. If unchecked, only admins can see it.
+                  </p>
+                </div>
               </div>
             </div>
           </Card>

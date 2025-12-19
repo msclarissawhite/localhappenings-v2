@@ -121,6 +121,9 @@ export interface EventFilters {
   // Event types
   eventTypeIds?: number[];
   
+  // Search
+  search?: string;
+  
   // Sorting
   sortBy?: "soonest" | "latest" | "name-az" | "name-za";
   

@@ -59,6 +59,7 @@ const accessibilitySchema = z.object({
 });
 
 const eventFiltersSchema = z.object({
+  search: z.string().optional(),
   province: z.string().optional(),
   city: z.string().optional(),
   neighborhood: z.string().optional(),

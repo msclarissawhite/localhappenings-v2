@@ -97,3 +97,11 @@
 - [x] Add province/territory dropdown with Canadian provinces
 - [x] Add city dropdown (populated based on selected province)
 - [x] Add "Open in Google Maps" link to event detail pages
+
+## New Feature Requests (Round 2)
+- [x] Make organizer name mandatory
+- [x] Make either email OR phone mandatory for organizer contact
+- [x] Add checkbox to control whether organizer info displays publicly
+- [x] Implement text search bar in Browse Events (search by name, description, venue, organizer)
+- [x] Add social media share buttons to event detail pages
+- [x] Add "Copy link" button to event detail pages

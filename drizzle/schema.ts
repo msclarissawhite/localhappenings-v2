@@ -85,6 +85,7 @@ export const events = mysqlTable("events", {
   organizerEmail: varchar("organizerEmail", { length: 320 }),
   organizerPhone: varchar("organizerPhone", { length: 50 }),
   organizerWebsite: text("organizerWebsite"),
+  displayOrganizerInfo: int("displayOrganizerInfo").default(1).notNull(), // 0 = hide, 1 = show publicly
   
   // Additional Info
   notes: text("notes"),

@@ -9,7 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "wouter";
 import { 
-  Calendar, MapPin, DollarSign, Users, Filter, X, 
+  Calendar, MapPin, DollarSign, Users, Filter, X, Search,
   Baby, Volume2, Eye, Heart, Accessibility
 } from "lucide-react";
 import { format } from "date-fns";
@@ -74,6 +74,29 @@ export default function BrowseEvents() {
           <p className="text-muted-foreground">
             Discover accessible, family-friendly events in your community
           </p>
+        </div>
+
+        {/* Search Bar */}
+        <div className="mb-6">
+          <div className="relative max-w-2xl">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search events by name, description, venue, or organizer..."
+              value={filters.search || ""}
+              onChange={(e) => updateFilter("search", e.target.value)}
+              className="pl-10 pr-10"
+            />
+            {filters.search && (
+              <button
+                onClick={() => updateFilter("search", "")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                aria-label="Clear search"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Quick Toggles */}
