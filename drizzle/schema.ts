@@ -187,3 +187,34 @@ export const magicLinkTokens = mysqlTable("magicLinkTokens", {
 
 export type MagicLinkToken = typeof magicLinkTokens.$inferSelect;
 export type InsertMagicLinkToken = typeof magicLinkTokens.$inferInsert;
+
+/**
+ * Saved locations for organizers - Remembers frequently used venues
+ */
+export const savedLocations = mysqlTable("savedLocations", {
+  id: int("id").autoincrement().primaryKey(),
+  organizerId: int("organizerId").notNull(),
+  
+  // Location name/label
+  name: varchar("name", { length: 255 }).notNull(), // e.g., "Main Library", "Community Center"
+  
+  // Location details (same fields as events table)
+  province: varchar("province", { length: 100 }).notNull(),
+  municipality: varchar("municipality", { length: 150 }).notNull(),
+  neighborhoodCommunity: varchar("neighborhoodCommunity", { length: 150 }),
+  venue: text("venue"),
+  address: text("address"),
+  
+  // Accessibility info (stored as JSON, same structure as events)
+  accessibility: text("accessibility").notNull(),
+  
+  // Indoor/Outdoor defaults
+  isIndoor: int("isIndoor").default(0).notNull(),
+  isOutdoor: int("isOutdoor").default(0).notNull(),
+  
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type SavedLocation = typeof savedLocations.$inferSelect;
+export type InsertSavedLocation = typeof savedLocations.$inferInsert;

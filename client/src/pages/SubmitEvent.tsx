@@ -86,6 +86,7 @@ export default function SubmitEvent() {
   const [availableCities, setAvailableCities] = useState<string[]>([]);
   const [showPreview, setShowPreview] = useState(false);
   const [organizer, setOrganizer] = useState<{id: number; email: string; name: string | null} | null>(null);
+  const [selectedLocationId, setSelectedLocationId] = useState<number | null>(null);
 
   // Check if organizer is logged in
   useEffect(() => {
@@ -98,6 +99,12 @@ export default function SubmitEvent() {
       }
     }
   }, []);
+
+  // Load saved locations for organizer
+  const { data: savedLocations } = trpc.savedLocations.getAll.useQuery(
+    { organizerId: organizer?.id || 0 },
+    { enabled: !!organizer }
+  );
 
   const {
     register,
@@ -587,6 +594,68 @@ export default function SubmitEvent() {
           <Card className="p-6">
             <h2 className="text-xl font-semibold mb-4">Location</h2>
             <div className="space-y-4">
+              {/* Saved Locations Quick Select */}
+              {organizer && savedLocations && savedLocations.length > 0 && (
+                <div className="bg-muted/50 p-4 rounded-lg border-2 border-dashed border-muted-foreground/20">
+                  <Label htmlFor="savedLocation">Quick Fill from Saved Location</Label>
+                  <Select
+                    value={selectedLocationId?.toString() || "none"}
+                    onValueChange={(value) => {
+                      if (!value || value === "none") {
+                        setSelectedLocationId(null);
+                        return;
+                      }
+                      
+                      const locationId = parseInt(value);
+                      setSelectedLocationId(locationId);
+                      
+                      const location = savedLocations.find((loc: any) => loc.id === locationId);
+                      if (location) {
+                        // Auto-fill all location fields
+                        setValue("province", location.province);
+                        setValue("municipality", location.municipality);
+                        setValue("neighborhoodCommunity", location.neighborhoodCommunity || "");
+                        setValue("venue", location.venue || "");
+                        setValue("address", location.address || "");
+                        setValue("isIndoor", location.isIndoor === 1);
+                        setValue("isOutdoor", location.isOutdoor === 1);
+                        
+                        // Update province/city state for dropdowns
+                        setSelectedProvince(location.province);
+                        const provinceCode = CANADIAN_PROVINCES.find(p => p.name === location.province)?.code || "";
+                        setAvailableCities(CANADIAN_CITIES[provinceCode] || []);
+                        
+                        // Parse and set accessibility
+                        try {
+                          const parsedAccessibility = typeof location.accessibility === "string"
+                            ? JSON.parse(location.accessibility)
+                            : location.accessibility;
+                          setAccessibility(parsedAccessibility);
+                        } catch (e) {
+                          console.error("Failed to parse accessibility", e);
+                        }
+                        
+                        toast.success(`Location details filled from "${location.name}"`);
+                      }
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a saved location..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">None (enter manually)</SelectItem>
+                      {savedLocations.map((location: any) => (
+                        <SelectItem key={location.id} value={location.id.toString()}>
+                          {location.name} - {location.municipality}, {location.province}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    Select a saved location to automatically fill in the location details below. You can still edit them after.
+                  </p>
+                </div>
+              )}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="province">Province/Territory *</Label>

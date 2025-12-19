@@ -254,3 +254,13 @@
 - [x] Add verification badge to event cards and organizer dashboard
 - [x] Add admin UI to view/toggle organizer verification status
 - [x] Test verification workflow end-to-end
+
+## Saved Locations Feature
+- [x] Add saved_locations table to database schema
+- [x] Push database migration for saved_locations
+- [x] Create backend CRUD operations for saved locations
+- [x] Add "Saved Locations" section to organizer dashboard
+- [x] Build UI to create/edit/delete saved locations
+- [x] Add location quick-select dropdown to event submission form
+- [x] Auto-fill form fields when saved location is selected
+- [x] Test saved locations workflow end-to-end
