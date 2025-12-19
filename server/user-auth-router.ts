@@ -200,4 +200,50 @@ export const userAuthRouter = router({
     ctx.res.clearCookie("user_session");
     return { success: true };
   }),
+
+  /**
+   * Update user profile (name and email)
+   */
+  updateProfile: publicProcedure
+    .input(
+      z.object({
+        name: z.string().optional(),
+        email: z.string().email().optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Check for session token
+      const token = ctx.req.cookies?.user_session || ctx.req.headers.authorization?.replace("Bearer ", "");
+
+      if (!token) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You must be signed in to update your profile",
+        });
+      }
+
+      try {
+        const decoded = jwt.verify(token, JWT_SECRET) as { userId: number; email: string; role: string };
+
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Database unavailable' });
+
+        // Update user profile
+        const updateData: { name?: string; email?: string } = {};
+        if (input.name !== undefined) updateData.name = input.name;
+        if (input.email !== undefined) updateData.email = input.email;
+
+        await db
+          .update(users)
+          .set(updateData)
+          .where(eq(users.id, decoded.userId));
+
+        return { success: true };
+      } catch (error) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Invalid session",
+        });
+      }
+    }),
 });

@@ -22,6 +22,7 @@ import MySavedEvents from "./pages/MySavedEvents";
 import FeatureRequests from "./pages/FeatureRequests";
 import UserLogin from "./pages/UserLogin";
 import UserVerify from "./pages/UserVerify";
+import UserProfile from "./pages/UserProfile";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -49,6 +50,7 @@ function Router() {
       <Route path="/feature-requests" component={FeatureRequests} />
       <Route path="/user/login" component={UserLogin} />
       <Route path="/user/verify" component={UserVerify} />
+      <Route path="/user/profile" component={UserProfile} />
       <Route path={"/404"} component={NotFound} />          <Route component={NotFound} />
         </Switch>
       </main>

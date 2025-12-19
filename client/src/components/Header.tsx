@@ -34,10 +34,16 @@ export default function Header() {
               Archive
             </Link>
             {isUserAuthenticated && (
-              <Link href="/my-saved-events" className="text-foreground hover:text-primary font-medium transition-colors flex items-center gap-1">
-                <Bookmark className="w-4 h-4" />
-                My Saved Events
-              </Link>
+              <>
+                <Link href="/my-saved-events" className="text-foreground hover:text-primary font-medium transition-colors flex items-center gap-1">
+                  <Bookmark className="w-4 h-4" />
+                  My Saved Events
+                </Link>
+                <Link href="/user/profile" className="text-foreground hover:text-primary font-medium transition-colors flex items-center gap-1">
+                  <User className="w-4 h-4" />
+                  Profile
+                </Link>
+              </>
             )}
             {isOrganizerLoggedIn && (
               <Link href="/organizer/dashboard" className="text-foreground hover:text-primary font-medium transition-colors flex items-center gap-1">
@@ -87,10 +93,16 @@ export default function Header() {
                 Archive
               </Link>
               {isUserAuthenticated && (
-                <Link href="/my-saved-events" className="text-foreground hover:text-primary font-medium transition-colors py-2 flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>
-                  <Bookmark className="w-4 h-4" />
-                  My Saved Events
-                </Link>
+                <>
+                  <Link href="/my-saved-events" className="text-foreground hover:text-primary font-medium transition-colors py-2 flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>
+                    <Bookmark className="w-4 h-4" />
+                    My Saved Events
+                  </Link>
+                  <Link href="/user/profile" className="text-foreground hover:text-primary font-medium transition-colors py-2 flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>
+                    <User className="w-4 h-4" />
+                    Profile
+                  </Link>
+                </>
               )}
               {isOrganizerLoggedIn && (
                 <Link href="/organizer/dashboard" className="text-foreground hover:text-primary font-medium transition-colors py-2 flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>

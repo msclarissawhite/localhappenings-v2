@@ -358,4 +358,22 @@
 ## User Session Persistence Issue
 - [x] Debug why user session cookie isn't persisting after login (missing cookie-parser)
 - [x] Fix useUserAuth hook to properly detect logged-in state (added cookie-parser middleware)
-- [ ] Test complete login and bookmark workflow
+- [x] Test complete login and bookmark workflow
+
+## Email Reminder Deployment
+- [x] Fix GitHub Actions workflow to use tsx instead of node
+- [x] Create comprehensive deployment guide (DEPLOY_EMAIL_REMINDERS.md)
+- [x] Document all required GitHub Secrets
+- [x] Add troubleshooting section to deployment guide
+
+## User Profile Page
+- [x] Create user profile page at /user/profile
+- [x] Add updateProfile mutation to user auth router
+- [x] Display user information (name, email, account type, user ID)
+- [x] Add profile editing form with name and email fields
+- [x] Show saved events summary (total count and reminders enabled count)
+- [x] Display email reminder preferences explanation
+- [x] Add link to My Saved Events page
+- [x] Include privacy and security information
+- [x] Add Profile link to Header navigation (desktop and mobile)
+- [x] Test complete user login and profile workflow
