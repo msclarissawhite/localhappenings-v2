@@ -344,3 +344,7 @@
 - [x] Add "Sign In" button to header navigation for unauthenticated users
 - [x] Set up email reminder cron job and provide deployment instructions
 - [x] Create welcome email template for new organizers
+
+## Checkpoint Publishing Issue
+- [ ] Fix "record not found" error when publishing checkpoint
+- [ ] Create valid checkpoint with all recent changes
