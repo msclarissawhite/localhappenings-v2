@@ -1,11 +1,13 @@
 import { Link } from "wouter";
 import { Button } from "./ui/button";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { Calendar, Menu, X } from "lucide-react";
+import { useOrganizer } from "@/contexts/OrganizerContext";
+import { Calendar, Menu, X, User } from "lucide-react";
 import { useState } from "react";
 
 export default function Header() {
   const { user, isAuthenticated } = useAuth();
+  const { isLoggedIn: isOrganizerLoggedIn } = useOrganizer();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -29,6 +31,12 @@ export default function Header() {
             <Link href="/archive" className="text-foreground hover:text-primary font-medium transition-colors">
               Archive
             </Link>
+            {isOrganizerLoggedIn && (
+              <Link href="/organizer/dashboard" className="text-foreground hover:text-primary font-medium transition-colors flex items-center gap-1">
+                <User className="w-4 h-4" />
+                My Events
+              </Link>
+            )}
             {isAuthenticated && user?.role === "admin" && (
               <>
                 <Link href="/admin" className="text-foreground hover:text-primary font-medium transition-colors">
@@ -64,6 +72,12 @@ export default function Header() {
               <Link href="/archive" className="text-foreground hover:text-primary font-medium transition-colors py-2" onClick={() => setMobileMenuOpen(false)}>
                 Archive
               </Link>
+              {isOrganizerLoggedIn && (
+                <Link href="/organizer/dashboard" className="text-foreground hover:text-primary font-medium transition-colors py-2 flex items-center gap-1" onClick={() => setMobileMenuOpen(false)}>
+                  <User className="w-4 h-4" />
+                  My Events
+                </Link>
+              )}
               {isAuthenticated && user?.role === "admin" && (
                 <>
                   <Link href="/admin" className="text-foreground hover:text-primary font-medium transition-colors py-2" onClick={() => setMobileMenuOpen(false)}>

@@ -192,3 +192,33 @@
 - [x] Add end date or occurrence count selector
 - [x] Add preview of generated dates (basic preview shown)
 - [x] Show total number of events that will be created (shown in preview)
+
+## Enhanced Recurring Preview
+- [x] Call backend preview helper to generate actual dates
+- [x] Display formatted date list in preview section
+- [x] Show total count of events that will be created
+
+## Admin Bulk Approval
+- [x] Add checkbox selection for multiple events
+- [x] Add bulk approve button
+- [x] Add bulk reject button
+- [x] Implement Shift+A keyboard shortcut for approve
+- [x] Implement Shift+R keyboard shortcut for reject
+- [x] Fix admin approval buttons layout (buttons spanning off page)
+
+## Organizer Dashboard Navigation
+- [x] Add "Organizer Login" link to footer or header
+- [x] Add "My Events" link when organizer is logged in
+- [x] Ensure organizer dashboard is accessible from navigation
+
+## Duplicate Event Detection
+- [ ] Create backend function to detect potential duplicates
+- [ ] Check for matching name, date, and venue
+- [ ] Display duplicate warning in admin dashboard
+- [ ] Allow admin to view potential duplicates side-by-side
+- [ ] Add "Mark as duplicate" action in admin review
+
+## Cities/Towns Expansion
+- [ ] Research comprehensive Nova Scotia municipalities list
+- [ ] Add all cities, towns, and communities to canadian-locations.ts
+- [ ] Ensure alphabetical sorting for usability

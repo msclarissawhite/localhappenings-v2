@@ -6,7 +6,7 @@ import type { AccessibilityData } from "../shared/types";
 import { notifyOwner } from "./_core/notification";
 import { notifySubmitterStatusChange } from "./_core/email-notification";
 import { notifyOrganizerStatusChange } from "./_core/organizer-email";
-import { generateEventInstances } from "./recurring-events";
+import { generateEventInstances, generateRecurringDates, type RecurrencePattern } from "./recurring-events";
 import * as analyticsDb from "./analytics-db";
 
 // Validation schemas
@@ -167,6 +167,36 @@ export const eventsRouter = router({
   list: publicProcedure.input(eventFiltersSchema).query(async ({ input }) => {
     return await eventsDb.getEvents(input);
   }),
+
+  // Preview recurring event dates
+  previewRecurring: publicProcedure
+    .input(
+      z.object({
+        startDate: z.date(),
+        recurrencePattern: z
+          .object({
+            frequency: z.enum(["daily", "weekly", "monthly"]),
+            interval: z.number().min(1).default(1),
+            daysOfWeek: z.array(z.number()).optional(),
+            endDate: z.date().optional(),
+            occurrences: z.number().min(1).max(100).optional(),
+          })
+          .optional(),
+      })
+    )
+    .query(async ({ input }) => {
+      if (!input.recurrencePattern) {
+        return [];
+      }
+
+      const dates = generateRecurringDates({
+        startDate: input.startDate,
+        pattern: input.recurrencePattern,
+      });
+
+      // Return ISO strings for easier frontend handling
+      return dates.map(date => date.toISOString());
+    }),
 
   // Get event by ID
   getById: publicProcedure.input(z.object({ id: z.number() })).query(async ({ input }) => {

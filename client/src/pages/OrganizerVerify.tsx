@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
+import { useOrganizer } from "@/contexts/OrganizerContext";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Loader2, CheckCircle, XCircle } from "lucide-react";
 
 export default function OrganizerVerify() {
   const [, navigate] = useLocation();
+  const { login } = useOrganizer();
   const [token, setToken] = useState<string>("");
   const [verifying, setVerifying] = useState(true);
   const [error, setError] = useState<string>("");
@@ -14,8 +16,8 @@ export default function OrganizerVerify() {
   const verifyMutation = trpc.organizer.verifyMagicLink.useMutation({
     onSuccess: (data) => {
       setVerifying(false);
-      // Store organizer data in localStorage
-      localStorage.setItem("organizer", JSON.stringify(data.organizer));
+      // Store organizer data using context
+      login(data.organizer);
       // Redirect to dashboard after short delay
       setTimeout(() => {
         navigate("/organizer/dashboard");

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import {
@@ -27,10 +28,29 @@ export default function AdminDashboard() {
   const [showReviewDialog, setShowReviewDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [reviewAction, setReviewAction] = useState<"published" | "rejected" | "needs-clarification">("published");
+  const [selectedEvents, setSelectedEvents] = useState<Set<number>>(new Set());
 
   const { data: pendingEvents, isLoading, refetch } = trpc.events.getPending.useQuery(undefined, {
     enabled: isAuthenticated && user?.role === "admin",
   });
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (!e.shiftKey || selectedEvents.size === 0) return;
+      
+      if (e.key === 'A' || e.key === 'a') {
+        e.preventDefault();
+        handleBulkApprove();
+      } else if (e.key === 'R' || e.key === 'r') {
+        e.preventDefault();
+        handleBulkReject();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [selectedEvents]);
 
   const updateStatusMutation = trpc.events.updateStatus.useMutation({
     onSuccess: () => {
@@ -72,6 +92,52 @@ export default function AdminDashboard() {
     });
   };
 
+  const toggleEventSelection = (eventId: number) => {
+    const newSelection = new Set(selectedEvents);
+    if (newSelection.has(eventId)) {
+      newSelection.delete(eventId);
+    } else {
+      newSelection.add(eventId);
+    }
+    setSelectedEvents(newSelection);
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedEvents.size === pendingEvents?.length) {
+      setSelectedEvents(new Set());
+    } else {
+      setSelectedEvents(new Set(pendingEvents?.map(e => e.id) || []));
+    }
+  };
+
+  const handleBulkApprove = async () => {
+    if (selectedEvents.size === 0) return;
+    
+    for (const eventId of Array.from(selectedEvents)) {
+      await updateStatusMutation.mutateAsync({
+        eventId,
+        status: 'published',
+      });
+    }
+    setSelectedEvents(new Set());
+    toast.success(`Approved ${selectedEvents.size} event(s)`);
+    refetch();
+  };
+
+  const handleBulkReject = async () => {
+    if (selectedEvents.size === 0) return;
+    
+    for (const eventId of Array.from(selectedEvents)) {
+      await updateStatusMutation.mutateAsync({
+        eventId,
+        status: 'rejected',
+      });
+    }
+    setSelectedEvents(new Set());
+    toast.success(`Rejected ${selectedEvents.size} event(s)`);
+    refetch();
+  };
+
   return (
     <div className="py-8">
       <div className="container max-w-6xl">
@@ -85,10 +151,55 @@ export default function AdminDashboard() {
             <p className="text-muted-foreground">Loading pending events...</p>
           </div>
         ) : pendingEvents && pendingEvents.length > 0 ? (
-          <div className="space-y-6">
+          <>
+            {/* Bulk Actions Toolbar */}
+            <div className="flex items-center justify-between mb-4 p-4 bg-muted/30 rounded-lg">
+              <div className="flex items-center gap-4">
+                <Checkbox
+                  checked={selectedEvents.size === pendingEvents.length}
+                  onCheckedChange={toggleSelectAll}
+                />
+                <span className="text-sm font-medium">
+                  {selectedEvents.size > 0
+                    ? `${selectedEvents.size} event(s) selected`
+                    : "Select events"}
+                </span>
+              </div>
+              {selectedEvents.size > 0 && (
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    onClick={handleBulkApprove}
+                    disabled={updateStatusMutation.isPending}
+                  >
+                    <CheckCircle className="w-4 h-4 mr-2" />
+                    Approve ({selectedEvents.size})
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={handleBulkReject}
+                    disabled={updateStatusMutation.isPending}
+                  >
+                    <XCircle className="w-4 h-4 mr-2" />
+                    Reject ({selectedEvents.size})
+                  </Button>
+                  <span className="text-xs text-muted-foreground self-center ml-2">
+                    Shift+A to approve, Shift+R to reject
+                  </span>
+                </div>
+              )}
+            </div>
+            <div className="space-y-6">
             {pendingEvents.map((event) => (
               <Card key={event.id} className="p-6">
-                <div className="flex flex-col lg:flex-row gap-6">
+                <div className="flex gap-4">
+                  <Checkbox
+                    checked={selectedEvents.has(event.id)}
+                    onCheckedChange={() => toggleEventSelection(event.id)}
+                    className="mt-1"
+                  />
+                  <div className="flex-1 flex flex-col lg:flex-row gap-6">
                   <div className="flex-1">
                     <div className="flex items-start justify-between mb-4">
                       <div>
@@ -123,7 +234,7 @@ export default function AdminDashboard() {
                     </div>
                   </div>
 
-                       <div className="flex gap-2">
+                       <div className="flex flex-wrap gap-2">
                       <Button
                         size="sm"
                         variant="outline"
@@ -137,32 +248,33 @@ export default function AdminDashboard() {
                       <Button
                         size="sm"
                         onClick={() => handleReview(event, "published")}
-                        className="flex-1"
                       >
                         <CheckCircle className="w-4 h-4 mr-2" />
                         Approve
                       </Button>
                       <Button
-                      onClick={() => handleReview(event, "needs-clarification")}
-                      className="w-full"
-                      variant="outline"
-                    >
-                      <AlertCircle className="w-4 h-4 mr-2" />
-                      Need Info
-                    </Button>
-                    <Button
-                      onClick={() => handleReview(event, "rejected")}
-                      className="w-full"
-                      variant="destructive"
-                    >
-                      <XCircle className="w-4 h-4 mr-2" />
-                      Reject
-                    </Button>
+                        size="sm"
+                        onClick={() => handleReview(event, "needs-clarification")}
+                        variant="outline"
+                      >
+                        <AlertCircle className="w-4 h-4 mr-2" />
+                        Need Info
+                      </Button>
+                      <Button
+                        size="sm"
+                        onClick={() => handleReview(event, "rejected")}
+                        variant="destructive"
+                      >
+                        <XCircle className="w-4 h-4 mr-2" />
+                        Reject
+                      </Button>
                   </div>
+                </div>
                 </div>
               </Card>
             ))}
           </div>
+          </>
         ) : (
           <Card className="p-12 text-center">
             <CheckCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />

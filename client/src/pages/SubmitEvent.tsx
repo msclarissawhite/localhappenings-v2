@@ -18,6 +18,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import type { AccessibilityValue } from "@shared/types";
 import { CANADIAN_PROVINCES, CANADIAN_CITIES } from "@shared/canadian-locations";
 import { EventPreview } from "@/components/EventPreview";
+import { RecurringPreview } from "@/components/RecurringPreview";
 
 const submitEventSchema = z.object({
   name: z.string().min(1, "Event name is required"),
@@ -568,16 +569,14 @@ export default function SubmitEvent() {
                       </div>
                     </div>
 
-                    <div className="bg-muted/30 p-4 rounded-lg">
-                      <p className="text-sm font-medium mb-2">📅 Preview</p>
-                      <p className="text-sm text-muted-foreground">
-                        {watch("recurrenceFrequency") && watch("startDate") ? (
-                          `This will create multiple events starting from ${new Date(watch("startDate")).toLocaleDateString()}`
-                        ) : (
-                          "Select frequency and start date to see preview"
-                        )}
-                      </p>
-                    </div>
+                    <RecurringPreview
+                      startDate={watch("startDate")}
+                      frequency={watch("recurrenceFrequency")}
+                      interval={watch("recurrenceInterval") || 1}
+                      daysOfWeek={watch("recurrenceDaysOfWeek")}
+                      endDate={watch("recurrenceEndDate")}
+                      occurrences={watch("recurrenceOccurrences")}
+                    />
                   </div>
                 )}
               </div>

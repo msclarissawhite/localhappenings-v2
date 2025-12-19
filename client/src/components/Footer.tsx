@@ -27,6 +27,11 @@ export default function Footer() {
                   Submit an Event
                 </Link>
               </li>
+              <li>
+                <Link href="/organizer/login" className="text-muted-foreground hover:text-primary transition-colors">
+                  Organizer Login
+                </Link>
+              </li>
             </ul>
           </div>
 
