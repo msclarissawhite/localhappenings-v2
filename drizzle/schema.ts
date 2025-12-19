@@ -37,8 +37,8 @@ export const events = mysqlTable("events", {
   
   // Location
   province: varchar("province", { length: 100 }).notNull(),
-  city: varchar("city", { length: 100 }).notNull(),
-  neighborhood: varchar("neighborhood", { length: 100 }),
+  municipality: varchar("municipality", { length: 150 }).notNull(),
+  neighborhoodCommunity: varchar("neighborhoodCommunity", { length: 150 }),
   venue: text("venue"),
   address: text("address"),
   

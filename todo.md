@@ -218,7 +218,18 @@
 - [ ] Allow admin to view potential duplicates side-by-side
 - [ ] Add "Mark as duplicate" action in admin review
 
-## Cities/Towns Expansion
-- [ ] Research comprehensive Nova Scotia municipalities list
-- [ ] Add all cities, towns, and communities to canadian-locations.ts
-- [ ] Ensure alphabetical sorting for usability
+## Municipality Field Updates
+- [ ] Scrape Wikipedia for complete Nova Scotia municipalities list
+- [ ] Rename "City" field to "Municipality" in schema and forms
+- [ ] Rename "Neighbourhood" field to "Neighbourhood/Community"
+- [ ] Update all references throughout codebase
+- [ ] Replace cities list with municipalities in canadian-locations.ts
+
+## Resend Email Integration
+- [ ] Install Resend npm package
+- [ ] Request RESEND_API_KEY secret from user
+- [ ] Create email service helper using Resend
+- [ ] Update magic link email to use Resend
+- [ ] Update event status notification emails to use Resend
+- [ ] Create professional HTML email templates
+- [ ] Test email delivery to organizers
