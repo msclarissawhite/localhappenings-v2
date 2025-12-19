@@ -208,7 +208,7 @@ export default function AdminDashboard() {
                       eventName={event.name}
                       startDate={event.startDate}
                       province={event.province}
-                      municipality={event.city}
+                      municipality={event.municipality}
                       venue={event.venue}
                     />
 
@@ -222,7 +222,7 @@ export default function AdminDashboard() {
                           </Badge>
                           <Badge variant="outline">
                             <MapPin className="w-3 h-3 mr-1" />
-                            {event.city}, {event.province}
+                            {event.municipality}, {event.province}
                           </Badge>
                           {event.isFree && <Badge variant="secondary">FREE</Badge>}
                         </div>

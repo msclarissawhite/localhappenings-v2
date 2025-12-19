@@ -60,12 +60,12 @@ describe("Analytics Query Fix", () => {
   it("should return top cities with counts", async () => {
     const analytics = await getAnalytics();
 
-    analytics.topCities.forEach((city) => {
-      expect(city).toHaveProperty("city");
-      expect(city).toHaveProperty("count");
-      expect(typeof city.city).toBe("string");
-      expect(typeof city.count).toBe("number");
-      expect(city.count).toBeGreaterThan(0);
+    analytics.topCities.forEach((municipality) => {
+      expect(municipality).toHaveProperty("municipality");
+      expect(municipality).toHaveProperty("count");
+      expect(typeof municipality.municipality).toBe("string");
+      expect(typeof municipality.count).toBe("number");
+      expect(municipality.count).toBeGreaterThan(0);
     });
   });
 

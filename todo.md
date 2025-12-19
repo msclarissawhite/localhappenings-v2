@@ -233,3 +233,23 @@
 - [x] Update event status notification emails to use Resend
 - [x] Create professional HTML email templates
 - [x] Test email delivery to organizers
+
+## Municipality Field Refactoring (In Progress)
+- [x] Update database schema (city → municipality, neighborhood → neighborhoodCommunity)
+- [x] Update server/events-db.ts references
+- [x] Update server/events-router.ts references
+- [x] Update server/organizer-router.ts references
+- [x] Update server/duplicate-detection.ts references
+- [ ] Update all client component references
+- [ ] Update all client page references
+- [x] Update shared types references
+- [ ] Test all forms and displays
+
+## Organizer Verification System
+- [x] Add isVerified boolean field to organizers schema (already exists)
+- [x] Push database migration for isVerified field (already exists)
+- [x] Update submission logic to auto-approve verified organizers
+- [x] Update edit logic to auto-approve verified organizer edits
+- [ ] Add verification badge to event cards and organizer dashboard
+- [ ] Add admin UI to view/toggle organizer verification status
+- [ ] Test verification workflow end-to-end

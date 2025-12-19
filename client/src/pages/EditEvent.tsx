@@ -55,8 +55,8 @@ export default function EditEvent() {
         startDate: event.startDate ? new Date(event.startDate).toISOString().slice(0, 16) : "",
         endDate: event.endDate ? new Date(event.endDate).toISOString().slice(0, 16) : "",
         province: event.province || "",
-        city: event.city || "",
-        neighborhood: event.neighborhood || "",
+        municipality: event.municipality || "",
+        neighborhoodCommunity: event.neighborhoodCommunity || "",
         venue: event.venue || "",
         address: event.address || "",
         isFree: event.isFree || false,
@@ -213,7 +213,7 @@ export default function EditEvent() {
               <Select
                 value={formData.province}
                 onValueChange={(value) => {
-                  setFormData({ ...formData, province: value, city: "" });
+                  setFormData({ ...formData, province: value, municipality: "" });
                   setSelectedProvince(value);
                   const provinceCode = CANADIAN_PROVINCES.find(p => p.name === value)?.code;
                   if (provinceCode) {
@@ -237,17 +237,17 @@ export default function EditEvent() {
             <div>
               <Label>City/Town *</Label>
               <Select
-                value={formData.city}
-                onValueChange={(value) => setFormData({ ...formData, city: value })}
+                value={formData.municipality}
+                onValueChange={(value) => setFormData({ ...formData, municipality: value })}
                 disabled={!selectedProvince}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder={selectedProvince ? "Select city" : "Select province first"} />
+                  <SelectValue placeholder={selectedProvince ? "Select municipality" : "Select province first"} />
                 </SelectTrigger>
                 <SelectContent>
-                  {cities.map((city) => (
-                    <SelectItem key={city} value={city}>
-                      {city}
+                  {cities.map((municipality) => (
+                    <SelectItem key={municipality} value={municipality}>
+                      {municipality}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -257,11 +257,11 @@ export default function EditEvent() {
 
           <div className="mt-4 space-y-4">
             <div>
-              <Label htmlFor="neighborhood">Neighborhood</Label>
+              <Label htmlFor="neighborhoodCommunity">Neighborhood</Label>
               <Input
-                id="neighborhood"
-                value={formData.neighborhood}
-                onChange={(e) => setFormData({ ...formData, neighborhood: e.target.value })}
+                id="neighborhoodCommunity"
+                value={formData.neighborhoodCommunity}
+                onChange={(e) => setFormData({ ...formData, neighborhoodCommunity: e.target.value })}
                 placeholder="e.g., North End"
               />
             </div>

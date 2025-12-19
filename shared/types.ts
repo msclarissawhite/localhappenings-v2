@@ -71,8 +71,8 @@ export interface AccessibilityData {
 export interface EventFilters {
   // Location
   province?: string;
-  city?: string;
-  neighborhood?: string;
+  municipality?: string;
+  neighborhoodCommunity?: string;
   
   // Date & Time
   dateFrom?: Date;

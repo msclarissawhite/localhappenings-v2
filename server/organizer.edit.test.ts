@@ -23,7 +23,7 @@ describe("Organizer Edit Functionality", () => {
       name: "Test Event for Editing",
       description: "Original description",
       province: "Nova Scotia",
-      city: "Halifax",
+      municipality: "Halifax",
       startDate: new Date("2025-12-25"),
       isFree: 1,
       allAges: 1,

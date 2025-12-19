@@ -8,6 +8,7 @@ import { notifySubmitterStatusChange } from "./_core/email-notification";
 import { notifyOrganizerStatusChange } from "./_core/organizer-email";
 import { generateEventInstances, generateRecurringDates, type RecurrencePattern } from "./recurring-events";
 import * as analyticsDb from "./analytics-db";
+import * as organizerDb from "./organizer-db";
 import { findPotentialDuplicates } from "./duplicate-detection";
 
 // Validation schemas
@@ -66,8 +67,8 @@ const accessibilitySchema = z.object({
 const eventFiltersSchema = z.object({
   search: z.string().optional(),
   province: z.string().optional(),
-  city: z.string().optional(),
-  neighborhood: z.string().optional(),
+  municipality: z.string().optional(),
+  neighborhoodCommunity: z.string().optional(),
   dateFrom: z.date().optional(),
   dateTo: z.date().optional(),
   timeOfDay: z.enum(["morning", "afternoon", "evening", "all-day"]).optional(),
@@ -110,8 +111,8 @@ const submitEventSchema = z.object({
   name: z.string().min(1, "Event name is required"),
   description: z.string().min(1, "Description is required"),
   province: z.string().min(1, "Province is required"),
-  city: z.string().min(1, "City is required"),
-  neighborhood: z.string().optional(),
+  municipality: z.string().min(1, "City is required"),
+  neighborhoodCommunity: z.string().optional(),
   venue: z.string().optional(),
   address: z.string().optional(),
   startDate: z.date(),
@@ -245,6 +246,15 @@ export const eventsRouter = router({
 
   // Public: Submit event (supports recurring events)
   submit: publicProcedure.input(submitEventSchema).mutation(async ({ input, ctx }) => {
+      // Check if organizer is verified for auto-approval
+    let initialStatus: "pending" | "published" = "pending";
+    if (input.organizerId) {
+      const organizer = await organizerDb.getOrganizerById(input.organizerId);
+      if (organizer?.isVerified === 1) {
+        initialStatus = "published";
+      }
+    }
+    
     // Check if this is a recurring event
     if (input.isRecurring && input.recurrencePattern) {
       // Generate multiple event instances
@@ -284,7 +294,7 @@ export const eventsRouter = router({
           accessibility: JSON.stringify(instance.accessibility),
           submittedBy: ctx.user?.id || null,
           organizerId: input.organizerId || null,
-          status: "pending" as const,
+          status: initialStatus,
         };
         
         const eventId = await eventsDb.createEvent(instanceData);
@@ -295,7 +305,7 @@ export const eventsRouter = router({
       try {
         await notifyOwner({
           title: "New Recurring Event Submission",
-          content: `A recurring event "${input.name}" with ${instances.length} occurrences has been submitted for review in ${input.city}, ${input.province}.`,
+          content: `A recurring event "${input.name}" with ${instances.length} occurrences has been submitted for review in ${input.municipality}, ${input.province}.`,
         });
       } catch (error) {
         console.error("Failed to send notification:", error);
@@ -326,7 +336,7 @@ export const eventsRouter = router({
       accessibility: JSON.stringify(input.accessibility),
       submittedBy: ctx.user?.id || null,
       organizerId: input.organizerId || null,
-      status: "pending" as const,
+      status: initialStatus,
     };
 
     const eventId = await eventsDb.createEvent(eventData);
@@ -335,7 +345,7 @@ export const eventsRouter = router({
     try {
       await notifyOwner({
         title: "New Event Submission",
-        content: `A new event "${input.name}" has been submitted for review in ${input.city}, ${input.province}.`,
+        content: `A new event "${input.name}" has been submitted for review in ${input.municipality}, ${input.province}.`,
       });
     } catch (error) {
       console.error("Failed to send notification:", error);

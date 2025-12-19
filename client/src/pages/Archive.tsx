@@ -82,7 +82,7 @@ export default function Archive() {
                         <div className="flex items-center gap-2">
                           <MapPin className="w-4 h-4 flex-shrink-0" />
                           <span className="line-clamp-1">
-                            {event.city}, {event.province}
+                            {event.municipality}, {event.province}
                           </span>
                         </div>
                         

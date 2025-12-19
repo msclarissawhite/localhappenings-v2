@@ -38,7 +38,7 @@ describe("events.submit", () => {
       name: "Test Community Event",
       description: "A test event for our community",
       province: "Nova Scotia",
-      city: "Halifax",
+      municipality: "Halifax",
       startDate: new Date("2025-01-15T10:00:00"),
       isFree: true,
       familyFriendly: true,

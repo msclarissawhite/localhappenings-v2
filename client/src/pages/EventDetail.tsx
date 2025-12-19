@@ -226,12 +226,12 @@ export default function EventDetail() {
                   {event.venue && <p className="font-medium">{event.venue}</p>}
                   {event.address && <p className="text-sm">{event.address}</p>}
                   <p className="text-sm">
-                    {event.neighborhood && `${event.neighborhood}, `}
-                    {event.city}, {event.province}
+                    {event.neighborhoodCommunity && `${event.neighborhoodCommunity}, `}
+                    {event.municipality}, {event.province}
                   </p>
                   <a
                     href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                      `${event.venue || ""} ${event.address || ""} ${event.city} ${event.province}`.trim()
+                      `${event.venue || ""} ${event.address || ""} ${event.municipality} ${event.province}`.trim()
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"

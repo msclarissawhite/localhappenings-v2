@@ -63,7 +63,7 @@ describe("Beta Launch Features", () => {
         pendingEvents: 2,
         rejectedEvents: 1,
         approvalRate: 87.5,
-        topCities: [{ city: "Halifax", count: 5 }],
+        topCities: [{ municipality: "Halifax", count: 5 }],
         topProvinces: [{ province: "Nova Scotia", count: 8 }],
         eventsByMonth: [{ month: "2025-01", count: 3 }],
         recentSubmissions: 2,
@@ -76,7 +76,7 @@ describe("Beta Launch Features", () => {
       expect(analytics.publishedEvents).toBe(7);
       expect(analytics.approvalRate).toBe(87.5);
       expect(analytics.topCities).toHaveLength(1);
-      expect(analytics.topCities[0]?.city).toBe("Halifax");
+      expect(analytics.topCities[0]?.municipality).toBe("Halifax");
 
       analyticsSpy.mockRestore();
     });

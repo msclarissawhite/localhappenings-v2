@@ -120,8 +120,8 @@ export default function EventDetail() {
                   {event.venue && <p className="text-foreground">{event.venue}</p>}
                   {event.address && <p className="text-muted-foreground">{event.address}</p>}
                   <p className="text-muted-foreground">
-                    {event.neighborhood && `${event.neighborhood}, `}
-                    {event.city}, {event.province}
+                    {event.neighborhoodCommunity && `${event.neighborhoodCommunity}, `}
+                    {event.municipality}, {event.province}
                   </p>
                 </div>
               </div>

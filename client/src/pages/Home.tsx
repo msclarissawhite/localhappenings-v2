@@ -68,7 +68,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-semibold mb-3">Local Focus</h3>
               <p className="text-muted-foreground">
-                Discover what's happening in your neighborhood, city, or across Nova Scotia.
+                Discover what's happening in your neighborhoodCommunity, municipality, or across Nova Scotia.
 
 More provinces and territories coming soon
               </p>

@@ -8,7 +8,7 @@ export interface AnalyticsData {
   pendingEvents: number;
   rejectedEvents: number;
   approvalRate: number;
-  topCities: Array<{ city: string; count: number }>;
+  topCities: Array<{ municipality: string; count: number }>;
   topProvinces: Array<{ province: string; count: number }>;
   eventsByMonth: Array<{ month: string; count: number }>;
   recentSubmissions: number; // Last 7 days
@@ -42,12 +42,12 @@ export async function getAnalytics(): Promise<AnalyticsData> {
   // Get top cities
   const topCities = await db
     .select({
-      city: events.city,
+      municipality: events.municipality,
       count: sql<number>`COUNT(*)`,
     })
     .from(events)
     .where(sql`${events.status} = 'published'`)
-    .groupBy(events.city)
+    .groupBy(events.municipality)
     .orderBy(sql`COUNT(*) DESC`)
     .limit(10);
 
@@ -107,7 +107,7 @@ export async function getAnalytics(): Promise<AnalyticsData> {
     pendingEvents: Number(pendingEvents),
     rejectedEvents: Number(rejectedEvents),
     approvalRate: Math.round(approvalRate * 10) / 10,
-    topCities: topCities.map((row) => ({ city: row.city, count: Number(row.count) })),
+    topCities: topCities.map((row) => ({ municipality: row.municipality, count: Number(row.count) })),
     topProvinces: topProvinces.map((row) => ({ province: row.province, count: Number(row.count) })),
     eventsByMonth: eventsByMonth.map((row) => ({ month: row.month, count: Number(row.count) })),
     recentSubmissions: Number(recentSubmissions),

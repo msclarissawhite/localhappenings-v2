@@ -21,8 +21,8 @@ const submitEventSchema = z.object({
   name: z.string().min(1, "Event name is required"),
   description: z.string().min(1, "Description is required"),
   province: z.string().min(1, "Province is required"),
-  city: z.string().min(1, "City is required"),
-  neighborhood: z.string().optional(),
+  municipality: z.string().min(1, "City is required"),
+  neighborhoodCommunity: z.string().optional(),
   venue: z.string().optional(),
   address: z.string().optional(),
   startDate: z.string().min(1, "Start date is required"),
@@ -231,15 +231,15 @@ export default function SubmitEvent() {
                 </div>
 
                 <div>
-                  <Label htmlFor="city">City *</Label>
-                  <Input id="city" {...register("city")} placeholder="e.g., Halifax" />
-                  {errors.city && <p className="text-sm text-destructive mt-1">{errors.city.message}</p>}
+                  <Label htmlFor="municipality">City *</Label>
+                  <Input id="municipality" {...register("municipality")} placeholder="e.g., Halifax" />
+                  {errors.municipality && <p className="text-sm text-destructive mt-1">{errors.municipality.message}</p>}
                 </div>
               </div>
 
               <div>
-                <Label htmlFor="neighborhood">Neighborhood</Label>
-                <Input id="neighborhood" {...register("neighborhood")} placeholder="e.g., North End" />
+                <Label htmlFor="neighborhoodCommunity">Neighborhood</Label>
+                <Input id="neighborhoodCommunity" {...register("neighborhoodCommunity")} placeholder="e.g., North End" />
               </div>
 
               <div>

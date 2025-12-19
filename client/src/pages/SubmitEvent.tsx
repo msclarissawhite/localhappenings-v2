@@ -24,8 +24,8 @@ const submitEventSchema = z.object({
   name: z.string().min(1, "Event name is required"),
   description: z.string().min(1, "Description is required"),
   province: z.string().min(1, "Province is required"),
-  city: z.string().min(1, "City is required"),
-  neighborhood: z.string().optional(),
+  municipality: z.string().min(1, "City is required"),
+  neighborhoodCommunity: z.string().optional(),
   venue: z.string().optional(),
   address: z.string().optional(),
   startDate: z.string().min(1, "Start date is required"),
@@ -324,7 +324,7 @@ export default function SubmitEvent() {
               <div className="space-y-3 ml-2">
                 <div>
                   <p className="font-medium" style={{fontSize: '16px', paddingTop: '20px'}}>✅ Clear, Complete Event Details</p>
-                  <p className="text-muted-foreground" style={{fontSize: '16px'}}>Please include: a clear event name and description, a valid location (at minimum: province and city), a start date (and end date, if applicable), and cost information (free, donation-based, or a price range).</p>
+                  <p className="text-muted-foreground" style={{fontSize: '16px'}}>Please include: a clear event name and description, a valid location (at minimum: province and municipality), a start date (and end date, if applicable), and cost information (free, donation-based, or a price range).</p>
                 </div>
 
                 <div>
@@ -597,7 +597,7 @@ export default function SubmitEvent() {
                       const provinceCode = CANADIAN_PROVINCES.find(p => p.name === value)?.code || "";
                       setAvailableCities(CANADIAN_CITIES[provinceCode] || []);
                       setValue("province", value);
-                      setValue("city", ""); // Reset city when province changes
+                      setValue("municipality", ""); // Reset municipality when province changes
                     }}
                   >
                     <SelectTrigger>
@@ -617,30 +617,30 @@ export default function SubmitEvent() {
                 </div>
 
                 <div>
-                  <Label htmlFor="city">City/Town *</Label>
+                  <Label htmlFor="municipality">City/Town *</Label>
                   <Select
-                    value={watch("city") || ""}
-                    onValueChange={(value) => setValue("city", value)}
+                    value={watch("municipality") || ""}
+                    onValueChange={(value) => setValue("municipality", value)}
                     disabled={!selectedProvince}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder={selectedProvince ? "Select city" : "Select province first"} />
+                      <SelectValue placeholder={selectedProvince ? "Select municipality" : "Select province first"} />
                     </SelectTrigger>
                     <SelectContent>
-                      {availableCities.map((city) => (
-                        <SelectItem key={city} value={city}>
-                          {city}
+                      {availableCities.map((municipality) => (
+                        <SelectItem key={municipality} value={municipality}>
+                          {municipality}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
-                  {errors.city && <p className="text-sm text-destructive mt-1">{errors.city.message}</p>}
+                  {errors.municipality && <p className="text-sm text-destructive mt-1">{errors.municipality.message}</p>}
                 </div>
               </div>
 
               <div>
-                <Label htmlFor="neighborhood">Neighborhood</Label>
-                <Input id="neighborhood" {...register("neighborhood")} placeholder="e.g., North End" />
+                <Label htmlFor="neighborhoodCommunity">Neighborhood</Label>
+                <Input id="neighborhoodCommunity" {...register("neighborhoodCommunity")} placeholder="e.g., North End" />
               </div>
 
               <div>
@@ -999,7 +999,7 @@ export default function SubmitEvent() {
                     </div>
                     <Select
                       value={accessibility.mobility?.terrainInfo || "unknown"}
-                      onValueChange={(value) => updateAccessibility("mobility", "terrainInfo", value)}
+                      onValueChange={(value) => updateAccessibility("mobility", "terrainInfo", value as AccessibilityValue)}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select terrain type" />

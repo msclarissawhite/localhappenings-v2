@@ -77,7 +77,7 @@ describe("Recurring Events", () => {
       name: "Weekly Meeting",
       description: "Team sync",
       province: "Nova Scotia",
-      city: "Halifax",
+      municipality: "Halifax",
       startDate: "2025-01-06T10:00:00Z",
       endDate: "2025-01-06T11:00:00Z",
       isFree: true,

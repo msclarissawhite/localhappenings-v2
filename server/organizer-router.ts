@@ -114,8 +114,8 @@ export const organizerRouter = router({
         name: z.string().optional(),
         description: z.string().optional(),
         province: z.string().optional(),
-        city: z.string().optional(),
-        neighborhood: z.string().optional(),
+        municipality: z.string().optional(),
+        neighborhoodCommunity: z.string().optional(),
         venue: z.string().optional(),
         address: z.string().optional(),
         startDate: z.string().optional(),
@@ -177,8 +177,10 @@ export const organizerRouter = router({
         updateData.accessibility = JSON.stringify(updateData.accessibility);
       }
       
-      // Reset status to pending for re-approval
-      updateData.status = "pending";
+      // Check if organizer is verified for auto-approval
+      const { getOrganizerById } = await import("./organizer-db");
+      const organizer = await getOrganizerById(organizerId);
+      updateData.status = (organizer?.isVerified === 1) ? "published" : "pending";
       updateData.updatedAt = new Date();
       
       await eventsDb.updateEvent(eventId, updateData);

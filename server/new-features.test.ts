@@ -36,7 +36,7 @@ describe("Event Submission with Organizer Validation", () => {
       name: "Test Event",
       description: "A test event",
       province: "Nova Scotia",
-      city: "Halifax",
+      municipality: "Halifax",
       startDate: new Date("2025-12-25"),
       organizerName: "Test Organizer",
       organizerEmail: "organizer@example.com",
@@ -57,7 +57,7 @@ describe("Event Submission with Organizer Validation", () => {
       name: "Test Event 2",
       description: "Another test event",
       province: "Nova Scotia",
-      city: "Dartmouth",
+      municipality: "Dartmouth",
       startDate: new Date("2025-12-26"),
       organizerName: "Test Organizer 2",
       organizerPhone: "902-555-1234",
@@ -116,16 +116,16 @@ describe("Event Filtering", () => {
     });
   });
 
-  it("should filter events by city", async () => {
+  it("should filter events by municipality", async () => {
     const ctx = createTestContext();
     const caller = appRouter.createCaller(ctx);
 
-    const results = await caller.events.list({ city: "Halifax" });
+    const results = await caller.events.list({ municipality: "Halifax" });
     expect(Array.isArray(results)).toBe(true);
     
     // All results should be from Halifax
     results.forEach(event => {
-      expect(event.city).toBe("Halifax");
+      expect(event.municipality).toBe("Halifax");
     });
   });
 

@@ -30,8 +30,8 @@ export function EventEditDialog({ event, open, onOpenChange, onSuccess }: EventE
     name: "",
     description: "",
     province: "",
-    city: "",
-    neighborhood: "",
+    municipality: "",
+    neighborhoodCommunity: "",
     venue: "",
     address: "",
     startDate: "",
@@ -70,8 +70,8 @@ export function EventEditDialog({ event, open, onOpenChange, onSuccess }: EventE
         name: event.name || "",
         description: event.description || "",
         province: event.province || "",
-        city: event.city || "",
-        neighborhood: event.neighborhood || "",
+        municipality: event.municipality || "",
+        neighborhoodCommunity: event.neighborhoodCommunity || "",
         venue: event.venue || "",
         address: event.address || "",
         startDate: event.startDate ? new Date(event.startDate).toISOString().split("T")[0] : "",
@@ -105,8 +105,8 @@ export function EventEditDialog({ event, open, onOpenChange, onSuccess }: EventE
         name: formData.name,
         description: formData.description,
         province: formData.province,
-        city: formData.city,
-        neighborhood: formData.neighborhood || undefined,
+        municipality: formData.municipality,
+        neighborhoodCommunity: formData.neighborhoodCommunity || undefined,
         venue: formData.venue || undefined,
         address: formData.address || undefined,
         startDate: new Date(formData.startDate),
@@ -189,7 +189,7 @@ export function EventEditDialog({ event, open, onOpenChange, onSuccess }: EventE
                 <Label htmlFor="province">Province *</Label>
                 <Select
                   value={formData.province}
-                  onValueChange={(value) => setFormData({ ...formData, province: value, city: "" })}
+                  onValueChange={(value) => setFormData({ ...formData, province: value, municipality: "" })}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select province" />
@@ -205,19 +205,19 @@ export function EventEditDialog({ event, open, onOpenChange, onSuccess }: EventE
               </div>
 
               <div>
-                <Label htmlFor="city">City *</Label>
+                <Label htmlFor="municipality">City *</Label>
                 <Select
-                  value={formData.city}
-                  onValueChange={(value) => setFormData({ ...formData, city: value })}
+                  value={formData.municipality}
+                  onValueChange={(value) => setFormData({ ...formData, municipality: value })}
                   disabled={!formData.province}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select city" />
+                    <SelectValue placeholder="Select municipality" />
                   </SelectTrigger>
                   <SelectContent>
-                  {availableCities.map((city: string) => (
-                    <SelectItem key={city} value={city}>
-                      {city}
+                  {availableCities.map((municipality: string) => (
+                    <SelectItem key={municipality} value={municipality}>
+                      {municipality}
                     </SelectItem>
                   ))}
                   </SelectContent>

@@ -90,13 +90,13 @@ export default function Analytics() {
             </h3>
             {analytics.topCities.length > 0 ? (
               <div className="space-y-3">
-                {analytics.topCities.map((city, index) => (
-                  <div key={city.city} className="flex items-center justify-between">
+                {analytics.topCities.map((municipality, index) => (
+                  <div key={municipality.municipality} className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <span className="text-sm font-medium text-muted-foreground w-6">#{index + 1}</span>
-                      <span className="font-medium">{city.city}</span>
+                      <span className="font-medium">{municipality.municipality}</span>
                     </div>
-                    <span className="text-sm text-muted-foreground">{city.count} events</span>
+                    <span className="text-sm text-muted-foreground">{municipality.count} events</span>
                   </div>
                 ))}
               </div>

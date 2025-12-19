@@ -30,6 +30,7 @@ export async function findPotentialDuplicates(
   venue?: string | null
 ): Promise<DuplicateCandidate[]> {
   const db = await getDb();
+  if (!db) return [];
 
   // Convert date to YYYY-MM-DD format for comparison
   const dateStr = startDate.toISOString().split("T")[0];

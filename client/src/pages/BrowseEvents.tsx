@@ -207,17 +207,17 @@ export default function BrowseEvents() {
                     <div>
                       <Label>City</Label>
                       <Select
-                        value={filters.city || "__all__"}
-                        onValueChange={(value) => updateFilter("city", value === "__all__" ? undefined : value)}
+                        value={filters.municipality || "__all__"}
+                        onValueChange={(value) => updateFilter("municipality", value === "__all__" ? undefined : value)}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="All cities" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="__all__">All cities</SelectItem>
-                          {locations?.cities.map((city) => (
-                            <SelectItem key={city} value={city}>
-                              {city}
+                          {locations?.cities.map((municipality) => (
+                            <SelectItem key={municipality} value={municipality}>
+                              {municipality}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -524,7 +524,7 @@ export default function BrowseEvents() {
                       </div>
                       <div className="flex items-center gap-2">
                         <MapPin className="w-4 h-4" />
-                        <span>{event.city}, {event.province}</span>
+                        <span>{event.municipality}, {event.province}</span>
                       </div>
                       {!!event.isFree && (
                         <div className="flex items-center gap-2 text-accent">

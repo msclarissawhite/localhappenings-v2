@@ -22,11 +22,11 @@ export async function getEvents(filters: EventFilters = {}) {
   if (filters.province) {
     conditions.push(eq(events.province, filters.province));
   }
-  if (filters.city) {
-    conditions.push(eq(events.city, filters.city));
+  if (filters.municipality) {
+    conditions.push(eq(events.municipality, filters.municipality));
   }
-  if (filters.neighborhood) {
-    conditions.push(eq(events.neighborhood, filters.neighborhood));
+  if (filters.neighborhoodCommunity) {
+    conditions.push(eq(events.neighborhoodCommunity, filters.neighborhoodCommunity));
   }
 
   // Date filters
@@ -343,15 +343,15 @@ export async function getLocations() {
   const publishedEvents = await db
     .select({
       province: events.province,
-      city: events.city,
-      neighborhood: events.neighborhood,
+      municipality: events.municipality,
+      neighborhoodCommunity: events.neighborhoodCommunity,
     })
     .from(events)
     .where(eq(events.status, "published"));
 
   const provinces = Array.from(new Set(publishedEvents.map((e) => e.province))).filter(Boolean).sort();
-  const cities = Array.from(new Set(publishedEvents.map((e) => e.city))).filter(Boolean).sort();
-  const neighborhoods = Array.from(new Set(publishedEvents.map((e) => e.neighborhood))).filter(Boolean).sort();
+  const municipalities = Array.from(new Set(publishedEvents.map((e) => e.municipality))).filter(Boolean).sort();
+  const neighborhoodCommunities = Array.from(new Set(publishedEvents.map((e) => e.neighborhoodCommunity))).filter(Boolean).sort();
 
-  return { provinces, cities, neighborhoods };
+  return { provinces, municipalities, neighborhoodCommunities };
 }

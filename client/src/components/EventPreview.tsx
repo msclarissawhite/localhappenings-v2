@@ -8,8 +8,8 @@ interface EventPreviewProps {
     name: string;
     description: string;
     province: string;
-    city: string;
-    neighborhood?: string;
+    municipality: string;
+    neighborhoodCommunity?: string;
     venue?: string;
     address?: string;
     startDate: string;
@@ -149,7 +149,7 @@ export function EventPreview({ data, accessibility }: EventPreviewProps) {
                 {data.venue && <p className="text-sm">{data.venue}</p>}
                 {data.address && <p className="text-sm text-muted-foreground">{data.address}</p>}
                 <p className="text-sm text-muted-foreground">
-                  {[data.neighborhood, data.city, data.province].filter(Boolean).join(", ")}
+                  {[data.neighborhoodCommunity, data.municipality, data.province].filter(Boolean).join(", ")}
                 </p>
               </div>
             </div>
