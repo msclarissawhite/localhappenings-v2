@@ -69,3 +69,7 @@
 ## Bug Fixes
 - [x] Fix nested anchor tag error in Header component
 - [x] Fix nested anchor tag error in Footer component
+
+## Documentation
+- [x] Create user manual and testing guide
+- [x] Fix Select component empty string value error in BrowseEvents

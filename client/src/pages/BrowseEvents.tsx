@@ -131,14 +131,14 @@ export default function BrowseEvents() {
                   <div>
                     <Label>Province</Label>
                     <Select
-                      value={filters.province || ""}
-                      onValueChange={(value) => updateFilter("province", value || undefined)}
+                      value={filters.province || "__all__"}
+                      onValueChange={(value) => updateFilter("province", value === "__all__" ? undefined : value)}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="All provinces" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">All provinces</SelectItem>
+                        <SelectItem value="__all__">All provinces</SelectItem>
                         {locations?.provinces.map((province) => (
                           <SelectItem key={province} value={province}>
                             {province}
@@ -150,14 +150,14 @@ export default function BrowseEvents() {
                   <div>
                     <Label>City</Label>
                     <Select
-                      value={filters.city || ""}
-                      onValueChange={(value) => updateFilter("city", value || undefined)}
+                      value={filters.city || "__all__"}
+                      onValueChange={(value) => updateFilter("city", value === "__all__" ? undefined : value)}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="All cities" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">All cities</SelectItem>
+                        <SelectItem value="__all__">All cities</SelectItem>
                         {locations?.cities.map((city) => (
                           <SelectItem key={city} value={city}>
                             {city}
