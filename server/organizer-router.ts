@@ -193,4 +193,27 @@ export const organizerRouter = router({
       
       return { success: true };
     }),
+
+  /**
+   * Toggle organizer verification status (admin only)
+   */
+  toggleVerification: publicProcedure
+    .input(z.object({
+      organizerId: z.number(),
+      isVerified: z.boolean(),
+    }))
+    .mutation(async ({ input }) => {
+      const { toggleOrganizerVerification } = await import("./organizer-db");
+      await toggleOrganizerVerification(input.organizerId, input.isVerified);
+      return { success: true };
+    }),
+
+  /**
+   * Get all organizers (admin only)
+   */
+  getAllOrganizers: publicProcedure
+    .query(async () => {
+      const { getAllOrganizers } = await import("./organizer-db");
+      return await getAllOrganizers();
+    }),
 });

@@ -4,7 +4,7 @@ import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, MapPin, DollarSign, Users, Clock, Building, Mail, Phone, Globe, ArrowLeft, Share2, Link2, Check } from "lucide-react";
+import { Calendar, MapPin, DollarSign, Users, Clock, Building, Mail, Phone, Globe, ArrowLeft, Share2, Link2, Check, ShieldCheck } from "lucide-react";
 import { format } from "date-fns";
 import { Link } from "wouter";
 import type { AccessibilityData } from "@shared/types";
@@ -511,7 +511,15 @@ export default function EventDetail() {
               <div className="space-y-3">
                 {event.organizerName && (
                   <div>
-                    <p className="font-medium">{event.organizerName}</p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-medium">{event.organizerName}</p>
+                      {event.organizerIsVerified && (
+                        <Badge variant="default" className="gap-1 bg-emerald-600 hover:bg-emerald-700">
+                          <ShieldCheck className="w-3 h-3" />
+                          Verified
+                        </Badge>
+                      )}
+                    </div>
                     {event.organizerType && (
                       <p className="text-sm text-muted-foreground capitalize">
                         {event.organizerType.replace("-", " ")}

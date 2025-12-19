@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import {
   Dialog,
   DialogContent,
@@ -17,7 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { Calendar, MapPin, CheckCircle, XCircle, AlertCircle } from "lucide-react";
+import { Calendar, MapPin, CheckCircle, XCircle, AlertCircle, ShieldCheck, Users } from "lucide-react";
 import type { Event } from "@shared/types";
 import { EventEditDialog } from "@/components/EventEditDialog";
 import { DuplicateWarning } from "@/components/DuplicateWarning";
@@ -30,9 +31,24 @@ export default function AdminDashboard() {
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [reviewAction, setReviewAction] = useState<"published" | "rejected" | "needs-clarification">("published");
   const [selectedEvents, setSelectedEvents] = useState<Set<number>>(new Set());
+  const [activeTab, setActiveTab] = useState<"events" | "organizers">("events");
 
   const { data: pendingEvents, isLoading, refetch } = trpc.events.getPending.useQuery(undefined, {
     enabled: isAuthenticated && user?.role === "admin",
+  });
+
+  const { data: organizers, isLoading: organizersLoading, refetch: refetchOrganizers } = trpc.organizer.getAllOrganizers.useQuery(undefined, {
+    enabled: isAuthenticated && user?.role === "admin" && activeTab === "organizers",
+  });
+
+  const toggleVerificationMutation = trpc.organizer.toggleVerification.useMutation({
+    onSuccess: () => {
+      toast.success("Organizer verification status updated");
+      refetchOrganizers();
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to update verification status");
+    },
   });
 
   // Keyboard shortcuts
@@ -147,11 +163,33 @@ export default function AdminDashboard() {
           <p className="text-muted-foreground">Review and moderate event submissions</p>
         </div>
 
-        {isLoading ? (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">Loading pending events...</p>
-          </div>
-        ) : pendingEvents && pendingEvents.length > 0 ? (
+        {/* Tab Navigation */}
+        <div className="flex gap-2 mb-6 border-b">
+          <Button
+            variant={activeTab === "events" ? "default" : "ghost"}
+            onClick={() => setActiveTab("events")}
+            className="rounded-b-none"
+          >
+            <Calendar className="w-4 h-4 mr-2" />
+            Pending Events
+          </Button>
+          <Button
+            variant={activeTab === "organizers" ? "default" : "ghost"}
+            onClick={() => setActiveTab("organizers")}
+            className="rounded-b-none"
+          >
+            <Users className="w-4 h-4 mr-2" />
+            Manage Organizers
+          </Button>
+        </div>
+
+        {activeTab === "events" && (
+          <>
+            {isLoading ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Loading pending events...</p>
+              </div>
+            ) : pendingEvents && pendingEvents.length > 0 ? (
           <>
             {/* Bulk Actions Toolbar */}
             <div className="flex items-center justify-between mb-4 p-4 bg-muted/30 rounded-lg">
@@ -286,12 +324,77 @@ export default function AdminDashboard() {
             ))}
           </div>
           </>
-        ) : (
-          <Card className="p-12 text-center">
-            <CheckCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-semibold mb-2">All caught up!</h3>
-            <p className="text-muted-foreground">There are no pending events to review.</p>
-          </Card>
+            ) : (
+              <Card className="p-12 text-center">
+                <CheckCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">All caught up!</h3>
+                <p className="text-muted-foreground">There are no pending events to review.</p>
+              </Card>
+            )}
+          </>
+        )}
+
+        {activeTab === "organizers" && (
+          <>
+            {organizersLoading ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Loading organizers...</p>
+              </div>
+            ) : organizers && organizers.length > 0 ? (
+              <div className="space-y-4">
+                {organizers.map((organizer) => (
+                  <Card key={organizer.id} className="p-6">
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <h3 className="font-semibold text-lg">
+                            {organizer.name || organizer.email}
+                          </h3>
+                          {organizer.isVerified === 1 && (
+                            <Badge variant="default" className="gap-1 bg-emerald-600 hover:bg-emerald-700">
+                              <ShieldCheck className="w-3 h-3" />
+                              Verified
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-sm text-muted-foreground">{organizer.email}</p>
+                        {organizer.organizationName && (
+                          <p className="text-sm text-muted-foreground mt-1">
+                            Organization: {organizer.organizationName}
+                          </p>
+                        )}
+                        <p className="text-xs text-muted-foreground mt-2">
+                          Joined: {format(new Date(organizer.createdAt), "MMM d, yyyy")}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Label htmlFor={`verify-${organizer.id}`} className="text-sm font-medium">
+                          Verified Organizer
+                        </Label>
+                        <Switch
+                          id={`verify-${organizer.id}`}
+                          checked={organizer.isVerified === 1}
+                          onCheckedChange={(checked) => {
+                            toggleVerificationMutation.mutate({
+                              organizerId: organizer.id,
+                              isVerified: checked,
+                            });
+                          }}
+                          disabled={toggleVerificationMutation.isPending}
+                        />
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <Card className="p-12 text-center">
+                <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">No organizers yet</h3>
+                <p className="text-muted-foreground">Organizers will appear here once they submit events.</p>
+              </Card>
+            )}
+          </>
         )}
 
         <Dialog open={showReviewDialog} onOpenChange={setShowReviewDialog}>

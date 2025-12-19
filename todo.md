@@ -250,6 +250,7 @@
 - [x] Push database migration for isVerified field (already exists)
 - [x] Update submission logic to auto-approve verified organizers
 - [x] Update edit logic to auto-approve verified organizer edits
-- [ ] Add verification badge to event cards and organizer dashboard
-- [ ] Add admin UI to view/toggle organizer verification status
-- [ ] Test verification workflow end-to-end
+- [x] Fix magic link URL to use deployed domain instead of localhost
+- [x] Add verification badge to event cards and organizer dashboard
+- [x] Add admin UI to view/toggle organizer verification status
+- [x] Test verification workflow end-to-end

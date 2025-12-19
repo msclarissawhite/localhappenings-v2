@@ -1,5 +1,5 @@
 import { and, desc, eq, gte, lte, or, sql } from "drizzle-orm";
-import { events, eventTypes, eventToEventTypes, collections, collectionToEvents } from "../drizzle/schema";
+import { events, eventTypes, eventToEventTypes, collections, collectionToEvents, organizers } from "../drizzle/schema";
 import { getDb } from "./db";
 import type { EventFilters } from "../shared/types";
 
@@ -90,7 +90,14 @@ export async function getEvents(filters: EventFilters = {}) {
     conditions.push(eq(events.isOutdoor, 1));
   }
 
-  let query = db.select().from(events).where(and(...conditions)).$dynamic();
+  let query = db
+    .select({
+      event: events,
+      organizer: organizers,
+    })
+    .from(events)
+    .leftJoin(organizers, eq(events.organizerId, organizers.id))
+    .where(and(...conditions)).$dynamic();
 
   // Text search - filter in-memory after fetching
   const hasSearchTerm = filters.search && filters.search.trim().length > 0;
@@ -135,7 +142,13 @@ export async function getEvents(filters: EventFilters = {}) {
     query = query.offset(filters.offset);
   }
 
-  let results = await query;
+  let rawResults = await query;
+  
+  // Flatten results to include organizer verification status
+  let results = rawResults.map(row => ({
+    ...row.event,
+    organizerIsVerified: row.organizer?.isVerified === 1,
+  }));
 
   // Apply text search filter
   if (hasSearchTerm) {
@@ -202,8 +215,23 @@ export async function getEventById(id: number) {
   const db = await getDb();
   if (!db) return null;
 
-  const result = await db.select().from(events).where(eq(events.id, id)).limit(1);
-  return result[0] || null;
+  const result = await db
+    .select({
+      event: events,
+      organizer: organizers,
+    })
+    .from(events)
+    .leftJoin(organizers, eq(events.organizerId, organizers.id))
+    .where(eq(events.id, id))
+    .limit(1);
+  
+  if (!result[0]) return null;
+  
+  // Flatten the result to include organizer verification status
+  return {
+    ...result[0].event,
+    organizerIsVerified: result[0].organizer?.isVerified === 1,
+  };
 }
 
 /**

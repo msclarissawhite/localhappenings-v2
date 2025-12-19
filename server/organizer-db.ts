@@ -144,3 +144,27 @@ export async function cleanupExpiredTokens() {
     }
   }
 }
+
+/**
+ * Toggle organizer verification status (admin only)
+ */
+export async function toggleOrganizerVerification(organizerId: number, isVerified: boolean): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error('Database not available');
+  
+  await db.update(organizers)
+    .set({ 
+      isVerified: isVerified ? 1 : 0,
+      updatedAt: new Date()
+    })
+    .where(eq(organizers.id, organizerId));
+}
+
+/**
+ * Get all organizers (admin only)
+ */
+export async function getAllOrganizers(): Promise<Organizer[]> {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select().from(organizers).orderBy(organizers.createdAt);
+}
