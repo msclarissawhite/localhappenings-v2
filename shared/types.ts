@@ -11,7 +11,7 @@ export * from "./_core/errors";
  * Used across frontend and backend to ensure consistency
  */
 
-export type AccessibilityValue = "yes" | "no" | "unknown";
+export type AccessibilityValue = "yes" | "no" | "unknown" | "not-relevant";
 
 export interface AccessibilityData {
   caregiver: {
@@ -92,15 +92,31 @@ export interface EventFilters {
   costMax?: number;
   
   // Age
+  allAges?: boolean;
   familyFriendly?: boolean;
   youngChildren?: boolean;
   kids?: boolean;
   teens?: boolean;
+  adultsOnly?: boolean;
   seniors?: boolean;
   
   // Attributes
   isIndoor?: boolean;
   isOutdoor?: boolean;
+  
+  // Accessibility filters
+  changeTablesPresent?: boolean;
+  nursingFriendly?: boolean;
+  strollerSpace?: boolean;
+  wheelchairEntrance?: boolean;
+  stepFreeEntry?: boolean;
+  accessibleWashrooms?: boolean;
+  sensoryFriendly?: boolean;
+  quietRoom?: boolean;
+  quietEnvironment?: boolean;
+  genderNeutralWashrooms?: boolean;
+  lgbtqiaFriendly?: boolean;
+  scentFree?: boolean;
   
   // Event types
   eventTypeIds?: number[];

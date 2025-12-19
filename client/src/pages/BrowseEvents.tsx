@@ -8,9 +8,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "wouter";
-import { Calendar, MapPin, DollarSign, Users, Filter, X } from "lucide-react";
+import { 
+  Calendar, MapPin, DollarSign, Users, Filter, X, 
+  Baby, Volume2, Eye, Heart, Accessibility
+} from "lucide-react";
 import { format } from "date-fns";
 import type { EventFilters } from "@shared/types";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export default function BrowseEvents() {
   const [filters, setFilters] = useState<EventFilters>({
@@ -36,9 +45,25 @@ export default function BrowseEvents() {
 
   const activeFilterCount = useMemo(() => {
     return Object.keys(filters).filter(
-      (key) => key !== "limit" && key !== "offset" && filters[key as keyof EventFilters]
+      (key) => key !== "limit" && key !== "offset" && key !== "sortBy" && filters[key as keyof EventFilters]
     ).length;
   }, [filters]);
+
+  // Helper to check if event has any accessibility features
+  const hasAccessibilityInfo = (event: any) => {
+    try {
+      const accessibility = typeof event.accessibility === 'string' 
+        ? JSON.parse(event.accessibility) 
+        : event.accessibility;
+      
+      // Check if any accessibility category has "yes" values
+      return Object.values(accessibility || {}).some((category: any) =>
+        Object.values(category || {}).some((value) => value === "yes")
+      );
+    } catch {
+      return false;
+    }
+  };
 
   return (
     <div className="py-8">
@@ -123,106 +148,318 @@ export default function BrowseEvents() {
         {/* Advanced Filters Panel */}
         {showFilters && (
           <Card className="p-6 mb-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Location Filters */}
-              <div>
-                <h3 className="font-semibold mb-3">Location</h3>
-                <div className="space-y-3">
-                  <div>
-                    <Label>Province</Label>
-                    <Select
-                      value={filters.province || "__all__"}
-                      onValueChange={(value) => updateFilter("province", value === "__all__" ? undefined : value)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="All provinces" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="__all__">All provinces</SelectItem>
-                        {locations?.provinces.map((province) => (
-                          <SelectItem key={province} value={province}>
-                            {province}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Left Column */}
+              <div className="space-y-6">
+                {/* Location Filters */}
+                <div>
+                  <h3 className="font-semibold mb-3">Location</h3>
+                  <div className="space-y-3">
+                    <div>
+                      <Label>Province</Label>
+                      <Select
+                        value={filters.province || "__all__"}
+                        onValueChange={(value) => updateFilter("province", value === "__all__" ? undefined : value)}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="All provinces" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="__all__">All provinces</SelectItem>
+                          {locations?.provinces.map((province) => (
+                            <SelectItem key={province} value={province}>
+                              {province}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label>City</Label>
+                      <Select
+                        value={filters.city || "__all__"}
+                        onValueChange={(value) => updateFilter("city", value === "__all__" ? undefined : value)}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="All cities" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="__all__">All cities</SelectItem>
+                          {locations?.cities.map((city) => (
+                            <SelectItem key={city} value={city}>
+                              {city}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
-                  <div>
-                    <Label>City</Label>
-                    <Select
-                      value={filters.city || "__all__"}
-                      onValueChange={(value) => updateFilter("city", value === "__all__" ? undefined : value)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="All cities" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="__all__">All cities</SelectItem>
-                        {locations?.cities.map((city) => (
-                          <SelectItem key={city} value={city}>
-                            {city}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                </div>
+
+                {/* Age Filters */}
+                <div>
+                  <h3 className="font-semibold mb-3">Age Groups</h3>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Checkbox
+                        id="allAges"
+                        checked={filters.allAges || false}
+                        onCheckedChange={() => toggleFilter("allAges")}
+                      />
+                      <Label htmlFor="allAges" className="cursor-pointer">
+                        All Ages
+                      </Label>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Checkbox
+                        id="kids"
+                        checked={filters.kids || false}
+                        onCheckedChange={() => toggleFilter("kids")}
+                      />
+                      <Label htmlFor="kids" className="cursor-pointer">
+                        Kids (6-12)
+                      </Label>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Checkbox
+                        id="teens"
+                        checked={filters.teens || false}
+                        onCheckedChange={() => toggleFilter("teens")}
+                      />
+                      <Label htmlFor="teens" className="cursor-pointer">
+                        Teens
+                      </Label>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Checkbox
+                        id="adultsOnly"
+                        checked={filters.adultsOnly || false}
+                        onCheckedChange={() => toggleFilter("adultsOnly")}
+                      />
+                      <Label htmlFor="adultsOnly" className="cursor-pointer">
+                        Adults Only
+                      </Label>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Checkbox
+                        id="seniors"
+                        checked={filters.seniors || false}
+                        onCheckedChange={() => toggleFilter("seniors")}
+                      />
+                      <Label htmlFor="seniors" className="cursor-pointer">
+                        Seniors
+                      </Label>
+                    </div>
                   </div>
+                </div>
+
+                {/* Sort */}
+                <div>
+                  <h3 className="font-semibold mb-3">Sort By</h3>
+                  <Select
+                    value={filters.sortBy || "soonest"}
+                    onValueChange={(value: any) => updateFilter("sortBy", value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="soonest">Soonest</SelectItem>
+                      <SelectItem value="latest">Latest</SelectItem>
+                      <SelectItem value="name-az">Name (A-Z)</SelectItem>
+                      <SelectItem value="name-za">Name (Z-A)</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
 
-              {/* Age Filters */}
+              {/* Right Column - Accessibility Filters */}
               <div>
-                <h3 className="font-semibold mb-3">Age Groups</h3>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <Checkbox
-                      id="kids"
-                      checked={filters.kids || false}
-                      onCheckedChange={() => toggleFilter("kids")}
-                    />
-                    <Label htmlFor="kids" className="cursor-pointer">
-                      Kids (6-12)
-                    </Label>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Checkbox
-                      id="teens"
-                      checked={filters.teens || false}
-                      onCheckedChange={() => toggleFilter("teens")}
-                    />
-                    <Label htmlFor="teens" className="cursor-pointer">
-                      Teens
-                    </Label>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Checkbox
-                      id="seniors"
-                      checked={filters.seniors || false}
-                      onCheckedChange={() => toggleFilter("seniors")}
-                    />
-                    <Label htmlFor="seniors" className="cursor-pointer">
-                      Seniors
-                    </Label>
-                  </div>
-                </div>
-              </div>
+                <h3 className="font-semibold mb-3 flex items-center gap-2">
+                  <Accessibility className="w-5 h-5 text-primary" />
+                  Accessibility Features
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Filter by specific accessibility needs
+                </p>
+                
+                <Accordion type="multiple" className="w-full">
+                  {/* Caregiver & Infant */}
+                  <AccordionItem value="caregiver">
+                    <AccordionTrigger className="text-sm">
+                      <div className="flex items-center gap-2">
+                        <Baby className="w-4 h-4" />
+                        Caregiver & Infant
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="space-y-2 pl-6">
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id="changeTablesPresent"
+                            checked={filters.changeTablesPresent || false}
+                            onCheckedChange={() => toggleFilter("changeTablesPresent")}
+                          />
+                          <Label htmlFor="changeTablesPresent" className="cursor-pointer text-sm">
+                            Change tables
+                          </Label>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id="nursingFriendly"
+                            checked={filters.nursingFriendly || false}
+                            onCheckedChange={() => toggleFilter("nursingFriendly")}
+                          />
+                          <Label htmlFor="nursingFriendly" className="cursor-pointer text-sm">
+                            Nursing friendly
+                          </Label>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id="strollerSpace"
+                            checked={filters.strollerSpace || false}
+                            onCheckedChange={() => toggleFilter("strollerSpace")}
+                          />
+                          <Label htmlFor="strollerSpace" className="cursor-pointer text-sm">
+                            Stroller space
+                          </Label>
+                        </div>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
 
-              {/* Sort */}
-              <div>
-                <h3 className="font-semibold mb-3">Sort By</h3>
-                <Select
-                  value={filters.sortBy || "soonest"}
-                  onValueChange={(value: any) => updateFilter("sortBy", value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="soonest">Soonest</SelectItem>
-                    <SelectItem value="latest">Latest</SelectItem>
-                    <SelectItem value="name-az">Name (A-Z)</SelectItem>
-                    <SelectItem value="name-za">Name (Z-A)</SelectItem>
-                  </SelectContent>
-                </Select>
+                  {/* Mobility & Physical Access */}
+                  <AccordionItem value="mobility">
+                    <AccordionTrigger className="text-sm">
+                      <div className="flex items-center gap-2">
+                        <Accessibility className="w-4 h-4" />
+                        Mobility & Physical Access
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="space-y-2 pl-6">
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id="wheelchairEntrance"
+                            checked={filters.wheelchairEntrance || false}
+                            onCheckedChange={() => toggleFilter("wheelchairEntrance")}
+                          />
+                          <Label htmlFor="wheelchairEntrance" className="cursor-pointer text-sm">
+                            Wheelchair accessible
+                          </Label>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id="stepFreeEntry"
+                            checked={filters.stepFreeEntry || false}
+                            onCheckedChange={() => toggleFilter("stepFreeEntry")}
+                          />
+                          <Label htmlFor="stepFreeEntry" className="cursor-pointer text-sm">
+                            Step-free entry
+                          </Label>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id="accessibleWashrooms"
+                            checked={filters.accessibleWashrooms || false}
+                            onCheckedChange={() => toggleFilter("accessibleWashrooms")}
+                          />
+                          <Label htmlFor="accessibleWashrooms" className="cursor-pointer text-sm">
+                            Accessible washrooms
+                          </Label>
+                        </div>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  {/* Sensory & Neurodivergent */}
+                  <AccordionItem value="sensory">
+                    <AccordionTrigger className="text-sm">
+                      <div className="flex items-center gap-2">
+                        <Volume2 className="w-4 h-4" />
+                        Sensory & Neurodivergent
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="space-y-2 pl-6">
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id="sensoryFriendly"
+                            checked={filters.sensoryFriendly || false}
+                            onCheckedChange={() => toggleFilter("sensoryFriendly")}
+                          />
+                          <Label htmlFor="sensoryFriendly" className="cursor-pointer text-sm">
+                            Sensory-friendly
+                          </Label>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id="quietRoom"
+                            checked={filters.quietRoom || false}
+                            onCheckedChange={() => toggleFilter("quietRoom")}
+                          />
+                          <Label htmlFor="quietRoom" className="cursor-pointer text-sm">
+                            Quiet room available
+                          </Label>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id="quietEnvironment"
+                            checked={filters.quietEnvironment || false}
+                            onCheckedChange={() => toggleFilter("quietEnvironment")}
+                          />
+                          <Label htmlFor="quietEnvironment" className="cursor-pointer text-sm">
+                            Quiet environment
+                          </Label>
+                        </div>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  {/* Social & Emotional */}
+                  <AccordionItem value="social">
+                    <AccordionTrigger className="text-sm">
+                      <div className="flex items-center gap-2">
+                        <Heart className="w-4 h-4" />
+                        Social & Emotional
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="space-y-2 pl-6">
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id="genderNeutralWashrooms"
+                            checked={filters.genderNeutralWashrooms || false}
+                            onCheckedChange={() => toggleFilter("genderNeutralWashrooms")}
+                          />
+                          <Label htmlFor="genderNeutralWashrooms" className="cursor-pointer text-sm">
+                            Gender-neutral washrooms
+                          </Label>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id="lgbtqiaFriendly"
+                            checked={filters.lgbtqiaFriendly || false}
+                            onCheckedChange={() => toggleFilter("lgbtqiaFriendly")}
+                          />
+                          <Label htmlFor="lgbtqiaFriendly" className="cursor-pointer text-sm">
+                            LGBTQIA+ friendly
+                          </Label>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id="scentFree"
+                            checked={filters.scentFree || false}
+                            onCheckedChange={() => toggleFilter("scentFree")}
+                          />
+                          <Label htmlFor="scentFree" className="cursor-pointer text-sm">
+                            Scent-free
+                          </Label>
+                        </div>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
               </div>
             </div>
           </Card>
@@ -259,27 +496,37 @@ export default function BrowseEvents() {
                         <MapPin className="w-4 h-4" />
                         <span>{event.city}, {event.province}</span>
                       </div>
-                      {event.isFree ? (
+                      {!!event.isFree && (
                         <div className="flex items-center gap-2 text-accent">
                           <DollarSign className="w-4 h-4" />
                           <span className="font-medium">FREE</span>
                         </div>
-                      ) : null}
+                      )}
                     </div>
 
-                    <div className="flex flex-wrap gap-2">
-                      {event.familyFriendly ? (
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {!!event.familyFriendly && (
                         <Badge variant="secondary">
                           <Users className="w-3 h-3 mr-1" />
                           Family-Friendly
                         </Badge>
-                      ) : null}
-                      {event.youngChildren ? (
+                      )}
+                      {!!event.youngChildren && (
                         <Badge variant="outline">Ages 0-5</Badge>
-                      ) : null}
-                      {event.isIndoor ? <Badge variant="outline">Indoor</Badge> : null}
-                      {event.isOutdoor ? <Badge variant="outline">Outdoor</Badge> : null}
+                      )}
+                      {!!event.isIndoor && <Badge variant="outline">Indoor</Badge>}
+                      {!!event.isOutdoor && <Badge variant="outline">Outdoor</Badge>}
                     </div>
+
+                    {/* Accessibility Icons */}
+                    {hasAccessibilityInfo(event) && (
+                      <div className="flex items-center gap-2 pt-2 border-t">
+                        <Accessibility className="w-4 h-4 text-primary" />
+                        <span className="text-xs text-muted-foreground">
+                          Accessibility info available
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </Card>
               </Link>

@@ -54,6 +54,9 @@ export async function getEvents(filters: EventFilters = {}) {
   }
 
   // Age filters
+  if (filters.allAges) {
+    conditions.push(eq(events.allAges, 1));
+  }
   if (filters.familyFriendly) {
     conditions.push(eq(events.familyFriendly, 1));
   }
@@ -65,6 +68,9 @@ export async function getEvents(filters: EventFilters = {}) {
   }
   if (filters.teens) {
     conditions.push(eq(events.teens, 1));
+  }
+  if (filters.adultsOnly) {
+    conditions.push(eq(events.adultsOnly, 1));
   }
   if (filters.seniors) {
     conditions.push(eq(events.seniors, 1));
@@ -79,6 +85,24 @@ export async function getEvents(filters: EventFilters = {}) {
   }
 
   let query = db.select().from(events).where(and(...conditions)).$dynamic();
+
+  // Accessibility filters - filter in-memory since accessibility is JSON
+  const accessibilityFilters = {
+    changeTablesPresent: filters.changeTablesPresent,
+    nursingFriendly: filters.nursingFriendly,
+    strollerSpace: filters.strollerSpace,
+    wheelchairEntrance: filters.wheelchairEntrance,
+    stepFreeEntry: filters.stepFreeEntry,
+    accessibleWashrooms: filters.accessibleWashrooms,
+    sensoryFriendly: filters.sensoryFriendly,
+    quietRoom: filters.quietRoom,
+    quietEnvironment: filters.quietEnvironment,
+    genderNeutralWashrooms: filters.genderNeutralWashrooms,
+    lgbtqiaFriendly: filters.lgbtqiaFriendly,
+    scentFree: filters.scentFree,
+  };
+  
+  const hasAccessibilityFilters = Object.values(accessibilityFilters).some(v => v === true);
 
   // Sorting
   if (filters.sortBy === "soonest") {
@@ -102,7 +126,51 @@ export async function getEvents(filters: EventFilters = {}) {
     query = query.offset(filters.offset);
   }
 
-  return await query;
+  let results = await query;
+
+  // Apply accessibility filters in-memory (since accessibility is stored as JSON)
+  if (hasAccessibilityFilters) {
+    results = results.filter((event) => {
+      try {
+        const accessibility = typeof event.accessibility === 'string' 
+          ? JSON.parse(event.accessibility) 
+          : event.accessibility;
+        
+        // Check each active accessibility filter
+        for (const [key, value] of Object.entries(accessibilityFilters)) {
+          if (value === true) {
+            // Map filter keys to accessibility JSON structure
+            let found = false;
+            
+            // Caregiver fields
+            if (['changeTablesPresent', 'nursingFriendly', 'strollerSpace'].includes(key)) {
+              found = accessibility?.caregiver?.[key] === 'yes';
+            }
+            // Mobility fields
+            else if (['wheelchairEntrance', 'stepFreeEntry', 'accessibleWashrooms'].includes(key)) {
+              found = accessibility?.mobility?.[key] === 'yes';
+            }
+            // Sensory fields
+            else if (['sensoryFriendly', 'quietRoom', 'quietEnvironment'].includes(key)) {
+              found = accessibility?.sensory?.[key] === 'yes';
+            }
+            // Social fields
+            else if (['genderNeutralWashrooms', 'lgbtqiaFriendly', 'scentFree'].includes(key)) {
+              found = accessibility?.social?.[key] === 'yes';
+            }
+            
+            if (!found) return false;
+          }
+        }
+        
+        return true;
+      } catch {
+        return false;
+      }
+    });
+  }
+
+  return results;
 }
 
 /**

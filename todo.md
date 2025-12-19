@@ -78,3 +78,13 @@
 - [x] Create database seeding script with 8-10 sample events
 - [x] Add sorting functionality (Soonest, Latest, A-Z, Z-A) to Browse Events
 - [x] Fix zeros appearing around tags on event detail page
+
+## Accessibility & Age Range Audit (Based on Project Brief)
+- [x] Audit current accessibility fields against project brief requirements
+- [x] Add missing age range: "Adults only" 
+- [x] Add missing accessibility fields to database schema
+- [x] Update submission form with all 5 accessibility categories and "Not Relevant" option
+- [x] Add accessibility filters to Browse Events page
+- [x] Update event detail page to display all 40+ accessibility fields comprehensively
+- [x] Add cost filter options: donation-based, pay-what-you-can, sliding scale
+- [x] Add quick toggle filters to Browse Events: Family-friendly, Young children (0-5), Free, Indoor/Outdoor, Today

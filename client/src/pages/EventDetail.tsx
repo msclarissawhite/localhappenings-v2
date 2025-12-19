@@ -47,9 +47,22 @@ export default function EventDetail() {
 
   const renderAccessibilityValue = (value?: string) => {
     if (!value || value === "unknown") return <Badge variant="outline">Unknown</Badge>;
-    if (value === "yes") return <Badge variant="secondary">Yes</Badge>;
+    if (value === "yes") return <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">Yes</Badge>;
     if (value === "no") return <Badge variant="outline">No</Badge>;
-    return <Badge variant="outline">{value}</Badge>;
+    if (value === "not-relevant") return <Badge variant="outline" className="bg-gray-100 text-gray-600">Not Relevant</Badge>;
+    // For special values like terrain and crowd level
+    return <Badge variant="outline" className="capitalize">{value}</Badge>;
+  };
+
+  // Helper to render accessibility field row
+  const AccessibilityRow = ({ label, value }: { label: string; value?: string }) => {
+    if (!value) return null;
+    return (
+      <div className="flex justify-between items-center py-2 border-b last:border-0">
+        <span className="text-sm">{label}</span>
+        {renderAccessibilityValue(value)}
+      </div>
+    );
   };
 
   return (
@@ -72,6 +85,7 @@ export default function EventDetail() {
                 FREE
               </Badge>
             )}
+            {!!event.allAges && <Badge variant="outline" className="text-base px-3 py-1">All Ages</Badge>}
             {!!event.familyFriendly && (
               <Badge variant="outline" className="text-base px-3 py-1">
                 <Users className="w-4 h-4 mr-1" />
@@ -81,6 +95,7 @@ export default function EventDetail() {
             {!!event.youngChildren && <Badge variant="outline" className="text-base px-3 py-1">Ages 0-5</Badge>}
             {!!event.kids && <Badge variant="outline" className="text-base px-3 py-1">Ages 6-12</Badge>}
             {!!event.teens && <Badge variant="outline" className="text-base px-3 py-1">Teens</Badge>}
+            {!!event.adultsOnly && <Badge variant="outline" className="text-base px-3 py-1">Adults Only</Badge>}
             {!!event.seniors && <Badge variant="outline" className="text-base px-3 py-1">Seniors</Badge>}
           </div>
         </div>
@@ -98,12 +113,16 @@ export default function EventDetail() {
             <h2 className="text-xl font-semibold mb-4">When & Where</h2>
             <div className="space-y-3">
               <div className="flex items-start gap-3">
-                <Calendar className="w-5 h-5 text-primary mt-0.5" />
+                <Calendar className="w-5 h-5 mt-0.5 text-muted-foreground" />
                 <div>
-                  <p className="font-medium">Date & Time</p>
-                  <p className="text-muted-foreground">
-                    {format(new Date(event.startDate), "EEEE, MMMM d, yyyy 'at' h:mm a")}
+                  <p className="font-medium">
+                    {format(new Date(event.startDate), "EEEE, MMMM d, yyyy")}
                   </p>
+                  {event.endDate && (
+                    <p className="text-sm text-muted-foreground">
+                      Until {format(new Date(event.endDate), "MMMM d, yyyy")}
+                    </p>
+                  )}
                   {event.timeOfDay && (
                     <p className="text-sm text-muted-foreground capitalize">
                       {event.timeOfDay.replace("-", " ")}
@@ -113,29 +132,26 @@ export default function EventDetail() {
               </div>
 
               <div className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-primary mt-0.5" />
+                <MapPin className="w-5 h-5 mt-0.5 text-muted-foreground" />
                 <div>
-                  <p className="font-medium">Location</p>
-                  {event.venue && <p className="text-foreground">{event.venue}</p>}
-                  {event.address && <p className="text-muted-foreground">{event.address}</p>}
-                  <p className="text-muted-foreground">
+                  {event.venue && <p className="font-medium">{event.venue}</p>}
+                  {event.address && <p className="text-sm">{event.address}</p>}
+                  <p className="text-sm">
                     {event.neighborhood && `${event.neighborhood}, `}
                     {event.city}, {event.province}
                   </p>
                 </div>
               </div>
 
-              {(event.isIndoor || event.isOutdoor) && (
-                <div className="flex items-start gap-3">
-                  <Building className="w-5 h-5 text-primary mt-0.5" />
-                  <div>
-                    <p className="font-medium">Environment</p>
-                    <p className="text-muted-foreground">
-                      {[event.isIndoor && "Indoor", event.isOutdoor && "Outdoor"]
-                        .filter(Boolean)
-                        .join(" & ")}
-                    </p>
-                  </div>
+              {!!event.isIndoor && (
+                <div className="flex items-center gap-2">
+                  <Building className="w-5 h-5 text-muted-foreground" />
+                  <span className="text-sm">Indoor event</span>
+                </div>
+              )}
+              {!!event.isOutdoor && (
+                <div className="flex items-center gap-2">
+                  <span className="text-sm">Outdoor event</span>
                 </div>
               )}
             </div>
@@ -144,10 +160,10 @@ export default function EventDetail() {
           {/* Cost */}
           <Card className="p-6">
             <h2 className="text-xl font-semibold mb-4">Cost</h2>
-            <div className="flex items-start gap-3">
-              <DollarSign className="w-5 h-5 text-primary mt-0.5" />
-              <div>
-                {event.isFree ? (
+            <div className="space-y-2">
+              <div className="flex items-center gap-3">
+                <DollarSign className="w-5 h-5 text-muted-foreground" />
+                {!!event.isFree ? (
                   <p className="text-lg font-medium text-accent">FREE</p>
                 ) : (
                   <>
@@ -162,100 +178,225 @@ export default function EventDetail() {
                     )}
                   </>
                 )}
-                {!!event.kidsFree && <p className="text-sm text-muted-foreground">Kids attend free</p>}
-                {!!event.freeCompanion && (
-                  <p className="text-sm text-muted-foreground">Free companion/support worker ticket</p>
-                )}
               </div>
+              {event.costType && event.costType !== "fixed" && event.costType !== "range" && (
+                <p className="text-sm text-muted-foreground capitalize pl-8">
+                  {event.costType.replace("-", " ")}
+                </p>
+              )}
+              {!!event.kidsFree && <p className="text-sm text-muted-foreground pl-8">Kids attend free</p>}
+              {!!event.freeCompanion && (
+                <p className="text-sm text-muted-foreground pl-8">Free companion/support worker ticket</p>
+              )}
             </div>
           </Card>
 
-          {/* Accessibility & Logistics */}
+          {/* Accessibility & Logistics - COMPREHENSIVE */}
           {accessibility && (
             <Card className="p-6">
               <h2 className="text-xl font-semibold mb-4">Accessibility & Logistics</h2>
               <p className="text-sm text-muted-foreground mb-6">
-                Accessibility information helps families plan with confidence. "Unknown" means the organizer hasn't confirmed this detail yet.
+                Accessibility information helps families plan with confidence. "Unknown" means the organizer hasn't confirmed this detail yet. "Not Relevant" means this feature doesn't apply to this event.
               </p>
 
               <div className="space-y-6">
-                {/* Caregiver & Infant */}
+                {/* Caregiver & Infant - ALL 8 FIELDS */}
                 {accessibility.caregiver && Object.keys(accessibility.caregiver).length > 0 && (
                   <div>
-                    <h3 className="font-semibold mb-3">Caregiver & Infant</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                      {accessibility.caregiver.changeTablesPresent && (
-                        <div className="flex justify-between">
-                          <span>Change tables present</span>
-                          {renderAccessibilityValue(accessibility.caregiver.changeTablesPresent)}
-                        </div>
-                      )}
-                      {accessibility.caregiver.nursingFriendly && (
-                        <div className="flex justify-between">
-                          <span>Nursing/breastfeeding friendly</span>
-                          {renderAccessibilityValue(accessibility.caregiver.nursingFriendly)}
-                        </div>
-                      )}
-                      {accessibility.caregiver.strollerSpace && (
-                        <div className="flex justify-between">
-                          <span>Space for strollers</span>
-                          {renderAccessibilityValue(accessibility.caregiver.strollerSpace)}
-                        </div>
-                      )}
+                    <h3 className="font-semibold mb-3 text-lg">Caregiver & Infant</h3>
+                    <div className="space-y-1">
+                      <AccessibilityRow 
+                        label="Change tables present" 
+                        value={accessibility.caregiver.changeTablesPresent} 
+                      />
+                      <AccessibilityRow 
+                        label="Change tables in all washrooms" 
+                        value={accessibility.caregiver.changeTablesAllWashrooms} 
+                      />
+                      <AccessibilityRow 
+                        label="Nursing/breastfeeding friendly" 
+                        value={accessibility.caregiver.nursingFriendly} 
+                      />
+                      <AccessibilityRow 
+                        label="Private feeding area available" 
+                        value={accessibility.caregiver.privateFeedingArea} 
+                      />
+                      <AccessibilityRow 
+                        label="Bottle warming available" 
+                        value={accessibility.caregiver.bottleWarming} 
+                      />
+                      <AccessibilityRow 
+                        label="High chairs available" 
+                        value={accessibility.caregiver.highChairs} 
+                      />
+                      <AccessibilityRow 
+                        label="Space for strollers" 
+                        value={accessibility.caregiver.strollerSpace} 
+                      />
+                      <AccessibilityRow 
+                        label="Bag/coat storage" 
+                        value={accessibility.caregiver.storage} 
+                      />
                     </div>
                   </div>
                 )}
 
-                {/* Mobility */}
+                {/* Mobility & Physical Access - ALL 10 FIELDS */}
                 {accessibility.mobility && Object.keys(accessibility.mobility).length > 0 && (
                   <div>
-                    <h3 className="font-semibold mb-3">Mobility & Physical Access</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                      {accessibility.mobility.wheelchairEntrance && (
-                        <div className="flex justify-between">
-                          <span>Wheelchair accessible entrance</span>
-                          {renderAccessibilityValue(accessibility.mobility.wheelchairEntrance)}
-                        </div>
-                      )}
-                      {accessibility.mobility.stepFreeEntry && (
-                        <div className="flex justify-between">
-                          <span>Step-free entry</span>
-                          {renderAccessibilityValue(accessibility.mobility.stepFreeEntry)}
-                        </div>
-                      )}
-                      {accessibility.mobility.accessibleWashrooms && (
-                        <div className="flex justify-between">
-                          <span>Accessible washrooms</span>
-                          {renderAccessibilityValue(accessibility.mobility.accessibleWashrooms)}
-                        </div>
-                      )}
+                    <h3 className="font-semibold mb-3 text-lg">Mobility & Physical Access</h3>
+                    <div className="space-y-1">
+                      <AccessibilityRow 
+                        label="Stroller accessible" 
+                        value={accessibility.mobility.strollerAccessible} 
+                      />
+                      <AccessibilityRow 
+                        label="Wheelchair accessible entrance" 
+                        value={accessibility.mobility.wheelchairEntrance} 
+                      />
+                      <AccessibilityRow 
+                        label="Step-free entry" 
+                        value={accessibility.mobility.stepFreeEntry} 
+                      />
+                      <AccessibilityRow 
+                        label="Elevator access" 
+                        value={accessibility.mobility.elevatorAccess} 
+                      />
+                      <AccessibilityRow 
+                        label="Wide doorways (32 inches+ clear width)" 
+                        value={accessibility.mobility.wideDoorways} 
+                      />
+                      <AccessibilityRow 
+                        label="Accessible seating" 
+                        value={accessibility.mobility.accessibleSeating} 
+                      />
+                      <AccessibilityRow 
+                        label="Accessible washrooms" 
+                        value={accessibility.mobility.accessibleWashrooms} 
+                      />
+                      <AccessibilityRow 
+                        label="Accessible parking nearby" 
+                        value={accessibility.mobility.accessibleParking} 
+                      />
+                      <AccessibilityRow 
+                        label="Terrain type" 
+                        value={accessibility.mobility.terrainInfo} 
+                      />
+                      <AccessibilityRow 
+                        label="Parking distance to entrance" 
+                        value={accessibility.mobility.parkingDistance} 
+                      />
                     </div>
                   </div>
                 )}
 
-                {/* Sensory */}
+                {/* Sensory & Neurodivergent - ALL 8 FIELDS */}
                 {accessibility.sensory && Object.keys(accessibility.sensory).length > 0 && (
                   <div>
-                    <h3 className="font-semibold mb-3">Sensory & Neurodivergent</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                      {accessibility.sensory.loudNoises && (
-                        <div className="flex justify-between">
-                          <span>Loud noises expected</span>
-                          {renderAccessibilityValue(accessibility.sensory.loudNoises)}
-                        </div>
-                      )}
-                      {accessibility.sensory.flashingLights && (
-                        <div className="flex justify-between">
-                          <span>Flashing lights</span>
-                          {renderAccessibilityValue(accessibility.sensory.flashingLights)}
-                        </div>
-                      )}
-                      {accessibility.sensory.quietRoom && (
-                        <div className="flex justify-between">
-                          <span>Quiet room/break space</span>
-                          {renderAccessibilityValue(accessibility.sensory.quietRoom)}
-                        </div>
-                      )}
+                    <h3 className="font-semibold mb-3 text-lg">Sensory & Neurodivergent</h3>
+                    <div className="space-y-1">
+                      <AccessibilityRow 
+                        label="Sensory-friendly environment" 
+                        value={accessibility.sensory.sensoryFriendly} 
+                      />
+                      <AccessibilityRow 
+                        label="Quiet environment" 
+                        value={accessibility.sensory.quietEnvironment} 
+                      />
+                      <AccessibilityRow 
+                        label="Loud noises expected" 
+                        value={accessibility.sensory.loudNoises} 
+                      />
+                      <AccessibilityRow 
+                        label="Flashing lights" 
+                        value={accessibility.sensory.flashingLights} 
+                      />
+                      <AccessibilityRow 
+                        label="Crowd level" 
+                        value={accessibility.sensory.crowdLevel} 
+                      />
+                      <AccessibilityRow 
+                        label="Quiet room/break space available" 
+                        value={accessibility.sensory.quietRoom} 
+                      />
+                      <AccessibilityRow 
+                        label="Sensory-friendly time slot available" 
+                        value={accessibility.sensory.sensoryTimeSlot} 
+                      />
+                      <AccessibilityRow 
+                        label="Predictable schedule/routine" 
+                        value={accessibility.sensory.predictableSchedule} 
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* Cognitive & Communication - ALL 6 FIELDS */}
+                {accessibility.cognitive && Object.keys(accessibility.cognitive).length > 0 && (
+                  <div>
+                    <h3 className="font-semibold mb-3 text-lg">Cognitive & Communication</h3>
+                    <div className="space-y-1">
+                      <AccessibilityRow 
+                        label="Clear signage" 
+                        value={accessibility.cognitive.clearSignage} 
+                      />
+                      <AccessibilityRow 
+                        label="Simple instructions provided" 
+                        value={accessibility.cognitive.simpleInstructions} 
+                      />
+                      <AccessibilityRow 
+                        label="Written materials available" 
+                        value={accessibility.cognitive.writtenMaterials} 
+                      />
+                      <AccessibilityRow 
+                        label="ASL interpretation available" 
+                        value={accessibility.cognitive.aslInterpretation} 
+                      />
+                      <AccessibilityRow 
+                        label="Live captions/subtitles" 
+                        value={accessibility.cognitive.liveCaptions} 
+                      />
+                      <AccessibilityRow 
+                        label="Multilingual support" 
+                        value={accessibility.cognitive.multilingualSupport} 
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* Social & Emotional - ALL 7 FIELDS */}
+                {accessibility.social && Object.keys(accessibility.social).length > 0 && (
+                  <div>
+                    <h3 className="font-semibold mb-3 text-lg">Social & Emotional</h3>
+                    <div className="space-y-1">
+                      <AccessibilityRow 
+                        label="Gender-neutral washrooms" 
+                        value={accessibility.social.genderNeutralWashrooms} 
+                      />
+                      <AccessibilityRow 
+                        label="LGBTQIA+ friendly" 
+                        value={accessibility.social.lgbtqiaFriendly} 
+                      />
+                      <AccessibilityRow 
+                        label="Mask-friendly" 
+                        value={accessibility.social.maskFriendly} 
+                      />
+                      <AccessibilityRow 
+                        label="Scent-free environment" 
+                        value={accessibility.social.scentFree} 
+                      />
+                      <AccessibilityRow 
+                        label="Alcohol-free" 
+                        value={accessibility.social.alcoholFree} 
+                      />
+                      <AccessibilityRow 
+                        label="Substance-free" 
+                        value={accessibility.social.substanceFree} 
+                      />
+                      <AccessibilityRow 
+                        label="Trauma-informed approach" 
+                        value={accessibility.social.traumaInformed} 
+                      />
                     </div>
                   </div>
                 )}
@@ -279,7 +420,7 @@ export default function EventDetail() {
                   </div>
                 )}
                 {event.organizerEmail && (
-                  <div className="flex items-center gap-2 text-sm">
+                  <div className="flex items-center gap-2">
                     <Mail className="w-4 h-4 text-muted-foreground" />
                     <a href={`mailto:${event.organizerEmail}`} className="text-primary hover:underline">
                       {event.organizerEmail}
@@ -287,7 +428,7 @@ export default function EventDetail() {
                   </div>
                 )}
                 {event.organizerPhone && (
-                  <div className="flex items-center gap-2 text-sm">
+                  <div className="flex items-center gap-2">
                     <Phone className="w-4 h-4 text-muted-foreground" />
                     <a href={`tel:${event.organizerPhone}`} className="text-primary hover:underline">
                       {event.organizerPhone}
@@ -295,7 +436,7 @@ export default function EventDetail() {
                   </div>
                 )}
                 {event.organizerWebsite && (
-                  <div className="flex items-center gap-2 text-sm">
+                  <div className="flex items-center gap-2">
                     <Globe className="w-4 h-4 text-muted-foreground" />
                     <a
                       href={event.organizerWebsite}
@@ -314,8 +455,8 @@ export default function EventDetail() {
           {/* Additional Notes */}
           {event.notes && (
             <Card className="p-6">
-              <h2 className="text-xl font-semibold mb-3">Additional Notes</h2>
-              <p className="text-foreground leading-relaxed">{event.notes}</p>
+              <h2 className="text-xl font-semibold mb-3">Additional Information</h2>
+              <p className="text-foreground leading-relaxed whitespace-pre-wrap">{event.notes}</p>
             </Card>
           )}
         </div>

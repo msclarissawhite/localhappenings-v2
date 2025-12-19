@@ -30,21 +30,15 @@ const submitEventSchema = z.object({
   isFree: z.boolean(),
   costMin: z.number().optional(),
   costMax: z.number().optional(),
-  costType: z.enum(["fixed", "range", "donation", "pay-what-you-can", "sliding-scale"]).optional(),
-  kidsFree: z.boolean(),
-  freeCompanion: z.boolean(),
-  allAges: z.boolean(),
   familyFriendly: z.boolean(),
   youngChildren: z.boolean(),
   kids: z.boolean(),
   teens: z.boolean(),
-  adultsOnly: z.boolean(),
   seniors: z.boolean(),
   isIndoor: z.boolean(),
   isOutdoor: z.boolean(),
   organizerName: z.string().optional(),
   organizerEmail: z.string().optional(),
-  organizerWebsite: z.string().optional(),
   notes: z.string().optional(),
 });
 
@@ -70,14 +64,10 @@ export default function SubmitEvent() {
     resolver: zodResolver(submitEventSchema),
     defaultValues: {
       isFree: false,
-      kidsFree: false,
-      freeCompanion: false,
-      allAges: false,
       familyFriendly: false,
       youngChildren: false,
       kids: false,
       teens: false,
-      adultsOnly: false,
       seniors: false,
       isIndoor: false,
       isOutdoor: false,
@@ -85,7 +75,6 @@ export default function SubmitEvent() {
   });
 
   const isFree = watch("isFree");
-  const costType = watch("costType");
 
   const submitMutation = trpc.events.submit.useMutation({
     onSuccess: () => {
@@ -124,13 +113,11 @@ export default function SubmitEvent() {
     field,
     label,
     tooltip,
-    showNotRelevant = false,
   }: {
     category: string;
     field: string;
     label: string;
     tooltip: string;
-    showNotRelevant?: boolean;
   }) => (
     <div className="space-y-2">
       <div className="flex items-center gap-2">
@@ -150,7 +137,7 @@ export default function SubmitEvent() {
           updateAccessibility(category, field, value)
         }
       >
-        <div className="flex flex-wrap gap-4">
+        <div className="flex gap-4">
           <div className="flex items-center gap-2">
             <RadioGroupItem value="yes" id={`${category}-${field}-yes`} />
             <Label htmlFor={`${category}-${field}-yes`} className="cursor-pointer font-normal">
@@ -169,14 +156,6 @@ export default function SubmitEvent() {
               Unknown
             </Label>
           </div>
-          {showNotRelevant && (
-            <div className="flex items-center gap-2">
-              <RadioGroupItem value="not-relevant" id={`${category}-${field}-not-relevant`} />
-              <Label htmlFor={`${category}-${field}-not-relevant`} className="cursor-pointer font-normal">
-                Not Relevant
-              </Label>
-            </div>
-          )}
         </div>
       </RadioGroup>
     </div>
@@ -205,12 +184,7 @@ export default function SubmitEvent() {
 
               <div>
                 <Label htmlFor="description">Description *</Label>
-                <Textarea
-                  id="description"
-                  {...register("description")}
-                  rows={4}
-                  placeholder="Describe your event..."
-                />
+                <Textarea id="description" {...register("description")} rows={4} />
                 {errors.description && (
                   <p className="text-sm text-destructive mt-1">{errors.description.message}</p>
                 )}
@@ -218,7 +192,7 @@ export default function SubmitEvent() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="startDate">Start Date & Time *</Label>
+                  <Label htmlFor="startDate">Start Date *</Label>
                   <Input id="startDate" type="datetime-local" {...register("startDate")} />
                   {errors.startDate && (
                     <p className="text-sm text-destructive mt-1">{errors.startDate.message}</p>
@@ -296,90 +270,32 @@ export default function SubmitEvent() {
               </div>
 
               {!isFree && (
-                <>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="costType">Cost Type</Label>
-                    <Select onValueChange={(value: any) => setValue("costType", value)}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select cost type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="fixed">Fixed Price</SelectItem>
-                        <SelectItem value="range">Price Range</SelectItem>
-                        <SelectItem value="donation">Donation-Based</SelectItem>
-                        <SelectItem value="pay-what-you-can">Pay What You Can</SelectItem>
-                        <SelectItem value="sliding-scale">Sliding Scale</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Label htmlFor="costMin">Minimum Cost ($)</Label>
+                    <Input
+                      id="costMin"
+                      type="number"
+                      {...register("costMin", { valueAsNumber: true })}
+                    />
                   </div>
-
-                  {(costType === "fixed" || costType === "range" || !costType) && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="costMin">Minimum Cost ($)</Label>
-                        <Input
-                          id="costMin"
-                          type="number"
-                          step="0.01"
-                          {...register("costMin", { valueAsNumber: true })}
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="costMax">Maximum Cost ($)</Label>
-                        <Input
-                          id="costMax"
-                          type="number"
-                          step="0.01"
-                          {...register("costMax", { valueAsNumber: true })}
-                        />
-                      </div>
-                    </div>
-                  )}
-                </>
+                  <div>
+                    <Label htmlFor="costMax">Maximum Cost ($)</Label>
+                    <Input
+                      id="costMax"
+                      type="number"
+                      {...register("costMax", { valueAsNumber: true })}
+                    />
+                  </div>
+                </div>
               )}
-
-              <div className="space-y-3 pt-2">
-                <div className="flex items-center gap-2">
-                  <Checkbox
-                    id="kidsFree"
-                    {...register("kidsFree")}
-                    onCheckedChange={(checked) => setValue("kidsFree", !!checked)}
-                  />
-                  <Label htmlFor="kidsFree" className="cursor-pointer">
-                    Kids attend free
-                  </Label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Checkbox
-                    id="freeCompanion"
-                    {...register("freeCompanion")}
-                    onCheckedChange={(checked) => setValue("freeCompanion", !!checked)}
-                  />
-                  <Label htmlFor="freeCompanion" className="cursor-pointer">
-                    Free companion/support worker ticket
-                  </Label>
-                </div>
-              </div>
             </div>
           </Card>
 
           {/* Age Suitability */}
           <Card className="p-6">
             <h2 className="text-xl font-semibold mb-4">Who is this event for?</h2>
-            <p className="text-sm text-muted-foreground mb-4">
-              Select all age groups that would enjoy this event.
-            </p>
             <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  id="allAges"
-                  {...register("allAges")}
-                  onCheckedChange={(checked) => setValue("allAges", !!checked)}
-                />
-                <Label htmlFor="allAges" className="cursor-pointer">
-                  All Ages
-                </Label>
-              </div>
               <div className="flex items-center gap-2">
                 <Checkbox
                   id="familyFriendly"
@@ -418,16 +334,6 @@ export default function SubmitEvent() {
                 />
                 <Label htmlFor="teens" className="cursor-pointer">
                   Teens
-                </Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  id="adultsOnly"
-                  {...register("adultsOnly")}
-                  onCheckedChange={(checked) => setValue("adultsOnly", !!checked)}
-                />
-                <Label htmlFor="adultsOnly" className="cursor-pointer">
-                  Adults Only
                 </Label>
               </div>
               <div className="flex items-center gap-2">
@@ -475,14 +381,14 @@ export default function SubmitEvent() {
             <div className="mb-4">
               <h2 className="text-xl font-semibold mb-2">Accessibility Information *</h2>
               <p className="text-sm text-muted-foreground">
-                This section is required, but "Unknown" is always acceptable. Honest information helps families plan with confidence. Select "Not Relevant" for features that don't apply to your venue or event type.
+                This section is required, but "Unknown" is always acceptable. Honest information helps families plan with confidence.
               </p>
             </div>
 
             <div className="space-y-6">
               {/* Caregiver & Infant */}
               <div>
-                <h3 className="font-semibold mb-3 text-primary">Caregiver & Infant Accessibility</h3>
+                <h3 className="font-semibold mb-3">Caregiver & Infant Accessibility</h3>
                 <div className="space-y-4">
                   <AccessibilityField
                     category="caregiver"
@@ -492,37 +398,9 @@ export default function SubmitEvent() {
                   />
                   <AccessibilityField
                     category="caregiver"
-                    field="changeTablesAllWashrooms"
-                    label="Change tables in all washrooms"
-                    tooltip="Are changing tables available in all washroom facilities?"
-                    showNotRelevant
-                  />
-                  <AccessibilityField
-                    category="caregiver"
                     field="nursingFriendly"
                     label="Nursing/breastfeeding friendly"
                     tooltip="Is this a welcoming space for nursing or breastfeeding?"
-                  />
-                  <AccessibilityField
-                    category="caregiver"
-                    field="privateFeedingArea"
-                    label="Private feeding area"
-                    tooltip="Is there a private space available for feeding?"
-                    showNotRelevant
-                  />
-                  <AccessibilityField
-                    category="caregiver"
-                    field="bottleWarming"
-                    label="Bottle warming available"
-                    tooltip="Can bottles be warmed on-site?"
-                    showNotRelevant
-                  />
-                  <AccessibilityField
-                    category="caregiver"
-                    field="highChairs"
-                    label="High chairs available"
-                    tooltip="Are high chairs provided for young children?"
-                    showNotRelevant
                   />
                   <AccessibilityField
                     category="caregiver"
@@ -530,26 +408,13 @@ export default function SubmitEvent() {
                     label="Space for strollers"
                     tooltip="Is there adequate space to bring and maneuver a stroller?"
                   />
-                  <AccessibilityField
-                    category="caregiver"
-                    field="storage"
-                    label="Coat/stroller storage"
-                    tooltip="Is there a designated area to store coats, bags, or strollers?"
-                    showNotRelevant
-                  />
                 </div>
               </div>
 
-              {/* Mobility & Physical Access */}
+              {/* Mobility */}
               <div>
-                <h3 className="font-semibold mb-3 text-primary">Mobility & Physical Access</h3>
+                <h3 className="font-semibold mb-3">Mobility & Physical Access</h3>
                 <div className="space-y-4">
-                  <AccessibilityField
-                    category="mobility"
-                    field="strollerAccessible"
-                    label="Stroller accessible"
-                    tooltip="Can strollers navigate the space easily?"
-                  />
                   <AccessibilityField
                     category="mobility"
                     field="wheelchairEntrance"
@@ -564,69 +429,17 @@ export default function SubmitEvent() {
                   />
                   <AccessibilityField
                     category="mobility"
-                    field="elevatorAccess"
-                    label="Elevator access"
-                    tooltip="Is there elevator access to all event areas?"
-                    showNotRelevant
-                  />
-                  <AccessibilityField
-                    category="mobility"
-                    field="wideDoorways"
-                    label="Wide doorways"
-                    tooltip="Are doorways wide enough for wheelchairs and mobility devices?"
-                  />
-                  <AccessibilityField
-                    category="mobility"
-                    field="accessibleSeating"
-                    label="Accessible seating"
-                    tooltip="Is accessible seating available?"
-                    showNotRelevant
-                  />
-                  <AccessibilityField
-                    category="mobility"
                     field="accessibleWashrooms"
                     label="Accessible washrooms"
                     tooltip="Are there accessible washroom facilities available?"
                   />
-                  <AccessibilityField
-                    category="mobility"
-                    field="accessibleParking"
-                    label="Reserved accessible parking nearby"
-                    tooltip="Is accessible parking available close to the venue?"
-                  />
-                  <AccessibilityField
-                    category="mobility"
-                    field="terrainInfo"
-                    label="Terrain (flat/gravel/hills)"
-                    tooltip="What is the terrain like? Flat, gravel, hilly?"
-                    showNotRelevant
-                  />
-                  <AccessibilityField
-                    category="mobility"
-                    field="parkingDistance"
-                    label="Distance from parking (short/moderate/long)"
-                    tooltip="How far is parking from the event entrance?"
-                    showNotRelevant
-                  />
                 </div>
               </div>
 
-              {/* Sensory & Neurodivergent */}
+              {/* Sensory */}
               <div>
-                <h3 className="font-semibold mb-3 text-primary">Sensory & Neurodivergent Accessibility</h3>
+                <h3 className="font-semibold mb-3">Sensory & Neurodivergent Accessibility</h3>
                 <div className="space-y-4">
-                  <AccessibilityField
-                    category="sensory"
-                    field="sensoryFriendly"
-                    label="Sensory-friendly"
-                    tooltip="Is this event designed to be sensory-friendly?"
-                  />
-                  <AccessibilityField
-                    category="sensory"
-                    field="quietEnvironment"
-                    label="Quiet/low-stimulus environment"
-                    tooltip="Is the environment generally quiet and low-stimulus?"
-                  />
                   <AccessibilityField
                     category="sensory"
                     field="loudNoises"
@@ -641,125 +454,9 @@ export default function SubmitEvent() {
                   />
                   <AccessibilityField
                     category="sensory"
-                    field="crowdLevel"
-                    label="Crowd level (spacious/moderate/crowded)"
-                    tooltip="How crowded will the event be?"
-                  />
-                  <AccessibilityField
-                    category="sensory"
                     field="quietRoom"
                     label="Quiet room/break space available"
                     tooltip="Is there a designated quiet space for people who need a sensory break?"
-                    showNotRelevant
-                  />
-                  <AccessibilityField
-                    category="sensory"
-                    field="sensoryTimeSlot"
-                    label="Sensory-friendly time slot"
-                    tooltip="Is there a specific time slot designed for sensory-sensitive attendees?"
-                    showNotRelevant
-                  />
-                  <AccessibilityField
-                    category="sensory"
-                    field="predictableSchedule"
-                    label="Predictable schedule"
-                    tooltip="Does the event follow a predictable, structured schedule?"
-                  />
-                </div>
-              </div>
-
-              {/* Cognitive & Communication */}
-              <div>
-                <h3 className="font-semibold mb-3 text-primary">Cognitive & Communication Accessibility</h3>
-                <div className="space-y-4">
-                  <AccessibilityField
-                    category="cognitive"
-                    field="clearSignage"
-                    label="Clear signage"
-                    tooltip="Is signage clear, visible, and easy to understand?"
-                  />
-                  <AccessibilityField
-                    category="cognitive"
-                    field="simpleInstructions"
-                    label="Simple instructions"
-                    tooltip="Are instructions provided in simple, clear language?"
-                  />
-                  <AccessibilityField
-                    category="cognitive"
-                    field="writtenMaterials"
-                    label="Written materials available"
-                    tooltip="Are written materials (schedules, maps, etc.) available?"
-                    showNotRelevant
-                  />
-                  <AccessibilityField
-                    category="cognitive"
-                    field="aslInterpretation"
-                    label="ASL interpretation"
-                    tooltip="Is American Sign Language interpretation available?"
-                    showNotRelevant
-                  />
-                  <AccessibilityField
-                    category="cognitive"
-                    field="liveCaptions"
-                    label="Live captions"
-                    tooltip="Are live captions provided for spoken content?"
-                    showNotRelevant
-                  />
-                  <AccessibilityField
-                    category="cognitive"
-                    field="multilingualSupport"
-                    label="Multilingual support"
-                    tooltip="Is support available in multiple languages?"
-                    showNotRelevant
-                  />
-                </div>
-              </div>
-
-              {/* Social & Emotional */}
-              <div>
-                <h3 className="font-semibold mb-3 text-primary">Social & Emotional Accessibility</h3>
-                <div className="space-y-4">
-                  <AccessibilityField
-                    category="social"
-                    field="genderNeutralWashrooms"
-                    label="Gender-neutral washrooms"
-                    tooltip="Are gender-neutral washroom facilities available?"
-                  />
-                  <AccessibilityField
-                    category="social"
-                    field="lgbtqiaFriendly"
-                    label="LGBTQIA+ friendly"
-                    tooltip="Is this an explicitly LGBTQIA+ welcoming space?"
-                  />
-                  <AccessibilityField
-                    category="social"
-                    field="maskFriendly"
-                    label="Mask-friendly/mask-encouraged"
-                    tooltip="Are masks welcomed or encouraged?"
-                  />
-                  <AccessibilityField
-                    category="social"
-                    field="scentFree"
-                    label="Scent-free/low-scent environment"
-                    tooltip="Is this a scent-free or low-scent environment?"
-                  />
-                  <AccessibilityField
-                    category="social"
-                    field="alcoholFree"
-                    label="Alcohol-free"
-                    tooltip="Is this event alcohol-free?"
-                  />
-                  <AccessibilityField
-                    category="social"
-                    field="substanceFree"
-                    label="Substance-free"
-                    tooltip="Is this event substance-free?"
-                  />
-                  <AccessibilityField
-                    category="social"
-                    field="traumaInformed"
-                    label="Trauma-informed space"
-                    tooltip="Is this event designed with trauma-informed principles?"
                   />
                 </div>
               </div>
@@ -777,10 +474,6 @@ export default function SubmitEvent() {
               <div>
                 <Label htmlFor="organizerEmail">Contact Email</Label>
                 <Input id="organizerEmail" type="email" {...register("organizerEmail")} />
-              </div>
-              <div>
-                <Label htmlFor="organizerWebsite">Website</Label>
-                <Input id="organizerWebsite" type="url" {...register("organizerWebsite")} placeholder="https://" />
               </div>
             </div>
           </Card>
