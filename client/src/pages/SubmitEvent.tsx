@@ -260,60 +260,60 @@ export default function SubmitEvent() {
         <Card className="p-6 mb-8 bg-muted/30">
           <h2 className="text-xl font-semibold mb-4">Before You Submit</h2>
           <div className="space-y-4 text-sm">
-            <p>
+            <p style={{fontSize: '16px'}}>
               Local Happenings is a community-first space. Our goal is to help people discover events they can realistically attend — especially families, caregivers, and community members with different access needs.
             </p>
-            <p>
+            <p style={{fontSize: '16px'}}>
               All event submissions are reviewed by a real human before being published. To keep things useful, fair, and trustworthy for everyone, we follow a few simple guidelines.
             </p>
-            <p className="text-muted-foreground italic">
+            <p className="text-muted-foreground italic" style={{fontSize: '16px'}}>
               The examples below aren't exhaustive, and we may add more over time as the platform grows.
             </p>
             
             <div className="mt-6">
-              <h3 className="font-semibold mb-2">Our Guiding Principle</h3>
+              <h3 className="font-semibold mb-2" style={{fontSize: '18px', paddingTop: '20px'}}>Our Guiding Principle</h3>
               <ul className="list-disc list-inside space-y-1 ml-2">
-                <li>Be kind.</li>
-                <li>Be honest.</li>
-                <li>Share events you'd genuinely feel good inviting your community to attend.</li>
+                <li style={{fontSize: '16px'}}>Be kind.</li>
+                <li style={{fontSize: '16px'}}>Be honest.</li>
+                <li style={{fontSize: '16px'}}>Share events you'd genuinely feel good inviting your community to attend.</li>
               </ul>
-              <p className="mt-2">
+              <p className="mt-2" style={{fontSize: '16px'}}>
                 If you're unsure whether something fits, you're welcome to submit it — we're happy to take a look and follow up.
               </p>
             </div>
 
             <div className="mt-6">
-              <h3 className="font-semibold mb-2">What We're Looking For (Approval Guidelines)</h3>
-              <p className="mb-2">Your event is likely to be approved if:</p>
+              <h3 className="font-semibold mb-2" style={{fontSize: '18px', paddingTop: '20px'}}>What We're Looking For (Approval Guidelines)</h3>
+              <p className="mb-2" style={{fontSize: '16px'}}>Your event is likely to be approved if:</p>
               
               <div className="space-y-3 ml-2">
                 <div>
-                  <p className="font-medium">✅ Clear, Complete Event Details</p>
-                  <p className="text-muted-foreground">Please include: a clear event name and description, a valid location (at minimum: province and city), a start date (and end date, if applicable), and cost information (free, donation-based, or a price range).</p>
+                  <p className="font-medium" style={{fontSize: '16px', paddingTop: '20px'}}>✅ Clear, Complete Event Details</p>
+                  <p className="text-muted-foreground" style={{fontSize: '16px'}}>Please include: a clear event name and description, a valid location (at minimum: province and city), a start date (and end date, if applicable), and cost information (free, donation-based, or a price range).</p>
                 </div>
 
                 <div>
-                  <p className="font-medium">♿ Accessibility Information Is Thoughtfully Completed</p>
-                  <p className="text-muted-foreground">
+                  <p className="font-medium" style={{fontSize: '16px', paddingTop: '20px'}}>♿ Accessibility Information Is Thoughtfully Completed</p>
+                  <p className="text-muted-foreground" style={{fontSize: '16px', paddingTop: '10px'}}>
                     The accessibility section must be completed. It's okay to select "Unknown" for any field if you're truly not sure — the section can't be left blank. If you select "Unknown," we ask that you confirm and update that information as soon as possible.
                   </p>
-                  <p className="text-muted-foreground mt-1">
+                  <p className="text-muted-foreground mt-1" style={{fontSize: '16px', paddingTop: '10px'}}>
                     The "Unknown" option exists to support honesty — not to avoid sharing available information. Clear, accurate accessibility details help people decide whether they can attend safely and comfortably.
                   </p>
-                  <p className="text-muted-foreground mt-1 font-medium">
+                  <p className="text-muted-foreground mt-1 font-medium" style={{fontSize: '16px', paddingTop: '10px'}}>
                     Honesty and transparency are core values of Local Happenings. If accessibility information is intentionally withheld or misrepresented, we reserve the right to limit or remove an organizer's ability to submit future listings.
                   </p>
                 </div>
 
                 <div>
-                  <p className="font-medium">🤝 Community-Appropriate Content</p>
-                  <p className="text-muted-foreground">
+                  <p className="font-medium" style={{fontSize: '16px', paddingTop: '20px'}}>🤝 Community-Appropriate Content</p>
+                  <p className="text-muted-foreground" style={{fontSize: '16px', paddingTop: '10px'}}>
                     Events should be suitable for a community platform. No hate speech, discrimination, or harassment. No illegal activities. No misleading or harmful content.
                   </p>
-                  <p className="text-muted-foreground mt-1">
+                  <p className="text-muted-foreground mt-1" style={{fontSize: '16px', paddingTop: '10px'}}>
                     Events hosted by businesses are absolutely welcome, as long as they offer clear community value (for example: markets, workshops, classes, performances, or public gatherings).
                   </p>
-                  <p className="text-muted-foreground mt-1">
+                  <p className="text-muted-foreground mt-1" style={{fontSize: '16px', paddingTop: '10px'}}>
                     If you're looking to promote a business more directly, we'd love to chat about sponsoring the project —{" "}
                     <Link href="/contact" className="text-primary hover:underline font-medium">
                       you can reach out via our contact form
@@ -322,8 +322,8 @@ export default function SubmitEvent() {
                 </div>
 
                 <div>
-                  <p className="font-medium">📍 Reasonably Accurate Information</p>
-                  <p className="text-muted-foreground">
+                  <p className="font-medium" style={{fontSize: '16px', paddingTop: '20px'}}>📍 Reasonably Accurate Information</p>
+                  <p className="text-muted-foreground" style={{fontSize: '16px', paddingTop: '10px'}}>
                     Event dates and locations should be real and verifiable. If something appears unclear or incorrect, we may mark the submission as "Needs Info" and ask for clarification before publishing.
                   </p>
                 </div>
@@ -331,16 +331,16 @@ export default function SubmitEvent() {
             </div>
 
             <div className="mt-6">
-              <h3 className="font-semibold mb-2">When Submissions Aren't Approved (Rejection Guidelines)</h3>
-              <p className="mb-2">An event may be declined if it falls into one of the following categories:</p>
+              <h3 className="font-semibold mb-2" style={{fontSize: '18px', paddingTop: '20px'}}>When Submissions Aren't Approved (Rejection Guidelines)</h3>
+              <p className="mb-2" style={{fontSize: '16px'}}>An event may be declined if it falls into one of the following categories:</p>
               <ul className="list-disc list-inside space-y-1 ml-2 text-muted-foreground">
-                <li>Spam or automated submissions</li>
-                <li>Duplicate events (if the same event is already published)</li>
-                <li>Purely promotional advertisements with no community event component</li>
-                <li>Events promoting illegal activity, discrimination, or harm</li>
-                <li>Completely fabricated, misleading, or nonsensical information</li>
+                <li style={{fontSize: '16px'}}>Spam or automated submissions</li>
+                <li style={{fontSize: '16px'}}>Duplicate events (if the same event is already published)</li>
+                <li style={{fontSize: '16px'}}>Purely promotional advertisements with no community event component</li>
+                <li style={{fontSize: '16px'}}>Events promoting illegal activity, discrimination, or harm</li>
+                <li style={{fontSize: '16px'}}>Completely fabricated, misleading, or nonsensical information</li>
               </ul>
-              <p className="mt-2 text-muted-foreground">
+              <p className="mt-2 text-muted-foreground" style={{fontSize: '16px', paddingTop: '10px'}}>
                 If an event is rejected, we'll always include a clear note explaining why. This helps organizers understand what happened and improve future submissions.
               </p>
             </div>
