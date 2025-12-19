@@ -142,6 +142,7 @@ const submitEventSchema = z.object({
   organizerWebsite: z.string().url().optional().or(z.literal("")),
   notes: z.string().optional(),
   imageUrl: z.string().url().optional().or(z.literal("")),
+  organizerId: z.number().optional(),
 });
 
 // Admin-only procedure
@@ -200,6 +201,7 @@ export const eventsRouter = router({
       canReenter: input.canReenter ? 1 : 0,
       accessibility: JSON.stringify(input.accessibility),
       submittedBy: ctx.user?.id || null,
+      organizerId: input.organizerId || null,
       status: "pending" as const,
     };
 

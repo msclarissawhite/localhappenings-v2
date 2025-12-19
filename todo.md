@@ -144,3 +144,17 @@
 - [x] Add submission guidelines to submit event page
 - [x] Link to contact form from submission guidelines text
 - [x] Test contact form email delivery
+
+## Organizer Dashboard & Preview Mode
+- [x] Create organizer accounts table in database
+- [x] Create magic link tokens table for authentication
+- [x] Build magic link authentication system (send email, verify token)
+- [x] Create organizer login/signup page
+- [x] Add event preview mode to submission form
+- [x] Create organizer dashboard page showing all submitted events
+- [x] Display approval status (pending, approved, rejected, needs-info) for each event
+- [ ] Add edit functionality for published events
+- [ ] Implement re-approval workflow for edited events
+- [x] Link organizer ID to events on submission
+- [ ] Add "My Events" navigation for logged-in organizers
+- [x] Test complete organizer authentication and dashboard flow

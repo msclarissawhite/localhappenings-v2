@@ -12,6 +12,9 @@ import Archive from "./pages/Archive";
 import EventDetail from "./pages/EventDetail";
 import AdminDashboard from "./pages/AdminDashboard";
 import Contact from "./pages/Contact";
+import OrganizerLogin from "./pages/OrganizerLogin";
+import OrganizerVerify from "./pages/OrganizerVerify";
+import OrganizerDashboard from "./pages/OrganizerDashboard";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -29,6 +32,9 @@ function Router() {
           <Route path={"/analytics"} component={Analytics} />
       <Route path={"/archive"} component={Archive} />
       <Route path={"/contact"} component={Contact} />
+      <Route path="/organizer/login" component={OrganizerLogin} />
+      <Route path="/organizer/verify" component={OrganizerVerify} />
+      <Route path="/organizer/dashboard" component={OrganizerDashboard} />
       <Route path={"/404"} component={NotFound} />          <Route component={NotFound} />
         </Switch>
       </main>

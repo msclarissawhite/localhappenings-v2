@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -13,10 +13,11 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { useLocation, Link } from "wouter";
-import { Info } from "lucide-react";
+import { Info, Eye } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import type { AccessibilityValue } from "@shared/types";
 import { CANADIAN_PROVINCES, CANADIAN_CITIES } from "@shared/canadian-locations";
+import { EventPreview } from "@/components/EventPreview";
 
 const submitEventSchema = z.object({
   name: z.string().min(1, "Event name is required"),
@@ -76,6 +77,20 @@ export default function SubmitEvent() {
   const [imagePreview, setImagePreview] = useState<string>("");
   const [selectedProvince, setSelectedProvince] = useState<string>("");
   const [availableCities, setAvailableCities] = useState<string[]>([]);
+  const [showPreview, setShowPreview] = useState(false);
+  const [organizer, setOrganizer] = useState<{id: number; email: string; name: string | null} | null>(null);
+
+  // Check if organizer is logged in
+  useEffect(() => {
+    const storedOrganizer = localStorage.getItem("organizer");
+    if (storedOrganizer) {
+      try {
+        setOrganizer(JSON.parse(storedOrganizer));
+      } catch (error) {
+        console.error("Failed to parse organizer data", error);
+      }
+    }
+  }, []);
 
   const {
     register,
@@ -166,6 +181,7 @@ export default function SubmitEvent() {
       startDate: new Date(data.startDate),
       accessibility,
       imageUrl: imageUrl || undefined,
+      organizerId: organizer?.id || undefined,
     } as any);
   };
 
@@ -1098,11 +1114,33 @@ export default function SubmitEvent() {
             <Button type="submit" size="lg" disabled={submitMutation.isPending}>
               {submitMutation.isPending ? "Submitting..." : "Submit Event"}
             </Button>
+            <Button 
+              type="button" 
+              variant="secondary" 
+              size="lg" 
+              onClick={() => setShowPreview(!showPreview)}
+            >
+              <Eye className="w-4 h-4 mr-2" />
+              {showPreview ? "Hide Preview" : "Preview Event"}
+            </Button>
             <Button type="button" variant="outline" size="lg" onClick={() => navigate("/browse")}>
               Cancel
             </Button>
           </div>
         </form>
+
+        {/* Preview Section */}
+        {showPreview && (
+          <div className="mt-8">
+            <EventPreview 
+              data={{
+                ...watch(),
+                imageUrl: imagePreview || imageUrl,
+              }}
+              accessibility={accessibility}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

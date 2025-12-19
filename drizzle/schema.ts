@@ -80,6 +80,7 @@ export const events = mysqlTable("events", {
   accessibility: text("accessibility").notNull(), // JSON string
   
   // Organizer Info
+  organizerId: int("organizerId"), // Links to organizers table if submitted by logged-in organizer
   organizerName: varchar("organizerName", { length: 255 }),
   organizerType: mysqlEnum("organizerType", ["business", "nonprofit", "community", "municipality", "school-library", "other"]),
   organizerEmail: varchar("organizerEmail", { length: 320 }),
@@ -153,3 +154,36 @@ export const collectionToEvents = mysqlTable("collectionToEvents", {
   collectionId: int("collectionId").notNull(),
   eventId: int("eventId").notNull(),
 });
+
+/**
+ * Organizer accounts - Separate from admin users, uses magic link authentication
+ */
+export const organizers = mysqlTable("organizers", {
+  id: int("id").autoincrement().primaryKey(),
+  email: varchar("email", { length: 320 }).notNull().unique(),
+  name: varchar("name", { length: 255 }),
+  organizationName: varchar("organizationName", { length: 255 }),
+  phone: varchar("phone", { length: 50 }),
+  isVerified: int("isVerified").default(0).notNull(), // 0 = false, 1 = true
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  lastLoginAt: timestamp("lastLoginAt"),
+});
+
+export type Organizer = typeof organizers.$inferSelect;
+export type InsertOrganizer = typeof organizers.$inferInsert;
+
+/**
+ * Magic link tokens for organizer authentication
+ */
+export const magicLinkTokens = mysqlTable("magicLinkTokens", {
+  id: int("id").autoincrement().primaryKey(),
+  organizerId: int("organizerId").notNull(),
+  token: varchar("token", { length: 255 }).notNull().unique(),
+  expiresAt: timestamp("expiresAt").notNull(),
+  usedAt: timestamp("usedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type MagicLinkToken = typeof magicLinkTokens.$inferSelect;
+export type InsertMagicLinkToken = typeof magicLinkTokens.$inferInsert;
