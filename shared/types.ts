@@ -127,6 +127,9 @@ export interface EventFilters {
   // Sorting
   sortBy?: "soonest" | "latest" | "name-az" | "name-za";
   
+  // Archive
+  showArchived?: boolean;
+  
   // Pagination
   limit?: number;
   offset?: number;

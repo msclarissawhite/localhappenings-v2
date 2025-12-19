@@ -143,6 +143,13 @@ export default function BrowseEvents() {
           >
             Outdoor
           </Button>
+          <Button
+            variant={filters.showArchived ? "default" : "outline"}
+            size="sm"
+            onClick={() => toggleFilter("showArchived")}
+          >
+            Show Archived
+          </Button>
         </div>
 
         {/* Advanced Filters Toggle */}

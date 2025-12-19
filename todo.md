@@ -110,3 +110,10 @@
 - [x] Email notifications to submitters when event status changes (approved/rejected/needs clarification)
 - [x] Admin event editing capability in admin dashboard
 - [x] Analytics dashboard showing submission volume, approval rates, popular cities, event views
+
+## Event Archiving Feature
+- [x] Update event filtering logic to exclude past events by default
+- [x] Create Archive page to display past events
+- [x] Add toggle in Browse Events to show/hide archived events
+- [x] Add navigation link to Archive page
+- [x] Test archiving functionality

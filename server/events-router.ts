@@ -99,7 +99,7 @@ const eventFiltersSchema = z.object({
   scentFree: z.boolean().optional(),
   eventTypeIds: z.array(z.number()).optional(),
   sortBy: z.enum(["soonest", "latest", "name-az", "name-za"]).optional(),
-  limit: z.number().optional(),
+  showArchived: z.boolean().optional(),
   offset: z.number().optional(),
 });
 

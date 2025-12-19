@@ -26,6 +26,9 @@ export default function Header() {
             <Link href="/submit" className="text-foreground hover:text-primary font-medium transition-colors">
               Submit Event
             </Link>
+            <Link href="/archive" className="text-foreground hover:text-primary font-medium transition-colors">
+              Archive
+            </Link>
             {isAuthenticated && user?.role === "admin" && (
               <>
                 <Link href="/admin" className="text-foreground hover:text-primary font-medium transition-colors">
@@ -57,6 +60,9 @@ export default function Header() {
               </Link>
               <Link href="/submit" className="text-foreground hover:text-primary font-medium transition-colors py-2" onClick={() => setMobileMenuOpen(false)}>
                 Submit Event
+              </Link>
+              <Link href="/archive" className="text-foreground hover:text-primary font-medium transition-colors py-2" onClick={() => setMobileMenuOpen(false)}>
+                Archive
               </Link>
               {isAuthenticated && user?.role === "admin" && (
                 <>

@@ -12,6 +12,12 @@ export async function getEvents(filters: EventFilters = {}) {
 
   const conditions = [eq(events.status, "published")];
 
+  // By default, exclude past events (unless showArchived is true)
+  if (!filters.showArchived) {
+    const now = new Date();
+    conditions.push(gte(events.startDate, now));
+  }
+
   // Location filters
   if (filters.province) {
     conditions.push(eq(events.province, filters.province));
