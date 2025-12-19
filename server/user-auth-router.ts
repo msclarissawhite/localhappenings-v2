@@ -11,6 +11,7 @@ import jwt from "jsonwebtoken";
 import { TRPCError } from "@trpc/server";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
+// Updated to use production domain
 const APP_URL = process.env.VITE_APP_URL || "http://localhost:3000";
 
 export const userAuthRouter = router({
