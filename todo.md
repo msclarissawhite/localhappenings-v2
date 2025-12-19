@@ -117,3 +117,6 @@
 - [x] Add toggle in Browse Events to show/hide archived events
 - [x] Add navigation link to Archive page
 - [x] Test archiving functionality
+
+## Documentation Updates
+- [x] Update USER_MANUAL.md with all new features since initial creation
