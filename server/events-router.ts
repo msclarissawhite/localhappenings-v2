@@ -159,8 +159,8 @@ export const eventsRouter = router({
   }),
 
   // Get event by ID
-  getById: publicProcedure.input(z.number()).query(async ({ input }) => {
-    return await eventsDb.getEventById(input);
+  getById: publicProcedure.input(z.object({ id: z.number() })).query(async ({ input }) => {
+    return await eventsDb.getEventById(input.id);
   }),
 
   // Admin: Get analytics

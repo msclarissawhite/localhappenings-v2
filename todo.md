@@ -123,3 +123,4 @@
 
 ## Bug Fixes
 - [x] Fix analytics query DATE_FORMAT compatibility issue
+- [x] Fix event submission validation error (expected number, received object)
