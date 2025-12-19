@@ -48,8 +48,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-semibold mb-3">Accessibility First</h3>
               <p className="text-muted-foreground">
-                Detailed accessibility information for every event, so you can plan with confidence. 
-                "Unknown" is always an acceptable answer.
+                Detailed accessibility information for every event, so you can plan with confidence.
               </p>
             </Card>
 
@@ -59,7 +58,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-semibold mb-3">Family-Friendly</h3>
               <p className="text-muted-foreground">
-                Filter by age groups, from infants to seniors. Find events that work for your whole family.
+                Filter by age groups, from infants to seniors. Find events that work for you.
               </p>
             </Card>
 
@@ -70,6 +69,8 @@ export default function Home() {
               <h3 className="text-xl font-semibold mb-3">Local Focus</h3>
               <p className="text-muted-foreground">
                 Discover what's happening in your neighborhood, city, or across Nova Scotia.
+
+More provinces and territories coming soon
               </p>
             </Card>
           </div>
