@@ -346,5 +346,16 @@
 - [x] Create welcome email template for new organizers
 
 ## Checkpoint Publishing Issue
-- [ ] Fix "record not found" error when publishing checkpoint
-- [ ] Create valid checkpoint with all recent changes
+- [x] Fix "record not found" error when publishing checkpoint
+- [x] Create valid checkpoint with all recent changes
+
+## User Login Email Issue
+- [x] Debug why user login magic link emails aren't being sent
+- [x] Fix email delivery in user authentication flow (added error handling)
+- [x] Fix token extraction in UserVerify page
+- [ ] Test user login end-to-end
+
+## User Session Persistence Issue
+- [x] Debug why user session cookie isn't persisting after login (missing cookie-parser)
+- [x] Fix useUserAuth hook to properly detect logged-in state (added cookie-parser middleware)
+- [ ] Test complete login and bookmark workflow

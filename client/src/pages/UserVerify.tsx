@@ -30,8 +30,8 @@ export default function UserVerify() {
   });
 
   useEffect(() => {
-    // Extract token from URL
-    const params = new URLSearchParams(location.split("?")[1]);
+    // Extract token from URL query string
+    const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
 
     if (!token) {

@@ -51,11 +51,12 @@ export const userAuthRouter = router({
       const magicLink = `${APP_URL}/user/verify?token=${token}`;
 
       // Send magic link email
-      await resend.emails.send({
-        from: fromEmail,
-        to: email,
-        subject: "Sign in to Local Happenings",
-        html: `
+      try {
+        const result = await resend.emails.send({
+          from: fromEmail,
+          to: email,
+          subject: "Sign in to Local Happenings",
+          html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <h2 style="color: #2563eb;">Sign in to Local Happenings</h2>
             <p>Click the link below to sign in to your account:</p>
@@ -73,7 +74,16 @@ export const userAuthRouter = router({
             </p>
           </div>
         `,
-      });
+        });
+        
+        console.log("✅ User magic link email sent successfully:", { email, emailId: result.data?.id });
+      } catch (emailError) {
+        console.error("❌ Failed to send user magic link email:", emailError);
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to send magic link email. Please try again later.'
+        });
+      }
 
       return {
         success: true,
