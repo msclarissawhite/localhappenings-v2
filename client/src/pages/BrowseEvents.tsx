@@ -218,7 +218,9 @@ export default function BrowseEvents() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="soonest">Soonest</SelectItem>
+                    <SelectItem value="latest">Latest</SelectItem>
                     <SelectItem value="name-az">Name (A-Z)</SelectItem>
+                    <SelectItem value="name-za">Name (Z-A)</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

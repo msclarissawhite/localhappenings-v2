@@ -106,7 +106,7 @@ export interface EventFilters {
   eventTypeIds?: number[];
   
   // Sorting
-  sortBy?: "closest" | "soonest" | "name-az";
+  sortBy?: "soonest" | "latest" | "name-az" | "name-za";
   
   // Pagination
   limit?: number;

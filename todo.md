@@ -73,3 +73,7 @@
 ## Documentation
 - [x] Create user manual and testing guide
 - [x] Fix Select component empty string value error in BrowseEvents
+
+## Enhancements
+- [x] Create database seeding script with 8-10 sample events
+- [x] Add sorting functionality (Soonest, Latest, A-Z, Z-A) to Browse Events

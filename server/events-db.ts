@@ -83,11 +83,15 @@ export async function getEvents(filters: EventFilters = {}) {
   // Sorting
   if (filters.sortBy === "soonest") {
     query = query.orderBy(events.startDate);
+  } else if (filters.sortBy === "latest") {
+    query = query.orderBy(desc(events.startDate));
   } else if (filters.sortBy === "name-az") {
     query = query.orderBy(events.name);
+  } else if (filters.sortBy === "name-za") {
+    query = query.orderBy(desc(events.name));
   } else {
-    // Default: newest first
-    query = query.orderBy(desc(events.createdAt));
+    // Default: soonest first
+    query = query.orderBy(events.startDate);
   }
 
   // Pagination

@@ -81,7 +81,7 @@ const eventFiltersSchema = z.object({
   isIndoor: z.boolean().optional(),
   isOutdoor: z.boolean().optional(),
   eventTypeIds: z.array(z.number()).optional(),
-  sortBy: z.enum(["closest", "soonest", "name-az"]).optional(),
+  sortBy: z.enum(["soonest", "latest", "name-az", "name-za"]).optional(),
   limit: z.number().optional(),
   offset: z.number().optional(),
 });
