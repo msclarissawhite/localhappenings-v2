@@ -337,5 +337,5 @@
 - [x] Update Header to show user login/logout
 - [x] Update bookmark functionality to require user authentication
 - [ ] Test user login and event saving workflow
-- [ ] Create comprehensive organizer quickstart guide (PDF/web)
-- [ ] Include screenshots and step-by-step instructions in guide
+- [x] Create comprehensive organizer quickstart guide (PDF/web)
+- [x] Include screenshots and step-by-step instructions in guide
