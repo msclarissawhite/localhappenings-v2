@@ -93,4 +93,93 @@ export const organizerRouter = router({
       const events = await getOrganizerEvents(input.organizerId);
       return events;
     }),
+
+  /**
+   * Update event (organizer can edit their own events)
+   */
+  updateEvent: publicProcedure
+    .input(z.object({
+      eventId: z.number(),
+      organizerId: z.number(),
+      data: z.object({
+        name: z.string().optional(),
+        description: z.string().optional(),
+        province: z.string().optional(),
+        city: z.string().optional(),
+        neighborhood: z.string().optional(),
+        venue: z.string().optional(),
+        address: z.string().optional(),
+        startDate: z.string().optional(),
+        endDate: z.string().optional(),
+        isFree: z.boolean().optional(),
+        costType: z.string().optional(),
+        costMin: z.number().optional(),
+        costMax: z.number().optional(),
+        kidsFree: z.boolean().optional(),
+        freeCompanion: z.boolean().optional(),
+        allAges: z.boolean().optional(),
+        familyFriendly: z.boolean().optional(),
+        youngChildren: z.boolean().optional(),
+        kids: z.boolean().optional(),
+        teens: z.boolean().optional(),
+        adultsOnly: z.boolean().optional(),
+        seniors: z.boolean().optional(),
+        isIndoor: z.boolean().optional(),
+        isOutdoor: z.boolean().optional(),
+        accessibility: z.any().optional(),
+        organizerName: z.string().optional(),
+        organizerEmail: z.string().optional(),
+        organizerPhone: z.string().optional(),
+        notes: z.string().optional(),
+      }),
+    }))
+    .mutation(async ({ input }) => {
+      const { eventId, organizerId, data } = input;
+      
+      // Import eventsDb here to avoid circular dependency
+      const eventsDb = await import("./events-db");
+      
+      // Verify the event belongs to this organizer
+      const event = await eventsDb.getEventById(eventId);
+      if (!event || event.organizerId !== organizerId) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You can only edit your own events",
+        });
+      }
+      
+      // Prepare update data
+      const updateData: any = { ...data };
+      
+      // Convert booleans to integers for MySQL
+      const boolFields = [
+        "isFree", "kidsFree", "freeCompanion", "allAges",
+        "familyFriendly", "youngChildren", "kids", "teens", "adultsOnly",
+        "seniors", "isIndoor", "isOutdoor"
+      ];
+      
+      boolFields.forEach(field => {
+        if (field in updateData && typeof updateData[field] === "boolean") {
+          updateData[field] = updateData[field] ? 1 : 0;
+        }
+      });
+      
+      if (updateData.accessibility) {
+        updateData.accessibility = JSON.stringify(updateData.accessibility);
+      }
+      
+      // Reset status to pending for re-approval
+      updateData.status = "pending";
+      updateData.updatedAt = new Date();
+      
+      await eventsDb.updateEvent(eventId, updateData);
+      
+      // Notify owner of edit
+      await notifyOwner({
+        title: "Event Edited",
+        content: `Event "${event.name}" has been edited by organizer and is pending re-approval.`,
+      });
+      
+      return { success: true };
+    }),
 });

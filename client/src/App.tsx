@@ -15,6 +15,7 @@ import Contact from "./pages/Contact";
 import OrganizerLogin from "./pages/OrganizerLogin";
 import OrganizerVerify from "./pages/OrganizerVerify";
 import OrganizerDashboard from "./pages/OrganizerDashboard";
+import EditEvent from "./pages/EditEvent";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -35,6 +36,7 @@ function Router() {
       <Route path="/organizer/login" component={OrganizerLogin} />
       <Route path="/organizer/verify" component={OrganizerVerify} />
       <Route path="/organizer/dashboard" component={OrganizerDashboard} />
+      <Route path="/organizer/edit/:id" component={EditEvent} />
       <Route path={"/404"} component={NotFound} />          <Route component={NotFound} />
         </Switch>
       </main>

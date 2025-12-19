@@ -5,6 +5,16 @@ import type { Organizer, InsertOrganizer, MagicLinkToken, InsertMagicLinkToken }
 import { randomBytes } from "crypto";
 
 /**
+ * Find organizer by ID
+ */
+export async function getOrganizerById(id: number): Promise<Organizer | undefined> {
+  const db = await getDb();
+  if (!db) return undefined;
+  const [organizer] = await db.select().from(organizers).where(eq(organizers.id, id)).limit(1);
+  return organizer;
+}
+
+/**
  * Find organizer by email
  */
 export async function findOrganizerByEmail(email: string): Promise<Organizer | undefined> {

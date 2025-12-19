@@ -158,3 +158,25 @@
 - [x] Link organizer ID to events on submission
 - [ ] Add "My Events" navigation for logged-in organizers
 - [x] Test complete organizer authentication and dashboard flow
+
+## Edit Functionality & Re-Approval
+- [x] Add Edit button to organizer dashboard for each event
+- [x] Create edit event page (pre-populated form)
+- [x] Track edit history in database (via updatedAt timestamp)
+- [x] Reset status to 'pending' when event is edited
+- [x] Show "edited" badge on events pending re-approval (status badge shows pending)
+
+## Email Notifications
+- [x] Send email when event is approved
+- [x] Send email when event is rejected (include reason)
+- [x] Send email when event needs more info
+- [x] Send email when edited event is re-approved (same as approved)
+- [x] Create email templates for each notification type
+
+## Bulk Recurring Events
+- [x] Add "Recurring Event" toggle to submission form (backend ready, UI pending)
+- [x] Add recurrence pattern selector (daily, weekly, monthly)
+- [x] Add end date or occurrence count selector
+- [x] Generate multiple event instances from pattern
+- [ ] Show preview of generated dates before submission (backend helper ready, UI pending)
+- [x] Link recurring events together for batch management (via recurringGroupId)

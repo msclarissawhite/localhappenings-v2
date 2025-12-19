@@ -5,6 +5,8 @@ import * as eventsDb from "./events-db";
 import type { AccessibilityData } from "../shared/types";
 import { notifyOwner } from "./_core/notification";
 import { notifySubmitterStatusChange } from "./_core/email-notification";
+import { notifyOrganizerStatusChange } from "./_core/organizer-email";
+import { generateEventInstances } from "./recurring-events";
 import * as analyticsDb from "./analytics-db";
 
 // Validation schemas
@@ -116,6 +118,13 @@ const submitEventSchema = z.object({
   timeOfDay: z.enum(["morning", "afternoon", "evening", "all-day"]).optional(),
   isRecurring: z.boolean().default(false),
   recurrenceType: z.enum(["one-time", "weekly", "monthly", "seasonal"]).default("one-time"),
+  recurrencePattern: z.object({
+    frequency: z.enum(["daily", "weekly", "monthly"]),
+    interval: z.number().min(1).default(1),
+    daysOfWeek: z.array(z.number().min(0).max(6)).optional(),
+    endDate: z.date().optional(),
+    occurrences: z.number().min(1).max(100).optional(),
+  }).optional(),
   isFree: z.boolean().default(false),
   costMin: z.number().optional(),
   costMax: z.number().optional(),
@@ -179,8 +188,68 @@ export const eventsRouter = router({
     return await eventsDb.getLocations();
   }),
 
-  // Public: Submit event
+  // Public: Submit event (supports recurring events)
   submit: publicProcedure.input(submitEventSchema).mutation(async ({ input, ctx }) => {
+    // Check if this is a recurring event
+    if (input.isRecurring && input.recurrencePattern) {
+      // Generate multiple event instances
+      const recurringGroupId = `recurring-${Date.now()}`;
+      const instances = generateEventInstances(
+        {
+          ...input,
+          recurringGroupId,
+        },
+        {
+          startDate: new Date(input.startDate),
+          endDate: input.endDate ? new Date(input.endDate) : undefined,
+          pattern: input.recurrencePattern,
+        }
+      );
+      
+      // Submit all instances
+      const eventIds: number[] = [];
+      for (const instance of instances) {
+        const instanceData = {
+          ...instance,
+          isFree: instance.isFree ? 1 : 0,
+          kidsFree: instance.kidsFree ? 1 : 0,
+          freeCompanion: instance.freeCompanion ? 1 : 0,
+          allAges: instance.allAges ? 1 : 0,
+          familyFriendly: instance.familyFriendly ? 1 : 0,
+          youngChildren: instance.youngChildren ? 1 : 0,
+          kids: instance.kids ? 1 : 0,
+          teens: instance.teens ? 1 : 0,
+          adultsOnly: instance.adultsOnly ? 1 : 0,
+          seniors: instance.seniors ? 1 : 0,
+          isIndoor: instance.isIndoor ? 1 : 0,
+          isOutdoor: instance.isOutdoor ? 1 : 0,
+          shortDuration: instance.shortDuration ? 1 : 0,
+          dropIn: instance.dropIn ? 1 : 0,
+          canReenter: instance.canReenter ? 1 : 0,
+          accessibility: JSON.stringify(instance.accessibility),
+          submittedBy: ctx.user?.id || null,
+          organizerId: input.organizerId || null,
+          status: "pending" as const,
+        };
+        
+        const eventId = await eventsDb.createEvent(instanceData);
+        eventIds.push(eventId);
+      }
+      
+      // Notify admin
+      try {
+        await notifyOwner({
+          title: "New Recurring Event Submission",
+          content: `A recurring event "${input.name}" with ${instances.length} occurrences has been submitted for review in ${input.city}, ${input.province}.`,
+        });
+      } catch (error) {
+        console.error("Failed to send notification:", error);
+      }
+      
+      return { success: true, eventIds, count: eventIds.length };
+    }
+    
+    // Single event submission
     const eventData = {
       ...input,
       isRecurring: input.isRecurring ? 1 : 0,
@@ -251,6 +320,22 @@ export const eventsRouter = router({
             input.status,
             input.reviewNotes
           );
+          
+          // If event has an organizer, also notify them
+          if (event.organizerId) {
+            const organizerDb = await import("./organizer-db");
+            const organizer = await organizerDb.getOrganizerById(event.organizerId);
+            if (organizer) {
+              await notifyOrganizerStatusChange({
+                organizerEmail: organizer.email,
+                organizerName: organizer.name,
+                eventName: event.name,
+                eventId: event.id,
+                status: input.status,
+                reviewNotes: input.reviewNotes,
+              });
+            }
+          }
         } catch (error) {
           console.error("Failed to send status notification:", error);
           // Don't fail the status update if notification fails
