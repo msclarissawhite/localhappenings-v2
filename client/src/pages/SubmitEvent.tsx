@@ -29,6 +29,12 @@ const submitEventSchema = z.object({
   address: z.string().optional(),
   startDate: z.string().min(1, "Start date is required"),
   timeOfDay: z.enum(["morning", "afternoon", "evening", "all-day"]).optional(),
+  isRecurring: z.boolean().default(false),
+  recurrenceFrequency: z.enum(["daily", "weekly", "monthly"]).optional(),
+  recurrenceInterval: z.number().min(1).default(1).optional(),
+  recurrenceDaysOfWeek: z.array(z.number()).optional(),
+  recurrenceEndDate: z.string().optional(),
+  recurrenceOccurrences: z.number().min(1).max(100).optional(),
   isFree: z.boolean(),
   costMin: z.number().optional(),
   costMax: z.number().optional(),
@@ -113,6 +119,8 @@ export default function SubmitEvent() {
       seniors: false,
       isIndoor: false,
       isOutdoor: false,
+      isRecurring: false,
+      recurrenceInterval: 1,
     },
   });
 
@@ -176,12 +184,22 @@ export default function SubmitEvent() {
   };
 
   const onSubmit = (data: FormData) => {
+    // Build recurrence pattern if recurring event
+    const recurrencePattern = data.isRecurring && data.recurrenceFrequency ? {
+      frequency: data.recurrenceFrequency,
+      interval: data.recurrenceInterval || 1,
+      daysOfWeek: data.recurrenceDaysOfWeek,
+      endDate: data.recurrenceEndDate ? new Date(data.recurrenceEndDate) : undefined,
+      occurrences: data.recurrenceOccurrences,
+    } : undefined;
+
     submitMutation.mutate({
       ...data,
       startDate: new Date(data.startDate),
       accessibility,
       imageUrl: imageUrl || undefined,
       organizerId: organizer?.id || undefined,
+      recurrencePattern,
     } as any);
   };
 
@@ -438,6 +456,131 @@ export default function SubmitEvent() {
                   </Select>
                 </div>
               </div>
+
+              {/* Recurring Event Section */}
+              <div className="space-y-4 pt-4 border-t">
+                <div className="flex items-center gap-2">
+                  <Checkbox
+                    id="isRecurring"
+                    checked={watch("isRecurring") || false}
+                    onCheckedChange={(checked) => setValue("isRecurring", !!checked)}
+                  />
+                  <Label htmlFor="isRecurring" className="font-medium">
+                    This is a recurring event
+                  </Label>
+                </div>
+
+                {watch("isRecurring") && (
+                  <div className="space-y-4 pl-6 border-l-2 border-primary/20">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="recurrence-frequency">Frequency *</Label>
+                        <Select
+                          value={watch("recurrenceFrequency") || ""}
+                          onValueChange={(value: any) => setValue("recurrenceFrequency", value)}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select frequency" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="daily">Daily</SelectItem>
+                            <SelectItem value="weekly">Weekly</SelectItem>
+                            <SelectItem value="monthly">Monthly</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="recurrence-interval">Every</Label>
+                        <div className="flex items-center gap-2">
+                          <Input
+                            id="recurrence-interval"
+                            type="number"
+                            min="1"
+                            max="12"
+                            defaultValue="1"
+                            {...register("recurrenceInterval", { valueAsNumber: true })}
+                            className="w-20"
+                          />
+                          <span className="text-sm text-muted-foreground">
+                            {watch("recurrenceFrequency") === "daily" && "day(s)"}
+                            {watch("recurrenceFrequency") === "weekly" && "week(s)"}
+                            {watch("recurrenceFrequency") === "monthly" && "month(s)"}
+                            {!watch("recurrenceFrequency") && "period(s)"}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {watch("recurrenceFrequency") === "weekly" && (
+                      <div>
+                        <Label>Days of Week *</Label>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day, index) => (
+                            <label key={day} className="flex items-center gap-2 cursor-pointer">
+                              <Checkbox
+                                checked={(watch("recurrenceDaysOfWeek") || []).includes(index)}
+                                onCheckedChange={(checked) => {
+                                  const current = watch("recurrenceDaysOfWeek") || [];
+                                  if (checked) {
+                                    setValue("recurrenceDaysOfWeek", [...current, index]);
+                                  } else {
+                                    setValue(
+                                      "recurrenceDaysOfWeek",
+                                      current.filter((d: number) => d !== index)
+                                    );
+                                  }
+                                }}
+                              />
+                              <span className="text-sm">{day}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="recurrence-end-date">End Date</Label>
+                        <Input
+                          id="recurrence-end-date"
+                          type="date"
+                          {...register("recurrenceEndDate")}
+                        />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Leave blank to use occurrence count
+                        </p>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="recurrence-occurrences">Number of Occurrences</Label>
+                        <Input
+                          id="recurrence-occurrences"
+                          type="number"
+                          min="1"
+                          max="100"
+                          placeholder="e.g., 10"
+                          {...register("recurrenceOccurrences", { valueAsNumber: true })}
+                        />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Max 100 events per submission
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="bg-muted/30 p-4 rounded-lg">
+                      <p className="text-sm font-medium mb-2">📅 Preview</p>
+                      <p className="text-sm text-muted-foreground">
+                        {watch("recurrenceFrequency") && watch("startDate") ? (
+                          `This will create multiple events starting from ${new Date(watch("startDate")).toLocaleDateString()}`
+                        ) : (
+                          "Select frequency and start date to see preview"
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </Card>
 
@@ -546,7 +689,20 @@ export default function SubmitEvent() {
                     </Select>
                   </div>
 
-                  {(costType === "fixed" || costType === "range" || !costType) && (
+                  {costType === "fixed" && (
+                    <div>
+                      <Label htmlFor="costMin">Price ($)</Label>
+                      <Input
+                        id="costMin"
+                        type="number"
+                        step="0.01"
+                        {...register("costMin", { valueAsNumber: true })}
+                        required
+                      />
+                    </div>
+                  )}
+
+                  {costType === "range" && (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="costMin">Minimum Cost ($)</Label>
@@ -555,6 +711,7 @@ export default function SubmitEvent() {
                           type="number"
                           step="0.01"
                           {...register("costMin", { valueAsNumber: true })}
+                          required
                         />
                       </div>
                       <div>
@@ -564,6 +721,7 @@ export default function SubmitEvent() {
                           type="number"
                           step="0.01"
                           {...register("costMax", { valueAsNumber: true })}
+                          required
                         />
                       </div>
                     </div>

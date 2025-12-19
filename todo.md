@@ -180,3 +180,15 @@
 - [x] Generate multiple event instances from pattern
 - [ ] Show preview of generated dates before submission (backend helper ready, UI pending)
 - [x] Link recurring events together for batch management (via recurringGroupId)
+
+## Bug Fixes
+- [x] Fix fixed price event validation (shouldn't require min/max for fixed price)
+
+## Recurring Event UI
+- [x] Add recurring event toggle to submission form
+- [x] Add frequency selector (daily, weekly, monthly)
+- [x] Add interval input (every X days/weeks/months)
+- [x] Add days of week selector (for weekly events)
+- [x] Add end date or occurrence count selector
+- [x] Add preview of generated dates (basic preview shown)
+- [x] Show total number of events that will be created (shown in preview)
