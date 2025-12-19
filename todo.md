@@ -137,3 +137,10 @@
 - [x] Review badge system to ensure color never conveys meaning alone
 - [x] Verify focus states are visible and not color-only
 - [x] Ensure minimum font size 16px and line height ≥ 1.5
+
+## Contact Form Feature
+- [x] Create contact form page with email functionality
+- [x] Link contact form from footer "Connect" section
+- [x] Add submission guidelines to submit event page
+- [x] Link to contact form from submission guidelines text
+- [x] Test contact form email delivery

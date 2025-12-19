@@ -11,6 +11,7 @@ import Analytics from "./pages/Analytics";
 import Archive from "./pages/Archive";
 import EventDetail from "./pages/EventDetail";
 import AdminDashboard from "./pages/AdminDashboard";
+import Contact from "./pages/Contact";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -27,8 +28,8 @@ function Router() {
           <Route path="/admin" component={AdminDashboard} />
           <Route path={"/analytics"} component={Analytics} />
       <Route path={"/archive"} component={Archive} />
-      <Route path={"/404"} component={NotFound} />
-          <Route component={NotFound} />
+      <Route path={"/contact"} component={Contact} />
+      <Route path={"/404"} component={NotFound} />          <Route component={NotFound} />
         </Switch>
       </main>
       <Footer />

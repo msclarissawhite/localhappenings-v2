@@ -33,9 +33,12 @@ export default function Footer() {
           {/* Contact */}
           <div>
             <h3 className="font-semibold text-lg mb-3">Connect</h3>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-muted-foreground text-sm mb-3">
               Questions or feedback? We'd love to hear from you.
             </p>
+            <Link href="/contact" className="text-primary hover:underline text-sm font-medium">
+              Contact Us →
+            </Link>
           </div>
         </div>
 
