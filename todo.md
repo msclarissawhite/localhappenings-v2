@@ -127,3 +127,13 @@
 
 ## Current Bug Fixes
 - [x] Fix missing useState import in ShareButtons component
+
+## Visual Accessibility Improvements
+- [x] Audit current color palette against WCAG AA/AAA standards
+- [x] Update color system to use warm-neutral base with nature-inspired accents
+- [x] Ensure all text has proper contrast ratios (minimum WCAG AA)
+- [x] Replace pure white backgrounds with soft off-white
+- [x] Update status colors to be accessible and paired with icons
+- [x] Review badge system to ensure color never conveys meaning alone
+- [x] Verify focus states are visible and not color-only
+- [x] Ensure minimum font size 16px and line height ≥ 1.5

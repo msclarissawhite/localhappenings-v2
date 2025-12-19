@@ -121,9 +121,10 @@ export default function EventDetail() {
 
   const renderAccessibilityValue = (value?: string) => {
     if (!value || value === "unknown") return <Badge variant="outline">Unknown</Badge>;
-    if (value === "yes") return <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">Yes</Badge>;
+    // Use muted green for "yes" - accessible and calm
+    if (value === "yes") return <Badge variant="secondary" className="bg-emerald-50 text-emerald-800 border-emerald-200">Yes</Badge>;
     if (value === "no") return <Badge variant="outline">No</Badge>;
-    if (value === "not-relevant") return <Badge variant="outline" className="bg-gray-100 text-gray-600">Not Relevant</Badge>;
+    if (value === "not-relevant") return <Badge variant="outline" className="bg-gray-50 text-gray-700">Not Relevant</Badge>;
     // For special values like terrain and crowd level
     return <Badge variant="outline" className="capitalize">{value}</Badge>;
   };
