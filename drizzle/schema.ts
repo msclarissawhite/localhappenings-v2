@@ -221,3 +221,24 @@ export const savedLocations = mysqlTable("savedLocations", {
 
 export type SavedLocation = typeof savedLocations.$inferSelect;
 export type InsertSavedLocation = typeof savedLocations.$inferInsert;
+
+/**
+ * Saved events for users - Bookmarking system with email reminders
+ */
+export const savedEvents = mysqlTable("savedEvents", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  eventId: int("eventId").notNull(),
+  
+  // Email reminder preferences
+  reminderPreference: mysqlEnum("reminderPreference", ["none", "24h", "48h", "both"]).default("24h").notNull(),
+  
+  // Tracking
+  reminder24hSent: int("reminder24hSent").default(0).notNull(), // Boolean: has 24h reminder been sent?
+  reminder48hSent: int("reminder48hSent").default(0).notNull(), // Boolean: has 48h reminder been sent?
+  
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type SavedEvent = typeof savedEvents.$inferSelect;
+export type InsertSavedEvent = typeof savedEvents.$inferInsert;

@@ -276,3 +276,44 @@
 - [x] Add "Copy from Previous Event" button in organizer dashboard
 - [x] Implement event duplication functionality
 - [x] Test all three features end-to-end
+
+## Documentation Updates
+- [x] Update user manual with saved locations feature
+- [x] Update user manual with default location feature
+- [x] Update user manual with copy-from-previous-event feature
+
+## Priority Features Sprint
+
+### 1. Email Reminders for Saved Events
+- [x] Add saved_events table to database schema
+- [x] Create backend CRUD operations for bookmarking events
+- [x] Add email reminder preferences (24h, 48h, both, none)
+- [x] Implement scheduled job to send reminder emails
+- [x] Create "My Saved Events" page for users
+- [x] Add bookmark button to event detail pages
+- [x] Test reminder email delivery
+
+### 2. Feature Request Board with ClickUp Integration
+- [ ] Add feature_requests table to database schema
+- [ ] Create backend API for feature requests and upvotes
+- [ ] Set up ClickUp API integration
+- [ ] Implement two-way sync (create tasks, sync status, sync upvotes)
+- [ ] Build public feature request submission form
+- [ ] Create feature request board with upvoting UI
+- [ ] Add admin controls for status management
+- [ ] Test ClickUp integration end-to-end
+
+### 3. "Why This Matters" Tooltips
+- [ ] Create tooltip content for all accessibility fields
+- [ ] Add tooltip component to submission form
+- [ ] Test tooltip display and accessibility
+
+### 4. Organizer Quickstart Guide
+- [ ] Write quickstart guide content
+- [ ] Create PDF and web versions
+- [ ] Add download link to organizer dashboard
+
+### 5. Email Notification Management Documentation
+- [ ] Document how to edit email templates
+- [ ] Document how to configure email settings
+- [ ] Document how to test email delivery

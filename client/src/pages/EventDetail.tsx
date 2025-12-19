@@ -4,10 +4,141 @@ import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, MapPin, DollarSign, Users, Clock, Building, Mail, Phone, Globe, ArrowLeft, Share2, Link2, Check, ShieldCheck } from "lucide-react";
+import { Calendar, MapPin, DollarSign, Users, Clock, Building, Mail, Phone, Globe, ArrowLeft, Share2, Link2, Check, ShieldCheck, Bookmark, BookmarkCheck } from "lucide-react";
 import { format } from "date-fns";
 import { Link } from "wouter";
 import type { AccessibilityData } from "@shared/types";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
+// Bookmark Button Component
+function BookmarkButton({ eventId }: { eventId: number }) {
+  const { user } = useAuth();
+  const [showDialog, setShowDialog] = useState(false);
+  const [reminderPref, setReminderPref] = useState<"none" | "24h" | "48h" | "both">("24h");
+  const utils = trpc.useUtils();
+
+  const { data: isSaved } = trpc.savedEvents.isSaved.useQuery(
+    { eventId },
+    { enabled: !!user }
+  );
+
+  const saveMutation = trpc.savedEvents.save.useMutation({
+    onSuccess: () => {
+      utils.savedEvents.isSaved.invalidate({ eventId });
+      utils.savedEvents.list.invalidate();
+      setShowDialog(false);
+      toast.success("Event saved! You'll receive email reminders based on your preference.");
+    },
+  });
+
+  const unsaveMutation = trpc.savedEvents.unsave.useMutation({
+    onSuccess: () => {
+      utils.savedEvents.isSaved.invalidate({ eventId });
+      utils.savedEvents.list.invalidate();
+      toast.success("Event removed from your saved list.");
+    },
+  });
+
+  const handleClick = () => {
+    if (!user) {
+      toast.error("Please sign in to save events and receive reminders.");
+      return;
+    }
+
+    if (isSaved) {
+      unsaveMutation.mutate({ eventId });
+    } else {
+      setShowDialog(true);
+    }
+  };
+
+  const handleSave = () => {
+    saveMutation.mutate({ eventId, reminderPreference: reminderPref });
+  };
+
+  return (
+    <>
+      <Button
+        variant={isSaved ? "default" : "outline"}
+        size="sm"
+        onClick={handleClick}
+        disabled={saveMutation.isPending || unsaveMutation.isPending}
+        className="gap-2"
+      >
+        {isSaved ? (
+          <>
+            <BookmarkCheck className="h-4 w-4" />
+            Saved
+          </>
+        ) : (
+          <>
+            <Bookmark className="h-4 w-4" />
+            Save Event
+          </>
+        )}
+      </Button>
+
+      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Save Event & Set Reminder</DialogTitle>
+            <DialogDescription>
+              Choose when you'd like to receive email reminders for this event.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-4">
+            <RadioGroup value={reminderPref} onValueChange={(v) => setReminderPref(v as typeof reminderPref)}>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="24h" id="24h" />
+                <Label htmlFor="24h" className="font-normal cursor-pointer">
+                  24 hours before the event
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="48h" id="48h" />
+                <Label htmlFor="48h" className="font-normal cursor-pointer">
+                  48 hours (2 days) before the event
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="both" id="both" />
+                <Label htmlFor="both" className="font-normal cursor-pointer">
+                  Both 24 and 48 hours before
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="none" id="none" />
+                <Label htmlFor="none" className="font-normal cursor-pointer">
+                  No reminders (just save the event)
+                </Label>
+              </div>
+            </RadioGroup>
+          </div>
+
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" onClick={() => setShowDialog(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleSave} disabled={saveMutation.isPending}>
+              Save Event
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
 
 // Share Buttons Component
 function ShareButtons({ eventName, eventId }: { eventName: string; eventId: number }) {
@@ -166,7 +297,10 @@ export default function EventDetail() {
         <div className="mb-8">
           <div className="flex items-start justify-between gap-4 mb-4">
             <h1 className="text-3xl md:text-4xl font-bold flex-1">{event.name}</h1>
-            <ShareButtons eventName={event.name} eventId={event.id} />
+            <div className="flex items-center gap-2">
+              <BookmarkButton eventId={event.id} />
+              <ShareButtons eventName={event.name} eventId={event.id} />
+            </div>
           </div>
           <div className="flex flex-wrap gap-3">
             {!!event.isFree && (

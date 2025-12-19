@@ -1,6 +1,6 @@
 # Local Happenings - User Manual & Testing Guide
 
-**Version:** 2.0  
+**Version:** 3.0  
 **Last Updated:** December 19, 2025  
 **Author:** Manus AI
 
@@ -131,6 +131,54 @@ Each accessibility field includes a tooltip icon that explains what the question
 **Additional Notes** provides a free-form text area for any other important information such as weather dependency, registration requirements, or special instructions.
 
 After completing the form, clicking **Submit Event** sends the submission to the admin moderation queue. The submitter receives a confirmation message indicating that the event will be reviewed before publication.
+
+### Organizer Dashboard & Convenience Features
+
+Organizers who submit events frequently can use the **Organizer Dashboard** to streamline their workflow. The dashboard is accessed via magic link authentication sent to the organizer's email address.
+
+#### Accessing the Organizer Dashboard
+
+To access the organizer dashboard, navigate to the **Organizer Login** page from the footer or by visiting `/organizer/login`. Enter your email address and click **Send Magic Link**. You will receive an email with a secure login link that logs you in automatically when clicked. In development mode, the magic link is also displayed on the page for testing purposes.
+
+Once logged in, you will see the **Organizer Dashboard** with two tabs: **My Events** and **Saved Locations**.
+
+#### My Events Tab
+
+The **My Events** tab displays all events you have submitted, organized by status (Published, Pending, Needs Clarification, Rejected). Each event card shows the event name, date, location, status badge, and action buttons.
+
+**Copy from Previous Event**: Each event card includes a **Copy** button that duplicates the event with all details pre-filled except the date. This is perfect for recurring events or similar activities. When you click Copy, you are redirected to the Submit Event form with all fields auto-filled including location, cost, age groups, environment, accessibility information, and organizer details. Simply update the date and any other details that have changed, then submit.
+
+#### Saved Locations Tab
+
+The **Saved Locations** tab allows you to save frequently used venues with complete location and accessibility details. This eliminates the need to re-enter the same information for every event at the same venue.
+
+**Adding a Saved Location**: Click the **Add Location** button to open the saved location form. Fill in the location name (e.g., "Halifax Central Library"), province, municipality, neighborhood (optional), venue name (optional), address (optional), environment (Indoor/Outdoor checkboxes), and accessibility settings. The accessibility section includes all the same fields as the event submission form, allowing you to save venue-specific accessibility information. Click **Save Location** to add it to your saved locations.
+
+**Setting a Default Location**: Each saved location card displays a **Set as Default** button. Click this button to mark a location as your default venue. When you create a new event, the default location will be automatically selected in the "Quick Fill from Saved Location" dropdown, and all location and accessibility fields will be pre-filled. Only one location can be set as default at a time. The default location is indicated with a green **Default Location** badge.
+
+**Editing and Deleting Locations**: Each saved location card includes **Edit** and **Delete** buttons. Click Edit to modify any location details including accessibility settings. Click Delete to remove a location from your saved list. Deleting a saved location does not affect events that have already been submitted using that location.
+
+#### Using Saved Locations When Submitting Events
+
+When you navigate to the **Submit Event** page while logged in as an organizer, you will see a **Quick Fill from Saved Location** dropdown at the top of the Location section. This dropdown lists all your saved locations.
+
+**Auto-Fill with Default Location**: If you have set a default location, it will be automatically selected when the form loads, and all location and accessibility fields will be pre-filled with the saved details. You can still edit any field before submitting.
+
+**Select a Different Saved Location**: Click the dropdown to select any of your saved locations. When you select a location, the following fields are automatically filled: province, municipality, neighborhood, venue name, address, Indoor/Outdoor checkboxes, and all accessibility settings from the saved location. You can edit any of these fields after auto-fill if needed for a specific event.
+
+**Manual Entry**: If you select "None (enter manually)" from the dropdown, all location fields will be cleared and you can enter location details from scratch.
+
+These convenience features significantly reduce the time required to submit events, especially for organizers who host regular activities at the same venue or run similar events frequently.
+
+### Organizer Verification System
+
+Organizers can be marked as **verified** by administrators. Verified organizers enjoy streamlined event submission with automatic approval.
+
+**Verification Badge**: Events submitted by verified organizers display a green **Verified** badge with a shield icon next to the organizer name on event detail pages. This helps community members identify trusted, established organizers.
+
+**Auto-Approval**: When a verified organizer submits an event, it is automatically published without requiring admin review. This allows trusted organizers to post time-sensitive events immediately. Verified organizers can also edit their published events directly, and changes are applied immediately without re-entering the moderation queue.
+
+**Admin Verification Controls**: Administrators can view all organizers in the **Admin Dashboard** under the **Manage Organizers** tab. Each organizer card displays their email, total events submitted, and a toggle switch to mark them as verified or unverified. Admins should verify organizers who have demonstrated consistent, high-quality submissions and accurate accessibility information.
 
 ### Viewing Event Details
 
