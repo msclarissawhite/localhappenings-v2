@@ -5,6 +5,7 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
+import Analytics from "./pages/Analytics";
 import BrowseEvents from "./pages/BrowseEvents";
 import SubmitEvent from "./pages/SubmitEvent";
 import EventDetail from "./pages/EventDetail";
@@ -18,11 +19,12 @@ function Router() {
       <Header />
       <main className="flex-1">
         <Switch>
-          <Route path="/" component={Home} />
-          <Route path="/browse" component={BrowseEvents} />
+          <Route path={"/"} component={Home} />
+          <Route path={"/browse"} component={BrowseEvents} />
           <Route path="/submit" component={SubmitEvent} />
           <Route path="/event/:id" component={EventDetail} />
           <Route path="/admin" component={AdminDashboard} />
+          <Route path="/analytics" component={Analytics} />
           <Route path="/404" component={NotFound} />
           <Route component={NotFound} />
         </Switch>

@@ -27,9 +27,14 @@ export default function Header() {
               Submit Event
             </Link>
             {isAuthenticated && user?.role === "admin" && (
-              <Link href="/admin" className="text-foreground hover:text-primary font-medium transition-colors">
-                Admin
-              </Link>
+              <>
+                <Link href="/admin" className="text-foreground hover:text-primary font-medium transition-colors">
+                  Admin
+                </Link>
+                <Link href="/analytics" className="text-foreground hover:text-primary font-medium transition-colors">
+                  Analytics
+                </Link>
+              </>
             )}
           </nav>
 
@@ -54,9 +59,14 @@ export default function Header() {
                 Submit Event
               </Link>
               {isAuthenticated && user?.role === "admin" && (
-                <Link href="/admin" className="text-foreground hover:text-primary font-medium transition-colors py-2" onClick={() => setMobileMenuOpen(false)}>
-                  Admin
-                </Link>
+                <>
+                  <Link href="/admin" className="text-foreground hover:text-primary font-medium transition-colors py-2" onClick={() => setMobileMenuOpen(false)}>
+                    Admin
+                  </Link>
+                  <Link href="/analytics" className="text-foreground hover:text-primary font-medium transition-colors py-2" onClick={() => setMobileMenuOpen(false)}>
+                    Analytics
+                  </Link>
+                </>
               )}
             </div>
           </nav>

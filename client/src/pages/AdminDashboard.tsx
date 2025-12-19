@@ -18,12 +18,14 @@ import { toast } from "sonner";
 import { format } from "date-fns";
 import { Calendar, MapPin, CheckCircle, XCircle, AlertCircle } from "lucide-react";
 import type { Event } from "@shared/types";
+import { EventEditDialog } from "@/components/EventEditDialog";
 
 export default function AdminDashboard() {
   const { user, isAuthenticated } = useAuth();
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [reviewNotes, setReviewNotes] = useState("");
   const [showReviewDialog, setShowReviewDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
   const [reviewAction, setReviewAction] = useState<"published" | "rejected" | "needs-clarification">("published");
 
   const { data: pendingEvents, isLoading, refetch } = trpc.events.getPending.useQuery(undefined, {
@@ -121,16 +123,26 @@ export default function AdminDashboard() {
                     </div>
                   </div>
 
-                  <div className="flex flex-col gap-3 lg:w-48">
-                    <Button
-                      onClick={() => handleReview(event, "published")}
-                      className="w-full"
-                      variant="default"
-                    >
-                      <CheckCircle className="w-4 h-4 mr-2" />
-                      Approve
-                    </Button>
-                    <Button
+                       <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          setSelectedEvent(event);
+                          setShowEditDialog(true);
+                        }}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        size="sm"
+                        onClick={() => handleReview(event, "published")}
+                        className="flex-1"
+                      >
+                        <CheckCircle className="w-4 h-4 mr-2" />
+                        Approve
+                      </Button>
+                      <Button
                       onClick={() => handleReview(event, "needs-clarification")}
                       className="w-full"
                       variant="outline"
@@ -205,6 +217,16 @@ export default function AdminDashboard() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
+        <EventEditDialog
+          event={selectedEvent}
+          open={showEditDialog}
+          onOpenChange={setShowEditDialog}
+          onSuccess={() => {
+            setSelectedEvent(null);
+            refetch();
+          }}
+        />
       </div>
     </div>
   );

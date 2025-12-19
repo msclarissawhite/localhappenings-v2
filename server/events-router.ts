@@ -4,6 +4,8 @@ import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import * as eventsDb from "./events-db";
 import type { AccessibilityData } from "../shared/types";
 import { notifyOwner } from "./_core/notification";
+import { notifySubmitterStatusChange } from "./_core/email-notification";
+import * as analyticsDb from "./analytics-db";
 
 // Validation schemas
 const accessibilitySchema = z.object({
@@ -156,13 +158,14 @@ export const eventsRouter = router({
     return await eventsDb.getEvents(input);
   }),
 
-  // Public: Get single event
-  getById: publicProcedure.input(z.object({ id: z.number() })).query(async ({ input }) => {
-    const event = await eventsDb.getEventById(input.id);
-    if (!event) {
-      throw new TRPCError({ code: "NOT_FOUND", message: "Event not found" });
-    }
-    return event;
+  // Get event by ID
+  getById: publicProcedure.input(z.number()).query(async ({ input }) => {
+    return await eventsDb.getEventById(input);
+  }),
+
+  // Admin: Get analytics
+  analytics: adminProcedure.query(async () => {
+    return await analyticsDb.getAnalytics();
   }),
 
   // Public: Get event types
@@ -231,7 +234,27 @@ export const eventsRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
+      // Get event details before updating status
+      const event = await eventsDb.getEventById(input.eventId);
+      
       await eventsDb.updateEventStatus(input.eventId, input.status, ctx.user.id, input.reviewNotes);
+      
+      // Send notification to admin about status change (who can then contact submitter)
+      if (event) {
+        try {
+          await notifySubmitterStatusChange(
+            event.name,
+            event.organizerEmail,
+            event.organizerPhone,
+            input.status,
+            input.reviewNotes
+          );
+        } catch (error) {
+          console.error("Failed to send status notification:", error);
+          // Don't fail the status update if notification fails
+        }
+      }
+      
       return { success: true };
     }),
 
