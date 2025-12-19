@@ -1,0 +1,1 @@
+ALTER TABLE `savedLocations` ADD `isDefault` int DEFAULT 0 NOT NULL;

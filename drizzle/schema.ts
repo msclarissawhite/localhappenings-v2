@@ -212,6 +212,9 @@ export const savedLocations = mysqlTable("savedLocations", {
   isIndoor: int("isIndoor").default(0).notNull(),
   isOutdoor: int("isOutdoor").default(0).notNull(),
   
+  // Default location flag - only one location per organizer can be default
+  isDefault: int("isDefault").default(0).notNull(),
+  
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

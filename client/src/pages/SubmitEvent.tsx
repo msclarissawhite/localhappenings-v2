@@ -106,6 +106,13 @@ export default function SubmitEvent() {
     { enabled: !!organizer }
   );
 
+  // Load default location for organizer
+  const { data: defaultLocation } = trpc.savedLocations.getDefault.useQuery(
+    { organizerId: organizer?.id || 0 },
+    { enabled: !!organizer }
+  );
+
+  // Initialize form BEFORE useEffect hooks that use setValue
   const {
     register,
     handleSubmit,
@@ -134,6 +141,120 @@ export default function SubmitEvent() {
 
   const isFree = watch("isFree");
   const costType = watch("costType");
+
+  // Load copied event data if available
+  useEffect(() => {
+    const copyEventData = localStorage.getItem("copyEventData");
+    if (copyEventData) {
+      try {
+        const event = JSON.parse(copyEventData);
+        
+        // Fill all fields except date (user should set new date)
+        setValue("name", event.name);
+        setValue("description", event.description);
+        setValue("province", event.province);
+        setValue("municipality", event.municipality);
+        if (event.neighborhoodCommunity) setValue("neighborhoodCommunity", event.neighborhoodCommunity);
+        if (event.venue) setValue("venue", event.venue);
+        if (event.address) setValue("address", event.address);
+        
+        // Cost fields
+        setValue("isFree", event.isFree === 1);
+        if (event.costType) setValue("costType", event.costType);
+        if (event.fixedPrice) setValue("fixedPrice", event.fixedPrice);
+        if (event.minPrice) setValue("minPrice", event.minPrice);
+        if (event.maxPrice) setValue("maxPrice", event.maxPrice);
+        setValue("kidsFree", event.kidsFree === 1);
+        setValue("freeCompanion", event.freeCompanion === 1);
+        
+        // Age groups
+        setValue("allAges", event.allAges === 1);
+        setValue("familyFriendly", event.familyFriendly === 1);
+        setValue("youngChildren", event.youngChildren === 1);
+        setValue("kids", event.kids === 1);
+        setValue("teens", event.teens === 1);
+        setValue("adultsOnly", event.adultsOnly === 1);
+        setValue("seniors", event.seniors === 1);
+        
+        // Environment
+        setValue("isIndoor", event.isIndoor === 1);
+        setValue("isOutdoor", event.isOutdoor === 1);
+        
+        // Accessibility
+        if (event.accessibility) {
+          try {
+            const parsedAccessibility = typeof event.accessibility === "string"
+              ? JSON.parse(event.accessibility)
+              : event.accessibility;
+            setAccessibility(parsedAccessibility);
+            
+            Object.entries(parsedAccessibility).forEach(([category, fields]: [string, any]) => {
+              if (fields && typeof fields === 'object') {
+                Object.entries(fields).forEach(([field, value]) => {
+                  setValue(`accessibility.${category}.${field}` as any, value);
+                });
+              }
+            });
+          } catch (e) {
+            console.error("Failed to parse accessibility", e);
+          }
+        }
+        
+        // Notes
+        if (event.notes) setValue("notes", event.notes);
+        
+        // Update province/city state
+        setSelectedProvince(event.province);
+        const provinceCode = CANADIAN_PROVINCES.find(p => p.name === event.province)?.code || "";
+        setAvailableCities(CANADIAN_CITIES[provinceCode] || []);
+        
+        // Clear the stored data
+        localStorage.removeItem("copyEventData");
+        
+        toast.info("Event copied! Please set a new date and review all details before submitting.");
+      } catch (error) {
+        console.error("Failed to load copied event data", error);
+        localStorage.removeItem("copyEventData");
+      }
+    }
+  }, [setValue]);
+
+  // Auto-select default location when form loads
+  useEffect(() => {
+    if (defaultLocation && !selectedLocationId) {
+      setSelectedLocationId(defaultLocation.id);
+      // Auto-fill location fields
+      setValue("province", defaultLocation.province);
+      setValue("municipality", defaultLocation.municipality);
+      if (defaultLocation.neighborhoodCommunity) {
+        setValue("neighborhoodCommunity", defaultLocation.neighborhoodCommunity);
+      }
+      if (defaultLocation.venue) {
+        setValue("venue", defaultLocation.venue);
+      }
+      if (defaultLocation.address) {
+        setValue("address", defaultLocation.address);
+      }
+      setValue("isIndoor", defaultLocation.isIndoor === 1);
+      setValue("isOutdoor", defaultLocation.isOutdoor === 1);
+      
+      // Auto-fill accessibility fields
+      if (defaultLocation.accessibility) {
+        try {
+          const accessibility = JSON.parse(defaultLocation.accessibility);
+          Object.entries(accessibility).forEach(([category, fields]: [string, any]) => {
+            if (fields && typeof fields === 'object') {
+              Object.entries(fields).forEach(([field, value]) => {
+                setValue(`accessibility.${category}.${field}` as any, value);
+              });
+            }
+          });
+        } catch (error) {
+          console.error("Failed to parse accessibility data", error);
+        }
+      }
+    }
+  }, [defaultLocation, selectedLocationId, setValue]);
 
   const uploadImageMutation = trpc.upload.uploadImage.useMutation({
     onSuccess: (data) => {
@@ -631,6 +752,15 @@ export default function SubmitEvent() {
                             ? JSON.parse(location.accessibility)
                             : location.accessibility;
                           setAccessibility(parsedAccessibility);
+                          
+                          // Also set form values for accessibility
+                          Object.entries(parsedAccessibility).forEach(([category, fields]: [string, any]) => {
+                            if (fields && typeof fields === 'object') {
+                              Object.entries(fields).forEach(([field, value]) => {
+                                setValue(`accessibility.${category}.${field}` as any, value);
+                              });
+                            }
+                          });
                         } catch (e) {
                           console.error("Failed to parse accessibility", e);
                         }

@@ -127,6 +127,32 @@ export const savedLocationsRouter = router({
     }),
 
   /**
+   * Set a location as the default
+   */
+  setDefault: publicProcedure
+    .input(z.object({
+      id: z.number(),
+      organizerId: z.number(),
+    }))
+    .mutation(async ({ input }) => {
+      const { setDefaultLocation } = await import("./saved-locations-db");
+      await setDefaultLocation(input.id, input.organizerId);
+      return { success: true };
+    }),
+
+  /**
+   * Get the default location for an organizer
+   */
+  getDefault: publicProcedure
+    .input(z.object({
+      organizerId: z.number(),
+    }))
+    .query(async ({ input }) => {
+      const { getDefaultLocation } = await import("./saved-locations-db");
+      return await getDefaultLocation(input.organizerId);
+    }),
+
+  /**
    * Delete a saved location
    */
   delete: publicProcedure

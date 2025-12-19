@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { getDb } from "./db";
 import { savedLocations } from "../drizzle/schema";
 import type { SavedLocation, InsertSavedLocation } from "../drizzle/schema";
@@ -95,4 +95,52 @@ export async function deleteSavedLocation(id: number, organizerId: number): Prom
   }
   
   await db.delete(savedLocations).where(eq(savedLocations.id, id));
+}
+
+/**
+ * Set a location as the default for an organizer
+ * Clears any existing default first (only one default per organizer)
+ */
+export async function setDefaultLocation(id: number, organizerId: number): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error('Database not available');
+  
+  // Verify ownership
+  const existing = await getSavedLocationById(id, organizerId);
+  if (!existing) {
+    throw new Error('Saved location not found or access denied');
+  }
+  
+  // Clear any existing default for this organizer
+  await db
+    .update(savedLocations)
+    .set({ isDefault: 0 })
+    .where(eq(savedLocations.organizerId, organizerId));
+  
+  // Set the new default
+  await db
+    .update(savedLocations)
+    .set({ isDefault: 1, updatedAt: new Date() })
+    .where(eq(savedLocations.id, id));
+}
+
+/**
+ * Get the default location for an organizer
+ */
+export async function getDefaultLocation(organizerId: number): Promise<SavedLocation | null> {
+  const db = await getDb();
+  if (!db) return null;
+  
+  const [location] = await db
+    .select()
+    .from(savedLocations)
+    .where(
+      and(
+        eq(savedLocations.organizerId, organizerId),
+        eq(savedLocations.isDefault, 1)
+      )
+    )
+    .limit(1);
+  
+  return location || null;
 }

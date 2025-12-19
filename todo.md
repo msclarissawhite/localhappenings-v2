@@ -264,3 +264,15 @@
 - [x] Add location quick-select dropdown to event submission form
 - [x] Auto-fill form fields when saved location is selected
 - [x] Test saved locations workflow end-to-end
+
+## Organizer Convenience Features
+- [x] Add isDefault boolean field to saved_locations table
+- [x] Add accessibility fields to saved_locations schema (already exists)
+- [x] Push database migration for new fields
+- [x] Add "Set as Default" toggle in saved locations UI
+- [x] Add accessibility settings form in saved locations UI (already exists in SavedLocationForm)
+- [x] Auto-select default location when creating new events
+- [x] Auto-fill accessibility fields when selecting saved location
+- [x] Add "Copy from Previous Event" button in organizer dashboard
+- [x] Implement event duplication functionality
+- [x] Test all three features end-to-end

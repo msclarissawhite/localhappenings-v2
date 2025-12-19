@@ -4,7 +4,7 @@ import { trpc } from "@/lib/trpc";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, MapPin, Clock, Edit, Eye, LogOut, MapPinned, Plus, Trash2 } from "lucide-react";
+import { Calendar, MapPin, Clock, Edit, Eye, LogOut, MapPinned, Plus, Trash2, Copy } from "lucide-react";
 import { toast } from "sonner";
 
 interface Organizer {
@@ -43,6 +43,16 @@ export default function OrganizerDashboard() {
     { organizerId: organizer?.id || 0 },
     { enabled: !!organizer && activeTab === "locations" }
   );
+
+  const setDefaultMutation = trpc.savedLocations.setDefault.useMutation({
+    onSuccess: () => {
+      toast.success("Default location updated");
+      refetchLocations();
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to set default location");
+    },
+  });
 
   const deleteLocationMutation = trpc.savedLocations.delete.useMutation({
     onSuccess: () => {
@@ -185,6 +195,19 @@ export default function OrganizerDashboard() {
                   </div>
 
                   <div className="flex gap-2 ml-4">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        // Store event data for copying
+                        localStorage.setItem("copyEventData", JSON.stringify(event));
+                        navigate("/submit");
+                        toast.success(`Copying "${event.name}" - update the date and submit`);
+                      }}
+                    >
+                      <Copy className="w-4 h-4 mr-1" />
+                      Copy
+                    </Button>
                     {event.status === "published" && (
                       <Button
                         variant="outline"
@@ -268,6 +291,9 @@ export default function OrganizerDashboard() {
                         </div>
                         
                         <div className="flex gap-2 mt-3">
+                          {location.isDefault === 1 && (
+                            <Badge variant="default" className="bg-green-600">Default Location</Badge>
+                          )}
                           {location.isIndoor === 1 && (
                             <Badge variant="secondary">Indoor</Badge>
                           )}
@@ -278,6 +304,21 @@ export default function OrganizerDashboard() {
                       </div>
                       
                       <div className="flex gap-2 ml-4">
+                        {location.isDefault !== 1 && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              setDefaultMutation.mutate({
+                                id: location.id,
+                                organizerId: organizer!.id,
+                              });
+                            }}
+                            disabled={setDefaultMutation.isPending}
+                          >
+                            Set as Default
+                          </Button>
+                        )}
                         <Button
                           variant="outline"
                           size="sm"
