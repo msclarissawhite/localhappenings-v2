@@ -9,6 +9,7 @@ import { format } from "date-fns";
 import { Link } from "wouter";
 import type { AccessibilityData } from "@shared/types";
 import { useAuth } from "@/_core/hooks/useAuth";
+import { useUserAuth } from "@/hooks/useUserAuth";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -22,7 +23,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 // Bookmark Button Component
 function BookmarkButton({ eventId }: { eventId: number }) {
-  const { user } = useAuth();
+  const { user, isAuthenticated, getLoginUrl } = useUserAuth();
   const [showDialog, setShowDialog] = useState(false);
   const [reminderPref, setReminderPref] = useState<"none" | "24h" | "48h" | "both">("24h");
   const utils = trpc.useUtils();
@@ -50,8 +51,9 @@ function BookmarkButton({ eventId }: { eventId: number }) {
   });
 
   const handleClick = () => {
-    if (!user) {
-      toast.error("Please sign in to save events and receive reminders.");
+    if (!isAuthenticated) {
+      toast.error("Please sign in to save events and receive reminders");
+      window.location.href = getLoginUrl();
       return;
     }
 

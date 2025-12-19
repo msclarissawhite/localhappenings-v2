@@ -330,3 +330,12 @@
 - [x] Create tooltip content for all accessibility fields
 - [x] Implement "Why This Matters" tooltips in submission form
 - [x] Test all three features end-to-end
+
+## User Authentication & Quickstart Guide
+- [x] Add user authentication system with magic links
+- [x] Create user login page
+- [x] Update Header to show user login/logout
+- [x] Update bookmark functionality to require user authentication
+- [ ] Test user login and event saving workflow
+- [ ] Create comprehensive organizer quickstart guide (PDF/web)
+- [ ] Include screenshots and step-by-step instructions in guide
