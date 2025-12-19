@@ -88,3 +88,12 @@
 - [x] Update event detail page to display all 40+ accessibility fields comprehensively
 - [x] Add cost filter options: donation-based, pay-what-you-can, sliding scale
 - [x] Add quick toggle filters to Browse Events: Family-friendly, Young children (0-5), Free, Indoor/Outdoor, Today
+
+## New Feature Requests
+- [x] Fix terrain field to use dropdown (Flat, Gravel, Hills, Paved, Unpaved, Mixed, Unknown, Not Relevant)
+- [x] Fix parking distance field to use dropdown (Short <2min, Moderate 2-5min, Long 5+min, Unknown, Not Relevant)
+- [x] Add S3 image upload to event submission form
+- [x] Display uploaded images on event cards and detail pages
+- [x] Add province/territory dropdown with Canadian provinces
+- [x] Add city dropdown (populated based on selected province)
+- [x] Add "Open in Google Maps" link to event detail pages

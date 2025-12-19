@@ -16,6 +16,7 @@ import { useLocation } from "wouter";
 import { Info } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import type { AccessibilityValue } from "@shared/types";
+import { CANADIAN_PROVINCES, CANADIAN_CITIES } from "@shared/canadian-locations";
 
 const submitEventSchema = z.object({
   name: z.string().min(1, "Event name is required"),
@@ -59,6 +60,11 @@ export default function SubmitEvent() {
     cognitive: {},
     social: {},
   });
+  const [imageUrl, setImageUrl] = useState<string>("");
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string>("");
+  const [selectedProvince, setSelectedProvince] = useState<string>("");
+  const [availableCities, setAvailableCities] = useState<string[]>([]);
 
   const {
     register,
@@ -87,6 +93,18 @@ export default function SubmitEvent() {
   const isFree = watch("isFree");
   const costType = watch("costType");
 
+  const uploadImageMutation = trpc.upload.uploadImage.useMutation({
+    onSuccess: (data) => {
+      setImageUrl(data.url);
+      setUploadingImage(false);
+      toast.success("Image uploaded successfully!");
+    },
+    onError: (error) => {
+      setUploadingImage(false);
+      toast.error(error.message || "Failed to upload image");
+    },
+  });
+
   const submitMutation = trpc.events.submit.useMutation({
     onSuccess: () => {
       toast.success("Event submitted successfully! It will be reviewed by our team.");
@@ -97,11 +115,46 @@ export default function SubmitEvent() {
     },
   });
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image must be smaller than 5MB");
+      return;
+    }
+
+    // Validate file type
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please upload an image file");
+      return;
+    }
+
+    setUploadingImage(true);
+
+    // Create preview
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result as string;
+      setImagePreview(base64String);
+
+      // Upload to S3
+      uploadImageMutation.mutate({
+        imageData: base64String,
+        fileName: file.name,
+        mimeType: file.type,
+      });
+    };
+    reader.readAsDataURL(file);
+  };
+
   const onSubmit = (data: FormData) => {
     submitMutation.mutate({
       ...data,
       startDate: new Date(data.startDate),
       accessibility,
+      imageUrl: imageUrl || undefined,
     } as any);
   };
 
@@ -216,6 +269,33 @@ export default function SubmitEvent() {
                 )}
               </div>
 
+              {/* Image Upload */}
+              <div>
+                <Label htmlFor="eventImage">Event Image (Optional)</Label>
+                <p className="text-sm text-muted-foreground mb-2">
+                  Upload a photo to make your event stand out (max 5MB)
+                </p>
+                <Input
+                  id="eventImage"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  disabled={uploadingImage}
+                />
+                {uploadingImage && (
+                  <p className="text-sm text-muted-foreground mt-2">Uploading image...</p>
+                )}
+                {imagePreview && (
+                  <div className="mt-4">
+                    <img
+                      src={imagePreview}
+                      alt="Event preview"
+                      className="max-w-md rounded-lg border"
+                    />
+                  </div>
+                )}
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="startDate">Start Date & Time *</Label>
@@ -249,16 +329,51 @@ export default function SubmitEvent() {
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="province">Province *</Label>
-                  <Input id="province" {...register("province")} placeholder="e.g., Nova Scotia" />
+                  <Label htmlFor="province">Province/Territory *</Label>
+                  <Select
+                    value={selectedProvince}
+                    onValueChange={(value) => {
+                      setSelectedProvince(value);
+                      const provinceCode = CANADIAN_PROVINCES.find(p => p.name === value)?.code || "";
+                      setAvailableCities(CANADIAN_CITIES[provinceCode] || []);
+                      setValue("province", value);
+                      setValue("city", ""); // Reset city when province changes
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select province/territory" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {CANADIAN_PROVINCES.map((province) => (
+                        <SelectItem key={province.code} value={province.name}>
+                          {province.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   {errors.province && (
                     <p className="text-sm text-destructive mt-1">{errors.province.message}</p>
                   )}
                 </div>
 
                 <div>
-                  <Label htmlFor="city">City *</Label>
-                  <Input id="city" {...register("city")} placeholder="e.g., Halifax" />
+                  <Label htmlFor="city">City/Town *</Label>
+                  <Select
+                    value={watch("city") || ""}
+                    onValueChange={(value) => setValue("city", value)}
+                    disabled={!selectedProvince}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder={selectedProvince ? "Select city" : "Select province first"} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {availableCities.map((city) => (
+                        <SelectItem key={city} value={city}>
+                          {city}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   {errors.city && <p className="text-sm text-destructive mt-1">{errors.city.message}</p>}
                 </div>
               </div>
@@ -594,20 +709,68 @@ export default function SubmitEvent() {
                     label="Reserved accessible parking nearby"
                     tooltip="Is accessible parking available close to the venue?"
                   />
-                  <AccessibilityField
-                    category="mobility"
-                    field="terrainInfo"
-                    label="Terrain (flat/gravel/hills)"
-                    tooltip="What is the terrain like? Flat, gravel, hilly?"
-                    showNotRelevant
-                  />
-                  <AccessibilityField
-                    category="mobility"
-                    field="parkingDistance"
-                    label="Distance from parking (short/moderate/long)"
-                    tooltip="How far is parking from the event entrance?"
-                    showNotRelevant
-                  />
+                  {/* Terrain Info - Dropdown */}
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Label className="text-sm">Terrain Type</Label>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Info className="w-4 h-4 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent className="max-w-xs">
+                          <p className="text-sm">What is the terrain like at this event location?</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+                    <Select
+                      value={accessibility.mobility?.terrainInfo || "unknown"}
+                      onValueChange={(value) => updateAccessibility("mobility", "terrainInfo", value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select terrain type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="flat">Flat</SelectItem>
+                        <SelectItem value="paved">Paved</SelectItem>
+                        <SelectItem value="gravel">Gravel</SelectItem>
+                        <SelectItem value="hills">Hills</SelectItem>
+                        <SelectItem value="unpaved">Unpaved</SelectItem>
+                        <SelectItem value="mixed">Mixed Terrain</SelectItem>
+                        <SelectItem value="unknown">Unknown</SelectItem>
+                        <SelectItem value="not-relevant">Not Relevant</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Parking Distance - Dropdown */}
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Label className="text-sm">Parking Distance to Entrance</Label>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Info className="w-4 h-4 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent className="max-w-xs">
+                          <p className="text-sm">How far is parking from the event entrance?</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+                    <Select
+                      value={accessibility.mobility?.parkingDistance || "unknown"}
+                      onValueChange={(value) => updateAccessibility("mobility", "parkingDistance", value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select parking distance" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="short">Short walk (under 2 minutes)</SelectItem>
+                        <SelectItem value="moderate">Moderate walk (2-5 minutes)</SelectItem>
+                        <SelectItem value="long">Long walk (5+ minutes)</SelectItem>
+                        <SelectItem value="unknown">Unknown</SelectItem>
+                        <SelectItem value="not-relevant">Not Relevant</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </div>
 

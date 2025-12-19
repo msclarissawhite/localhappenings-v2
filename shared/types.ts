@@ -33,8 +33,8 @@ export interface AccessibilityData {
     accessibleSeating?: AccessibilityValue;
     accessibleWashrooms?: AccessibilityValue;
     accessibleParking?: AccessibilityValue;
-    terrainInfo?: "flat" | "gravel" | "hills" | "unknown";
-    parkingDistance?: "short" | "moderate" | "long" | "unknown";
+    terrainInfo?: "flat" | "gravel" | "hills" | "paved" | "unpaved" | "mixed" | "unknown" | "not-relevant";
+    parkingDistance?: "short" | "moderate" | "long" | "unknown" | "not-relevant";
   };
   sensory: {
     sensoryFriendly?: AccessibilityValue;

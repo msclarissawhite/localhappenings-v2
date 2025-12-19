@@ -76,6 +76,17 @@ export default function EventDetail() {
           </Button>
         </Link>
 
+        {/* Event Image */}
+        {event.imageUrl && (
+          <div className="mb-6 rounded-lg overflow-hidden">
+            <img
+              src={event.imageUrl}
+              alt={event.name}
+              className="w-full max-h-96 object-cover"
+            />
+          </div>
+        )}
+
         {/* Event Header */}
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold mb-4">{event.name}</h1>
@@ -133,13 +144,24 @@ export default function EventDetail() {
 
               <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 mt-0.5 text-muted-foreground" />
-                <div>
+                <div className="flex-1">
                   {event.venue && <p className="font-medium">{event.venue}</p>}
                   {event.address && <p className="text-sm">{event.address}</p>}
                   <p className="text-sm">
                     {event.neighborhood && `${event.neighborhood}, `}
                     {event.city}, {event.province}
                   </p>
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                      `${event.venue || ""} ${event.address || ""} ${event.city} ${event.province}`.trim()
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-sm text-primary hover:underline mt-2"
+                  >
+                    <MapPin className="w-4 h-4" />
+                    Open in Google Maps
+                  </a>
                 </div>
               </div>
 
