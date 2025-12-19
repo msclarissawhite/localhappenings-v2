@@ -67,21 +67,21 @@ export default function EventDetail() {
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold mb-4">{event.name}</h1>
           <div className="flex flex-wrap gap-3">
-            {event.isFree && (
+            {!!event.isFree && (
               <Badge variant="secondary" className="text-base px-3 py-1">
                 FREE
               </Badge>
             )}
-            {event.familyFriendly && (
+            {!!event.familyFriendly && (
               <Badge variant="outline" className="text-base px-3 py-1">
                 <Users className="w-4 h-4 mr-1" />
                 Family-Friendly
               </Badge>
             )}
-            {event.youngChildren && <Badge variant="outline" className="text-base px-3 py-1">Ages 0-5</Badge>}
-            {event.kids && <Badge variant="outline" className="text-base px-3 py-1">Ages 6-12</Badge>}
-            {event.teens && <Badge variant="outline" className="text-base px-3 py-1">Teens</Badge>}
-            {event.seniors && <Badge variant="outline" className="text-base px-3 py-1">Seniors</Badge>}
+            {!!event.youngChildren && <Badge variant="outline" className="text-base px-3 py-1">Ages 0-5</Badge>}
+            {!!event.kids && <Badge variant="outline" className="text-base px-3 py-1">Ages 6-12</Badge>}
+            {!!event.teens && <Badge variant="outline" className="text-base px-3 py-1">Teens</Badge>}
+            {!!event.seniors && <Badge variant="outline" className="text-base px-3 py-1">Seniors</Badge>}
           </div>
         </div>
 
@@ -162,8 +162,8 @@ export default function EventDetail() {
                     )}
                   </>
                 )}
-                {event.kidsFree && <p className="text-sm text-muted-foreground">Kids attend free</p>}
-                {event.freeCompanion && (
+                {!!event.kidsFree && <p className="text-sm text-muted-foreground">Kids attend free</p>}
+                {!!event.freeCompanion && (
                   <p className="text-sm text-muted-foreground">Free companion/support worker ticket</p>
                 )}
               </div>

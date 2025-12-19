@@ -77,3 +77,4 @@
 ## Enhancements
 - [x] Create database seeding script with 8-10 sample events
 - [x] Add sorting functionality (Soonest, Latest, A-Z, Z-A) to Browse Events
+- [x] Fix zeros appearing around tags on event detail page
