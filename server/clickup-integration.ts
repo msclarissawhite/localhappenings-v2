@@ -45,7 +45,7 @@ export async function createClickUpTask(data: {
     body: JSON.stringify({
       name: data.title,
       description: data.description + (data.submitterInfo ? `\n\n**Submitted by:** ${data.submitterInfo}` : ""),
-      status: "to do",
+      status: "proposed",
       tags: ["feature-request"],
     }),
   });
@@ -118,15 +118,15 @@ export async function updateClickUpStatus(taskId: string, status: string): Promi
 
   // Map our status to ClickUp status
   const statusMap: Record<string, string> = {
-    "pending": "to do",
-    "under_review": "in progress",
-    "planned": "planned",
-    "in_progress": "in progress",
-    "completed": "complete",
-    "declined": "closed",
+    "pending": "proposed",
+    "under_review": "under consideration",
+    "planned": "approved for development",
+    "in_progress": "in review",
+    "completed": "approved for development",
+    "declined": "rejected",
   };
 
-  const clickupStatus = statusMap[status] || "to do";
+  const clickupStatus = statusMap[status] || "proposed";
 
   await fetch(`${CLICKUP_API_BASE}/task/${taskId}`, {
     method: "PUT",

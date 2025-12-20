@@ -676,3 +676,17 @@
 - Donor wall now shows both donations correctly:
   - "Amount Tester" - $10.00 (showAmount=true)
   - "Test Supporter" - no amount (showAmount=false)
+
+## ClickUp Integration Debugging
+- [x] Verify CLICKUP_LIST_ID environment variable matches user's list (901708732787)
+- [x] Verify CLICKUP_API_KEY is correctly configured
+- [x] Check feature request submission logic for ClickUp sync call
+- [x] Review server logs for ClickUp API errors (no errors logged, caught silently)
+- [x] Test ClickUp API connection with manual task creation
+- [x] Fix sync issue preventing feature requests from appearing in ClickUp
+  - Root cause: Status "to do" doesn't exist in user's ClickUp list
+  - Fixed: Updated to use "proposed" status (matches user's list)
+  - Updated status mapping for all ClickUp statuses
+- [x] Verify existing feature request syncs to ClickUp after fix
+  - Task created successfully: https://app.clickup.com/t/86dyym6xp
+  - Database updated with ClickUp task ID and URL
