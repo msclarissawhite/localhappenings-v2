@@ -342,6 +342,11 @@ export default function OrganizerDashboard() {
                         <div className="flex items-center gap-3 mb-2">
                           <h3 className="text-xl font-semibold">{event.name}</h3>
                           {getStatusBadge(event.status)}
+                          {event.hasUnreviewedEdit === 1 && (
+                            <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-300">
+                              Edit Pending Review
+                            </Badge>
+                          )}
                         </div>
 
                         <p className="text-muted-foreground mb-4 line-clamp-2">

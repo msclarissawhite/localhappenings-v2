@@ -759,3 +759,26 @@
 - [x] Update browse events filters with new accessibility options
 - [x] Update organizer guide to match form implementation
 - [x] Create ACCESSIBILITY_FIELD_SYNC.md documentation for future field additions
+
+## Published Event Editing with Conditional Re-Approval (December 20, 2024)
+- [x] Analyze current edit system and database schema
+- [x] Add fields to track pending edits (pendingEditData, hasUnreviewedEdit)
+- [x] Update events table schema and push migration
+- [x] Create backend procedure to edit published events
+- [x] Implement verification-based logic (verified = auto-approve, unverified = pending)
+- [x] Update organizer dashboard to show "Edit" button for published events
+- [x] Edit event page already exists with pre-populated form
+- [x] Update admin dashboard to show events with pending edits
+- [x] Add comparison view in admin to see original vs. edited version
+- [x] Add "Edit Pending Review" badge to organizer dashboard
+- [x] Send email notification when unverified organizer submits edit
+- [x] Send email notification when admin approves edited event
+- [ ] Test verified organizer edit workflow (immediate update)
+- [ ] Test unverified organizer edit workflow (pending re-approval)
+- [ ] Update user manual with editing instructions
+
+## Improve Pending Edits Highlighting (December 20, 2024)
+- [x] Enhance comparison view to show all fields side-by-side
+- [x] Add visual highlighting for changed fields
+- [x] Use strikethrough for old values and bold for new values
+- [x] Add colored indicators for easy scanning

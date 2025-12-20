@@ -31,11 +31,16 @@ export default function AdminDashboard() {
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [reviewAction, setReviewAction] = useState<"published" | "rejected" | "needs-clarification">("published");
   const [selectedEvents, setSelectedEvents] = useState<Set<number>>(new Set());
-  const [activeTab, setActiveTab] = useState<"events" | "organizers" | "feature-requests" | "donations">("events");
+  const [activeTab, setActiveTab] = useState<"events" | "pending-edits" | "organizers" | "feature-requests" | "donations">("events");
 
   const { data: pendingEvents, isLoading, refetch } = trpc.events.getPending.useQuery(undefined, {
     enabled: isAuthenticated && user?.role === "admin",
   });
+
+  const { data: eventsWithPendingEdits, isLoading: pendingEditsLoading, refetch: refetchPendingEdits } = trpc.events.list.useQuery(
+    { hasUnreviewedEdit: true, limit: 100, offset: 0 },
+    { enabled: isAuthenticated && user?.role === "admin" && activeTab === "pending-edits" }
+  );
 
   const { data: organizers, isLoading: organizersLoading, refetch: refetchOrganizers } = trpc.organizer.getAllOrganizers.useQuery(undefined, {
     enabled: isAuthenticated && user?.role === "admin" && activeTab === "organizers",
@@ -66,6 +71,26 @@ export default function AdminDashboard() {
     },
     onError: (error) => {
       toast.error(error.message || "Failed to update status");
+    },
+  });
+
+  const approvePendingEditMutation = trpc.events.approvePendingEdit.useMutation({
+    onSuccess: () => {
+      toast.success("Edit approved and published");
+      refetchPendingEdits();
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to approve edit");
+    },
+  });
+
+  const rejectPendingEditMutation = trpc.events.rejectPendingEdit.useMutation({
+    onSuccess: () => {
+      toast.success("Edit rejected");
+      refetchPendingEdits();
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to reject edit");
     },
   });
 
@@ -190,6 +215,19 @@ export default function AdminDashboard() {
           >
             <Calendar className="w-4 h-4 mr-2" />
             Pending Events
+          </Button>
+          <Button
+            variant={activeTab === "pending-edits" ? "default" : "ghost"}
+            onClick={() => setActiveTab("pending-edits")}
+            className="rounded-b-none"
+          >
+            <AlertCircle className="w-4 h-4 mr-2" />
+            Pending Edits
+            {eventsWithPendingEdits && eventsWithPendingEdits.length > 0 && (
+              <Badge variant="destructive" className="ml-2">
+                {eventsWithPendingEdits.length}
+              </Badge>
+            )}
           </Button>
           <Button
             variant={activeTab === "organizers" ? "default" : "ghost"}
@@ -363,6 +401,152 @@ export default function AdminDashboard() {
                 <CheckCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                 <h3 className="text-lg font-semibold mb-2">All caught up!</h3>
                 <p className="text-muted-foreground">There are no pending events to review.</p>
+              </Card>
+            )}
+          </>
+        )}
+
+        {activeTab === "pending-edits" && (
+          <>
+            {pendingEditsLoading ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Loading events with pending edits...</p>
+              </div>
+            ) : eventsWithPendingEdits && eventsWithPendingEdits.length > 0 ? (
+              <div className="space-y-6">
+                {eventsWithPendingEdits.map((event) => {
+                  const pendingEdit = event.pendingEditData ? JSON.parse(event.pendingEditData) : null;
+                  
+                  return (
+                    <Card key={event.id} className="p-6">
+                      <div className="mb-4">
+                        <div className="flex items-center gap-3 mb-2">
+                          <h3 className="text-xl font-semibold">{event.name}</h3>
+                          <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-300">
+                            Edit Pending Review
+                          </Badge>
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          Submitted by: {event.organizerName || "Unknown"} • Event ID: {event.id}
+                        </p>
+                      </div>
+
+                      {pendingEdit && (
+                        <div className="space-y-3 mb-6">
+                          <h4 className="font-semibold text-sm uppercase text-muted-foreground mb-3">Changes Summary</h4>
+                          
+                          {/* Name */}
+                          {pendingEdit.name && pendingEdit.name !== event.name && (
+                            <div className="border-l-4 border-orange-500 bg-orange-50 dark:bg-orange-950/20 p-4 rounded-r">
+                              <div className="font-medium text-sm mb-2">Event Name</div>
+                              <div className="text-sm space-y-1">
+                                <div className="text-red-600 dark:text-red-400 line-through">{event.name}</div>
+                                <div className="text-green-600 dark:text-green-400 font-semibold">{pendingEdit.name}</div>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Description */}
+                          {pendingEdit.description && pendingEdit.description !== event.description && (
+                            <div className="border-l-4 border-orange-500 bg-orange-50 dark:bg-orange-950/20 p-4 rounded-r">
+                              <div className="font-medium text-sm mb-2">Description</div>
+                              <div className="text-sm space-y-2">
+                                <div className="text-red-600 dark:text-red-400 line-through max-h-20 overflow-hidden">{event.description}</div>
+                                <div className="text-green-600 dark:text-green-400 font-semibold">{pendingEdit.description}</div>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Venue */}
+                          {pendingEdit.venue && pendingEdit.venue !== event.venue && (
+                            <div className="border-l-4 border-orange-500 bg-orange-50 dark:bg-orange-950/20 p-4 rounded-r">
+                              <div className="font-medium text-sm mb-2">Venue</div>
+                              <div className="text-sm space-y-1">
+                                <div className="text-red-600 dark:text-red-400 line-through">{event.venue || "Not specified"}</div>
+                                <div className="text-green-600 dark:text-green-400 font-semibold">{pendingEdit.venue || "Not specified"}</div>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Address */}
+                          {pendingEdit.address && pendingEdit.address !== event.address && (
+                            <div className="border-l-4 border-orange-500 bg-orange-50 dark:bg-orange-950/20 p-4 rounded-r">
+                              <div className="font-medium text-sm mb-2">Address</div>
+                              <div className="text-sm space-y-1">
+                                <div className="text-red-600 dark:text-red-400 line-through">{event.address || "Not specified"}</div>
+                                <div className="text-green-600 dark:text-green-400 font-semibold">{pendingEdit.address || "Not specified"}</div>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Start Date */}
+                          {pendingEdit.startDate && pendingEdit.startDate !== event.startDate && (
+                            <div className="border-l-4 border-orange-500 bg-orange-50 dark:bg-orange-950/20 p-4 rounded-r">
+                              <div className="font-medium text-sm mb-2">Start Date</div>
+                              <div className="text-sm space-y-1">
+                                <div className="text-red-600 dark:text-red-400 line-through">{format(new Date(event.startDate), "MMM d, yyyy 'at' h:mm a")}</div>
+                                <div className="text-green-600 dark:text-green-400 font-semibold">{format(new Date(pendingEdit.startDate), "MMM d, yyyy 'at' h:mm a")}</div>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Notes */}
+                          {pendingEdit.notes && pendingEdit.notes !== event.notes && (
+                            <div className="border-l-4 border-orange-500 bg-orange-50 dark:bg-orange-950/20 p-4 rounded-r">
+                              <div className="font-medium text-sm mb-2">Additional Notes</div>
+                              <div className="text-sm space-y-2">
+                                <div className="text-red-600 dark:text-red-400 line-through max-h-20 overflow-hidden">{event.notes || "None"}</div>
+                                <div className="text-green-600 dark:text-green-400 font-semibold">{pendingEdit.notes}</div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      <div className="flex gap-3">
+                        <Button
+                          size="sm"
+                          onClick={() => approvePendingEditMutation.mutate({ eventId: event.id })}
+                          disabled={approvePendingEditMutation.isPending}
+                        >
+                          <CheckCircle className="w-4 h-4 mr-2" />
+                          Approve Edit
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => {
+                            const reason = prompt("Reason for rejection (optional):");
+                            if (reason !== null) {
+                              rejectPendingEditMutation.mutate({ eventId: event.id, reason: reason || undefined });
+                            }
+                          }}
+                          disabled={rejectPendingEditMutation.isPending}
+                        >
+                          <XCircle className="w-4 h-4 mr-2" />
+                          Reject Edit
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => window.open(`/event/${event.id}`, "_blank")}
+                        >
+                          View Published Event
+                        </Button>
+                      </div>
+                    </Card>
+                  );
+                })}
+              </div>
+            ) : (
+              <Card className="p-12">
+                <div className="text-center space-y-4">
+                  <CheckCircle className="h-16 w-16 mx-auto text-green-500" />
+                  <h3 className="text-xl font-semibold">No Pending Edits</h3>
+                  <p className="text-muted-foreground">
+                    All event edits have been reviewed!
+                  </p>
+                </div>
               </Card>
             )}
           </>

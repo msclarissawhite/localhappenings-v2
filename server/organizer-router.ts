@@ -180,18 +180,35 @@ export const organizerRouter = router({
       // Check if organizer is verified for auto-approval
       const { getOrganizerById } = await import("./organizer-db");
       const organizer = await getOrganizerById(organizerId);
-      updateData.status = (organizer?.isVerified === 1) ? "published" : "pending";
-      updateData.updatedAt = new Date();
       
-      await eventsDb.updateEvent(eventId, updateData);
-      
-      // Notify owner of edit
-      await notifyOwner({
-        title: "Event Edited",
-        content: `Event "${event.name}" has been edited by organizer and is pending re-approval.`,
-      });
-      
-      return { success: true };
+      if (organizer?.isVerified === 1) {
+        // Verified organizer: Apply changes immediately
+        updateData.updatedAt = new Date();
+        await eventsDb.updateEvent(eventId, updateData);
+        
+        return { success: true, requiresApproval: false };
+      } else {
+        // Unverified organizer: Store changes in pendingEditData
+        // Keep event published but flag it as having unreviewed edits
+        const pendingEdit = {
+          ...updateData,
+          editedAt: new Date().toISOString(),
+        };
+        
+        await eventsDb.updateEvent(eventId, {
+          hasUnreviewedEdit: 1,
+          pendingEditData: JSON.stringify(pendingEdit),
+          updatedAt: new Date(),
+        });
+        
+        // Notify owner of pending edit
+        await notifyOwner({
+          title: "Event Edit Pending Review",
+          content: `Event "${event.name}" has been edited by unverified organizer and requires your approval. The original event remains published.`,
+        });
+        
+        return { success: true, requiresApproval: true };
+      }
     }),
 
   /**

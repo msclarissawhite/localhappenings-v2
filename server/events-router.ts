@@ -452,6 +452,92 @@ export const eventsRouter = router({
     return { success: true };
   }),
 
+  // Admin: Approve pending edit
+  approvePendingEdit: adminProcedure
+    .input(z.object({ eventId: z.number() }))
+    .mutation(async ({ input, ctx }) => {
+      const event = await eventsDb.getEventById(input.eventId);
+      
+      if (!event || !event.hasUnreviewedEdit || !event.pendingEditData) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "No pending edit found for this event",
+        });
+      }
+      
+      // Parse pending edit data
+      const pendingEdit = JSON.parse(event.pendingEditData);
+      
+      // Apply pending changes to main event fields
+      await eventsDb.updateEvent(input.eventId, {
+        ...pendingEdit,
+        hasUnreviewedEdit: 0,
+        pendingEditData: null,
+        reviewedBy: ctx.user.id,
+        updatedAt: new Date(),
+      });
+      
+      // Notify organizer that edit was approved
+      if (event.organizerId) {
+        const organizerDb = await import("./organizer-db");
+        const organizer = await organizerDb.getOrganizerById(event.organizerId);
+        if (organizer) {
+          await notifyOrganizerStatusChange({
+            organizerEmail: organizer.email,
+            organizerName: organizer.name,
+            eventName: event.name,
+            eventId: event.id,
+            status: "published",
+            reviewNotes: "Your edits have been approved and are now live.",
+          });
+        }
+      }
+      
+      return { success: true };
+    }),
+
+  // Admin: Reject pending edit
+  rejectPendingEdit: adminProcedure
+    .input(z.object({ 
+      eventId: z.number(),
+      reason: z.string().optional(),
+    }))
+    .mutation(async ({ input, ctx }) => {
+      const event = await eventsDb.getEventById(input.eventId);
+      
+      if (!event || !event.hasUnreviewedEdit) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "No pending edit found for this event",
+        });
+      }
+      
+      // Clear pending edit data
+      await eventsDb.updateEvent(input.eventId, {
+        hasUnreviewedEdit: 0,
+        pendingEditData: null,
+        updatedAt: new Date(),
+      });
+      
+      // Notify organizer that edit was rejected
+      if (event.organizerId) {
+        const organizerDb = await import("./organizer-db");
+        const organizer = await organizerDb.getOrganizerById(event.organizerId);
+        if (organizer) {
+          await notifyOrganizerStatusChange({
+            organizerEmail: organizer.email,
+            organizerName: organizer.name,
+            eventName: event.name,
+            eventId: event.id,
+            status: "needs-clarification",
+            reviewNotes: input.reason || "Your proposed edits could not be approved. Please review and try again.",
+          });
+        }
+      }
+      
+      return { success: true };
+    }),
+
   // Public: Get collections
   getCollections: publicProcedure.query(async () => {
     return await eventsDb.getCollections();

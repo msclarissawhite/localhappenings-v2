@@ -30,10 +30,16 @@ export default function EditEvent() {
   );
 
   const updateMutation = trpc.organizer.updateEvent.useMutation({
-    onSuccess: () => {
-      toast.success("Event Updated", {
-        description: "Your changes have been submitted for re-approval.",
-      });
+    onSuccess: (result) => {
+      if (result.requiresApproval) {
+        toast.success("Edit Submitted", {
+          description: "Your changes are pending admin approval. The original event remains published.",
+        });
+      } else {
+        toast.success("Event Updated", {
+          description: "Your changes are now live!",
+        });
+      }
       navigate("/organizer/dashboard");
     },
     onError: (error) => {
