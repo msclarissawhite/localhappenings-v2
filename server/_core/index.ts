@@ -41,6 +41,26 @@ async function startServer() {
     handleStripeWebhook
   );
   
+  // Stripe customer portal redirect (for managing recurring donations)
+  app.get("/api/donations/portal", async (req, res) => {
+    const customerId = req.query.customerId as string;
+    if (!customerId) {
+      return res.status(400).send("Missing customerId parameter");
+    }
+    
+    try {
+      const { stripe } = await import("./stripe");
+      const session = await stripe.billingPortal.sessions.create({
+        customer: customerId,
+        return_url: `${req.headers.origin || process.env.VITE_APP_URL}/donate/thank-you`,
+      });
+      res.redirect(session.url);
+    } catch (error) {
+      console.error("[Stripe] Failed to create portal session:", error);
+      res.status(500).send("Failed to create portal session");
+    }
+  });
+  
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));

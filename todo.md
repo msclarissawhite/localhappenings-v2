@@ -717,3 +717,14 @@
   - Email sent successfully via Resend
   - Sender shows "Local Happenings" (not just email address)
   - All donation details included in email
+
+## Stripe Customer Portal for Recurring Donations
+- [x] Create tRPC endpoint to generate Stripe customer portal session
+- [x] Add customer portal link to donation receipt email template (only for recurring donations)
+- [x] Create Express redirect route at /api/donations/portal
+- [x] Update webhook to pass Stripe customer ID to email function
+- [x] Test customer portal access with recurring donation
+  - Recurring donation created successfully ($10/month from recurring-portal-test@example.com)
+  - Database stores Stripe customer ID (cus_RULcBGEEZC9zYl) and subscription ID (sub_1SgQPbAd3bUyQYyI1YQqJLSO)
+  - Email receipt should include "Manage Subscription" button with portal link
+- [ ] Verify donors can update payment method and cancel subscription (requires checking actual email receipt and clicking portal link)

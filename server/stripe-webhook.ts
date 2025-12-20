@@ -116,6 +116,7 @@ async function handleCheckoutSessionCompleted(session: any) {
         transactionId: isRecurring ? session.subscription : session.payment_intent,
         donationDate: new Date(),
         message: metadata.message || undefined,
+        stripeCustomerId: session.customer || undefined, // Pass customer ID for portal link
       });
       console.log(`[Stripe Webhook] Donation receipt email sent to ${metadata.donorEmail}`);
     } catch (emailError: any) {

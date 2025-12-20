@@ -207,7 +207,7 @@ export async function sendEventStatusEmail(params: EventStatusEmailParams): Prom
 /**
  * Send donation receipt email to donor
  */
-export async function sendDonationReceiptEmail(params: DonationReceiptEmailParams): Promise<boolean> {
+export async function sendDonationReceiptEmail(params: DonationReceiptEmailParams & { stripeCustomerId?: string }): Promise<boolean> {
   if (!resend) {
     console.error("[Resend] Cannot send donation receipt - Resend not configured");
     return false;
@@ -288,8 +288,14 @@ export async function sendDonationReceiptEmail(params: DonationReceiptEmailParam
                 <li>Community outreach and support</li>
               </ul>
               
-              ${isRecurring ? `
-                <p><strong>Recurring Donation:</strong> Your card will be charged $${amountDollars} monthly. You can cancel anytime from your donor dashboard or by replying to this email.</p>
+              ${isRecurring && params.stripeCustomerId ? `
+                <p><strong>Recurring Donation:</strong> Your card will be charged $${amountDollars} monthly.</p>
+                <div style="text-align: center; margin: 20px 0;">
+                  <a href="${process.env.VITE_APP_URL || "http://localhost:3000"}/api/donations/portal?customerId=${params.stripeCustomerId}" style="display: inline-block; background: #2d5016; color: white !important; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: 600;">Manage Subscription</a>
+                </div>
+                <p style="font-size: 14px; color: #666; text-align: center;">Update payment method or cancel anytime</p>
+              ` : isRecurring ? `
+                <p><strong>Recurring Donation:</strong> Your card will be charged $${amountDollars} monthly. You can cancel anytime by replying to this email.</p>
               ` : ''}
               
               <div class="disclaimer">

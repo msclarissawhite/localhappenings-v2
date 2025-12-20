@@ -85,4 +85,24 @@ export const donationsRouter = router({
   getStats: publicProcedure.query(async () => {
     return await donationsDb.getDonationStats();
   }),
+
+  /**
+   * Create Stripe customer portal session for managing recurring donations
+   */
+  createPortalSession: publicProcedure
+    .input(
+      z.object({
+        customerId: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const session = await stripe.billingPortal.sessions.create({
+        customer: input.customerId,
+        return_url: `${ctx.req.headers.origin}/donate/thank-you`,
+      });
+
+      return {
+        url: session.url,
+      };
+    }),
 });
