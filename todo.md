@@ -525,3 +525,22 @@
 - [x] Update Browse Events to use shared canadian-locations constants
 - [x] Submit Event already uses consistent location data source
 - [x] Test location dropdowns work consistently across all pages
+
+## Expand Canadian Locations Data
+- [x] Research comprehensive municipality lists for all provinces/territories
+- [x] Expand Alberta municipalities (43 cities/towns)
+- [x] Expand British Columbia municipalities (62 cities/towns)
+- [x] Expand Manitoba municipalities (10 cities/towns)
+- [x] Expand New Brunswick municipalities (17 cities/towns)
+- [x] Expand Newfoundland and Labrador municipalities (17 cities/towns)
+- [x] Nova Scotia already comprehensive (53 municipalities)
+- [x] Expand Northwest Territories communities (7 communities)
+- [x] Expand Nunavut communities (8 communities)
+- [x] Expand Ontario municipalities (92 cities/towns/counties)
+- [x] Expand Prince Edward Island municipalities (8 cities/towns)
+- [x] Expand Quebec municipalities (65 cities/towns)
+- [x] Expand Saskatchewan municipalities (16 cities/towns)
+- [x] Expand Yukon communities (9 communities)
+- [x] Update shared/canadian-locations.ts with comprehensive lists
+- [x] Total: 407 municipalities across all provinces/territories
+- [x] Test location dropdowns with expanded data
