@@ -22,6 +22,7 @@ import { Calendar, MapPin, CheckCircle, XCircle, AlertCircle, ShieldCheck, Users
 import type { Event } from "@shared/types";
 import { EventEditDialog } from "@/components/EventEditDialog";
 import { DuplicateWarning } from "@/components/DuplicateWarning";
+import { BulkUpload } from "@/components/BulkUpload";
 
 export default function AdminDashboard() {
   const { user, isAuthenticated } = useAuth();
@@ -32,6 +33,7 @@ export default function AdminDashboard() {
   const [reviewAction, setReviewAction] = useState<"published" | "rejected" | "needs-clarification">("published");
   const [selectedEvents, setSelectedEvents] = useState<Set<number>>(new Set());
   const [activeTab, setActiveTab] = useState<"events" | "pending-edits" | "closed-events" | "organizers" | "feature-requests" | "donations">("events");
+  const [showBulkUpload, setShowBulkUpload] = useState(false);
 
   const { data: pendingEvents, isLoading, refetch } = trpc.events.getPending.useQuery(undefined, {
     enabled: isAuthenticated && user?.role === "admin",
@@ -270,13 +272,33 @@ export default function AdminDashboard() {
 
         {activeTab === "events" && (
           <>
-            {isLoading ? (
+            {showBulkUpload ? (
+              <BulkUpload
+                onComplete={() => {
+                  setShowBulkUpload(false);
+                  refetch();
+                  toast.success("Events imported successfully!");
+                }}
+              />
+            ) : isLoading ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">Loading pending events...</p>
               </div>
             ) : pendingEvents && pendingEvents.length > 0 ? (
           <>
             {/* Bulk Actions Toolbar */}
+            <div className="flex items-center justify-between mb-4 p-4 bg-muted/30 rounded-lg">
+              <div className="flex items-center gap-4">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowBulkUpload(true)}
+                >
+                  <Calendar className="w-4 h-4 mr-2" />
+                  Bulk Upload CSV
+                </Button>
+              </div>
+            </div>
             <div className="flex items-center justify-between mb-4 p-4 bg-muted/30 rounded-lg">
               <div className="flex items-center gap-4">
                 <Checkbox

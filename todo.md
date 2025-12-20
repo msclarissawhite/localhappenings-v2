@@ -830,3 +830,13 @@
 - [x] Post review notes as comments when admin approves/rejects events
 - [x] Format comments with emoji status indicators (✅ Approved, ❌ Rejected, ⚠️ Needs Clarification)
 - [ ] Test comment posting with approval and rejection scenarios
+
+## Admin CSV Bulk Upload (December 20, 2024)
+- [x] Create backend procedure for bulk event import
+- [x] Add CSV parsing and validation logic
+- [x] Build upload UI in admin dashboard with file picker
+- [x] Add preview table showing events before import
+- [x] Implement error handling and validation messages
+- [x] Auto-publish imported events (skip approval workflow)
+- [x] Sync imported events to ClickUp
+- [ ] Test with event_upload_example.csv

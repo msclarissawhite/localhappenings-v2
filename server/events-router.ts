@@ -596,4 +596,114 @@ export const eventsRouter = router({
   getCollectionEvents: publicProcedure.input(z.object({ collectionId: z.number() })).query(async ({ input }) => {
     return await eventsDb.getCollectionEvents(input.collectionId);
   }),
+
+  // Admin: Bulk import events from CSV
+  bulkImport: adminProcedure
+    .input(
+      z.object({
+        events: z.array(
+          z.object({
+            name: z.string(),
+            description: z.string(),
+            province: z.string(),
+            municipality: z.string(),
+            neighborhoodCommunity: z.string().optional(),
+            venue: z.string().optional(),
+            address: z.string().optional(),
+            startDate: z.string(), // ISO date string
+            endDate: z.string().optional(),
+            timeOfDay: z.enum(["morning", "afternoon", "evening", "all-day"]).optional(),
+            isRecurring: z.boolean(),
+            recurrenceType: z.enum(["one-time", "weekly", "monthly", "seasonal"]).optional(),
+            isFree: z.boolean(),
+            costMin: z.number().optional(),
+            costMax: z.number().optional(),
+            costType: z.enum(["fixed", "range", "donation", "pay-what-you-can", "sliding-scale"]).optional(),
+            kidsFree: z.boolean(),
+            freeCompanion: z.boolean(),
+            allAges: z.boolean(),
+            familyFriendly: z.boolean(),
+            youngChildren: z.boolean(),
+            kids: z.boolean(),
+            teens: z.boolean(),
+            adultsOnly: z.boolean(),
+            seniors: z.boolean(),
+            isIndoor: z.boolean(),
+            isOutdoor: z.boolean(),
+            shortDuration: z.boolean(),
+            dropIn: z.boolean(),
+            canReenter: z.boolean(),
+            accessibility: z.string(), // JSON string
+            organizerName: z.string().optional(),
+            organizerType: z.enum(["business", "nonprofit", "community", "municipality", "school-library", "other"]).optional(),
+            organizerEmail: z.string().optional(),
+            organizerPhone: z.string().optional(),
+            organizerWebsite: z.string().optional(),
+            displayOrganizerInfo: z.boolean(),
+            notes: z.string().optional(),
+            imageUrl: z.string().optional(),
+          })
+        ),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const results = {
+        success: [] as number[],
+        failed: [] as { index: number; error: string }[],
+      };
+
+      for (let i = 0; i < input.events.length; i++) {
+        const event = input.events[i];
+        try {
+          const eventData = {
+            ...event,
+            startDate: new Date(event.startDate),
+            endDate: event.endDate ? new Date(event.endDate) : null,
+            costMin: event.costMin || null,
+            costMax: event.costMax || null,
+            submittedBy: ctx.user.id,
+            organizerId: null,
+            status: "published" as const, // Auto-publish admin imports
+            publishedAt: new Date(),
+            reviewedBy: ctx.user.id,
+          };
+
+          const eventId = await eventsDb.createEvent(eventData);
+
+          // Sync to ClickUp
+          try {
+            const clickupResult = await syncEventToClickUp({
+              eventId,
+              eventName: event.name,
+              organizerName: event.organizerName || null,
+              organizerEmail: event.organizerEmail || "",
+              organizerPhone: event.organizerPhone || null,
+              eventDate: new Date(event.startDate),
+              submissionDate: new Date(),
+              status: "published",
+              description: event.description,
+              venue: event.venue || "Not specified",
+              address: event.address || "Not specified",
+              municipality: event.municipality,
+            });
+
+            if (clickupResult.success && clickupResult.taskId) {
+              await eventsDb.updateEventClickUpTaskId(eventId, clickupResult.taskId);
+            }
+          } catch (error) {
+            console.error("Failed to sync to ClickUp:", error);
+            // Don't fail the import if ClickUp sync fails
+          }
+
+          results.success.push(eventId);
+        } catch (error) {
+          results.failed.push({
+            index: i,
+            error: error instanceof Error ? error.message : String(error),
+          });
+        }
+      }
+
+      return results;
+    }),
 });
