@@ -18,10 +18,23 @@ export default function UserVerify() {
 
       setStatus("success");
       
-      // Redirect to home page after 2 seconds
-      setTimeout(() => {
-        navigate("/");
-      }, 2000);
+      // If user is an organizer, also store organizer session and redirect to organizer dashboard
+      if (data.isOrganizer) {
+        localStorage.setItem("organizer", JSON.stringify({
+          id: data.user.id,
+          email: data.user.email,
+          name: data.user.name,
+        }));
+        
+        setTimeout(() => {
+          navigate("/organizer/dashboard");
+        }, 2000);
+      } else {
+        // Regular user - redirect to home page
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+      }
     },
     onError: (error) => {
       setStatus("error");

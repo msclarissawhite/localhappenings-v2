@@ -131,6 +131,9 @@ export const userAuthRouter = router({
           .set({ lastSignedIn: new Date() })
           .where(eq(users.id, user.id));
 
+        // Check if this email belongs to an organizer
+        const isOrganizer = user.loginMethod === "email"; // Organizers use email login method (Manus OAuth)
+        
         // Create session token
         const sessionToken = jwt.sign(
           { userId: user.id, email: user.email, role: user.role },
@@ -147,6 +150,7 @@ export const userAuthRouter = router({
             role: user.role,
           },
           token: sessionToken,
+          isOrganizer, // Flag to redirect to organizer dashboard if true
         };
       } catch (error) {
         throw new TRPCError({

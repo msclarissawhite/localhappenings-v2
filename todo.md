@@ -408,3 +408,12 @@
 - [x] Test organizer can view and manage saved events from dashboard
 - [x] Ensure saved events list displays correctly for organizers
 - [x] Created comprehensive test suite (7 tests passing)
+
+## Bug: Organizer Session Switching on My Saved Events
+- [x] Fix My Saved Events tab to stay within organizer dashboard (prevent navigation)
+- [x] Embed saved events content directly in organizer dashboard (SavedEventsContent component)
+- [x] Maintain organizer session when viewing saved events
+- [x] Link organizer and user accounts by email for unified authentication
+- [x] Allow organizer privileges regardless of login method (organizer or magic link)
+- [x] Test complete workflow: organizer login → dashboard → my saved events → stay in organizer context
+- [x] Created comprehensive test suite (11 tests passing)
