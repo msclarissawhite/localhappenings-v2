@@ -982,3 +982,13 @@
 - [x] Write vitest tests for image library API (image-library.test.ts)
 - [x] Write vitest tests for event templates API (event-templates.test.ts)
 - [x] Write vitest tests for batch edit API (batch-edit.test.ts)
+
+## Rich Text Editor for Event Descriptions (December 20, 2024)
+- [x] Install Tiptap packages (@tiptap/react, @tiptap/starter-kit, @tiptap/extension-link, @tiptap/extension-placeholder)
+- [x] Create RichTextEditor component with formatting toolbar
+- [x] Add formatting buttons (bold, italic, heading, bullet list, numbered list, link, undo, redo)
+- [x] Integrate RichTextEditor into SubmitEvent form description field
+- [x] Update EventDetail page to render HTML content safely (using dangerouslySetInnerHTML with prose styling)
+- [x] Test rich text editor with various formatting combinations (ready for user testing)
+- [x] Update ORGANIZER_QUICKSTART_GUIDE.md with rich text editor usage
+- [x] Update USER_MANUAL.md with rich text formatting capabilities

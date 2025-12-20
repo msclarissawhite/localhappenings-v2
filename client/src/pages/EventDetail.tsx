@@ -356,7 +356,10 @@ export default function EventDetail() {
           {/* What It Is */}
           <Card className="p-6">
             <h2 className="text-xl font-semibold mb-3">What It Is</h2>
-            <p className="text-foreground leading-relaxed">{event.description}</p>
+            <div 
+              className="prose prose-sm max-w-none text-foreground leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: event.description }}
+            />
           </Card>
 
           {/* When & Where */}

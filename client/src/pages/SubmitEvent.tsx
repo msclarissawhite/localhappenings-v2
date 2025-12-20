@@ -15,6 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 import { useLocation, Link, useSearch } from "wouter";
 import { Info, Eye, Save } from "lucide-react";
+import { RichTextEditor } from "@/components/RichTextEditor";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   Dialog,
@@ -709,11 +710,10 @@ export default function SubmitEvent() {
 
               <div>
                 <Label htmlFor="description">Description *</Label>
-                <Textarea
-                  id="description"
-                  {...register("description")}
-                  rows={4}
-                  placeholder="Describe your event..."
+                <RichTextEditor
+                  content={watch("description") || ""}
+                  onChange={(html) => setValue("description", html)}
+                  placeholder="Describe your event... Use the toolbar to format text, add lists, and include links."
                 />
                 {errors.description && (
                   <p className="text-sm text-destructive mt-1">{errors.description.message}</p>

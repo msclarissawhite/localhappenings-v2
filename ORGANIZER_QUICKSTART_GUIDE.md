@@ -317,6 +317,19 @@ Help families find your event by including key details in the title.
 
 Tell families what makes your event special. What will kids do? What should they bring? What makes it unique?
 
+**Rich Text Formatting** – The description field includes a formatting toolbar that lets you:
+- **Bold** and *italic* text for emphasis
+- Create **bullet lists** or **numbered lists** for schedules or requirements
+- Add **headings** to organize longer descriptions
+- Insert **links** to registration pages, venue websites, or additional information
+- Use **undo/redo** if you make a mistake
+
+**Tips for Effective Formatting:**
+- Use headings to break up longer descriptions (e.g., "What to Expect", "What to Bring")
+- Create lists for age ranges, activity schedules, or items to bring
+- Bold important details like "Registration required" or "Free admission"
+- Link to external resources like parking maps or venue accessibility guides
+
 **Example:**
 > "Join us for an interactive storytime featuring classic picture books, songs, and movement activities. Perfect for toddlers ages 0-3 and their caregivers. We'll read three stories, sing songs with props, and end with a simple craft. Bring a blanket to sit on – we gather in a circle on the floor. No registration required, drop-ins welcome!"
 
