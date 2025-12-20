@@ -608,20 +608,33 @@
 - [ ] Test with Stripe test card (4242 4242 4242 4242)
 
 ## Monetization Implementation - Phase 3: Voluntary Donations
-- [ ] Create Stripe checkout session for donations
+- [x] Create Stripe checkout session for donations
   - Preset amounts: $5, $10, $25 + custom amount field
   - Toggle: one-time OR monthly recurring
-- [ ] Build payment success/thank you page
-- [ ] Create donor wall page with:
+- [x] Build payment success/thank you page (DonateThankYou.tsx)
+- [x] Create donor wall page with:
   - Donor name (or "Anonymous Supporter" if is_anonymous=true)
   - Optional message (max 200 chars)
   - Optional amount display (if show_amount=true)
   - Timestamp
-- [ ] Add donor preferences form (name, anonymous toggle, show amount toggle, message)
-- [ ] Create products.ts file with donation product definitions
-- [ ] Add transparency page explaining fund usage (hosting, development, accessibility audits)
-- [ ] Write vitest tests for donation flow
-- [ ] Test with Stripe test card (4242 4242 4242 4242)
+- [x] Add donor preferences form (name, anonymous toggle, show amount toggle, message)
+- [x] Create products.ts file with donation product definitions
+- [x] Add transparency page explaining fund usage (hosting, development, accessibility audits)
+- [x] Create donation routes (/donate, /donor-wall, /donate/thank-you)
+- [x] Create donations database helpers (donations-db.ts)
+- [x] Create donations tRPC router (donations-router.ts)
+- [x] Create Stripe webhook handler (stripe-webhook.ts)
+- [x] Register webhook route in Express server
+- [x] Write vitest tests for donation flow (all 7 tests passing)
+- [x] Test Stripe checkout session creation (verified with vitest)
+- [x] Add "Support the Project" section to footer with:
+  - Support Us (link to /donate)
+  - Donor Wall (link to /donor-wall)
+  - Business Sponsorship (link to /contact)
+- [x] Add transparency blurb to Donate page:
+  - "Event listings are free and always will be"
+  - Breakdown of how funds are used (hosting, development, audits, outreach)
+  - Link to contact for questions about fund usage
 
 ## Monetization Implementation - Phase 4: UI Placement
 - [ ] Discuss UI placement options with user

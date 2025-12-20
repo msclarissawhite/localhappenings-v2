@@ -24,6 +24,9 @@ import UserLogin from "./pages/UserLogin";
 import UserVerify from "./pages/UserVerify";
 import UserProfile from "./pages/UserProfile";
 import VerifyEmailChange from "./pages/VerifyEmailChange";
+import Donate from "./pages/Donate";
+import DonorWall from "./pages/DonorWall";
+import DonateThankYou from "./pages/DonateThankYou";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -53,6 +56,9 @@ function Router() {
       <Route path="/user/verify" component={UserVerify} />
       <Route path="/user/verify-email" component={VerifyEmailChange} />
       <Route path="/user/profile" component={UserProfile} />
+      <Route path="/donate" component={Donate} />
+      <Route path="/donor-wall" component={DonorWall} />
+      <Route path="/donate/thank-you" component={DonateThankYou} />
       <Route path={"/404"} component={NotFound} />          <Route component={NotFound} />
         </Switch>
       </main>

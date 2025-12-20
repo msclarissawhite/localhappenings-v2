@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="bg-card border-t border-border mt-auto">
       <div className="container py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* About */}
           <div>
             <h3 className="font-semibold text-lg mb-3">About Local Happenings</h3>
@@ -49,6 +49,28 @@ export default function Footer() {
             <Link href="/contact" className="text-primary hover:underline text-sm font-medium">
               Contact Us →
             </Link>
+          </div>
+
+          {/* Support the Project */}
+          <div>
+            <h3 className="font-semibold text-lg mb-3">Support the Project</h3>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <Link href="/donate" className="text-muted-foreground hover:text-primary transition-colors">
+                  Support Us
+                </Link>
+              </li>
+              <li>
+                <Link href="/donor-wall" className="text-muted-foreground hover:text-primary transition-colors">
+                  Donor Wall
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="text-muted-foreground hover:text-primary transition-colors">
+                  Business Sponsorship
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
 
