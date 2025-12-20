@@ -510,3 +510,18 @@
 - [x] Remove empty string values from Time of Day SelectItem (use "any" instead)
 - [x] Update onValueChange handlers to convert "all"/"any" back to undefined
 - [x] Test Browse Events page loads without errors
+
+## Location Data Consistency Issues
+- [x] Investigate why Browse Events only shows "Nova Scotia" but Submit Event has more provinces
+  - Browse Events was querying database for locations from published events only
+  - Submit Event uses shared CANADIAN_PROVINCES and CANADIAN_CITIES constants
+- [x] Fix municipality dropdown not showing options when Nova Scotia is selected in Browse Events
+- [x] Identify current location data sources (Browse Events vs Submit Event)
+  - Browse Events: trpc.events.getLocations() (database query)
+  - Submit Event: @shared/canadian-locations constants
+- [x] Single source of truth already exists: shared/canadian-locations.ts
+  - 13 Canadian provinces/territories
+  - 53 Nova Scotia municipalities (regional, county, district, towns)
+- [x] Update Browse Events to use shared canadian-locations constants
+- [x] Submit Event already uses consistent location data source
+- [x] Test location dropdowns work consistently across all pages

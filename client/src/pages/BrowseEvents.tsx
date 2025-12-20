@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import type { EventFilters } from "@shared/types";
+import { CANADIAN_PROVINCES, CANADIAN_CITIES } from "@shared/canadian-locations";
 import {
   Accordion,
   AccordionContent,
@@ -29,7 +30,15 @@ export default function BrowseEvents() {
   const [showFilters, setShowFilters] = useState(false);
 
   const { data: events, isLoading } = trpc.events.list.useQuery(filters);
-  const { data: locations } = trpc.events.getLocations.useQuery();
+  
+  // Use shared location constants for consistent data across the site
+  const provinces = CANADIAN_PROVINCES.map(p => p.name);
+  const getAvailableMunicipalities = (provinceName: string | undefined) => {
+    if (!provinceName) return [];
+    const provinceCode = CANADIAN_PROVINCES.find(p => p.name === provinceName)?.code;
+    return provinceCode ? CANADIAN_CITIES[provinceCode] || [] : [];
+  };
+  const availableMunicipalities = getAvailableMunicipalities(filters.province);
 
   const updateFilter = (key: keyof EventFilters, value: any) => {
     setFilters((prev) => ({ ...prev, [key]: value, offset: 0 }));
@@ -115,7 +124,7 @@ export default function BrowseEvents() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All provinces</SelectItem>
-                {locations?.provinces?.map((province) => (
+                {provinces.map((province) => (
                   <SelectItem key={province} value={province}>
                     {province}
                   </SelectItem>
@@ -139,13 +148,11 @@ export default function BrowseEvents() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All municipalities</SelectItem>
-                {locations?.municipalities
-                  ?.filter((m) => !filters.province || m.province === filters.province)
-                  ?.map((municipality) => (
-                    <SelectItem key={municipality.name} value={municipality.name}>
-                      {municipality.name}
-                    </SelectItem>
-                  ))}
+                {availableMunicipalities.map((municipality) => (
+                  <SelectItem key={municipality} value={municipality}>
+                    {municipality}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
