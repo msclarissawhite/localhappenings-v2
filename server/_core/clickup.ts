@@ -202,3 +202,44 @@ export async function updateEventStatusInClickUp(
 
   return await updateClickUpTaskStatus(taskId, statusMap[status]);
 }
+
+/**
+ * Add a comment to a ClickUp task
+ */
+export async function addClickUpComment(
+  taskId: string,
+  comment: string
+): Promise<boolean> {
+  if (!ENV.CLICKUP_API_KEY) {
+    console.error("[ClickUp] API key not configured");
+    return false;
+  }
+
+  try {
+    const response = await fetch(
+      `https://api.clickup.com/api/v2/task/${taskId}/comment`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: ENV.CLICKUP_API_KEY,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          comment_text: comment,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("[ClickUp] Failed to add comment:", errorText);
+      return false;
+    }
+
+    console.log(`[ClickUp] Comment added to task ${taskId}`);
+    return true;
+  } catch (error) {
+    console.error("[ClickUp] Error adding comment:", error);
+    return false;
+  }
+}

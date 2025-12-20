@@ -4,7 +4,7 @@ import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import * as eventsDb from "./events-db";
 import type { AccessibilityData } from "../shared/types";
 import { notifyOwner } from "./_core/notification";
-import { syncEventToClickUp, updateEventStatusInClickUp } from "./_core/clickup";
+import { syncEventToClickUp, updateEventStatusInClickUp, addClickUpComment } from "./_core/clickup";
 import { notifySubmitterStatusChange } from "./_core/email-notification";
 import { notifyOrganizerStatusChange } from "./_core/organizer-email";
 import { generateEventInstances, generateRecurringDates, type RecurrencePattern } from "./recurring-events";
@@ -441,6 +441,18 @@ export const eventsRouter = router({
         if (event.clickupTaskId) {
           try {
             await updateEventStatusInClickUp(event.clickupTaskId, input.status);
+            
+            // Add review notes as a comment if provided
+            if (input.reviewNotes) {
+              const statusLabels = {
+                published: "✅ Approved",
+                rejected: "❌ Rejected",
+                "needs-clarification": "⚠️ Needs Clarification",
+              };
+              
+              const commentText = `**${statusLabels[input.status]}**\n\n${input.reviewNotes}`;
+              await addClickUpComment(event.clickupTaskId, commentText);
+            }
           } catch (error) {
             console.error("Failed to update ClickUp task status:", error);
             // Don't fail the status update if ClickUp sync fails

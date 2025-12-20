@@ -824,3 +824,9 @@
 - [x] Add clickupTaskId field to events schema for tracking
 - [ ] Test event submission creates ClickUp task with correct fields
 - [ ] Test status sync when admin changes event status
+
+## ClickUp Review Notes as Comments (December 20, 2024)
+- [x] Add addClickUpComment function to ClickUp helper module
+- [x] Post review notes as comments when admin approves/rejects events
+- [x] Format comments with emoji status indicators (✅ Approved, ❌ Rejected, ⚠️ Needs Clarification)
+- [ ] Test comment posting with approval and rejection scenarios
