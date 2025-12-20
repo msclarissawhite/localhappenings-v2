@@ -401,3 +401,10 @@
 - [x] Ensure saved events list shows for both organizers and magic link users
 - [x] Test that organizers can manage reminder preferences
 - [x] Created comprehensive test suite (5 tests passing)
+
+## Feature: My Saved Events in Organizer Dashboard
+- [x] Add "My Saved Events" navigation link to organizer dashboard sidebar
+- [x] Updated MySavedEvents page to support dual authentication (organizer + user)
+- [x] Test organizer can view and manage saved events from dashboard
+- [x] Ensure saved events list displays correctly for organizers
+- [x] Created comprehensive test suite (7 tests passing)

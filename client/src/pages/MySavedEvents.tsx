@@ -1,5 +1,6 @@
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
+import { useUserAuth } from "@/hooks/useUserAuth";
 import { getLoginUrl } from "@/const";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,7 +9,14 @@ import { Bookmark, Calendar, MapPin, DollarSign, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 export default function MySavedEvents() {
-  const { user, isLoading: authLoading } = useAuth();
+  // Support both organizer (Manus OAuth) and user (magic link) authentication
+  const organizerAuth = useAuth();
+  const userAuth = useUserAuth();
+  
+  // Use whichever authentication is active
+  const user = organizerAuth.user || userAuth.user;
+  const authLoading = organizerAuth.loading || userAuth.loading;
+  
   const utils = trpc.useUtils();
 
   const { data: savedEvents, isLoading } = trpc.savedEvents.list.useQuery(undefined, {

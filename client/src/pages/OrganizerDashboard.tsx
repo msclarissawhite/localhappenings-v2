@@ -16,7 +16,7 @@ interface Organizer {
 export default function OrganizerDashboard() {
   const [, navigate] = useLocation();
   const [organizer, setOrganizer] = useState<Organizer | null>(null);
-  const [activeTab, setActiveTab] = useState<"events" | "locations">("events");
+  const [activeTab, setActiveTab] = useState<"events" | "locations" | "saved">("events");
 
   useEffect(() => {
     // Check if organizer is logged in
@@ -134,6 +134,14 @@ export default function OrganizerDashboard() {
           >
             <MapPinned className="w-4 h-4 mr-2" />
             Saved Locations
+          </Button>
+          <Button
+            variant={activeTab === "saved" ? "default" : "ghost"}
+            onClick={() => navigate("/my-saved-events")}
+            className="rounded-b-none"
+          >
+            <Eye className="w-4 h-4 mr-2" />
+            My Saved Events
           </Button>
         </div>
 
