@@ -886,7 +886,7 @@ export default function SubmitEvent() {
                 </div>
 
                 <div>
-                  <Label htmlFor="municipality">City/Town *</Label>
+                  <Label htmlFor="municipality">City/Town/Municipality *</Label>
                   <Select
                     value={watch("municipality") || ""}
                     onValueChange={(value) => setValue("municipality", value)}

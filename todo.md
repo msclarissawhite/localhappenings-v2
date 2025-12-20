@@ -453,3 +453,6 @@
   - [x] Covered bike parking (yes/no/unknown/not-relevant)
 - [ ] Test all new accessibility fields and ensure they save correctly
 - [ ] Align accessibility features with browse/filter options
+
+## Form Label Update
+- [x] Change city label on SubmitEvent form from "City/Town" to "City/Town/Municipality"
