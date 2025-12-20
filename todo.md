@@ -651,3 +651,28 @@
   - Total donations amount and count
   - Average donation
   - Recurring vs one-time breakdown with progress bars
+
+## Donation Flow Testing (End-to-End)
+- [x] Test donation form with preset amount ($10)
+- [x] Complete Stripe checkout with test card (4242 4242 4242 4242)
+- [x] Verify payment success and redirect to thank-you page
+- [x] Verify success toast appears on thank-you page
+- [x] Verify donation appears on donor wall (name + date)
+- [x] Verify admin dashboard shows correct statistics ($10.00, 1 donation)
+- [x] Verify webhook processed payment correctly
+- [x] Verify database contains donation record (1000 cents from test@example.com)
+
+**Test Result**: ✅ All core functionality working
+
+## Bug Fix: Donor Wall Amount Display
+- [x] Investigate DonorWall component amount display logic
+- [x] Verify entire data flow (frontend → Stripe → webhook → database → display)
+- [x] Test with new donation to verify amount displays when showAmount=true
+
+**Result**: ✅ NO BUG FOUND - System working correctly
+- First test donation had showAmount=false because checkbox was accidentally unchecked during testing
+- Second test donation (Amount Tester, $10.00) displays amount correctly on donor wall
+- All code paths verified and working as designed
+- Donor wall now shows both donations correctly:
+  - "Amount Tester" - $10.00 (showAmount=true)
+  - "Test Supporter" - no amount (showAmount=false)

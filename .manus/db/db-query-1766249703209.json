@@ -1,0 +1,17 @@
+{
+  "query": "SELECT id, donorName, amount, showAmount, isAnonymous FROM donations ORDER BY createdAt DESC LIMIT 1;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT id, donorName, amount, showAmount, isAnonymous FROM donations ORDER BY createdAt DESC LIMIT 1;",
+  "rows": [
+    {
+      "id": "1",
+      "donorName": "Test Supporter",
+      "amount": "1000",
+      "showAmount": "0",
+      "isAnonymous": "0"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tdonorName\tamount\tshowAmount\tisAnonymous\n1\tTest Supporter\t1000\t0\t0\n",
+  "stderr": "",
+  "execution_time_ms": 873
+}
