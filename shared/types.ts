@@ -35,6 +35,10 @@ export interface AccessibilityData {
     accessibleParking?: AccessibilityValue;
     terrainInfo?: "flat" | "gravel" | "hills" | "paved" | "unpaved" | "mixed" | "unknown" | "not-relevant";
     parkingDistance?: "short" | "moderate" | "long" | "unknown" | "not-relevant";
+    busStopDistance?: "short" | "moderate" | "long" | "unknown" | "not-relevant";
+    accessibleSidewalks?: AccessibilityValue;
+    bikeRacks?: AccessibilityValue;
+    coveredBikeParking?: AccessibilityValue;
   };
   sensory: {
     sensoryFriendly?: AccessibilityValue;
@@ -117,6 +121,12 @@ export interface EventFilters {
   genderNeutralWashrooms?: boolean;
   lgbtqiaFriendly?: boolean;
   scentFree?: boolean;
+  // New public transit & active transportation
+  busStopDistance?: boolean;
+  accessibleSidewalks?: boolean;
+  bikeRacks?: boolean;
+  coveredBikeParking?: boolean;
+  crowdLevel?: boolean;
   
   // Event types
   eventTypeIds?: number[];

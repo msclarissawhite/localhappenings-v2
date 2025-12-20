@@ -458,7 +458,11 @@ export default function EventDetail() {
             <Card className="p-6">
               <h2 className="text-xl font-semibold mb-4">Accessibility & Logistics</h2>
               <p className="text-sm text-muted-foreground mb-6">
-                Accessibility information helps families plan with confidence. "Unknown" means the organizer hasn't confirmed this detail yet. "Not Relevant" means this feature doesn't apply to this event.
+                Accessibility information helps families plan with confidence.
+                <br />
+                "Unknown" means this detail hasn't been confirmed yet or couldn't be verified at the time of posting. Organizers may update this information as details are confirmed.
+                <br />
+                "Not relevant" means the feature doesn't apply to this event.
               </p>
 
               <div className="space-y-6">

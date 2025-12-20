@@ -1137,13 +1137,22 @@ export default function SubmitEvent() {
                 Accessibility Information * — Why This Matters
               </h2>
               <p className="text-sm text-muted-foreground mb-2">
-                <strong>Detailed accessibility information helps families make informed decisions about attending your event.</strong> Parents of children with disabilities, sensory sensitivities, or specific needs rely on this information to know if their family can participate safely and comfortably.
+                Detailed accessibility information helps families make informed decisions about attending your event. Parents of children with disabilities, sensory sensitivities, or specific needs often rely on this information to know whether they can participate safely and comfortably.
+              </p>
+              <p className="text-sm text-muted-foreground mb-2">
+                This section is required, but "Unknown" is always acceptable if you haven't been able to confirm a detail yet or if it can't be verified at this time.
+              </p>
+              <p className="text-sm text-muted-foreground mb-2">
+                <strong>We strongly prefer "Unknown" over guessing or selecting an option that may not be accurate.</strong>
+              </p>
+              <p className="text-sm text-muted-foreground mb-2">
+                If you select "Unknown," we encourage you to confirm and update the information when and if possible. Accessibility details can often be clarified closer to the event date, and updating them helps families feel more confident about attending.
+              </p>
+              <p className="text-sm text-muted-foreground mb-2">
+                Use "Not relevant" for features that don't apply to your venue or event type.
               </p>
               <p className="text-sm text-muted-foreground">
-                This section is required, but "Unknown" is always acceptable if you're truly unsure. <strong>However, we strongly encourage you to confirm and update "Unknown" fields as soon as possible.</strong> Families rely on complete accessibility information to decide if they can attend safely and comfortably. Select "Not Relevant" for features that don't apply to your venue or event type. Each field includes a tooltip (ℹ️) explaining why it matters.
-              </p>
-              <p className="text-sm text-muted-foreground mt-2">
-                <strong>Note:</strong> When your event is published, "Unknown" fields will display to users as "The organizer hasn't confirmed this detail yet," which may discourage attendance. Providing complete information helps build trust and increases participation.
+                When your event is published, the Accessibility section states that Unknowns are unconfirmed and may be updated at a later date. This transparency helps build trust with your community, even if not every detail is available right away.
               </p>
             </div>
 

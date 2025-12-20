@@ -456,3 +456,19 @@
 
 ## Form Label Update
 - [x] Change city label on SubmitEvent form from "City/Town" to "City/Town/Municipality"
+
+## Accessibility Language and Schema Finalization
+- [x] Update accessibility tooltip on SubmitEvent form with new comprehensive language
+- [x] Update EventDetail accessibility explanation text with new language
+- [x] Add busStopDistance field to events-router.ts validation schema
+- [x] Add accessibleSidewalks field to events-router.ts validation schema
+- [x] Add bikeRacks field to events-router.ts validation schema
+- [x] Add coveredBikeParking field to events-router.ts validation schema
+- [x] Update crowdLevel to support spacious/moderate/crowded values (already in schema)
+- [x] Update shared/types.ts with new accessibility fields
+- [x] Test submitting event with all new accessibility fields (4 tests passing)
+- [x] Verify new fields save correctly to database (tests confirm)
+- [ ] Verify new fields display correctly on event detail pages
+- [ ] Add all accessibility options to Browse Events advanced filters
+- [ ] Move Time of Day filter from advanced to quick filters section
+- [ ] Test complete accessibility workflow end-to-end

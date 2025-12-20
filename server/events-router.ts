@@ -34,6 +34,10 @@ const accessibilitySchema = z.object({
     accessibleParking: z.enum(["yes", "no", "unknown", "not-relevant"]).optional(),
     terrainInfo: z.enum(["flat", "gravel", "hills", "unknown", "not-relevant"]).optional(),
     parkingDistance: z.enum(["short", "moderate", "long", "unknown", "not-relevant"]).optional(),
+    busStopDistance: z.enum(["short", "moderate", "long", "unknown", "not-relevant"]).optional(),
+    accessibleSidewalks: z.enum(["yes", "no", "unknown", "not-relevant"]).optional(),
+    bikeRacks: z.enum(["yes", "no", "unknown", "not-relevant"]).optional(),
+    coveredBikeParking: z.enum(["yes", "no", "unknown", "not-relevant"]).optional(),
   }).optional(),
   sensory: z.object({
     sensoryFriendly: z.enum(["yes", "no", "unknown", "not-relevant"]).optional(),
