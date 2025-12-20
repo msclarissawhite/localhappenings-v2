@@ -254,33 +254,53 @@ export default function Donate() {
         </form>
 
         {/* Transparency & How Funds Are Used */}
-        <Card className="mt-8 p-6 bg-muted/50">
-          <h2 className="text-xl font-semibold mb-4">Our Commitment to Transparency</h2>
-          <p className="text-muted-foreground mb-6">
-            Local Happenings is a community-first project. <strong>Event listings are free and always will be.</strong> Your voluntary support goes directly toward the development and maintenance of this platform—there are no middlemen, no investors, and no profit motive. Every dollar helps us build better tools for families who need accessible event information.
+        <Card className="mt-8 p-8 bg-muted/50">
+          <h2 className="text-xl font-semibold mb-6">Why Local Happenings Exists</h2>
+          
+          <p className="text-muted-foreground mb-4 leading-relaxed">
+            Local Happenings started as a dream from a mom who struggled to find change tables where she expected them to be, where change tables only existed in women's washrooms, and where stroller access was often limited. If I was struggling with these basic logistics, I knew many others were too—especially families navigating more complex accessibility needs.
           </p>
 
-          <h3 className="text-lg font-semibold mb-3">How Your Support Helps</h3>
-          <ul className="space-y-2 text-muted-foreground">
-            <li className="flex items-start">
-              <span className="mr-2">•</span>
+          <p className="text-muted-foreground mb-6 leading-relaxed">
+            After years of wishing this platform existed, I finally built it. This is a community-first project, and <strong>event listings are free and always will be.</strong>
+          </p>
+
+          <h3 className="text-lg font-semibold mb-4 mt-8">Our Commitment to Transparency</h3>
+          
+          <p className="text-muted-foreground mb-6 leading-relaxed">
+            Your voluntary support goes directly toward the development and maintenance of this platform. There are no middlemen and no investors.
+          </p>
+
+          <p className="text-muted-foreground mb-6 leading-relaxed">
+            If Local Happenings grows to serve thousands of families, I hope to dedicate more time to it—potentially making it my full-time work. That would mean compensating myself fairly for the hours spent building features, moderating events, and supporting the community. Every dollar you contribute helps make that sustainable growth possible.
+          </p>
+
+          <h3 className="text-lg font-semibold mb-4 mt-8">How Your Support Helps</h3>
+          
+          <ul className="space-y-3 text-muted-foreground">
+            <li className="flex items-start leading-relaxed">
+              <span className="mr-2 mt-1">•</span>
               <span><strong>Hosting and infrastructure:</strong> Server costs, database hosting, and platform reliability to keep Local Happenings running 24/7</span>
             </li>
-            <li className="flex items-start">
-              <span className="mr-2">•</span>
+            <li className="flex items-start leading-relaxed">
+              <span className="mr-2 mt-1">•</span>
               <span><strong>Feature development:</strong> Building new accessibility filters, improving search, and adding community-requested features</span>
             </li>
-            <li className="flex items-start">
-              <span className="mr-2">•</span>
+            <li className="flex items-start leading-relaxed">
+              <span className="mr-2 mt-1">•</span>
               <span><strong>Accessibility audits:</strong> Professional reviews to ensure the platform itself meets WCAG standards and serves all users</span>
             </li>
-            <li className="flex items-start">
-              <span className="mr-2">•</span>
+            <li className="flex items-start leading-relaxed">
+              <span className="mr-2 mt-1">•</span>
               <span><strong>Community outreach:</strong> Helping more families and event organizers discover and use the platform</span>
+            </li>
+            <li className="flex items-start leading-relaxed">
+              <span className="mr-2 mt-1">•</span>
+              <span><strong>Sustainable development:</strong> Supporting the time and effort needed to maintain and grow this platform long-term</span>
             </li>
           </ul>
 
-          <p className="text-sm text-muted-foreground mt-6 italic">
+          <p className="text-sm text-muted-foreground mt-8 italic leading-relaxed">
             Questions about how funds are used? <a href="/contact" className="text-primary hover:underline">Contact us</a>—we're happy to share details.
           </p>
         </Card>

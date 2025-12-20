@@ -728,3 +728,17 @@
   - Database stores Stripe customer ID (cus_RULcBGEEZC9zYl) and subscription ID (sub_1SgQPbAd3bUyQYyI1YQqJLSO)
   - Email receipt should include "Manage Subscription" button with portal link
 - [ ] Verify donors can update payment method and cancel subscription (requires checking actual email receipt and clicking portal link)
+
+## Launch Preparation Tasks
+- [x] Add "Support Us" link from donor wall page to /donate
+- [x] Rewrite donation page transparency section with personal story
+- [x] Update donation page wording to reflect potential future paid work
+- [x] Improve paragraph spacing and readability on donation page
+- [ ] Create organizer event information guide (all fields with required/optional markers)
+- [ ] Create example CSV template for bulk event uploads
+- [ ] Create blank CSV template for bulk event uploads
+- [ ] Delete all test events from database
+- [ ] Delete all test donations from database
+- [ ] Update USER_MANUAL.md with all recent features
+- [ ] Audit site for launch blockers (excluding Stripe sandbox claim)
+- [ ] Document any remaining tasks before public launch

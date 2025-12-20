@@ -2,6 +2,8 @@ import { Card } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
 import { Heart, Loader2, Repeat } from "lucide-react";
 import { formatPrice } from "../../../shared/products";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
 
 export default function DonorWall() {
   const { data: donations, isLoading } = trpc.donations.getDonorWall.useQuery();
@@ -21,9 +23,15 @@ export default function DonorWall() {
         <div className="text-center mb-12">
           <Heart className="w-16 h-16 mx-auto mb-4 text-primary fill-primary" />
           <h1 className="text-4xl font-bold mb-4">Our Supporters</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
             Thank you to everyone who helps keep Local Happenings accessible and free for all families.
           </p>
+          <Link href="/donate">
+            <Button size="lg" className="gap-2">
+              <Heart className="w-5 h-5" />
+              Support Us
+            </Button>
+          </Link>
         </div>
 
         {/* Loading State */}
