@@ -272,7 +272,7 @@ export default function Donate() {
           </p>
 
           <p className="text-muted-foreground mb-6 leading-relaxed">
-            If Local Happenings grows to serve thousands of families, I hope to dedicate more time to it—potentially making it my full-time work. That would mean compensating myself fairly for the hours spent building features, moderating events, and supporting the community. Every dollar you contribute helps make that sustainable growth possible.
+            This is currently a passion project and will remain that way for as long as possible. If Local Happenings grows to serve thousands of families, I hope to dedicate more time to it—potentially making it my full-time work. That would mean compensating myself fairly for the hours spent building features, moderating events, and supporting the community. Every dollar you contribute helps make that sustainable growth possible.
           </p>
 
           <h3 className="text-lg font-semibold mb-4 mt-8">How Your Support Helps</h3>

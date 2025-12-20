@@ -742,3 +742,9 @@
 - [ ] Update USER_MANUAL.md with all recent features
 - [ ] Audit site for launch blockers (excluding Stripe sandbox claim)
 - [ ] Document any remaining tasks before public launch
+
+## Post-Launch Polish
+- [x] Add "passion project" messaging to donation page transparency section
+- [ ] Add empty state placeholder to Browse Events page when no events exist
+- [ ] Link empty state to Submit Event form
+- [ ] Ensure empty state disappears after first event is published

@@ -707,7 +707,33 @@ export default function BrowseEvents() {
           <div className="text-center py-12">
             <p className="text-muted-foreground">Loading events...</p>
           </div>
-        ) : events && events.length > 0 ? (
+        ) : !events || events.length === 0 ? (
+          // Check if this is truly empty (no filters applied) vs filtered empty
+          Object.keys(filters).length === 2 && filters.limit === 20 && filters.offset === 0 ? (
+            // Empty state - no events in database at all
+            <div className="text-center py-16 px-4">
+              <Calendar className="w-16 h-16 mx-auto mb-4 text-muted-foreground/50" />
+              <h3 className="text-xl font-semibold mb-2">We're Collecting Our First Events!</h3>
+              <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                Local Happenings is brand new and we're actively gathering events to list. 
+                Help us build this community by submitting an event you know about!
+              </p>
+              <Link href="/submit">
+                <Button size="lg">
+                  Submit an Event
+                </Button>
+              </Link>
+            </div>
+          ) : (
+            // Filtered empty state
+            <div className="text-center py-12">
+              <p className="text-muted-foreground mb-4">No events found matching your filters.</p>
+              <Button onClick={clearFilters} variant="outline">
+                Clear Filters
+              </Button>
+            </div>
+          )
+        ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {events.map((event) => (
               <Link key={event.id} href={`/event/${event.id}`}>
@@ -768,13 +794,6 @@ export default function BrowseEvents() {
                 </Card>
               </Link>
             ))}
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground mb-4">No events found matching your filters.</p>
-            <Button onClick={clearFilters} variant="outline">
-              Clear Filters
-            </Button>
           </div>
         )}
       </div>
