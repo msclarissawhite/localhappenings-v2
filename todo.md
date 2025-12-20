@@ -697,3 +697,23 @@
 - [x] Update updateClickUpUpvotes() to use custom field API
 - [x] Test upvote sync with existing feature request (set to 5 upvotes)
 - [x] Verify votes display correctly in ClickUp task (https://app.clickup.com/t/86dyym6xp)
+
+## Donation Email Receipts
+- [x] Check existing Resend email infrastructure and templates
+- [x] Update sender name to "Local Happenings" for all emails
+- [x] Create donation receipt email template (HTML)
+  - Includes: amount, date, transaction ID, donor name, optional message
+  - Tax disclaimer (not 501(c)(3), may not be tax-deductible)
+  - Recurring donation management info
+  - Fund usage breakdown
+- [x] Update Stripe webhook to send email after successful donation
+  - Sends email for one-time donations (checkout.session.completed)
+  - Sends email for recurring donation renewals (invoice.paid)
+  - Includes all donation details and donor message
+  - Error handling: logs failure but doesn't fail webhook
+- [x] Test email receipt with test donation ($10 from test-receipt@example.com)
+- [x] Verify email delivery and formatting
+  - Server logs confirm: "Donation receipt sent to test-receipt@example.com for $10.00"
+  - Email sent successfully via Resend
+  - Sender shows "Local Happenings" (not just email address)
+  - All donation details included in email

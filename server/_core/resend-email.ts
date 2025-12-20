@@ -6,7 +6,8 @@ import { Resend } from "resend";
  */
 
 const resendApiKey = process.env.RESEND_API_KEY;
-const fromEmail = process.env.RESEND_FROM_EMAIL || "noreply@localhappenings.com";
+const fromEmailAddress = process.env.RESEND_FROM_EMAIL || "noreply@localhappenings.com";
+const fromEmail = `Local Happenings <${fromEmailAddress}>`;
 
 let resend: Resend | null = null;
 
@@ -29,6 +30,16 @@ interface EventStatusEmailParams {
   eventId: number;
   status: "published" | "rejected" | "needs-clarification";
   reviewNotes?: string;
+}
+
+interface DonationReceiptEmailParams {
+  to: string;
+  donorName: string;
+  amount: number; // in cents
+  isRecurring: boolean;
+  transactionId: string;
+  donationDate: Date;
+  message?: string;
 }
 
 /**
@@ -189,6 +200,116 @@ export async function sendEventStatusEmail(params: EventStatusEmailParams): Prom
     return true;
   } catch (error) {
     console.error("[Resend] Failed to send status email:", error);
+    return false;
+  }
+}
+
+/**
+ * Send donation receipt email to donor
+ */
+export async function sendDonationReceiptEmail(params: DonationReceiptEmailParams): Promise<boolean> {
+  if (!resend) {
+    console.error("[Resend] Cannot send donation receipt - Resend not configured");
+    return false;
+  }
+
+  const { to, donorName, amount, isRecurring, transactionId, donationDate, message } = params;
+  const amountDollars = (amount / 100).toFixed(2);
+  const formattedDate = donationDate.toLocaleDateString('en-US', { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  });
+
+  try {
+    await resend.emails.send({
+      from: fromEmail,
+      to,
+      subject: isRecurring 
+        ? "Thank You for Your Recurring Support! 💚" 
+        : "Thank You for Your Donation! 💚",
+      html: `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+              body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
+              .header { background: #2d5016; color: white; padding: 30px 20px; text-align: center; border-radius: 8px 8px 0 0; }
+              .content { background: #f9f9f9; padding: 30px 20px; border-radius: 0 0 8px 8px; }
+              .receipt-box { background: white; padding: 20px; border-radius: 6px; margin: 20px 0; border: 1px solid #e5e7eb; }
+              .receipt-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f3f4f6; }
+              .receipt-row:last-child { border-bottom: none; font-weight: 600; font-size: 18px; }
+              .message-box { background: #fef3c7; padding: 15px; border-left: 4px solid #f59e0b; margin: 20px 0; border-radius: 4px; font-style: italic; }
+              .footer { text-align: center; margin-top: 30px; font-size: 14px; color: #666; }
+              .disclaimer { font-size: 12px; color: #999; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e5e7eb; }
+            </style>
+          </head>
+          <body>
+            <div class="header">
+              <h1 style="margin: 0;">💚 Thank You!</h1>
+            </div>
+            <div class="content">
+              <p>Dear ${donorName},</p>
+              <p>Thank you for your generous ${isRecurring ? 'recurring ' : ''}donation to Local Happenings! Your support helps us keep event listings free and accessible for everyone.</p>
+              
+              ${message ? `
+                <div class="message-box">
+                  "${message}"
+                </div>
+              ` : ''}
+              
+              <div class="receipt-box">
+                <h3 style="margin-top: 0;">Donation Receipt</h3>
+                <div class="receipt-row">
+                  <span>Date:</span>
+                  <span>${formattedDate}</span>
+                </div>
+                <div class="receipt-row">
+                  <span>Amount:</span>
+                  <span>$${amountDollars} USD</span>
+                </div>
+                <div class="receipt-row">
+                  <span>Type:</span>
+                  <span>${isRecurring ? 'Monthly Recurring' : 'One-Time'}</span>
+                </div>
+                <div class="receipt-row">
+                  <span>Transaction ID:</span>
+                  <span style="font-size: 12px; color: #666;">${transactionId}</span>
+                </div>
+              </div>
+              
+              <p>Your contribution goes toward:</p>
+              <ul>
+                <li>Hosting and maintaining the platform</li>
+                <li>Ongoing development and new features</li>
+                <li>Accessibility improvements and audits</li>
+                <li>Community outreach and support</li>
+              </ul>
+              
+              ${isRecurring ? `
+                <p><strong>Recurring Donation:</strong> Your card will be charged $${amountDollars} monthly. You can cancel anytime from your donor dashboard or by replying to this email.</p>
+              ` : ''}
+              
+              <div class="disclaimer">
+                <p><strong>Tax Information:</strong> Local Happenings is currently an independent project and not a registered 501(c)(3) nonprofit organization. This donation may not be tax-deductible. Please consult your tax advisor for guidance.</p>
+                <p>Keep this email for your records. If you have any questions about your donation, please reply to this email.</p>
+              </div>
+            </div>
+            <div class="footer">
+              <p>Local Happenings - Accessible, family-friendly events in your community</p>
+              <p style="font-size: 12px; color: #999;">Event listings are free and always will be.</p>
+            </div>
+          </body>
+        </html>
+      `,
+    });
+
+    console.log(`[Resend] Donation receipt sent to ${to} for $${amountDollars}`);
+    return true;
+  } catch (error) {
+    console.error("[Resend] Failed to send donation receipt:", error);
     return false;
   }
 }

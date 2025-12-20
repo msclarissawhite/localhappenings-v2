@@ -10,6 +10,7 @@ import type { Request, Response } from "express";
 import { stripe, constructWebhookEvent } from "./_core/stripe";
 import { env } from "./_core/env";
 import * as donationsDb from "./donations-db";
+import { sendDonationReceiptEmail } from "./_core/resend-email";
 
 /**
  * Handle Stripe webhook events
@@ -104,6 +105,23 @@ async function handleCheckoutSessionCompleted(session: any) {
     });
 
     console.log(`[Stripe Webhook] Donation recorded: ${session.amount_total} cents from ${metadata.donorEmail}`);
+
+    // Send donation receipt email
+    try {
+      await sendDonationReceiptEmail({
+        to: metadata.donorEmail,
+        donorName: metadata.donorName || "Anonymous Supporter",
+        amount: session.amount_total,
+        isRecurring: isRecurring,
+        transactionId: isRecurring ? session.subscription : session.payment_intent,
+        donationDate: new Date(),
+        message: metadata.message || undefined,
+      });
+      console.log(`[Stripe Webhook] Donation receipt email sent to ${metadata.donorEmail}`);
+    } catch (emailError: any) {
+      console.error(`[Stripe Webhook] Failed to send donation receipt email:`, emailError.message);
+      // Don't fail the webhook if email fails - donation is already recorded
+    }
   }
 }
 
@@ -137,5 +155,21 @@ async function handleInvoicePaid(invoice: any) {
     });
 
     console.log(`[Stripe Webhook] Recurring donation renewal recorded: ${invoice.amount_paid} cents`);
+
+    // Send renewal receipt email
+    try {
+      await sendDonationReceiptEmail({
+        to: existingDonation.donorEmail,
+        donorName: existingDonation.donorName || "Anonymous Supporter",
+        amount: invoice.amount_paid,
+        isRecurring: true,
+        transactionId: invoice.subscription,
+        donationDate: new Date(),
+      });
+      console.log(`[Stripe Webhook] Recurring donation receipt email sent to ${existingDonation.donorEmail}`);
+    } catch (emailError: any) {
+      console.error(`[Stripe Webhook] Failed to send renewal receipt email:`, emailError.message);
+      // Don't fail the webhook if email fails - donation is already recorded
+    }
   }
 }
