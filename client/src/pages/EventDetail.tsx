@@ -476,8 +476,8 @@ export default function EventDetail() {
                         value={accessibility.caregiver.changeTablesPresent} 
                       />
                       <AccessibilityRow 
-                        label="Change tables in all washrooms" 
-                        value={accessibility.caregiver.changeTablesAllWashrooms} 
+                        label="Change table locations" 
+                        value={accessibility.caregiver.changeTableLocations} 
                       />
                       <AccessibilityRow 
                         label="Nursing/breastfeeding friendly" 
@@ -540,6 +540,28 @@ export default function EventDetail() {
                         label="Accessible washrooms" 
                         value={accessibility.mobility.accessibleWashrooms} 
                       />
+                      {/* Washroom Availability - Array Display */}
+                      {accessibility.mobility.washroomAvailability && Array.isArray(accessibility.mobility.washroomAvailability) && accessibility.mobility.washroomAvailability.length > 0 && (
+                        <div className="flex justify-between items-center py-2 border-b last:border-0">
+                          <span className="text-sm">Washroom availability</span>
+                          <span className="text-sm font-medium text-right">
+                            {accessibility.mobility.washroomAvailability
+                              .map((type: string) => {
+                                const labels: Record<string, string> = {
+                                  "mens": "Men's",
+                                  "womens": "Women's",
+                                  "gender-neutral": "Gender-neutral",
+                                  "family": "Family",
+                                  "wheelchair-accessible": "Wheelchair accessible",
+                                  "unknown": "Unknown",
+                                  "not-relevant": "Not relevant"
+                                };
+                                return labels[type] || type;
+                              })
+                              .join(", ")}
+                          </span>
+                        </div>
+                      )}
                       <AccessibilityRow 
                         label="Accessible parking nearby" 
                         value={accessibility.mobility.accessibleParking} 
@@ -651,6 +673,14 @@ export default function EventDetail() {
                   <div>
                     <h3 className="font-semibold mb-3 text-lg">Social & Emotional</h3>
                     <div className="space-y-1">
+                      <AccessibilityRow 
+                        label="Service animals welcome" 
+                        value={accessibility.social.serviceAnimalsWelcome} 
+                      />
+                      <AccessibilityRow 
+                        label="Flexible participation" 
+                        value={accessibility.social.flexibleParticipation} 
+                      />
                       <AccessibilityRow 
                         label="Gender-neutral washrooms" 
                         value={accessibility.social.genderNeutralWashrooms} 

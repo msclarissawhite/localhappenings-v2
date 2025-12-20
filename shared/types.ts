@@ -16,7 +16,7 @@ export type AccessibilityValue = "yes" | "no" | "unknown" | "not-relevant";
 export interface AccessibilityData {
   caregiver: {
     changeTablesPresent?: AccessibilityValue;
-    changeTablesAllWashrooms?: AccessibilityValue;
+    changeTableLocations?: "mens" | "womens" | "gender-neutral" | "family" | "multiple" | "unknown" | "not-relevant";
     nursingFriendly?: AccessibilityValue;
     privateFeedingArea?: AccessibilityValue;
     bottleWarming?: AccessibilityValue;
@@ -33,6 +33,7 @@ export interface AccessibilityData {
     accessibleSeating?: AccessibilityValue;
     accessibleWashrooms?: AccessibilityValue;
     accessibleParking?: AccessibilityValue;
+    washroomAvailability?: Array<"mens" | "womens" | "gender-neutral" | "family" | "wheelchair-accessible" | "unknown" | "not-relevant">;
     terrainInfo?: "flat" | "gravel" | "hills" | "paved" | "unpaved" | "mixed" | "unknown" | "not-relevant";
     parkingDistance?: "short" | "moderate" | "long" | "unknown" | "not-relevant";
     busStopDistance?: "short" | "moderate" | "long" | "unknown" | "not-relevant";
@@ -59,6 +60,8 @@ export interface AccessibilityData {
     multilingualSupport?: AccessibilityValue;
   };
   social: {
+    serviceAnimalsWelcome?: AccessibilityValue;
+    flexibleParticipation?: AccessibilityValue;
     genderNeutralWashrooms?: AccessibilityValue;
     lgbtqiaFriendly?: AccessibilityValue;
     maskFriendly?: AccessibilityValue;
@@ -110,18 +113,22 @@ export interface EventFilters {
   
   // Accessibility filters
   changeTablesPresent?: boolean;
+  changeTableLocations?: string; // Filter by specific location type
   nursingFriendly?: boolean;
   strollerSpace?: boolean;
   wheelchairEntrance?: boolean;
   stepFreeEntry?: boolean;
   accessibleWashrooms?: boolean;
+  washroomAvailability?: string; // Filter by washroom type
   sensoryFriendly?: boolean;
   quietRoom?: boolean;
   quietEnvironment?: boolean;
+  serviceAnimalsWelcome?: boolean;
+  flexibleParticipation?: boolean;
   genderNeutralWashrooms?: boolean;
   lgbtqiaFriendly?: boolean;
   scentFree?: boolean;
-  // New public transit & active transportation
+  // Public transit & active transportation
   busStopDistance?: boolean;
   accessibleSidewalks?: boolean;
   bikeRacks?: boolean;

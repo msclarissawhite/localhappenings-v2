@@ -99,24 +99,34 @@ Check all age groups this event is appropriate for:
 
 | Field | Options | Description |
 |-------|---------|-------------|
-| **Change Table Available** | Yes / No / Unknown / Not Relevant | Diaper changing station |
-| **Change Table Location** | Men's washroom / Women's washroom / Gender-neutral / Family washroom / Multiple locations / Unknown / Not Relevant | Where change tables are located |
-| **Nursing/Feeding Room** | Yes / No / Unknown / Not Relevant | Private space for feeding babies |
-| **Stroller Accessible** | Yes / No / Partially / Unknown / Not Relevant | Can navigate with a stroller |
-| **Stroller Parking** | Yes / No / Unknown / Not Relevant | Designated area to leave strollers |
-| **Family Washroom** | Yes / No / Unknown / Not Relevant | Private washroom for families |
+| **Change Tables Present** | Yes / No / Unknown / Not Relevant | Are diaper changing tables available? |
+| **Change Table Locations** | Men's washroom / Women's washroom / Gender-neutral / Family washroom / Multiple locations / Unknown / Not Relevant | Where are change tables located? |
+| **Nursing/Breastfeeding Friendly** | Yes / No / Unknown / Not Relevant | Welcoming space for nursing |
+| **Private Feeding Area** | Yes / No / Unknown / Not Relevant | Private space available for feeding |
+| **Bottle Warming Available** | Yes / No / Unknown / Not Relevant | Can bottles be warmed on-site? |
+| **High Chairs Available** | Yes / No / Unknown / Not Relevant | High chairs provided for young children |
+| **Space for Strollers** | Yes / No / Unknown / Not Relevant | Adequate space to bring and maneuver strollers |
+| **Bag/Coat Storage** | Yes / No / Unknown / Not Relevant | Designated area to store belongings |
 
 ### Mobility & Physical Access
 
 | Field | Options | Description |
 |-------|---------|-------------|
-| **Wheelchair Accessible** | Yes / No / Partially / Unknown / Not Relevant | Wheelchair users can access event |
-| **Accessible Parking** | Yes / No / Unknown / Not Relevant | Designated accessible parking spots |
-| **Parking Distance** | Short (<2min) / Moderate (2-5min) / Long (5+min) / Unknown / Not Relevant | Walking distance from parking to venue |
-| **Elevator/Lift Available** | Yes / No / Unknown / Not Relevant | Accessible vertical access |
-| **Accessible Washrooms** | Yes / No / Unknown / Not Relevant | Washrooms with accessibility features |
-| **Seating Available** | Yes / No / Limited / Unknown / Not Relevant | Places to sit and rest |
-| **Terrain** | Flat / Gravel / Hills / Paved / Unpaved / Mixed / Unknown / Not Relevant | Ground surface type |
+| **Stroller Accessible** | Yes / No / Unknown / Not Relevant | Can strollers navigate the space easily? |
+| **Wheelchair Accessible Entrance** | Yes / No / Unknown / Not Relevant | Wheelchair-accessible entrance available |
+| **Step-Free Entry** | Yes / No / Unknown / Not Relevant | Can people enter without encountering steps? |
+| **Elevator Access** | Yes / No / Unknown / Not Relevant | Elevator access to all event areas |
+| **Wide Doorways** | Yes / No / Unknown / Not Relevant | Doorways wide enough for wheelchairs |
+| **Accessible Seating** | Yes / No / Unknown / Not Relevant | Accessible seating available |
+| **Accessible Washrooms** | Yes / No / Unknown / Not Relevant | Accessible washroom facilities available |
+| **Washroom Availability** | Men's / Women's / Gender-neutral / Family / Wheelchair accessible / Unknown / Not Relevant (select all that apply) | What types of washrooms are available? |
+| **Accessible Parking** | Yes / No / Unknown / Not Relevant | Reserved accessible parking nearby |
+| **Terrain Type** | Flat / Paved / Gravel / Hills / Unpaved / Mixed / Unknown / Not Relevant | Ground surface type |
+| **Parking Distance** | Short (<2min) / Moderate (2-5min) / Long (5+min) / Unknown / Not Relevant | Walking distance from parking to entrance |
+| **Bus Stop Distance** | Short (<2min) / Moderate (2-5min) / Long (5+min) / Unknown / Not Relevant | Distance from nearest bus stop |
+| **Accessible Sidewalks** | Yes / No / Unknown / Not Relevant | Sidewalks leading to venue are accessible |
+| **Bike Racks Available** | Yes / No / Unknown / Not Relevant | Bike racks near venue entrance |
+| **Covered Bike Parking** | Yes / No / Unknown / Not Relevant | Covered/sheltered bike parking available |
 
 ### Sensory Environment
 
@@ -136,14 +146,19 @@ Check all age groups this event is appropriate for:
 | **ASL Interpreter** | Yes / No / Upon request / Unknown / Not Relevant | American Sign Language interpretation |
 | **Multilingual Support** | Yes / No / Unknown / Not Relevant | Support in multiple languages |
 
-### Social & Behavioral
+### Social & Emotional
 
 | Field | Options | Description |
 |-------|---------|-------------|
-| **Sensory-Friendly** | Yes / No / Unknown / Not Relevant | Designed for sensory sensitivities |
-| **Service Animals Welcome** | Yes / No / Unknown / Not Relevant | Service animals permitted |
-| **Crowding Level** | Low / Moderate / High / Variable / Unknown / Not Relevant | Expected crowd density |
-| **Flexible Participation** | Yes / No / Unknown / Not Relevant | OK to participate at own pace |
+| **Service Animals Welcome** | Yes / No / Unknown / Not Relevant | Are service animals permitted? |
+| **Flexible Participation** | Yes / No / Unknown / Not Relevant | Can attendees participate at their own pace? |
+| **Gender-Neutral Washrooms** | Yes / No / Unknown / Not Relevant | Gender-neutral washroom facilities available |
+| **LGBTQIA+ Friendly** | Yes / No / Unknown / Not Relevant | Explicitly LGBTQIA+ welcoming space |
+| **Mask-Friendly** | Yes / No / Unknown / Not Relevant | Masks welcomed or encouraged |
+| **Scent-Free Environment** | Yes / No / Unknown / Not Relevant | Scent-free or low-scent environment |
+| **Alcohol-Free** | Yes / No / Unknown / Not Relevant | Event is alcohol-free |
+| **Substance-Free** | Yes / No / Unknown / Not Relevant | Event is substance-free |
+| **Trauma-Informed Approach** | Yes / No / Unknown / Not Relevant | Event designed with trauma-informed principles |
 
 ---
 

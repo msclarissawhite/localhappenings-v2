@@ -748,3 +748,14 @@
 - [ ] Add empty state placeholder to Browse Events page when no events exist
 - [ ] Link empty state to Submit Event form
 - [ ] Ensure empty state disappears after first event is published
+
+## Accessibility Field Reconciliation (December 20, 2024)
+- [x] Audit accessibility fields between organizer guide and submission form
+- [x] Replace "change tables in all washrooms" with "change table locations" dropdown
+- [x] Add "washroom availability" multi-select field to mobility section
+- [x] Add "service animals welcome" field to social & emotional section
+- [x] Add "flexible participation" field to social & emotional section
+- [x] Update event detail page to display new accessibility fields
+- [x] Update browse events filters with new accessibility options
+- [x] Update organizer guide to match form implementation
+- [x] Create ACCESSIBILITY_FIELD_SYNC.md documentation for future field additions

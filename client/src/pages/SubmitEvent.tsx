@@ -1169,13 +1169,37 @@ This transparency helps build trust with your community, even if not every detai
                     label="Change tables present"
                     tooltip="Are there diaper changing tables available at this event?"
                   />
-                  <AccessibilityField
-                    category="caregiver"
-                    field="changeTablesAllWashrooms"
-                    label="Change tables in all washrooms"
-                    tooltip="Are changing tables available in all washroom facilities?"
-                    showNotRelevant
-                  />
+                  {/* Change Table Locations - Dropdown Field */}
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Label className="text-sm">Change table locations</Label>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Info className="w-4 h-4 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent className="max-w-xs">
+                          <p className="text-sm">Where are diaper changing tables located? Select the option that best describes availability.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+                    <Select
+                      value={accessibility.caregiver?.changeTableLocations || "unknown"}
+                      onValueChange={(value) => updateAccessibility("caregiver", "changeTableLocations", value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select location..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="mens">Men's washroom</SelectItem>
+                        <SelectItem value="womens">Women's washroom</SelectItem>
+                        <SelectItem value="gender-neutral">Gender-neutral washroom</SelectItem>
+                        <SelectItem value="family">Family washroom</SelectItem>
+                        <SelectItem value="multiple">Multiple locations</SelectItem>
+                        <SelectItem value="unknown">Unknown</SelectItem>
+                        <SelectItem value="not-relevant">Not Relevant</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                   <AccessibilityField
                     category="caregiver"
                     field="nursingFriendly"
@@ -1267,6 +1291,62 @@ This transparency helps build trust with your community, even if not every detai
                     label="Accessible washrooms"
                     tooltip="Are there accessible washroom facilities available?"
                   />
+                  {/* Washroom Availability - Multi-Select Checkboxes */}
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Label className="text-sm">Washroom availability (select all that apply)</Label>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Info className="w-4 h-4 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent className="max-w-xs">
+                          <p className="text-sm">What types of washrooms are available at this venue? Check all that apply.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+                    <div className="space-y-2 pl-1">
+                      {[
+                        { value: "mens", label: "Men's washroom" },
+                        { value: "womens", label: "Women's washroom" },
+                        { value: "gender-neutral", label: "Gender-neutral washroom" },
+                        { value: "family", label: "Family washroom" },
+                        { value: "wheelchair-accessible", label: "Wheelchair accessible" },
+                        { value: "unknown", label: "Unknown" },
+                        { value: "not-relevant", label: "Not Relevant" },
+                      ].map((option) => {
+                        const currentValues = accessibility.mobility?.washroomAvailability || [];
+                        const isChecked = Array.isArray(currentValues) && currentValues.includes(option.value as any);
+                        
+                        return (
+                          <div key={option.value} className="flex items-center gap-2">
+                            <input
+                              type="checkbox"
+                              id={`washroom-${option.value}`}
+                              checked={isChecked}
+                              onChange={(e) => {
+                                const currentValues = accessibility.mobility?.washroomAvailability || [];
+                                let newValues: any[];
+                                
+                                if (e.target.checked) {
+                                  // Add value
+                                  newValues = [...(Array.isArray(currentValues) ? currentValues : []), option.value];
+                                } else {
+                                  // Remove value
+                                  newValues = (Array.isArray(currentValues) ? currentValues : []).filter((v: any) => v !== option.value);
+                                }
+                                
+                                updateAccessibility("mobility", "washroomAvailability", newValues as any);
+                              }}
+                              className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                            />
+                            <Label htmlFor={`washroom-${option.value}`} className="cursor-pointer font-normal text-sm">
+                              {option.label}
+                            </Label>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
                   <AccessibilityField
                     category="mobility"
                     field="accessibleParking"
@@ -1494,6 +1574,18 @@ This transparency helps build trust with your community, even if not every detai
               <div>
                 <h3 className="font-semibold mb-3 text-primary">Social & Emotional Accessibility</h3>
                 <div className="space-y-4">
+                  <AccessibilityField
+                    category="social"
+                    field="serviceAnimalsWelcome"
+                    label="Service animals welcome"
+                    tooltip="Are service animals permitted at this event?"
+                  />
+                  <AccessibilityField
+                    category="social"
+                    field="flexibleParticipation"
+                    label="Flexible participation"
+                    tooltip="Can attendees participate at their own pace or take breaks as needed?"
+                  />
                   <AccessibilityField
                     category="social"
                     field="genderNeutralWashrooms"

@@ -665,6 +665,26 @@ export default function BrowseEvents() {
                       <div className="space-y-2 pl-6">
                         <div className="flex items-center gap-2">
                           <Checkbox
+                            id="serviceAnimalsWelcome"
+                            checked={filters.serviceAnimalsWelcome || false}
+                            onCheckedChange={() => toggleFilter("serviceAnimalsWelcome")}
+                          />
+                          <Label htmlFor="serviceAnimalsWelcome" className="cursor-pointer text-sm">
+                            Service animals welcome
+                          </Label>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id="flexibleParticipation"
+                            checked={filters.flexibleParticipation || false}
+                            onCheckedChange={() => toggleFilter("flexibleParticipation")}
+                          />
+                          <Label htmlFor="flexibleParticipation" className="cursor-pointer text-sm">
+                            Flexible participation
+                          </Label>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Checkbox
                             id="genderNeutralWashrooms"
                             checked={filters.genderNeutralWashrooms || false}
                             onCheckedChange={() => toggleFilter("genderNeutralWashrooms")}
