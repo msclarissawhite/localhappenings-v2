@@ -10,6 +10,17 @@ vi.mock("./storage", () => ({
   }),
 }));
 
+// Mock the image processing module
+vi.mock("./imageProcessing", () => ({
+  processEventImage: vi.fn().mockResolvedValue(Buffer.from("processed-image-data")),
+  getImageMetadata: vi.fn().mockResolvedValue({
+    width: 800,
+    height: 600,
+    format: "jpeg",
+    size: 50000,
+  }),
+}));
+
 function createMockContext(): TrpcContext {
   return {
     user: undefined,

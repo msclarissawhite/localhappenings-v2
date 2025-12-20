@@ -104,14 +104,21 @@ For each field, you can select:
 
 Upload a photo to make your event stand out in browse listings and attract more families. Event images appear prominently on event cards and detail pages.
 
-**Image Guidelines for Best Results:**
+**Automatic Image Optimization:**
 
-- **Recommended Size:** 1200 pixels wide × 630 pixels tall (1200x630px)
-- **Aspect Ratio:** 1.91:1 (landscape orientation)
-- **File Format:** JPG or PNG
-- **File Size:** Under 2MB for fast loading
+Local Happenings automatically processes all uploaded images to ensure optimal display across all devices. When you upload an image, the system:
 
-**Why These Dimensions?** This size displays perfectly on both desktop and mobile devices without cropping or distortion. The 1.91:1 ratio matches social media preview standards, so your event looks great when shared on Facebook or Twitter.
+- **Resizes to 1200×630px** - Perfect for desktop, mobile, and social media sharing
+- **Optimizes file size** - Compresses to 85% quality JPEG for fast loading without visible quality loss
+- **Accepts any format** - Upload PNG, JPG, or WebP — all are converted to optimized JPEG
+- **Handles any size** - Upload large photos from your phone or camera — they'll be automatically resized
+
+**What This Means for You:** Just upload your best photo! Don't worry about resizing, cropping, or file size. The system handles all optimization automatically.
+
+**Image Best Practices (for best results before upload):**
+
+- **Landscape orientation works best** - The 1.91:1 ratio (wider than tall) displays better than square or portrait photos
+- **File size under 5MB recommended** - While the system can handle larger files, smaller uploads are faster
 
 **Image Best Practices:**
 
