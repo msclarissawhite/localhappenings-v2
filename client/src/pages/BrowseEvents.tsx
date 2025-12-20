@@ -133,10 +133,10 @@ export default function BrowseEvents() {
             </Select>
           </div>
 
-          {/* City/Town/Municipality */}
+          {/* Municipality */}
           <div>
             <Label htmlFor="municipality-filter" className="text-sm font-medium mb-2 block">
-              City/Town/Municipality
+              Municipality
             </Label>
             <Select
               value={filters.municipality || "all"}
@@ -362,7 +362,7 @@ export default function BrowseEvents() {
                       </Select>
                     </div>
                     <div>
-                      <Label>City</Label>
+                      <Label>Municipality</Label>
                       <Select
                         value={filters.municipality || "__all__"}
                         onValueChange={(value) => updateFilter("municipality", value === "__all__" ? undefined : value)}

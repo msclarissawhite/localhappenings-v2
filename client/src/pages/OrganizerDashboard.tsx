@@ -4,10 +4,11 @@ import { trpc } from "@/lib/trpc";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, MapPin, Clock, Edit, Eye, LogOut, MapPinned, Plus, Trash2, Copy, Bookmark, DollarSign, Image } from "lucide-react";
+import { Calendar, MapPin, Clock, Edit, Eye, LogOut, MapPinned, Plus, Trash2, Copy, Bookmark, DollarSign, Image, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "wouter";
 import { MyImages } from "@/components/MyImages";
+import { EventTemplates } from "@/components/EventTemplates";
 
 interface Organizer {
   id: number;

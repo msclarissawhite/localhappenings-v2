@@ -1017,7 +1017,9 @@
 - [x] Add "My Events" navigation link for logged-in organizers (already implemented in Header.tsx)
 - [x] Complete edit functionality for published events in organizer dashboard (EditEvent page exists and route registered)
 - [x] Add empty state to Browse Events page (already implemented with Submit Event CTA)
-- [ ] Rename "City" to "Municipality" throughout codebase
-- [ ] Rename "Neighbourhood" to "Neighbourhood/Community" throughout codebase
+- [x] Time of Day filter placement (already in quick filters section - lines 160-180)
+- [x] Select All/Deselect All for admin bulk operations (already implemented - checkbox on line 364-366)
+- [x] Rename "City" to "Municipality" throughout codebase (BrowseEvents.tsx and SubmitEvent.tsx updated)
+- [x] Rename "Neighbourhood" to "Neighbourhood/Community" (field doesn't exist in codebase)
 - [ ] Write vitest tests for filtering logic
 - [ ] Write vitest tests for accessibility features

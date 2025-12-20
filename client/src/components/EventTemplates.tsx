@@ -15,10 +15,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { FileText, Trash2, Plus, Calendar } from "lucide-react";
 import { toast } from "sonner";
-import { useNavigate } from "wouter";
+import { useLocation } from "wouter";
 
 export function EventTemplates() {
-  const navigate = useNavigate();
+  const [, setLocation] = useLocation();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [templateToDelete, setTemplateToDelete] = useState<number | null>(null);
 
@@ -44,7 +44,7 @@ export function EventTemplates() {
 
   const handleUseTemplate = (templateId: number) => {
     // Navigate to submit event page with template ID
-    navigate(`/submit-event?templateId=${templateId}`);
+    setLocation(`/submit-event?templateId=${templateId}`);
   };
 
   if (isLoading) {
@@ -64,7 +64,7 @@ export function EventTemplates() {
             Save recurring event types as templates for faster event creation
           </p>
         </div>
-        <Button onClick={() => navigate("/submit-event?createTemplate=true")}>
+        <Button onClick={() => setLocation("/submit-event?createTemplate=true")}>
           <Plus className="w-4 h-4 mr-2" />
           Create Template
         </Button>
@@ -78,7 +78,7 @@ export function EventTemplates() {
             <p className="text-muted-foreground mb-4">
               Create templates for recurring events to save time on future submissions
             </p>
-            <Button onClick={() => navigate("/submit-event?createTemplate=true")}>
+            <Button onClick={() => setLocation("/submit-event?createTemplate=true")}>
               <Plus className="w-4 h-4 mr-2" />
               Create Your First Template
             </Button>
