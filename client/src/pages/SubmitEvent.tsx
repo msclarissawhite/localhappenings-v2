@@ -1152,7 +1152,9 @@ export default function SubmitEvent() {
                 Use "Not relevant" for features that don't apply to your venue or event type.
               </p>
               <p className="text-sm text-muted-foreground">
-                When your event is published, the Accessibility section states that Unknowns are unconfirmed and may be updated at a later date. This transparency helps build trust with your community, even if not every detail is available right away.
+                When your event is published, the Event's Accessibility & Logistics section states that Unknowns are unconfirmed and may be updated at a later date. 
+
+This transparency helps build trust with your community, even if not every detail is available right away.
               </p>
             </div>
 
