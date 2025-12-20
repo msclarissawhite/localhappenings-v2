@@ -13,9 +13,11 @@ export default function Home() {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
               What's happening near you today?
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground mb-8">
-              Discover accessible, family-friendly events and activities in your community. 
-              From festivals to workshops, find something for everyone.
+            <p className="text-lg md:text-xl text-muted-foreground mb-4">
+              The first event platform built for families with accessibility needs.
+            </p>
+            <p className="text-base md:text-lg text-muted-foreground mb-8">
+              Every event includes detailed accessibility information—wheelchair access, sensory-friendly options, transit details, and more—so you can plan with confidence.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/browse">
@@ -48,7 +50,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-semibold mb-3">Accessibility First</h3>
               <p className="text-muted-foreground">
-                Detailed accessibility information for every event, so you can plan with confidence.
+                Filter by wheelchair access, sensory-friendly environments, parking, transit options, and 20+ accessibility features. No more guessing or calling ahead.
               </p>
             </Card>
 
@@ -56,9 +58,9 @@ export default function Home() {
               <div className="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Users className="w-6 h-6 text-secondary" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Family-Friendly</h3>
+              <h3 className="text-xl font-semibold mb-3">Honest Information</h3>
               <p className="text-muted-foreground">
-                Filter by age groups, from infants to seniors. Find events that work for you.
+                Organizers provide transparent details about accessibility, pricing, and age suitability. "Unknown" means unconfirmed—not hidden.
               </p>
             </Card>
 
@@ -66,11 +68,9 @@ export default function Home() {
               <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <MapPin className="w-6 h-6 text-accent" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Local Focus</h3>
+              <h3 className="text-xl font-semibold mb-3">Community-Powered</h3>
               <p className="text-muted-foreground">
-                Discover what's happening in your neighborhoodCommunity, municipality, or across Nova Scotia.
-
-More provinces and territories coming soon
+                Built by and for families who need better event information. Starting in Nova Scotia, expanding across Canada.
               </p>
             </Card>
           </div>
@@ -86,8 +86,7 @@ More provinces and territories coming soon
               Help Build Our Community
             </h2>
             <p className="text-lg text-muted-foreground mb-6">
-              Know about an upcoming event? Share it with your community. 
-              Every submission helps families discover new experiences.
+              Hosting an event? Share it with families who are actively looking for accessible, inclusive activities. Free event listings, always.
             </p>
             <Link href="/submit">
               <Button size="lg" variant="secondary" className="text-lg px-8">
