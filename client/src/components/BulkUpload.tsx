@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Upload, CheckCircle2, XCircle, AlertCircle } from "lucide-react";
 import { trpc } from "@/lib/trpc";
+import JSZip from "jszip";
 
 interface ParsedEvent {
   name: string;
@@ -44,6 +45,8 @@ interface ParsedEvent {
   displayOrganizerInfo: boolean;
   notes?: string;
   imageUrl?: string;
+  imageFileName?: string; // For ZIP uploads
+  imageData?: string; // Base64 image data from ZIP
 }
 
 export function BulkUpload({ onComplete }: { onComplete: () => void }) {
@@ -55,18 +58,61 @@ export function BulkUpload({ onComplete }: { onComplete: () => void }) {
 
   const bulkImportMutation = trpc.events.bulkImport.useMutation();
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
-    if (selectedFile && selectedFile.type === "text/csv") {
-      setFile(selectedFile);
-      parseCSV(selectedFile);
+    if (!selectedFile) return;
+
+    setFile(selectedFile);
+
+    // Check if it's a ZIP file
+    if (selectedFile.name.endsWith(".zip")) {
+      await parseZIP(selectedFile);
+    } else if (selectedFile.type === "text/csv" || selectedFile.name.endsWith(".csv")) {
+      await parseCSV(selectedFile);
     } else {
-      alert("Please select a valid CSV file");
+      alert("Please select a valid CSV or ZIP file");
+    }
+  };
+
+  const parseZIP = async (file: File) => {
+    try {
+      const zip = new JSZip();
+      const contents = await zip.loadAsync(file);
+      
+      // Find CSV file in ZIP
+      let csvFile: JSZip.JSZipObject | null = null;
+      const imageFiles: { [key: string]: JSZip.JSZipObject } = {};
+      
+      contents.forEach((relativePath, zipEntry) => {
+        if (relativePath.endsWith(".csv") && !csvFile) {
+          csvFile = zipEntry;
+        } else if (relativePath.match(/\.(jpg|jpeg|png|webp)$/i)) {
+          // Store images by filename (without path)
+          const filename = relativePath.split("/").pop() || relativePath;
+          imageFiles[filename.toLowerCase()] = zipEntry;
+        }
+      });
+
+      if (!csvFile) {
+        setParseErrors(["No CSV file found in ZIP archive"]);
+        return;
+      }
+
+      // Parse CSV content
+      const csvText = await csvFile.async("text");
+      await parseCSVContent(csvText, imageFiles);
+    } catch (error) {
+      console.error("ZIP parsing error:", error);
+      setParseErrors(["Failed to parse ZIP file. Please ensure it's a valid ZIP archive."]);
     }
   };
 
   const parseCSV = async (file: File) => {
     const text = await file.text();
+    await parseCSVContent(text, {});
+  };
+
+  const parseCSVContent = async (text: string, imageFiles: { [key: string]: JSZip.JSZipObject }) => {
     const lines = text.split("\n").filter(line => line.trim());
     
     if (lines.length < 2) {
@@ -138,7 +184,8 @@ export function BulkUpload({ onComplete }: { onComplete: () => void }) {
           displayOrganizerInfo: row.displayOrganizerInfo === "true" || row.displayOrganizerInfo === "1",
           notes: row.notes || undefined,
           imageUrl: row.imageUrl || undefined,
-        };
+          imageFileName: row.imageFileName || undefined,
+        } as ParsedEvent & { imageFileName?: string };
 
         // Basic validation
         if (!event.name || !event.description || !event.province || !event.municipality || !event.startDate) {
@@ -149,6 +196,38 @@ export function BulkUpload({ onComplete }: { onComplete: () => void }) {
         events.push(event);
       } catch (error) {
         errors.push(`Row ${i}: ${error instanceof Error ? error.message : "Parse error"}`);
+      }
+    }
+
+    // Process images from ZIP if available
+    if (Object.keys(imageFiles).length > 0) {
+      for (const event of events) {
+        if (event.imageFileName) {
+          const imageKey = event.imageFileName.toLowerCase();
+          const imageFile = imageFiles[imageKey];
+          
+          if (imageFile) {
+            try {
+              // Extract image as base64
+              const imageBlob = await imageFile.async("blob");
+              const reader = new FileReader();
+              
+              await new Promise<void>((resolve, reject) => {
+                reader.onload = () => {
+                  event.imageData = reader.result as string;
+                  resolve();
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(imageBlob);
+              });
+            } catch (error) {
+              console.error(`Failed to process image ${event.imageFileName}:`, error);
+              errors.push(`Image ${event.imageFileName} could not be processed`);
+            }
+          } else {
+            errors.push(`Image ${event.imageFileName} not found in ZIP`);
+          }
+        }
       }
     }
 
@@ -207,26 +286,27 @@ export function BulkUpload({ onComplete }: { onComplete: () => void }) {
 
   return (
     <Card className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Bulk Upload Events from CSV</h2>
+      <h2 className="text-2xl font-bold mb-4">Bulk Upload Events from CSV or ZIP</h2>
 
       {!file && (
         <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
           <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-          <p className="text-lg mb-4">Upload a CSV file to import multiple events</p>
+          <p className="text-lg mb-4">Upload a CSV file or ZIP archive with images</p>
           <input
             type="file"
-            accept=".csv"
+            accept=".csv,.zip"
             onChange={handleFileChange}
             className="hidden"
             id="csv-upload"
           />
           <label htmlFor="csv-upload">
             <Button asChild>
-              <span>Choose CSV File</span>
+              <span>Choose CSV or ZIP File</span>
             </Button>
           </label>
           <p className="text-sm text-muted-foreground mt-4">
-            Use the event_upload_template.csv file as a reference
+            CSV only: Use event_upload_template.csv<br />
+            ZIP with images: Include CSV + image files (reference images by filename in imageFileName column)
           </p>
         </div>
       )}

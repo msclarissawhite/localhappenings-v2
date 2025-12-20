@@ -353,3 +353,27 @@ export const donations = mysqlTable("donations", {
 
 export type Donation = typeof donations.$inferSelect;
 export type InsertDonation = typeof donations.$inferInsert;
+
+/**
+ * Organizer Image Library - Reusable images for events
+ * Allows organizers to upload and manage a library of photos
+ * that can be reused across multiple events
+ */
+export const organizerImages = mysqlTable("organizerImages", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(), // References users.id
+  
+  // Image details
+  url: text("url").notNull(), // S3 URL
+  fileKey: text("fileKey").notNull(), // S3 file key for deletion
+  fileName: varchar("fileName", { length: 255 }).notNull(), // Original filename
+  
+  // Optional metadata
+  description: text("description"), // Optional description/caption
+  
+  // Timestamps
+  uploadedAt: timestamp("uploadedAt").defaultNow().notNull(),
+});
+
+export type OrganizerImage = typeof organizerImages.$inferSelect;
+export type InsertOrganizerImage = typeof organizerImages.$inferInsert;

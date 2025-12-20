@@ -642,6 +642,8 @@ export const eventsRouter = router({
             displayOrganizerInfo: z.boolean(),
             notes: z.string().optional(),
             imageUrl: z.string().optional(),
+            imageData: z.string().optional(), // Base64 image from ZIP
+            imageFileName: z.string().optional(), // Original filename from ZIP
           })
         ),
       })
@@ -655,8 +657,36 @@ export const eventsRouter = router({
       for (let i = 0; i < input.events.length; i++) {
         const event = input.events[i];
         try {
+          // Handle image upload if imageData is provided (from ZIP)
+          let imageUrl = event.imageUrl;
+          if (event.imageData && !imageUrl) {
+            try {
+              const uploadRouter = await import("./upload-router");
+              // Extract base64 data
+              const base64Data = event.imageData.replace(/^data:image\/\w+;base64,/, "");
+              const buffer = Buffer.from(base64Data, "base64");
+              
+              // Process and upload image
+              const { processEventImage } = await import("./imageProcessing");
+              const { storagePut } = await import("./storage");
+              const { nanoid } = await import("nanoid");
+              
+              const processedBuffer = await processEventImage(buffer);
+              const randomSuffix = nanoid(10);
+              const fileKey = `event-images/${Date.now()}-${randomSuffix}.jpg`;
+              const { url } = await storagePut(fileKey, processedBuffer, "image/jpeg");
+              
+              imageUrl = url;
+              console.log(`[Bulk Import] Uploaded image for event: ${event.name}`);
+            } catch (error) {
+              console.error(`[Bulk Import] Failed to upload image for event ${event.name}:`, error);
+              // Continue without image if upload fails
+            }
+          }
+          
           const eventData = {
             ...event,
+            imageUrl,
             startDate: new Date(event.startDate),
             endDate: event.endDate ? new Date(event.endDate) : null,
             costMin: event.costMin || null,

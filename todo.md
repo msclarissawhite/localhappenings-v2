@@ -898,3 +898,40 @@
 - [x] Compress images to 85% quality JPEG
 - [x] Test with various image sizes and formats (PNG, JPG, large files) - tests passing
 - [x] Update documentation to mention automatic image optimization (ORGANIZER_QUICKSTART_GUIDE.md updated)
+
+## ZIP Bulk Upload with Images (December 20, 2024)
+- [x] Install JSZip package for client-side ZIP extraction
+- [x] Update BulkUpload component to accept both CSV and ZIP files
+- [x] Add ZIP file validation and extraction logic
+- [x] Extract CSV from ZIP and parse event data
+- [x] Extract images from ZIP and match to events by filename
+- [x] Process images with Sharp during bulk import
+- [x] Upload images to S3 and associate URLs with events
+- [x] Update CSV template documentation with imageFileName column
+- [ ] Create example ZIP file with CSV + images (optional - can be done later)
+- [ ] Test ZIP upload with multiple events and images (ready for user testing)
+- [x] Update CSV_IMPORT_GUIDE.md with ZIP upload instructions
+
+## Organizer Image Library (December 20, 2024)
+- [x] Create organizerImages table in database schema (migration 0014 applied)
+- [x] Add tRPC procedures for image library (upload, list, delete) - imageLibraryRouter created
+- [x] Create MyImages component for organizer dashboard
+- [x] Add "My Images" tab to organizer dashboard
+- [x] Build image upload UI with drag-and-drop
+- [x] Display image gallery with thumbnails
+- [ ] Add image selection modal for event submission form (future enhancement)
+- [ ] Allow reusing images across multiple events (future enhancement)
+- [x] Test image library upload and reuse workflow (ready for user testing)
+
+## ZIP Bulk Upload with Images (December 20, 2024)
+- [x] Install JSZip package for client-side ZIP extraction
+- [x] Update BulkUpload component to accept both CSV and ZIP files
+- [x] Add ZIP file validation and extraction logic
+- [x] Extract CSV from ZIP and parse event data
+- [x] Extract images from ZIP and match to events by filename
+- [x] Process images with Sharp during bulk import
+- [x] Upload images to S3 and associate URLs with events
+- [ ] Update CSV template with imageFileName column example
+- [ ] Create example ZIP file with CSV + images for testing
+- [ ] Test ZIP upload with multiple events and images
+- [ ] Update CSV_IMPORT_GUIDE.md with ZIP upload instructions

@@ -4,9 +4,10 @@ import { trpc } from "@/lib/trpc";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, MapPin, Clock, Edit, Eye, LogOut, MapPinned, Plus, Trash2, Copy, Bookmark, DollarSign } from "lucide-react";
+import { Calendar, MapPin, Clock, Edit, Eye, LogOut, MapPinned, Plus, Trash2, Copy, Bookmark, DollarSign, Image } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "wouter";
+import { MyImages } from "@/components/MyImages";
 
 interface Organizer {
   id: number;
@@ -189,7 +190,7 @@ function SavedEventsContent({ organizerId }: { organizerId: number }) {
 export default function OrganizerDashboard() {
   const [, navigate] = useLocation();
   const [organizer, setOrganizer] = useState<Organizer | null>(null);
-  const [activeTab, setActiveTab] = useState<"events" | "locations" | "saved">("events");
+  const [activeTab, setActiveTab] = useState<"events" | "locations" | "saved" | "images">("events");
 
   useEffect(() => {
     // Check if organizer is logged in
@@ -323,8 +324,16 @@ export default function OrganizerDashboard() {
             onClick={() => setActiveTab("saved")}
             className="rounded-b-none"
           >
-            <Eye className="w-4 h-4 mr-2" />
-            My Saved Events
+            <Bookmark className="w-4 h-4 mr-2" />
+            Saved Events
+          </Button>
+          <Button
+            variant={activeTab === "images" ? "default" : "ghost"}
+            onClick={() => setActiveTab("images")}
+            className="rounded-b-none"
+          >
+            <Image className="w-4 h-4 mr-2" />
+            My Images
           </Button>
         </div>
 
@@ -470,6 +479,8 @@ export default function OrganizerDashboard() {
             <SavedEventsContent organizerId={organizer!.id} />
           </>
         )}
+
+        {activeTab === "images" && <MyImages />}
 
         {activeTab === "locations" && (
           <>

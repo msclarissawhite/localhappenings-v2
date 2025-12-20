@@ -8,13 +8,15 @@ This guide explains how to use the CSV bulk import feature to add multiple event
 
 ## Overview
 
-The CSV bulk import feature allows administrators to upload a properly formatted CSV file containing multiple events. All events in the CSV are automatically published to the site without requiring individual review.
+The CSV bulk import feature allows administrators to upload a properly formatted CSV file containing multiple events. You can also upload a **ZIP file** containing both the CSV and event images for bulk import with photos.
 
 **Key Features:**
 
 - Import unlimited events in a single upload
+- Upload ZIP files with CSV + event images for bulk photo import
 - All events are published immediately with "published" status
 - Events automatically sync to ClickUp for tracking
+- Images automatically processed and optimized (1200×630px)
 - Preview events before confirming import
 - Comprehensive error reporting for invalid data
 
@@ -22,7 +24,12 @@ The CSV bulk import feature allows administrators to upload a properly formatted
 
 ## Accessing the Bulk Import Feature
 
-Navigate to the **Admin Dashboard** and click the **"Bulk Upload CSV"** button in the Events tab. This opens the bulk import dialog where you can select your CSV file.
+Navigate to the **Admin Dashboard** and click the **"Bulk Upload CSV"** button in the Events tab. This opens the bulk import dialog where you can select your CSV or ZIP file.
+
+**Two Upload Options:**
+
+1. **CSV Only** - Upload just the CSV file if events don't have images or you'll add images later
+2. **ZIP with Images** - Upload a ZIP archive containing both the CSV file and event image files
 
 ---
 
@@ -35,8 +42,10 @@ Use the provided template file `event_upload_template.csv` located in the projec
 **Column Headers (in order):**
 
 ```
-name,description,province,municipality,neighborhoodCommunity,venue,address,startDate,startTime,endDate,endTime,timeOfDay,isRecurring,recurrenceType,isFree,costMin,costMax,costType,kidsFree,freeCompanion,allAges,familyFriendly,youngChildren,kids,teens,adultsOnly,seniors,isIndoor,isOutdoor,shortDuration,dropIn,canReenter,changeTable,changeTableLocations,nursingRoom,strollerAccessible,strollerParking,familyWashroom,wheelchairAccessible,accessibleParking,parkingDistance,elevatorLift,accessibleWashrooms,washroomAvailability,seatingAvailable,terrain,noiseLevel,lighting,quietSpace,scentFree,visualSchedules,clearSignage,aslInterpreter,multilingualSupport,sensoryFriendly,serviceAnimalsWelcome,crowdingLevel,flexibleParticipation,organizerName,organizerType,organizerEmail,organizerPhone,organizerWebsite,displayOrganizerInfo,notes,imageUrl
+name,description,province,municipality,neighborhoodCommunity,venue,address,startDate,startTime,endDate,endTime,timeOfDay,isRecurring,recurrenceType,isFree,costMin,costMax,costType,kidsFree,freeCompanion,allAges,familyFriendly,youngChildren,kids,teens,adultsOnly,seniors,isIndoor,isOutdoor,shortDuration,dropIn,canReenter,changeTable,changeTableLocations,nursingRoom,strollerAccessible,strollerParking,familyWashroom,wheelchairAccessible,accessibleParking,parkingDistance,elevatorLift,accessibleWashrooms,washroomAvailability,seatingAvailable,terrain,noiseLevel,lighting,quietSpace,scentFree,visualSchedules,clearSignage,aslInterpreter,multilingualSupport,sensoryFriendly,serviceAnimalsWelcome,crowdingLevel,flexibleParticipation,organizerName,organizerType,organizerEmail,organizerPhone,organizerWebsite,displayOrganizerInfo,notes,imageUrl,imageFileName
 ```
+
+**New Column:** `imageFileName` - For ZIP uploads only. References the image file name inside the ZIP archive.
 
 ### Field Specifications
 
@@ -272,6 +281,68 @@ For festivals, camps, or exhibitions spanning multiple days, always set both `st
 ### Image URLs
 
 If you're including event images, ensure the URLs are publicly accessible and point directly to image files (JPG or PNG). Images should be 1200×630px (1.91:1 aspect ratio) for optimal display on both desktop and mobile devices.
+
+---
+
+## ZIP Upload with Images
+
+For bulk imports with event photos, create a ZIP archive containing your CSV file and all image files.
+
+### ZIP File Structure
+
+```
+events_import.zip
+├── events.csv
+├── winter-carnival.jpg
+├── summer-festival.png
+├── farmers-market.jpg
+└── art-walk.webp
+```
+
+**Requirements:**
+
+- ZIP must contain exactly **one CSV file** (any name)
+- Image files can be JPG, JPEG, PNG, or WebP format
+- Images can be in any size - they'll be automatically resized to 1200×630px
+- Images can be at the root level or in subdirectories
+
+### Linking Images in CSV
+
+Use the `imageFileName` column to reference image files by their filename:
+
+```csv
+name,description,province,municipality,startDate,imageFileName
+"Winter Carnival","Annual winter celebration","Nova Scotia","Halifax","2025-02-15","winter-carnival.jpg"
+"Summer Festival","Music and food festival","Nova Scotia","Dartmouth","2025-07-20","summer-festival.png"
+```
+
+**Important:**
+
+- Filenames are **case-insensitive** ("Image.JPG" matches "image.jpg")
+- Use only the filename, not the full path ("photo.jpg" not "images/photo.jpg")
+- If an image file isn't found in the ZIP, the event imports without an image
+- Leave `imageFileName` blank if the event has no image
+
+### Image Processing
+
+All uploaded images are automatically:
+
+- Resized to exactly 1200×630px (1.91:1 ratio)
+- Cropped from the center to fit dimensions
+- Converted to JPEG format
+- Compressed to 85% quality for fast loading
+- Uploaded to cloud storage with unique URLs
+
+**File Size:** Original images can be up to 5MB each. After processing, they're typically 100-300KB.
+
+### Example ZIP Upload
+
+1. Create your CSV file with event data and `imageFileName` column
+2. Collect all event photos in one folder
+3. Select both the CSV and all images, then "Compress" or "Create Archive"
+4. Upload the ZIP file via Admin Dashboard → Bulk Upload CSV
+5. Preview shows events with image thumbnails
+6. Click "Import" to publish all events with photos
 
 ---
 
