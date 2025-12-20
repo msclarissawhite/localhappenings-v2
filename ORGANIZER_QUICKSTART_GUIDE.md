@@ -189,6 +189,75 @@ If you host most events at the same venue, click **"Set as Default"** on that lo
 
 When submitting an event, use the **"Quick Fill from Saved Location"** dropdown at the top of the Location section. Select your venue and watch all fields populate instantly – including accessibility information if you saved it with the location.
 
+### **My Images Tab**
+
+Build a reusable image library to save time when submitting multiple events at the same venue or recurring activities.
+
+**Why Use the Image Library?**
+
+If you host weekly storytimes at the same library, monthly workshops at the same community center, or seasonal festivals at the same park, you can upload venue photos once and reuse them across all future events. No more uploading the same library photo every week!
+
+**Uploading Images to Your Library:**
+
+1. Navigate to the **My Images** tab in your Organizer Dashboard
+2. Click **"Upload Image"**
+3. Select a photo (max 5MB, any format)
+4. The system automatically optimizes it to 1200×630px and compresses to 85% quality JPEG
+5. Your image is saved to your library and ready to reuse
+
+**Using Library Images in Events:**
+
+When submitting or editing an event, look for the **"Choose from Library"** button next to the image upload field. Click it to open your image library in a modal. Click any image to select it for your event. The image URL is automatically filled in the form.
+
+**Managing Your Images:**
+
+Each image in your library has a **Delete** button. Removing an image from your library doesn't affect events already using that image.
+
+**Pro Tip:** Upload photos of your regular venues (library reading room, community center entrance, park playground) to your library first. Then when you submit events, you can select the appropriate venue photo in seconds instead of uploading it every time.
+
+### **Templates Tab**
+
+Save event configurations as reusable templates for recurring event types.
+
+**What Are Templates?**
+
+Templates save all your event details (location, cost, age groups, accessibility settings, organizer info, even the image) so you can reuse them for similar events. Perfect for weekly storytimes, monthly workshops, or seasonal festivals where most details stay the same.
+
+**Creating a Template:**
+
+1. Fill out the event submission form with all your details
+2. Click **"Save as Template"** (button appears at the bottom, only for logged-in organizers)
+3. Enter a template name (e.g., "Weekly Storytime")
+4. Add an optional description
+5. Click **"Save Template"**
+
+The template saves everything except the event name and date (since those typically change for each occurrence).
+
+**Using a Template:**
+
+1. Go to the **Templates** tab in your Organizer Dashboard
+2. Find the template you want to use
+3. Click **"Use Template"**
+4. You're redirected to the event submission form with all fields pre-filled
+5. Add the event name and date, make any adjustments, and submit
+
+**Editing Templates:**
+
+Click **"Edit"** on any template card to update the saved configuration. Changes apply to all future events created from that template (existing events are not affected).
+
+**Example Workflow:**
+
+You host "Toddler Storytime" every Tuesday at Halifax Central Library. Create a template once with:
+- Location: Halifax Central Library (address, accessibility details)
+- Cost: Free
+- Age: Young Children (0-5), Family-Friendly
+- Environment: Indoor
+- All accessibility settings for the library
+- Your organizer contact info
+- A photo of the library's children's section
+
+Every week, click "Use Template," add the specific date and a title like "Toddler Storytime - January 15," and submit. Takes 30 seconds instead of 5 minutes!
+
 ---
 
 ## Time-Saving Features

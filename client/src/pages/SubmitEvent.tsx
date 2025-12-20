@@ -13,9 +13,17 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { useLocation, Link } from "wouter";
-import { Info, Eye } from "lucide-react";
+import { useLocation, Link, useSearch } from "wouter";
+import { Info, Eye, Save } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   Accordion,
   AccordionContent,
@@ -95,6 +103,11 @@ export default function SubmitEvent() {
   const [showPreview, setShowPreview] = useState(false);
   const [organizer, setOrganizer] = useState<{id: number; email: string; name: string | null} | null>(null);
   const [selectedLocationId, setSelectedLocationId] = useState<number | null>(null);
+  const [showSaveTemplate, setShowSaveTemplate] = useState(false);
+  const [templateName, setTemplateName] = useState("");
+  const [templateDescription, setTemplateDescription] = useState("");
+  const searchParams = useSearch();
+  const urlParams = new URLSearchParams(searchParams);
 
   // Check if organizer is logged in
   useEffect(() => {
@@ -149,6 +162,69 @@ export default function SubmitEvent() {
 
   const isFree = watch("isFree");
   const costType = watch("costType");
+
+  // Load template if templateId in URL
+  const templateIdParam = urlParams.get("templateId");
+  const { data: templateData } = trpc.eventTemplates.get.useQuery(
+    { templateId: parseInt(templateIdParam || "0") },
+    { enabled: !!templateIdParam && !isNaN(parseInt(templateIdParam)) }
+  );
+
+  useEffect(() => {
+    if (templateData) {
+      const data = templateData.templateData as any;
+      
+      // Fill form fields from template
+      if (data.name) setValue("name", data.name);
+      if (data.description) setValue("description", data.description);
+      if (data.province) setValue("province", data.province);
+      if (data.municipality) setValue("municipality", data.municipality);
+      if (data.neighborhoodCommunity) setValue("neighborhoodCommunity", data.neighborhoodCommunity);
+      if (data.venue) setValue("venue", data.venue);
+      if (data.address) setValue("address", data.address);
+      
+      // Cost fields
+      if (data.isFree !== undefined) setValue("isFree", data.isFree);
+      if (data.costType) setValue("costType", data.costType);
+      if (data.costMin !== undefined) setValue("costMin", data.costMin);
+      if (data.costMax !== undefined) setValue("costMax", data.costMax);
+      if (data.kidsFree !== undefined) setValue("kidsFree", data.kidsFree);
+      if (data.freeCompanion !== undefined) setValue("freeCompanion", data.freeCompanion);
+      
+      // Age groups
+      if (data.allAges !== undefined) setValue("allAges", data.allAges);
+      if (data.familyFriendly !== undefined) setValue("familyFriendly", data.familyFriendly);
+      if (data.youngChildren !== undefined) setValue("youngChildren", data.youngChildren);
+      if (data.kids !== undefined) setValue("kids", data.kids);
+      if (data.teens !== undefined) setValue("teens", data.teens);
+      if (data.adultsOnly !== undefined) setValue("adultsOnly", data.adultsOnly);
+      if (data.seniors !== undefined) setValue("seniors", data.seniors);
+      
+      // Environment
+      if (data.isIndoor !== undefined) setValue("isIndoor", data.isIndoor);
+      if (data.isOutdoor !== undefined) setValue("isOutdoor", data.isOutdoor);
+      
+      // Organizer info
+      if (data.organizerName) setValue("organizerName", data.organizerName);
+      if (data.organizerEmail) setValue("organizerEmail", data.organizerEmail);
+      if (data.organizerPhone) setValue("organizerPhone", data.organizerPhone);
+      if (data.organizerWebsite) setValue("organizerWebsite", data.organizerWebsite);
+      if (data.displayOrganizerInfo !== undefined) setValue("displayOrganizerInfo", data.displayOrganizerInfo);
+      
+      // Accessibility
+      if (data.accessibility) {
+        setAccessibility(data.accessibility);
+      }
+      
+      // Image
+      if (data.imageUrl) {
+        setImageUrl(data.imageUrl);
+        setImagePreview(data.imageUrl);
+      }
+      
+      toast.success(`Template "${templateData.templateName}" loaded`);
+    }
+  }, [templateData, setValue]);
 
   // Load copied event data if available
   useEffect(() => {
@@ -275,6 +351,38 @@ export default function SubmitEvent() {
       toast.error(error.message || "Failed to upload image");
     },
   });
+
+  const saveTemplateMutation = trpc.eventTemplates.create.useMutation({
+    onSuccess: () => {
+      toast.success(`Template "${templateName}" saved successfully`);
+      setShowSaveTemplate(false);
+      setTemplateName("");
+      setTemplateDescription("");
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to save template");
+    },
+  });
+
+  const handleSaveTemplate = () => {
+    if (!templateName.trim()) {
+      toast.error("Please enter a template name");
+      return;
+    }
+
+    const formData = watch();
+    const templateData = {
+      ...formData,
+      accessibility,
+      imageUrl: imageUrl || imagePreview,
+    };
+
+    saveTemplateMutation.mutate({
+      templateName: templateName.trim(),
+      description: templateDescription.trim() || undefined,
+      templateData,
+    });
+  };
 
   const submitMutation = trpc.events.submit.useMutation({
     onSuccess: () => {
@@ -1765,6 +1873,17 @@ This transparency helps build trust with your community, even if not every detai
               <Eye className="w-4 h-4 mr-2" />
               {showPreview ? "Hide Preview" : "Preview Event"}
             </Button>
+            {organizer && (
+              <Button 
+                type="button" 
+                variant="outline" 
+                size="lg" 
+                onClick={() => setShowSaveTemplate(true)}
+              >
+                <Save className="w-4 h-4 mr-2" />
+                Save as Template
+              </Button>
+            )}
             <Button type="button" variant="outline" size="lg" onClick={() => navigate("/browse")}>
               Cancel
             </Button>
@@ -1783,6 +1902,60 @@ This transparency helps build trust with your community, even if not every detai
             />
           </div>
         )}
+
+        {/* Save Template Dialog */}
+        <Dialog open={showSaveTemplate} onOpenChange={setShowSaveTemplate}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Save as Template</DialogTitle>
+              <DialogDescription>
+                Save this event as a template for future use. You can load it later when creating similar events.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="templateName">Template Name *</Label>
+                <Input
+                  id="templateName"
+                  value={templateName}
+                  onChange={(e) => setTemplateName(e.target.value)}
+                  placeholder="e.g., Weekly Storytime"
+                />
+              </div>
+              <div>
+                <Label htmlFor="templateDescription">Description (Optional)</Label>
+                <Textarea
+                  id="templateDescription"
+                  value={templateDescription}
+                  onChange={(e) => setTemplateDescription(e.target.value)}
+                  placeholder="Brief description of this template"
+                  rows={3}
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setShowSaveTemplate(false)}>
+                Cancel
+              </Button>
+              <Button 
+                onClick={handleSaveTemplate}
+                disabled={!templateName.trim() || saveTemplateMutation.isPending}
+              >
+                {saveTemplateMutation.isPending ? "Saving..." : "Save Template"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        <ImageLibraryModal
+          open={showImageLibrary}
+          onClose={() => setShowImageLibrary(false)}
+          onSelectImage={(url) => {
+            setImageUrl(url);
+            setImagePreview(url);
+            setShowImageLibrary(false);
+          }}
+        />
       </div>
     </div>
   );

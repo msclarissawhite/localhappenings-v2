@@ -170,6 +170,32 @@ When you navigate to the **Submit Event** page while logged in as an organizer, 
 
 These convenience features significantly reduce the time required to submit events, especially for organizers who host regular activities at the same venue or run similar events frequently.
 
+#### My Images Tab
+
+The **My Images** tab provides a centralized image library where organizers can upload and manage reusable event photos. This feature eliminates the need to repeatedly upload the same venue or activity photos for recurring events.
+
+**Uploading Images to Library**: Click the **Upload Image** button to open the upload dialog. Select an image file (max 5MB, JPG/PNG/WebP formats supported) and the system automatically optimizes it to 1200×630px for consistent display across desktop and mobile devices. All uploaded images are compressed to 85% quality JPEG for fast loading times while maintaining visual quality.
+
+**Using Library Images in Events**: When submitting or editing an event, you will see a **Choose from Library** button next to the image upload field. Click this button to open your image library in a modal dialog. Your saved images are displayed in a grid with thumbnails. Click any image to select it for your event. The selected image URL is automatically filled in the event form.
+
+**Managing Your Images**: Each image in your library displays a **Delete** button. Click Delete to remove an image from your library. Deleting an image from your library does not affect events that are already using that image URL.
+
+**Automatic Image Optimization**: All images uploaded through the platform (whether directly in the event form or via the image library) are automatically processed with Sharp image optimization. This ensures consistent sizing (1200×630px, 1.91:1 aspect ratio), format conversion (all images converted to JPEG), and compression (85% quality) for optimal performance on both desktop and mobile devices. Organizers can upload images in any size or format, and the system handles all optimization automatically.
+
+#### Templates Tab
+
+The **Templates** tab allows organizers to save event configurations as reusable templates. This is ideal for recurring event types like weekly storytimes, monthly workshops, or seasonal festivals where most details remain consistent.
+
+**Creating a Template**: When filling out the event submission form, click the **Save as Template** button (visible only to logged-in organizers). Enter a template name (e.g., "Weekly Storytime") and optional description. Click **Save Template**. The template saves all form fields including location, cost, age groups, environment, accessibility settings, organizer information, and even the event image URL. The template does NOT save the event date or name, as these typically change for each occurrence.
+
+**Viewing Your Templates**: Navigate to the **Templates** tab in your Organizer Dashboard. You will see all your saved templates displayed as cards showing the template name, description, and creation date.
+
+**Using a Template**: Click the **Use Template** button on any template card. You will be redirected to the event submission form with all saved fields pre-filled. Simply add the event name and date, make any necessary adjustments, and submit. This workflow is significantly faster than filling out the entire form from scratch.
+
+**Editing Templates**: Click the **Edit** button on a template card to modify the saved configuration. Update any fields and click **Save Changes**. The updated template will be used for all future events created from that template.
+
+**Deleting Templates**: Click the **Delete** button on a template card to remove it from your library. Deleting a template does not affect events that were previously created using that template.
+
 ### Organizer Verification System
 
 Organizers can be marked as **verified** by administrators. Verified organizers enjoy streamlined event submission with automatic approval.
@@ -221,6 +247,10 @@ A **Back to Events** button at the top of the page allows easy navigation back t
 ### Admin Dashboard
 
 The admin dashboard is accessible only to users with the admin role. It displays all events with a status of "pending" in reverse chronological order (newest first).
+
+**Bulk Actions Toolbar**: At the top of the Events tab, a toolbar provides quick access to bulk operations. The **Bulk Upload CSV** button allows admins to import multiple events at once (see CSV Import section below). The **Download All Events** button exports all pending events to a CSV file for offline review or backup purposes. When events are selected via checkboxes, a **Batch Edit (N)** button appears, allowing admins to update common fields across multiple events simultaneously.
+
+**Batch Edit Tool**: Admins can select multiple events using the checkboxes next to each event card. Once events are selected, click the **Batch Edit** button to open the batch edit modal. The modal displays checkboxes for each editable field category: venue information (venue name, address), organizer information (organizer name, email, phone, website, display toggle), and accessibility features (any of the five accessibility categories). Check the boxes for fields you want to update, enter the new values, and click **Apply Changes**. Only the checked fields will be updated across all selected events. Unchecked fields remain unchanged. This feature is particularly useful for updating venue details when a location changes its accessibility features, or for correcting organizer contact information across a series of events.
 
 Each pending event card shows the event name, date, location, cost indicator, venue and organizer information (always visible to admins regardless of public display setting), age groups and environment, a note about accessibility information being provided or not, additional notes if any, and the submission timestamp.
 
