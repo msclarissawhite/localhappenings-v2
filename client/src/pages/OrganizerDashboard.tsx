@@ -227,6 +227,16 @@ export default function OrganizerDashboard() {
     },
   });
 
+  const closeEventMutation = trpc.organizer.closeEvent.useMutation({
+    onSuccess: () => {
+      toast.success("Event closed successfully");
+      refetch();
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to close event");
+    },
+  });
+
   const deleteLocationMutation = trpc.savedLocations.delete.useMutation({
     onSuccess: () => {
       toast.success("Location deleted successfully");
@@ -412,6 +422,21 @@ export default function OrganizerDashboard() {
                       >
                         <Edit className="w-4 h-4 mr-1" />
                         Edit
+                      </Button>
+                    )}
+                    {event.status === "published" && (
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => {
+                          if (confirm("Are you sure you want to close this event? It will no longer appear in public listings.")) {
+                            closeEventMutation.mutate({ eventId: event.id, organizerId: organizer!.id });
+                          }
+                        }}
+                        disabled={closeEventMutation.isPending}
+                      >
+                        <XCircle className="w-4 h-4 mr-1" />
+                        Close Event
                       </Button>
                     )}
                   </div>

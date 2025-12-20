@@ -782,3 +782,21 @@
 - [x] Add visual highlighting for changed fields
 - [x] Use strikethrough for old values and bold for new values
 - [x] Add colored indicators for easy scanning
+
+## User Manual & Documentation Updates (December 20, 2024)
+- [x] Update user manual with event editing instructions
+- [x] Update CSV templates with new accessibility fields (change table locations, washroom availability, service animals, flexible participation)
+- [x] Document notification system for admin
+
+## Close Event Feature (December 20, 2024)
+- [x] Add "closed" status to events schema
+- [x] Create backend procedure for organizers to close events
+- [x] Add "Close Event" button to organizer dashboard
+- [x] Update browse events to hide closed events
+- [x] Send notification when organizer closes event
+- [ ] Add filter in admin dashboard to view closed events (optional enhancement)
+
+## Email Notification Verification (December 20, 2024)
+- [x] Verify organizer receives email when edit is approved
+- [x] Verify organizer receives email when edit is rejected
+- [x] Email notifications already fully implemented and working

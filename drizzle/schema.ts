@@ -94,7 +94,7 @@ export const events = mysqlTable("events", {
   imageUrl: text("imageUrl"),
   
   // Moderation
-  status: mysqlEnum("status", ["pending", "published", "rejected", "needs-clarification"]).default("pending").notNull(),
+  status: mysqlEnum("status", ["pending", "published", "rejected", "needs-clarification", "closed"]).default("pending").notNull(),
   submittedBy: int("submittedBy"), // user id if logged in, null if anonymous
   reviewedBy: int("reviewedBy"), // admin user id
   reviewNotes: text("reviewNotes"),

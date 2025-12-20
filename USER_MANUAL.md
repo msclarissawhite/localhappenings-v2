@@ -178,6 +178,22 @@ Organizers can be marked as **verified** by administrators. Verified organizers 
 
 **Auto-Approval**: When a verified organizer submits an event, it is automatically published without requiring admin review. This allows trusted organizers to post time-sensitive events immediately. Verified organizers can also edit their published events directly, and changes are applied immediately without re-entering the moderation queue.
 
+#### Editing Published Events
+
+Organizers can edit their published events to correct mistakes or update information that has changed. The editing workflow depends on whether the organizer is verified.
+
+**Accessing the Edit Form**: In the **My Events** tab of your Organizer Dashboard, find the event you want to edit. Published events and events marked "Needs Clarification" display an **Edit** button next to the View button. Click **Edit** to open the event editing form.
+
+**Edit Form**: The edit form is pre-populated with all current event information. You can modify any field including the event name, description, dates, location, cost, accessibility information, and organizer details. The form layout is identical to the original submission form for consistency.
+
+**Verified Organizer Edits**: If you are a verified organizer, your changes are applied immediately when you click **Submit**. You will see a success message: "Event Updated - Your changes are now live!" The updated information appears on the public event page right away.
+
+**Unverified Organizer Edits**: If you are not verified, your changes enter a pending review queue. When you click **Submit**, you will see: "Edit Submitted - Your changes are pending admin approval. The original event remains published." Your event continues to display the original information publicly while the admin reviews your proposed changes. In your Organizer Dashboard, the event will show an **Edit Pending Review** badge in yellow next to the status badge.
+
+**Admin Review Process**: When an unverified organizer submits an edit, the admin receives a notification and can review the changes in the **Pending Edits** tab of the Admin Dashboard. The admin sees a side-by-side comparison of the current published version and your proposed changes, with modified fields highlighted in orange. The admin can either approve your edit (which publishes your changes immediately) or reject it with an optional reason.
+
+**Email Notifications**: You will receive an email notification when the admin makes a decision on your edit. If approved, the email will say "Your edits have been approved and are now live." If rejected, the email will include the admin's reason for rejection so you can understand what needs to be changed.
+
 **Admin Verification Controls**: Administrators can view all organizers in the **Admin Dashboard** under the **Manage Organizers** tab. Each organizer card displays their email, total events submitted, and a toggle switch to mark them as verified or unverified. Admins should verify organizers who have demonstrated consistent, high-quality submissions and accurate accessibility information.
 
 ### Viewing Event Details

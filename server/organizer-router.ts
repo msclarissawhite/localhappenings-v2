@@ -233,4 +233,55 @@ export const organizerRouter = router({
       const { getAllOrganizers } = await import("./organizer-db");
       return await getAllOrganizers();
     }),
+
+  /**
+   * Close an event (organizer only)
+   * Marks event as closed so it no longer appears in public listings
+   */
+  closeEvent: publicProcedure
+    .input(z.object({
+      eventId: z.number(),
+      organizerId: z.number(),
+    }))
+    .mutation(async ({ input }) => {
+      const { eventId, organizerId } = input;
+      
+      // Verify organizer owns this event
+      const { getDb } = await import("./db");
+      const { events, organizers } = await import("../drizzle/schema");
+      const { eq, and } = await import("drizzle-orm");
+      
+      const db = await getDb();
+      if (!db) {
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database not available" });
+      }
+      
+      const event = await db.select().from(events).where(eq(events.id, eventId)).limit(1);
+      if (!event || event.length === 0) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Event not found" });
+      }
+      
+      const organizer = await db.select().from(organizers).where(eq(organizers.id, organizerId)).limit(1);
+      if (!organizer || organizer.length === 0) {
+        throw new TRPCError({ code: "UNAUTHORIZED", message: "Organizer not found" });
+      }
+      
+      // Check if organizer owns this event (by matching email)
+      if (event[0].organizerEmail !== organizer[0].email) {
+        throw new TRPCError({ code: "FORBIDDEN", message: "You can only close your own events" });
+      }
+      
+      // Update event status to closed
+      await db.update(events)
+        .set({ status: "closed" })
+        .where(eq(events.id, eventId));
+      
+      // Notify admin
+      await notifyOwner({
+        title: "Event Closed",
+        content: `Organizer ${organizer[0].name || organizer[0].email} closed event: ${event[0].name}`,
+      });
+      
+      return { success: true };
+    }),
 });

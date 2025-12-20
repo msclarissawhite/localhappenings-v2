@@ -10,6 +10,7 @@ export async function getEvents(filters: EventFilters = {}) {
   const db = await getDb();
   if (!db) return [];
 
+  // Only show published events (exclude pending, rejected, needs-clarification, and closed)
   const conditions = [eq(events.status, "published")];
 
   // By default, exclude past events (unless showArchived is true)
