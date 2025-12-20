@@ -196,7 +196,7 @@ export default function BrowseEvents() {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="__all__">All provinces</SelectItem>
-                          {locations?.provinces.map((province) => (
+                          {locations?.provinces?.map((province) => (
                             <SelectItem key={province} value={province}>
                               {province}
                             </SelectItem>
@@ -215,7 +215,7 @@ export default function BrowseEvents() {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="__all__">All cities</SelectItem>
-                          {locations?.cities.map((municipality) => (
+                          {locations?.municipalities?.map((municipality) => (
                             <SelectItem key={municipality} value={municipality}>
                               {municipality}
                             </SelectItem>

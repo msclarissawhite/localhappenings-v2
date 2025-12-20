@@ -430,3 +430,11 @@
 - [x] Show button only for logged-in organizers (isOrganizer check)
 - [x] Position button alongside existing page title (justify-between layout)
 - [x] Test navigation from MySavedEvents to organizer dashboard
+
+## Bug: Advanced Filters Error on Browse Events Page
+- [x] Investigate "Cannot read properties of undefined (reading 'map')" error
+- [x] Identified property name mismatch: backend returns 'municipalities' but frontend used 'cities'
+- [x] Fixed property name from locations?.cities to locations?.municipalities
+- [x] Added optional chaining (?.) to both provinces and municipalities for safety
+- [x] Test advanced filters dialog functionality
+- [x] Verify all filter options display correctly
