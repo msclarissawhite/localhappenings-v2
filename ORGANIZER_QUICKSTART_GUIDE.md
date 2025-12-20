@@ -324,7 +324,15 @@ Tell families what makes your event special. What will kids do? What should they
 - Insert **links** to registration pages, venue websites, or additional information
 - Use **undo/redo** if you make a mistake
 
-**Tips for Effective Formatting:**
+**Character Limits** – Keep descriptions concise and scannable. The editor shows a real-time character count with three thresholds:
+- **Normal (0-1,800 characters)** – gray text, no warnings
+- **Approaching limit (1,800-2,000 characters)** – yellow warning
+- **Recommended maximum (2,000+ characters)** – orange warning (aim to stay under this)
+- **Hard limit (5,000 characters)** – red error, cannot type beyond this point
+
+Aim for 300-400 words (roughly 1,500-2,000 characters) to ensure descriptions are engaging without overwhelming readers. Shorter descriptions perform better on mobile devices and keep families' attention.
+
+**Tips for Effective Formatting:
 - Use headings to break up longer descriptions (e.g., "What to Expect", "What to Bring")
 - Create lists for age ranges, activity schedules, or items to bring
 - Bold important details like "Registration required" or "Free admission"

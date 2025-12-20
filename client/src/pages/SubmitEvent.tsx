@@ -38,7 +38,9 @@ import { RecurringPreview } from "@/components/RecurringPreview";
 
 const submitEventSchema = z.object({
   name: z.string().min(1, "Event name is required"),
-  description: z.string().min(1, "Description is required"),
+  description: z.string()
+    .min(1, "Description is required")
+    .max(5000, "Description must be 5,000 characters or less"),
   province: z.string().min(1, "Province is required"),
   municipality: z.string().min(1, "City is required"),
   neighborhoodCommunity: z.string().optional(),

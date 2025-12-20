@@ -1001,3 +1001,13 @@
 - [x] Test with malicious HTML examples (script tags, onclick handlers, iframes) - 22 tests passing
 - [x] Verify safe formatting is preserved (bold, italic, lists, links, headings) - all tests passing
 - [x] Update documentation with security implementation notes (USER_MANUAL.md updated)
+
+## Character Counter for Rich Text Editor (December 20, 2024)
+- [x] Add character counting logic to RichTextEditor component
+- [x] Display character count below editor (e.g., "245 / 2,000 characters")
+- [x] Show warning styling when approaching soft limit (1,800+ characters - yellow)
+- [x] Show error styling when exceeding soft limit (2,000+ characters - orange)
+- [x] Enforce hard limit of 5,000 characters (prevent typing beyond - red)
+- [x] Add validation in SubmitEvent form to check character limit (zod schema max 5000)
+- [x] Update ORGANIZER_QUICKSTART_GUIDE.md with character limit guidance
+- [x] Test character counter with various content lengths (ready for user testing)

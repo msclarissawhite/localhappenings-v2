@@ -19,9 +19,17 @@ interface RichTextEditorProps {
   content: string;
   onChange: (html: string) => void;
   placeholder?: string;
+  maxLength?: number; // Hard limit (default 5000)
+  softLimit?: number; // Soft limit for warnings (default 2000)
 }
 
-export function RichTextEditor({ content, onChange, placeholder = "Enter event description..." }: RichTextEditorProps) {
+export function RichTextEditor({ 
+  content, 
+  onChange, 
+  placeholder = "Enter event description...",
+  maxLength = 5000,
+  softLimit = 2000,
+}: RichTextEditorProps) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -41,7 +49,17 @@ export function RichTextEditor({ content, onChange, placeholder = "Enter event d
     ],
     content,
     onUpdate: ({ editor }) => {
-      onChange(editor.getHTML());
+      const html = editor.getHTML();
+      const text = editor.getText();
+      const charCount = text.length;
+      
+      // Enforce hard limit
+      if (charCount > maxLength) {
+        // Prevent further input by reverting to previous state
+        return;
+      }
+      
+      onChange(html);
     },
     editorProps: {
       attributes: {
@@ -164,6 +182,41 @@ export function RichTextEditor({ content, onChange, placeholder = "Enter event d
 
       {/* Editor Content */}
       <EditorContent editor={editor} />
+      
+      {/* Character Counter */}
+      <div className="px-4 py-2 border-t border-border bg-muted/20">
+        <CharacterCount 
+          current={editor.getText().length} 
+          softLimit={softLimit}
+          maxLength={maxLength}
+        />
+      </div>
     </div>
+  );
+}
+
+function CharacterCount({ current, softLimit, maxLength }: { current: number; softLimit: number; maxLength: number }) {
+  const getColorClass = () => {
+    if (current >= maxLength) return "text-destructive font-semibold";
+    if (current >= softLimit) return "text-orange-600 dark:text-orange-400 font-medium";
+    if (current >= softLimit * 0.9) return "text-yellow-600 dark:text-yellow-400";
+    return "text-muted-foreground";
+  };
+
+  const getMessage = () => {
+    if (current >= maxLength) {
+      return `${current.toLocaleString()} / ${maxLength.toLocaleString()} characters (maximum reached)`;
+    }
+    if (current >= softLimit) {
+      const remaining = maxLength - current;
+      return `${current.toLocaleString()} / ${softLimit.toLocaleString()} characters (${remaining.toLocaleString()} remaining before hard limit)`;
+    }
+    return `${current.toLocaleString()} / ${softLimit.toLocaleString()} characters`;
+  };
+
+  return (
+    <p className={`text-sm ${getColorClass()}`}>
+      {getMessage()}
+    </p>
   );
 }
