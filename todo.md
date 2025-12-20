@@ -472,3 +472,11 @@
 - [ ] Add all accessibility options to Browse Events advanced filters
 - [ ] Move Time of Day filter from advanced to quick filters section
 - [ ] Test complete accessibility workflow end-to-end
+
+## Display New Accessibility Fields on Event Detail Pages
+- [x] Add bus stop distance display to EventDetail Mobility section
+- [x] Add accessible sidewalks display to EventDetail Mobility section
+- [x] Add bike racks display to EventDetail Mobility section
+- [x] Add covered bike parking display to EventDetail Mobility section
+- [x] Display fields using existing AccessibilityRow component (icons handled by component)
+- [x] Test event detail page displays all new fields correctly

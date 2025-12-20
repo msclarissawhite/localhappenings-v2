@@ -552,6 +552,22 @@ export default function EventDetail() {
                         label="Parking distance to entrance" 
                         value={accessibility.mobility.parkingDistance} 
                       />
+                      <AccessibilityRow 
+                        label="Bus stop distance to entrance" 
+                        value={accessibility.mobility.busStopDistance} 
+                      />
+                      <AccessibilityRow 
+                        label="Accessible sidewalks to venue" 
+                        value={accessibility.mobility.accessibleSidewalks} 
+                      />
+                      <AccessibilityRow 
+                        label="Bike racks available" 
+                        value={accessibility.mobility.bikeRacks} 
+                      />
+                      <AccessibilityRow 
+                        label="Covered bike parking" 
+                        value={accessibility.mobility.coveredBikeParking} 
+                      />
                     </div>
                   </div>
                 )}
