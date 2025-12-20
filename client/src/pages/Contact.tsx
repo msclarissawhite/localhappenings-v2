@@ -60,9 +60,14 @@ export default function Contact() {
         <div className="max-w-2xl mx-auto">
           <div className="mb-8">
             <h1 className="text-4xl font-bold mb-4">Get in Touch</h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-lg text-muted-foreground mb-4">
               Questions, feedback, or suggestions? We'd love to hear from you.
             </p>
+            <Card className="p-4 bg-primary/5 border-primary/20">
+              <p className="text-sm text-muted-foreground">
+                <strong className="text-foreground">Interested in business sponsorship?</strong> We're exploring partnerships with organizations that share our commitment to accessibility and community support. Reach out to discuss how your business can help make events more accessible for families.
+              </p>
+            </Card>
           </div>
 
           <Card className="p-6">

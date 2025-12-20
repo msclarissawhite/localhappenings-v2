@@ -642,3 +642,12 @@
 - [ ] Implement "Support Local Happenings" donation button placement
 - [ ] Ensure UI is non-intrusive and accessible
 - [ ] Test complete user flows end-to-end
+
+## Donation UX Refinements
+- [x] Add success toast notification to /donate/thank-you page (appears on load)
+- [x] Add business sponsorship mention to /contact page
+- [x] Add donation statistics to admin dashboard (total raised, average, recurring vs one-time)
+  - Added "Donations" tab with stat cards
+  - Total donations amount and count
+  - Average donation
+  - Recurring vs one-time breakdown with progress bars

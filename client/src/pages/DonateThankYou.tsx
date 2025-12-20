@@ -3,6 +3,7 @@ import { useLocation, Link } from "wouter";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Heart, CheckCircle2, Home, Users } from "lucide-react";
+import { toast } from "sonner";
 
 export default function DonateThankYou() {
   const [, setLocation] = useLocation();
@@ -15,6 +16,12 @@ export default function DonateThankYou() {
     if (!sessionId) {
       // If no session_id, redirect to donate page
       setLocation("/donate");
+    } else {
+      // Show success toast on successful donation
+      toast.success("Thank you for your support!", {
+        description: "Your donation helps keep Local Happenings accessible for everyone.",
+        duration: 5000,
+      });
     }
   }, [setLocation]);
 

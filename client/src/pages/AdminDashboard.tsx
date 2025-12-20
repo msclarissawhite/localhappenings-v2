@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { Calendar, MapPin, CheckCircle, XCircle, AlertCircle, ShieldCheck, Users } from "lucide-react";
+import { Calendar, MapPin, CheckCircle, XCircle, AlertCircle, ShieldCheck, Users, DollarSign, TrendingUp, Repeat } from "lucide-react";
 import type { Event } from "@shared/types";
 import { EventEditDialog } from "@/components/EventEditDialog";
 import { DuplicateWarning } from "@/components/DuplicateWarning";
@@ -31,7 +31,7 @@ export default function AdminDashboard() {
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [reviewAction, setReviewAction] = useState<"published" | "rejected" | "needs-clarification">("published");
   const [selectedEvents, setSelectedEvents] = useState<Set<number>>(new Set());
-  const [activeTab, setActiveTab] = useState<"events" | "organizers" | "feature-requests">("events");
+  const [activeTab, setActiveTab] = useState<"events" | "organizers" | "feature-requests" | "donations">("events");
 
   const { data: pendingEvents, isLoading, refetch } = trpc.events.getPending.useQuery(undefined, {
     enabled: isAuthenticated && user?.role === "admin",
@@ -43,6 +43,10 @@ export default function AdminDashboard() {
 
   const { data: featureRequests, isLoading: featureRequestsLoading, refetch: refetchFeatureRequests } = trpc.featureRequests.list.useQuery(undefined, {
     enabled: isAuthenticated && user?.role === "admin" && activeTab === "feature-requests",
+  });
+
+  const { data: donationStats, isLoading: donationStatsLoading } = trpc.donations.getStats.useQuery(undefined, {
+    enabled: isAuthenticated && user?.role === "admin" && activeTab === "donations",
   });
 
   const toggleVerificationMutation = trpc.organizer.toggleVerification.useMutation({
@@ -202,6 +206,14 @@ export default function AdminDashboard() {
           >
             <AlertCircle className="w-4 h-4 mr-2" />
             Feature Requests
+          </Button>
+          <Button
+            variant={activeTab === "donations" ? "default" : "ghost"}
+            onClick={() => setActiveTab("donations")}
+            className="rounded-b-none"
+          >
+            <DollarSign className="w-4 h-4 mr-2" />
+            Donations
           </Button>
         </div>
 
@@ -481,6 +493,101 @@ export default function AdminDashboard() {
                 <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                 <h3 className="text-lg font-semibold mb-2">No feature requests yet</h3>
                 <p className="text-muted-foreground">Feature requests will appear here when users submit them.</p>
+              </Card>
+            )}
+          </>
+        )}
+
+        {activeTab === "donations" && (
+          <>
+            {donationStatsLoading ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Loading donation statistics...</p>
+              </div>
+            ) : donationStats ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* Total Donations */}
+                <Card className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-sm font-medium text-muted-foreground">Total Donations</h3>
+                    <DollarSign className="w-5 h-5 text-primary" />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-3xl font-bold">${(donationStats.totalAmount / 100).toFixed(2)}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {donationStats.totalDonations} donation{donationStats.totalDonations !== 1 ? 's' : ''}
+                    </p>
+                  </div>
+                </Card>
+
+                {/* Average Donation */}
+                <Card className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-sm font-medium text-muted-foreground">Average Donation</h3>
+                    <TrendingUp className="w-5 h-5 text-primary" />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-3xl font-bold">
+                      ${donationStats.totalDonations > 0 ? (donationStats.averageDonation / 100).toFixed(2) : '0.00'}
+                    </p>
+                    <p className="text-sm text-muted-foreground">Per donation</p>
+                  </div>
+                </Card>
+
+                {/* Recurring Supporters */}
+                <Card className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-sm font-medium text-muted-foreground">Recurring Supporters</h3>
+                    <Repeat className="w-5 h-5 text-primary" />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-3xl font-bold">{donationStats.recurringDonations}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {donationStats.oneTimeDonations} one-time
+                    </p>
+                  </div>
+                </Card>
+
+                {/* Breakdown Card */}
+                <Card className="p-6 md:col-span-2 lg:col-span-3">
+                  <h3 className="text-lg font-semibold mb-4">Donation Breakdown</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm text-muted-foreground">One-time donations</span>
+                        <span className="font-medium">{donationStats.oneTimeDonations}</span>
+                      </div>
+                      <div className="h-2 bg-muted rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-primary"
+                          style={{
+                            width: `${donationStats.totalDonations > 0 ? (donationStats.oneTimeDonations / donationStats.totalDonations) * 100 : 0}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm text-muted-foreground">Recurring donations</span>
+                        <span className="font-medium">{donationStats.recurringDonations}</span>
+                      </div>
+                      <div className="h-2 bg-muted rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-green-500"
+                          style={{
+                            width: `${donationStats.totalDonations > 0 ? (donationStats.recurringDonations / donationStats.totalDonations) * 100 : 0}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            ) : (
+              <Card className="p-12 text-center">
+                <DollarSign className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">No donations yet</h3>
+                <p className="text-muted-foreground">Donation statistics will appear here when supporters contribute.</p>
               </Card>
             )}
           </>
