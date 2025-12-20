@@ -107,14 +107,14 @@ export default function BrowseEvents() {
               Province/Territory
             </Label>
             <Select
-              value={filters.province || ""}
-              onValueChange={(value) => updateFilter("province", value || undefined)}
+              value={filters.province || "all"}
+              onValueChange={(value) => updateFilter("province", value === "all" ? undefined : value)}
             >
               <SelectTrigger id="province-filter">
                 <SelectValue placeholder="All provinces" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All provinces</SelectItem>
+                <SelectItem value="all">All provinces</SelectItem>
                 {locations?.provinces?.map((province) => (
                   <SelectItem key={province} value={province}>
                     {province}
@@ -130,15 +130,15 @@ export default function BrowseEvents() {
               City/Town/Municipality
             </Label>
             <Select
-              value={filters.municipality || ""}
-              onValueChange={(value) => updateFilter("municipality", value || undefined)}
+              value={filters.municipality || "all"}
+              onValueChange={(value) => updateFilter("municipality", value === "all" ? undefined : value)}
               disabled={!filters.province}
             >
               <SelectTrigger id="municipality-filter">
                 <SelectValue placeholder={filters.province ? "All municipalities" : "Select province first"} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All municipalities</SelectItem>
+                <SelectItem value="all">All municipalities</SelectItem>
                 {locations?.municipalities
                   ?.filter((m) => !filters.province || m.province === filters.province)
                   ?.map((municipality) => (
@@ -156,14 +156,14 @@ export default function BrowseEvents() {
               Time of Day
             </Label>
             <Select
-              value={filters.timeOfDay || ""}
-              onValueChange={(value) => updateFilter("timeOfDay", value || undefined)}
+              value={filters.timeOfDay || "any"}
+              onValueChange={(value) => updateFilter("timeOfDay", value === "any" ? undefined : value)}
             >
               <SelectTrigger id="time-filter">
                 <SelectValue placeholder="Any time" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Any time</SelectItem>
+                <SelectItem value="any">Any time</SelectItem>
                 <SelectItem value="morning">Morning</SelectItem>
                 <SelectItem value="afternoon">Afternoon</SelectItem>
                 <SelectItem value="evening">Evening</SelectItem>

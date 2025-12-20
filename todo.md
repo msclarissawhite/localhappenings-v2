@@ -503,3 +503,10 @@
 - [x] Implement multi-filter application logic for presets (toggle on/off with single click)
 - [x] Add visual indicator when preset is active (variant="default" when all filters active)
 - [x] Test all presets apply correct filter combinations
+
+## Bug: Select Component Empty String Error
+- [x] Remove empty string values from Province SelectItem (use "all" instead)
+- [x] Remove empty string values from Municipality SelectItem (use "all" instead)
+- [x] Remove empty string values from Time of Day SelectItem (use "any" instead)
+- [x] Update onValueChange handlers to convert "all"/"any" back to undefined
+- [x] Test Browse Events page loads without errors
