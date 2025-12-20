@@ -1,7 +1,7 @@
 # Local Happenings - User Manual & Testing Guide
 
-**Version:** 3.0  
-**Last Updated:** December 19, 2025  
+**Version:** 3.1  
+**Last Updated:** December 20, 2025  
 **Author:** Manus AI
 
 ---
@@ -204,7 +204,7 @@ Event detail pages are organized into scannable sections for easy information re
 
 **What It Is** displays the full event description in readable paragraphs.
 
-**When & Where** shows the date and time formatted as "Day, Month Date, Year", the time of day if specified, the venue name and address if provided, the location hierarchy (neighborhood, city, province), whether the event is Indoor, Outdoor, or both, and an **"Open in Google Maps"** button that opens the event location directly in Google Maps for navigation.
+**When & Where** shows the date and time formatted as "Day, Month Date, Year" for single-day events or "Month Day - Month Day, Year" for multi-day events. For multi-day events, a duration indicator displays (e.g., "3-day event") to help families plan accordingly. The time of day is shown if specified, with "(each day)" appended for multi-day events. The section also displays the venue name and address if provided, the location hierarchy (neighborhood, city, province), whether the event is Indoor, Outdoor, or both, and an **"Open in Google Maps"** button that opens the event location directly in Google Maps for navigation.
 
 **Cost** clearly displays "FREE" for free events or shows the price range for paid events. Cost type (Donation-based, Pay-what-you-can, Sliding scale) is displayed when applicable. Additional cost information such as "Kids attend free" or "Free companion/support worker ticket" is displayed with checkmark icons.
 
@@ -237,6 +237,12 @@ Four action buttons are available for each event:
 When an admin clicks any action button, a confirmation dialog appears requesting optional notes or required explanations depending on the action. After confirming, the event status is updated, an email notification is sent, and the admin receives a success notification.
 
 When there are no pending events, the dashboard displays a friendly message: "All caught up! There are no pending events to review."
+
+**Bulk Upload CSV** allows admins to import multiple events at once using a CSV file. Click the "Bulk Upload CSV" button in the admin dashboard, select a properly formatted CSV file (use the template provided in the repository), preview the events that will be imported, and click "Import Events" to add them all to the database with published status. This feature is useful for importing seasonal events, recurring activities, or migrating data from other systems.
+
+**Download All Events** exports all events in the database to a CSV file for backup or analysis purposes. Click the "Download All Events" button in the admin dashboard to download a CSV file containing all event data including accessibility information, organizer details, and status. This file uses the same format as the bulk upload template.
+
+**Bulk Delete** allows admins to delete multiple events simultaneously. Select events using the checkboxes next to each event card, click the "Delete Selected" button, and confirm the deletion in the dialog that appears. This feature is useful for removing outdated events, clearing test data, or managing seasonal cleanup.
 
 ### Analytics Dashboard
 
@@ -287,7 +293,9 @@ Before publishing your site, complete the following tests to ensure all features
 
 5. **Browse Events - Sorting**: Test all four sort options (Soonest, Latest, Name A-Z, Name Z-A) and verify that events reorder correctly.
 
-6. **Event Submission - Basic Flow**: Click "Submit an Event" and test the form by filling in all required fields (name, description, province, city, start date), uploading an image (test with a valid image file), setting the event as free, selecting age groups and environment, completing the accessibility section (test all four response options: Yes, No, Unknown, Not Relevant), providing organizer name and email, and submitting the form. Verify that a success message appears.
+6. **Event Submission - Basic Flow**: Click "Submit an Event" and test the form by filling in all required fields (name, description, province, city, start date), uploading an image (test with a valid image file in 1200x630px resolution with 1.91:1 aspect ratio for optimal display), setting the event as free, selecting age groups and environment, completing the accessibility section (test all four response options: Yes, No, Unknown, Not Relevant), providing organizer name and email, and submitting the form. Verify that a success message appears.
+
+**Event Submission - Multi-Day Events**: Test submitting a multi-day event by filling in both the start date and end date fields (e.g., a weekend festival or week-long camp). Verify that the form accepts the date range and that the preview shows the duration correctly.
 
 7. **Event Submission - Organizer Validation**: Test that the form requires either email OR phone (try submitting with neither, with only email, with only phone, and with both). Verify that the "Display organizer info publicly" checkbox works.
 
@@ -423,7 +431,7 @@ The platform uses the following main tables:
 
 **users**: Stores user accounts with fields for id (primary key), openId (Manus OAuth identifier), name, email, loginMethod, role (user or admin), createdAt, updatedAt, and lastSignedIn.
 
-**events**: Stores all event data with fields for id (primary key), name, description, startDate, endDate, timeOfDay, province, city, neighborhood, venue, address, isIndoor, isOutdoor, isFree, minCost, maxCost, costType, kidsFree, freeCompanion, familyFriendly, youngChildren, kids, teens, adultsOnly, seniors, allAges, accessibility (JSON field containing all 40+ accessibility fields), organizerName, organizerEmail, organizerPhone, organizerWebsite, displayOrganizerInfo (boolean), additionalNotes, imageUrl, status (pending, published, rejected, needs-clarification), submittedBy (user id), createdAt, and updatedAt.
+**events**: Stores all event data with fields for id (primary key), name, description, startDate (required), endDate (optional, for multi-day events), timeOfDay, province, city, neighborhood, venue, address, isIndoor, isOutdoor, isFree, minCost, maxCost, costType, kidsFree, freeCompanion, familyFriendly, youngChildren, kids, teens, adultsOnly, seniors, allAges, accessibility (JSON field containing all 40+ accessibility fields), organizerName, organizerEmail, organizerPhone, organizerWebsite, displayOrganizerInfo (boolean), additionalNotes, imageUrl (recommended size: 1200x630px, aspect ratio 1.91:1), status (pending, published, rejected, needs-clarification), submittedBy (user id), createdAt, and updatedAt. For multi-day events, endDate should be set to the last day of the event, and the platform will automatically calculate and display the duration.
 
 The accessibility field is stored as JSON and contains five nested objects: caregiverInfant, mobilityPhysical, sensoryNeurodivergent, cognitiveComm, and socialEmotional. Each object contains multiple fields with values of "yes", "no", "unknown", or "not-relevant".
 

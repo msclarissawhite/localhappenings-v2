@@ -870,3 +870,15 @@
 - [x] Display duration badge on event cards (e.g., "3-day event")
 - [x] Display duration on event detail page
 - [ ] Test CSV import with multi-day events
+
+## Documentation Updates for Multi-Day Events & Admin Tools (December 20, 2024)
+- [x] Update USER_MANUAL.md with multi-day event features (endDate field, duration display)
+- [x] Update USER_MANUAL.md with CSV export functionality
+- [x] Update USER_MANUAL.md with bulk delete feature
+- [x] Update ORGANIZER_QUICKSTART_GUIDE.md with multi-day event submission instructions
+- [x] Update ORGANIZER_QUICKSTART_GUIDE.md with event image upload guidelines (size, ratio, best practices)
+- [x] Update ORGANIZER_EVENT_FIELDS_GUIDE.md with endDate field documentation
+- [x] Update ORGANIZER_EVENT_FIELDS_GUIDE.md with event image field documentation
+- [x] Add image size/ratio recommendations (desktop and mobile optimized: 1200x630px, 1.91:1 ratio)
+- [x] Review and update CSV template documentation (created CSV_IMPORT_GUIDE.md)
+- [x] Identify any other documentation gaps (all major docs updated)

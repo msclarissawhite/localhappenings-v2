@@ -10,7 +10,7 @@ This guide lists all the information you can provide about your event on Local H
 |-------|-----------|-------------|---------|
 | **Event Name** | **REQUIRED** | The name of your event | "Winter Carnival at City Park" |
 | **Description** | **REQUIRED** | What happens at the event, what to expect | "Join us for ice skating, hot chocolate, and live music. Activities for all ages including a kids' zone with face painting and crafts." |
-| **Event Image** | Optional | Photo of the event or venue (JPG, PNG, max 5MB) | Upload a photo |
+| **Event Image** | Optional (Recommended) | Photo of the event or venue. **Recommended size: 1200×630px (1.91:1 ratio)** for optimal display on desktop and mobile. JPG or PNG format, under 2MB. | Upload a photo showing the activity, venue, or previous event |
 
 ---
 
@@ -31,10 +31,8 @@ This guide lists all the information you can provide about your event on Local H
 | Field | Required? | Description | Example |
 |-------|-----------|-------------|---------|
 | **Start Date** | **REQUIRED** | When the event begins | 2025-01-15 |
-| **Start Time** | **REQUIRED** | What time the event starts | 10:00 AM |
-| **End Date** | Optional | When the event ends (if multi-day) | 2025-01-15 |
-| **End Time** | Optional | What time the event ends | 3:00 PM |
-| **Time of Day** | Optional | General timeframe | Morning, Afternoon, Evening, All-day |
+| **End Date** | Optional | When the event ends (for multi-day events like festivals, camps, or exhibitions). The platform will automatically calculate and display the duration (e.g., "3-day event"). Leave blank for single-day events. | 2025-01-17 (for a 3-day event) |
+| **Time of Day** | Optional | General timeframe for when activities occur. For multi-day events, this indicates the time of day for each day. | Morning, Afternoon, Evening, All-day |
 
 ---
 

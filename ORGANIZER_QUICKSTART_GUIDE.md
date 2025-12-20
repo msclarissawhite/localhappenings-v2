@@ -1,6 +1,6 @@
 # Local Happenings: Organizer Quickstart Guide
 
-**Version 1.0** | **Last Updated:** December 19, 2024
+**Version 1.1** | **Last Updated:** December 20, 2024
 
 Welcome to Local Happenings! This guide will help you get started as an event organizer and make the most of the platform's features to reach families in your community.
 
@@ -52,10 +52,12 @@ The event submission form has several sections:
 > **💡 Pro Tip:** Use the **"Quick Fill from Saved Location"** dropdown if you're hosting at a venue you've used before. All location fields will auto-fill instantly!
 
 #### **Date & Time**
-- **Start Date** – when the event begins
-- **End Date** (optional) – for multi-day events
-- **Time of Day** – morning, afternoon, evening, or all-day
+- **Start Date** – when the event begins (required)
+- **End Date** (optional) – for multi-day events like weekend festivals, week-long camps, or month-long exhibitions. When you provide an end date, the platform automatically calculates and displays the duration (e.g., "3-day event") to help families plan accordingly.
+- **Time of Day** – morning, afternoon, evening, or all-day. For multi-day events, this indicates the time of day activities occur each day.
 - **Recurring Events** – check this box for weekly/monthly events and set the interval
+
+> **💡 Multi-Day Event Example:** A summer music festival running Friday through Sunday would have a start date of Friday and an end date of Sunday. The event card will automatically show "3-day event" and the date range "July 12-14, 2024".
 
 #### **Cost Information**
 - **Free Event** – check this box if there's no cost
@@ -98,8 +100,28 @@ For each field, you can select:
 #### **Contact Information** (Optional)
 - Email, phone, and website for families who have questions
 
-#### **Event Image** (Optional)
-- Upload a photo to make your event stand out
+#### **Event Image** (Optional but Recommended)
+
+Upload a photo to make your event stand out in browse listings and attract more families. Event images appear prominently on event cards and detail pages.
+
+**Image Guidelines for Best Results:**
+
+- **Recommended Size:** 1200 pixels wide × 630 pixels tall (1200x630px)
+- **Aspect Ratio:** 1.91:1 (landscape orientation)
+- **File Format:** JPG or PNG
+- **File Size:** Under 2MB for fast loading
+
+**Why These Dimensions?** This size displays perfectly on both desktop and mobile devices without cropping or distortion. The 1.91:1 ratio matches social media preview standards, so your event looks great when shared on Facebook or Twitter.
+
+**Image Best Practices:**
+
+- **Show the activity in action** – photos of previous events, the venue, or similar activities help families visualize the experience
+- **Include people when possible** – families connect with images showing children engaged and having fun
+- **Ensure good lighting** – bright, clear photos are more inviting than dark or blurry images
+- **Avoid text-heavy graphics** – let the event name and description provide details; use the image to convey atmosphere
+- **Consider accessibility** – high contrast images are easier to see for users with visual impairments
+
+**Don't Have a Photo?** That's okay! Events without images still appear in listings. However, events with images typically receive more clicks and engagement.
 
 ---
 
