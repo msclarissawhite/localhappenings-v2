@@ -4,11 +4,13 @@ import { useUserAuth } from "@/hooks/useUserAuth";
 import { getLoginUrl } from "@/const";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Link } from "wouter";
-import { Bookmark, Calendar, MapPin, DollarSign, Trash2 } from "lucide-react";
+import { Link, useLocation } from "wouter";
+import { Bookmark, Calendar, MapPin, DollarSign, Trash2, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
 export default function MySavedEvents() {
+  const [, navigate] = useLocation();
+  
   // Support both organizer (Manus OAuth) and user (magic link) authentication
   const organizerAuth = useAuth();
   const userAuth = useUserAuth();
@@ -16,6 +18,7 @@ export default function MySavedEvents() {
   // Use whichever authentication is active
   const user = organizerAuth.user || userAuth.user;
   const authLoading = organizerAuth.loading || userAuth.loading;
+  const isOrganizer = organizerAuth.isAuthenticated;
   
   const utils = trpc.useUtils();
 
@@ -71,9 +74,22 @@ export default function MySavedEvents() {
   return (
     <div className="container py-12">
       <div className="max-w-4xl mx-auto">
-        <div className="flex items-center gap-3 mb-8">
-          <Bookmark className="h-8 w-8 text-primary" />
-          <h1 className="text-4xl font-bold">My Saved Events</h1>
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+            <Bookmark className="h-8 w-8 text-primary" />
+            <h1 className="text-4xl font-bold">My Saved Events</h1>
+          </div>
+          
+          {/* Show Back to Dashboard for organizers */}
+          {isOrganizer && (
+            <Button 
+              variant="outline" 
+              onClick={() => navigate("/organizer/dashboard")}
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Dashboard
+            </Button>
+          )}
         </div>
 
         {savedEvents && savedEvents.length === 0 && (

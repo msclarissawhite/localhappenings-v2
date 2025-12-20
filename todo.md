@@ -424,3 +424,9 @@
 - [x] Position button prominently at top of event detail page (aligned right with ml-auto)
 - [x] Test navigation from event detail to organizer dashboard
 - [x] Created comprehensive test suite (15 tests passing)
+
+## Feature: Back to Dashboard Button on MySavedEvents Page
+- [x] Add "Back to Dashboard" button to MySavedEvents page header
+- [x] Show button only for logged-in organizers (isOrganizer check)
+- [x] Position button alongside existing page title (justify-between layout)
+- [x] Test navigation from MySavedEvents to organizer dashboard
