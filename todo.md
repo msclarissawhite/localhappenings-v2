@@ -480,3 +480,16 @@
 - [x] Add covered bike parking display to EventDetail Mobility section
 - [x] Display fields using existing AccessibilityRow component (icons handled by component)
 - [x] Test event detail page displays all new fields correctly
+
+## Browse Events Filter Reorganization
+- [x] Move Province/Territory dropdown to quick filters section (top, 3-column grid)
+- [x] Move City/Town/Municipality dropdown to quick filters section (top, dependent on province)
+- [x] Move Time of Day selector to quick filters section (morning/afternoon/evening/all-day)
+- [x] Add bus stop distance filter to advanced filters Mobility section
+- [x] Add accessible sidewalks filter to advanced filters Mobility section
+- [x] Add bike racks filter to advanced filters Mobility section
+- [x] Add covered bike parking filter to advanced filters Mobility section
+- [x] Add crowd level filter to advanced filters Sensory section ("Spacious (low crowd)")
+- [x] All accessibility fields now in advanced filters
+- [x] Test filtering by location, time, and accessibility options
+- [x] Verify filter combinations work correctly

@@ -99,6 +99,80 @@ export default function BrowseEvents() {
           </div>
         </div>
 
+        {/* Quick Filters - Location & Time */}
+        <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Province/Territory */}
+          <div>
+            <Label htmlFor="province-filter" className="text-sm font-medium mb-2 block">
+              Province/Territory
+            </Label>
+            <Select
+              value={filters.province || ""}
+              onValueChange={(value) => updateFilter("province", value || undefined)}
+            >
+              <SelectTrigger id="province-filter">
+                <SelectValue placeholder="All provinces" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">All provinces</SelectItem>
+                {locations?.provinces?.map((province) => (
+                  <SelectItem key={province} value={province}>
+                    {province}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* City/Town/Municipality */}
+          <div>
+            <Label htmlFor="municipality-filter" className="text-sm font-medium mb-2 block">
+              City/Town/Municipality
+            </Label>
+            <Select
+              value={filters.municipality || ""}
+              onValueChange={(value) => updateFilter("municipality", value || undefined)}
+              disabled={!filters.province}
+            >
+              <SelectTrigger id="municipality-filter">
+                <SelectValue placeholder={filters.province ? "All municipalities" : "Select province first"} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">All municipalities</SelectItem>
+                {locations?.municipalities
+                  ?.filter((m) => !filters.province || m.province === filters.province)
+                  ?.map((municipality) => (
+                    <SelectItem key={municipality.name} value={municipality.name}>
+                      {municipality.name}
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Time of Day */}
+          <div>
+            <Label htmlFor="time-filter" className="text-sm font-medium mb-2 block">
+              Time of Day
+            </Label>
+            <Select
+              value={filters.timeOfDay || ""}
+              onValueChange={(value) => updateFilter("timeOfDay", value || undefined)}
+            >
+              <SelectTrigger id="time-filter">
+                <SelectValue placeholder="Any time" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">Any time</SelectItem>
+                <SelectItem value="morning">Morning</SelectItem>
+                <SelectItem value="afternoon">Afternoon</SelectItem>
+                <SelectItem value="evening">Evening</SelectItem>
+                <SelectItem value="all-day">All Day</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
         {/* Quick Toggles */}
         <div className="mb-6 flex flex-wrap gap-3">
           <Button
@@ -398,6 +472,46 @@ export default function BrowseEvents() {
                             Accessible washrooms
                           </Label>
                         </div>
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id="busStopDistance"
+                            checked={filters.busStopDistance || false}
+                            onCheckedChange={() => toggleFilter("busStopDistance")}
+                          />
+                          <Label htmlFor="busStopDistance" className="cursor-pointer text-sm">
+                            Near bus stop
+                          </Label>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id="accessibleSidewalks"
+                            checked={filters.accessibleSidewalks || false}
+                            onCheckedChange={() => toggleFilter("accessibleSidewalks")}
+                          />
+                          <Label htmlFor="accessibleSidewalks" className="cursor-pointer text-sm">
+                            Accessible sidewalks
+                          </Label>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id="bikeRacks"
+                            checked={filters.bikeRacks || false}
+                            onCheckedChange={() => toggleFilter("bikeRacks")}
+                          />
+                          <Label htmlFor="bikeRacks" className="cursor-pointer text-sm">
+                            Bike racks available
+                          </Label>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id="coveredBikeParking"
+                            checked={filters.coveredBikeParking || false}
+                            onCheckedChange={() => toggleFilter("coveredBikeParking")}
+                          />
+                          <Label htmlFor="coveredBikeParking" className="cursor-pointer text-sm">
+                            Covered bike parking
+                          </Label>
+                        </div>
                       </div>
                     </AccordionContent>
                   </AccordionItem>
@@ -440,6 +554,16 @@ export default function BrowseEvents() {
                           />
                           <Label htmlFor="quietEnvironment" className="cursor-pointer text-sm">
                             Quiet environment
+                          </Label>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id="crowdLevel"
+                            checked={filters.crowdLevel || false}
+                            onCheckedChange={() => toggleFilter("crowdLevel")}
+                          />
+                          <Label htmlFor="crowdLevel" className="cursor-pointer text-sm">
+                            Spacious (low crowd)
                           </Label>
                         </div>
                       </div>
