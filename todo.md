@@ -862,3 +862,11 @@
 - [x] Use existing backend delete procedure
 - [x] Add confirmation dialog for bulk delete
 - [ ] Test bulk delete with multiple selected events
+
+## CSV Template Updates & Duration Display (December 20, 2024)
+- [x] event_upload_template.csv already includes endDate column
+- [x] Update event_upload_example.csv with multi-day event examples (Summer Music Festival)
+- [x] Add duration calculation helper function (days between startDate and endDate)
+- [x] Display duration badge on event cards (e.g., "3-day event")
+- [x] Display duration on event detail page
+- [ ] Test CSV import with multi-day events

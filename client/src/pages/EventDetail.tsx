@@ -371,6 +371,14 @@ export default function EventDetail() {
                       ? `${format(new Date(event.startDate), "MMMM d")} - ${format(new Date(event.endDate), "MMMM d, yyyy")}`
                       : format(new Date(event.startDate), "EEEE, MMMM d, yyyy")}
                   </p>
+                  {event.endDate && event.endDate !== event.startDate && (() => {
+                    const days = Math.ceil((new Date(event.endDate).getTime() - new Date(event.startDate).getTime()) / (1000 * 60 * 60 * 24)) + 1;
+                    return (
+                      <p className="text-sm text-muted-foreground">
+                        {days}-day event
+                      </p>
+                    );
+                  })()}
                   {event.timeOfDay && (
                     <p className="text-sm text-muted-foreground capitalize">
                       {event.timeOfDay.replace("-", " ")}
