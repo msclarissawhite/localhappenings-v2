@@ -572,28 +572,56 @@
 - [x] Selected: Featured Event Placement + Voluntary Donations (table Organizer Pro for later)
 
 ## Monetization Implementation - Phase 1: Stripe Integration
-- [ ] Add Stripe feature to project using webdev_add_feature
-- [ ] Request Stripe API keys from user (STRIPE_SECRET_KEY, STRIPE_PUBLISHABLE_KEY)
-- [ ] Create featured_events table (event_id, start_date, end_date, payment_status, stripe_payment_id)
-- [ ] Create donations table (donor_name, amount, message, timestamp, stripe_payment_id)
+- [x] Add Stripe feature to project using webdev_add_feature (already configured)
+- [x] Stripe API keys already configured in environment
+- [x] Create featured_events table with fields:
+  - event_id, organizer_id, weeks_purchased (1-8), start_date, end_date
+  - amount_paid, stripe_payment_intent_id, status (active/expired)
+- [x] Create donations table with fields:
+  - donor_name, donor_email, amount, message (optional, max 200 chars)
+  - is_recurring, stripe_payment_intent_id OR stripe_subscription_id
+  - is_anonymous, show_amount, created_at
+- [x] Push database migrations (migration 0010_woozy_silver_fox.sql applied)
+- [x] Install Stripe SDK (stripe@20.1.0)
+- [x] Create Stripe client initialization (server/_core/stripe.ts)
+- [x] Add Stripe env vars to env.ts (STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET)
+- [x] Create products configuration file (shared/products.ts)
 - [ ] Test Stripe connection
 
+## Checkpoint Strategy
+- [x] Checkpoint 1: Homepage updates + database schema + Stripe setup
+- [ ] Checkpoint 2: Voluntary donations complete
+- [ ] Checkpoint 3: Featured event placement complete
+
 ## Monetization Implementation - Phase 2: Featured Event Placement
-- [ ] Create Stripe checkout session for featured event payment ($10-20 for 7-14 days)
+- [ ] Create Stripe checkout session for featured event payment
+  - $10 per week, 1-8 weeks selectable (dropdown)
+  - Total: $10-$80 depending on weeks selected
 - [ ] Build payment success/cancel handlers
-- [ ] Add isFeatured flag to event queries
-- [ ] Update Browse Events to show featured events at top with badge
+- [ ] Add isFeatured logic to event queries (check if current date is within start_date and end_date)
+- [ ] Update Browse Events to show featured events at top with "Featured" badge
+- [ ] Update Archive page to show featured events at top (even if past)
 - [ ] Add "Feature This Event" button to organizer dashboard
+- [ ] Create products.ts file with featured event product definition
 - [ ] Create admin view for featured events revenue
 - [ ] Write vitest tests for featured event logic
+- [ ] Test with Stripe test card (4242 4242 4242 4242)
 
 ## Monetization Implementation - Phase 3: Voluntary Donations
 - [ ] Create Stripe checkout session for donations
-- [ ] Support preset amounts ($5, $10, $25) + custom amount field
+  - Preset amounts: $5, $10, $25 + custom amount field
+  - Toggle: one-time OR monthly recurring
 - [ ] Build payment success/thank you page
-- [ ] Create optional donor wall page (public thank you)
-- [ ] Add transparency page explaining fund usage
+- [ ] Create donor wall page with:
+  - Donor name (or "Anonymous Supporter" if is_anonymous=true)
+  - Optional message (max 200 chars)
+  - Optional amount display (if show_amount=true)
+  - Timestamp
+- [ ] Add donor preferences form (name, anonymous toggle, show amount toggle, message)
+- [ ] Create products.ts file with donation product definitions
+- [ ] Add transparency page explaining fund usage (hosting, development, accessibility audits)
 - [ ] Write vitest tests for donation flow
+- [ ] Test with Stripe test card (4242 4242 4242 4242)
 
 ## Monetization Implementation - Phase 4: UI Placement
 - [ ] Discuss UI placement options with user

@@ -289,3 +289,62 @@ export const featureRequestUpvotes = mysqlTable("featureRequestUpvotes", {
 
 export type FeatureRequestUpvote = typeof featureRequestUpvotes.$inferSelect;
 export type InsertFeatureRequestUpvote = typeof featureRequestUpvotes.$inferInsert;
+
+/**
+ * Featured events - Paid promotion for events to appear at top of browse/archive pages
+ * $10 per week, 1-8 weeks maximum
+ */
+export const featuredEvents = mysqlTable("featuredEvents", {
+  id: int("id").autoincrement().primaryKey(),
+  eventId: int("eventId").notNull(),
+  organizerId: int("organizerId").notNull(),
+  
+  // Duration and pricing
+  weeksPurchased: int("weeksPurchased").notNull(), // 1-8 weeks
+  startDate: timestamp("startDate").notNull(),
+  endDate: timestamp("endDate").notNull(), // Calculated: startDate + (weeksPurchased * 7 days)
+  amountPaid: int("amountPaid").notNull(), // In cents: weeksPurchased * 1000 ($10 per week)
+  
+  // Stripe payment tracking
+  stripePaymentIntentId: varchar("stripePaymentIntentId", { length: 255 }).notNull(),
+  
+  // Status
+  status: mysqlEnum("status", ["active", "expired"]).default("active").notNull(),
+  
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type FeaturedEvent = typeof featuredEvents.$inferSelect;
+export type InsertFeaturedEvent = typeof featuredEvents.$inferInsert;
+
+/**
+ * Donations - Voluntary financial support from community members
+ * Supports one-time and recurring monthly donations
+ */
+export const donations = mysqlTable("donations", {
+  id: int("id").autoincrement().primaryKey(),
+  
+  // Donor information
+  donorName: varchar("donorName", { length: 255 }), // null if anonymous
+  donorEmail: varchar("donorEmail", { length: 320 }).notNull(), // For receipt, not displayed publicly
+  message: text("message"), // Optional message (max 200 chars, enforced in frontend)
+  
+  // Amount
+  amount: int("amount").notNull(), // In cents
+  
+  // Recurring vs one-time
+  isRecurring: int("isRecurring").default(0).notNull(), // 0 = one-time, 1 = monthly recurring
+  
+  // Stripe payment tracking
+  stripePaymentIntentId: varchar("stripePaymentIntentId", { length: 255 }), // For one-time donations
+  stripeSubscriptionId: varchar("stripeSubscriptionId", { length: 255 }), // For recurring donations
+  
+  // Privacy preferences
+  isAnonymous: int("isAnonymous").default(0).notNull(), // 0 = show name, 1 = show "Anonymous Supporter"
+  showAmount: int("showAmount").default(1).notNull(), // 0 = hide amount, 1 = show amount on donor wall
+  
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type Donation = typeof donations.$inferSelect;
+export type InsertDonation = typeof donations.$inferInsert;
