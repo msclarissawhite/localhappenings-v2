@@ -393,3 +393,11 @@
 - [x] Updated context.ts to support dual authentication (Manus OAuth + Magic Link)
 - [x] Test complete save event workflow from browse → event detail → save
 - [x] Created comprehensive test suite for dual authentication (4 tests passing)
+
+## Feature: Organizers Can Save Events
+- [x] Verify dual authentication already supports organizers saving events
+- [x] Updated BookmarkButton to check both useAuth() and useUserAuth()
+- [x] Test organizer login → browse events → save event workflow
+- [x] Ensure saved events list shows for both organizers and magic link users
+- [x] Test that organizers can manage reminder preferences
+- [x] Created comprehensive test suite (5 tests passing)

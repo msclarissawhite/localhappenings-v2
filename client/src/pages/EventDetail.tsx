@@ -23,7 +23,14 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 // Bookmark Button Component
 function BookmarkButton({ eventId }: { eventId: number }) {
-  const { user, isAuthenticated, getLoginUrl } = useUserAuth();
+  // Check both authentication methods: Manus OAuth (organizers) and magic link (users)
+  const organizerAuth = useAuth();
+  const userAuth = useUserAuth();
+  
+  // Use whichever authentication is active
+  const user = organizerAuth.user || userAuth.user;
+  const isAuthenticated = organizerAuth.isAuthenticated || userAuth.isAuthenticated;
+  
   const [showDialog, setShowDialog] = useState(false);
   const [reminderPref, setReminderPref] = useState<"none" | "24h" | "48h" | "both">("24h");
   const utils = trpc.useUtils();
@@ -53,7 +60,7 @@ function BookmarkButton({ eventId }: { eventId: number }) {
   const handleClick = () => {
     if (!isAuthenticated) {
       toast.error("Please sign in to save events and receive reminders");
-      window.location.href = getLoginUrl();
+      window.location.href = userAuth.getLoginUrl();
       return;
     }
 
