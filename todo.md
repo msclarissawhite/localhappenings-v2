@@ -493,3 +493,13 @@
 - [x] All accessibility fields now in advanced filters
 - [x] Test filtering by location, time, and accessibility options
 - [x] Verify filter combinations work correctly
+
+## Accessibility Filter Presets
+- [x] Create "Wheelchair Accessible" preset (♿ wheelchair entrance, step-free entry, accessible washrooms, accessible parking)
+- [x] Create "Sensory-Friendly" preset (🔇 quiet environment, sensory-friendly, low crowd, quiet room)
+- [x] Create "Transit Accessible" preset (🚌 near bus stop, accessible sidewalks)
+- [x] Create "Family-Friendly" preset (👶 stroller accessible, change tables, nursing friendly, stroller space)
+- [x] Add preset buttons section to Browse Events page (below quick toggles, above advanced filters)
+- [x] Implement multi-filter application logic for presets (toggle on/off with single click)
+- [x] Add visual indicator when preset is active (variant="default" when all filters active)
+- [x] Test all presets apply correct filter combinations

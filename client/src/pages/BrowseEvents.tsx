@@ -226,6 +226,82 @@ export default function BrowseEvents() {
           </Button>
         </div>
 
+        {/* Accessibility Filter Presets */}
+        <div className="mb-6">
+          <h3 className="text-sm font-medium mb-3 flex items-center gap-2">
+            <Accessibility className="w-4 h-4" />
+            Accessibility Presets
+          </h3>
+          <div className="flex flex-wrap gap-3">
+            <Button
+              variant={(filters.wheelchairEntrance && filters.stepFreeEntry && filters.accessibleWashrooms) ? "default" : "outline"}
+              size="sm"
+              onClick={() => {
+                const isActive = filters.wheelchairEntrance && filters.stepFreeEntry && filters.accessibleWashrooms;
+                setFilters((prev) => ({
+                  ...prev,
+                  wheelchairEntrance: !isActive,
+                  stepFreeEntry: !isActive,
+                  accessibleWashrooms: !isActive,
+                  accessibleParking: !isActive,
+                  offset: 0,
+                }));
+              }}
+            >
+              ♿ Wheelchair Accessible
+            </Button>
+            <Button
+              variant={(filters.quietEnvironment && filters.sensoryFriendly && filters.crowdLevel) ? "default" : "outline"}
+              size="sm"
+              onClick={() => {
+                const isActive = filters.quietEnvironment && filters.sensoryFriendly && filters.crowdLevel;
+                setFilters((prev) => ({
+                  ...prev,
+                  quietEnvironment: !isActive,
+                  sensoryFriendly: !isActive,
+                  crowdLevel: !isActive,
+                  quietRoom: !isActive,
+                  offset: 0,
+                }));
+              }}
+            >
+              🔇 Sensory-Friendly
+            </Button>
+            <Button
+              variant={(filters.busStopDistance && filters.accessibleSidewalks) ? "default" : "outline"}
+              size="sm"
+              onClick={() => {
+                const isActive = filters.busStopDistance && filters.accessibleSidewalks;
+                setFilters((prev) => ({
+                  ...prev,
+                  busStopDistance: !isActive,
+                  accessibleSidewalks: !isActive,
+                  offset: 0,
+                }));
+              }}
+            >
+              🚌 Transit Accessible
+            </Button>
+            <Button
+              variant={(filters.strollerAccessible && filters.changeTablesPresent && filters.nursingFriendly) ? "default" : "outline"}
+              size="sm"
+              onClick={() => {
+                const isActive = filters.strollerAccessible && filters.changeTablesPresent && filters.nursingFriendly;
+                setFilters((prev) => ({
+                  ...prev,
+                  strollerAccessible: !isActive,
+                  changeTablesPresent: !isActive,
+                  nursingFriendly: !isActive,
+                  strollerSpace: !isActive,
+                  offset: 0,
+                }));
+              }}
+            >
+              👶 Family-Friendly
+            </Button>
+          </div>
+        </div>
+
         {/* Advanced Filters Toggle */}
         <div className="mb-6">
           <Button
