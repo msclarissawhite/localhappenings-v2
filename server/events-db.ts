@@ -334,6 +334,16 @@ export async function updateEvent(eventId: number, eventData: any) {
 }
 
 /**
+ * Update event's ClickUp task ID
+ */
+export async function updateEventClickUpTaskId(eventId: number, clickupTaskId: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  await db.update(events).set({ clickupTaskId }).where(eq(events.id, eventId));
+}
+
+/**
  * Delete an event
  */
 export async function deleteEvent(eventId: number) {

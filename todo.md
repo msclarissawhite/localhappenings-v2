@@ -813,3 +813,14 @@
 - [x] Include all form fields (name, email, subject, message) in ClickUp task
 - [x] Sync creation date (ISO timestamp) to ClickUp task description
 - [ ] Test email delivery and ClickUp sync with real submission
+
+## Event Submission ClickUp Integration (December 20, 2024)
+- [x] Add CLICKUP_EVENT_LIST_ID environment variable (901708732695)
+- [x] Create ClickUp helper function for event submission sync
+- [x] Sync event submission to ClickUp when organizer submits event
+- [x] Map custom fields: Event Name, Organizer Name, Organizer Email, Organizer Phone, Event Date, Event Status, Submission Date, Event ID
+- [x] Set priority to "urgent" if event date is within 1 week
+- [x] Update ClickUp task status when admin approves/rejects event
+- [x] Add clickupTaskId field to events schema for tracking
+- [ ] Test event submission creates ClickUp task with correct fields
+- [ ] Test status sync when admin changes event status

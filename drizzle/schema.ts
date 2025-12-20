@@ -102,6 +102,7 @@ export const events = mysqlTable("events", {
   // Pending Edits (for unverified organizers editing published events)
   hasUnreviewedEdit: int("hasUnreviewedEdit").default(0).notNull(), // 0 = no pending edit, 1 = has pending edit
   pendingEditData: text("pendingEditData"), // JSON string containing the edited event data awaiting approval
+  clickupTaskId: text("clickupTaskId"), // ClickUp task ID for syncing status updates
   
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),

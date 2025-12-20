@@ -4,6 +4,7 @@ import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import * as eventsDb from "./events-db";
 import type { AccessibilityData } from "../shared/types";
 import { notifyOwner } from "./_core/notification";
+import { syncEventToClickUp, updateEventStatusInClickUp } from "./_core/clickup";
 import { notifySubmitterStatusChange } from "./_core/email-notification";
 import { notifyOrganizerStatusChange } from "./_core/organizer-email";
 import { generateEventInstances, generateRecurringDates, type RecurrencePattern } from "./recurring-events";
@@ -356,6 +357,32 @@ export const eventsRouter = router({
       // Don't fail the submission if notification fails
     }
     
+    // Sync to ClickUp
+    try {
+      const clickupResult = await syncEventToClickUp({
+        eventId,
+        eventName: input.name,
+        organizerName: input.organizerName || null,
+        organizerEmail: input.organizerEmail || "",
+        organizerPhone: input.organizerPhone || null,
+        eventDate: input.startDate,
+        submissionDate: new Date(),
+        status: initialStatus,
+        description: input.description,
+        venue: input.venue || "Not specified",
+        address: input.address || "Not specified",
+        municipality: input.municipality,
+      });
+      
+      // Store ClickUp task ID for future status updates
+      if (clickupResult.success && clickupResult.taskId) {
+        await eventsDb.updateEventClickUpTaskId(eventId, clickupResult.taskId);
+      }
+    } catch (error) {
+      console.error("Failed to sync to ClickUp:", error);
+      // Don't fail the submission if ClickUp sync fails
+    }
+    
     return { success: true, eventId };
   }),
 
@@ -408,6 +435,16 @@ export const eventsRouter = router({
         } catch (error) {
           console.error("Failed to send status notification:", error);
           // Don't fail the status update if notification fails
+        }
+        
+        // Update ClickUp task status if task ID exists
+        if (event.clickupTaskId) {
+          try {
+            await updateEventStatusInClickUp(event.clickupTaskId, input.status);
+          } catch (error) {
+            console.error("Failed to update ClickUp task status:", error);
+            // Don't fail the status update if ClickUp sync fails
+          }
         }
       }
       

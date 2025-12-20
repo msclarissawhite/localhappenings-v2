@@ -12,7 +12,8 @@ export const env = {
   STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET ?? "",
   // ClickUp
   CLICKUP_API_KEY: process.env.CLICKUP_API_KEY ?? "",
-  CLICKUP_LIST_ID: process.env.CLICKUP_LIST_ID ?? "",
+  CLICKUP_LIST_ID: process.env.CLICKUP_LIST_ID ?? "", // Contact form submissions
+  CLICKUP_EVENT_LIST_ID: process.env.CLICKUP_EVENT_LIST_ID ?? "", // Event submissions
 };
 
 // Backward compatibility export
