@@ -64,48 +64,31 @@ export async function createClickUpTask(data: {
 }
 
 /**
- * Update upvote count in ClickUp task
- * Note: Requires a custom field named "Upvotes" to be created in ClickUp
+ * Update upvote count in ClickUp task "👍 Upvotes" custom field
  */
 export async function updateClickUpUpvotes(taskId: string, upvoteCount: number): Promise<void> {
   if (!CLICKUP_API_KEY) {
     throw new Error("ClickUp API key not configured");
   }
 
-  // Note: This requires the custom field ID, which varies per workspace
-  // For now, we'll add the upvote count to the task description
-  // To use custom fields, you'd need to:
-  // 1. Create a "Number" custom field named "Upvotes" in ClickUp
-  // 2. Get its field ID via GET /list/{list_id}/field
-  // 3. Update it via POST /task/{task_id}/field/{field_id}
+  // "👍 Upvotes" number field ID
+  const UPVOTES_FIELD_ID = "55890be5-69ec-4208-ad9b-20d9fd9b730b";
   
-  const response = await fetch(`${CLICKUP_API_BASE}/task/${taskId}`, {
-    method: "GET",
-    headers: {
-      "Authorization": CLICKUP_API_KEY,
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch ClickUp task: ${response.status}`);
-  }
-
-  const task: ClickUpTask = await response.json();
-  
-  // Update description to include upvote count
-  const descriptionWithoutUpvotes = task.description.replace(/\n\n\*\*Upvotes:\*\* \d+/, "");
-  const newDescription = `${descriptionWithoutUpvotes}\n\n**Upvotes:** ${upvoteCount}`;
-
-  await fetch(`${CLICKUP_API_BASE}/task/${taskId}`, {
-    method: "PUT",
+  const response = await fetch(`${CLICKUP_API_BASE}/task/${taskId}/field/${UPVOTES_FIELD_ID}`, {
+    method: "POST",
     headers: {
       "Authorization": CLICKUP_API_KEY,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      description: newDescription,
+      value: upvoteCount,
     }),
   });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Failed to update ClickUp upvotes: ${response.status} - ${error}`);
+  }
 }
 
 /**

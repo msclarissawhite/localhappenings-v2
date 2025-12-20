@@ -690,3 +690,10 @@
 - [x] Verify existing feature request syncs to ClickUp after fix
   - Task created successfully: https://app.clickup.com/t/86dyym6xp
   - Database updated with ClickUp task ID and URL
+
+## ClickUp Upvote Sync to Custom Field
+- [x] Get ClickUp "Votes" custom field ID from list (initially found votes field, user created number field instead)
+- [x] User created "👍 Upvotes" number field (ID: 55890be5-69ec-4208-ad9b-20d9fd9b730b)
+- [x] Update updateClickUpUpvotes() to use custom field API
+- [x] Test upvote sync with existing feature request (set to 5 upvotes)
+- [x] Verify votes display correctly in ClickUp task (https://app.clickup.com/t/86dyym6xp)
