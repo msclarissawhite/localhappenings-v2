@@ -10,6 +10,9 @@ export const env = {
   // Stripe
   STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY ?? "",
   STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET ?? "",
+  // ClickUp
+  CLICKUP_API_KEY: process.env.CLICKUP_API_KEY ?? "",
+  CLICKUP_LIST_ID: process.env.CLICKUP_LIST_ID ?? "",
 };
 
 // Backward compatibility export

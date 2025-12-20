@@ -205,6 +205,31 @@ export async function sendEventStatusEmail(params: EventStatusEmailParams): Prom
 }
 
 /**
+ * Send generic email (for contact forms, notifications, etc.)
+ */
+export async function sendEmail(params: { to: string; subject: string; html: string }): Promise<boolean> {
+  if (!resend) {
+    console.error("[Resend] Cannot send email - Resend not configured");
+    return false;
+  }
+
+  try {
+    await resend.emails.send({
+      from: fromEmail,
+      to: params.to,
+      subject: params.subject,
+      html: params.html,
+    });
+
+    console.log(`[Resend] Email sent to ${params.to}`);
+    return true;
+  } catch (error) {
+    console.error("[Resend] Failed to send email:", error);
+    return false;
+  }
+}
+
+/**
  * Send donation receipt email to donor
  */
 export async function sendDonationReceiptEmail(params: DonationReceiptEmailParams & { stripeCustomerId?: string }): Promise<boolean> {
