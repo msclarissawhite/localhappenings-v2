@@ -1011,3 +1011,13 @@
 - [x] Add validation in SubmitEvent form to check character limit (zod schema max 5000)
 - [x] Update ORGANIZER_QUICKSTART_GUIDE.md with character limit guidance
 - [x] Test character counter with various content lengths (ready for user testing)
+
+## Critical Production Fixes (December 20, 2024)
+- [ ] Fix all TypeScript errors (28 errors currently)
+- [x] Add "My Events" navigation link for logged-in organizers (already implemented in Header.tsx)
+- [x] Complete edit functionality for published events in organizer dashboard (EditEvent page exists and route registered)
+- [x] Add empty state to Browse Events page (already implemented with Submit Event CTA)
+- [ ] Rename "City" to "Municipality" throughout codebase
+- [ ] Rename "Neighbourhood" to "Neighbourhood/Community" throughout codebase
+- [ ] Write vitest tests for filtering logic
+- [ ] Write vitest tests for accessibility features

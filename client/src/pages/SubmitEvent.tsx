@@ -47,6 +47,7 @@ const submitEventSchema = z.object({
   venue: z.string().optional(),
   address: z.string().optional(),
   startDate: z.string().min(1, "Start date is required"),
+  endDate: z.string().optional(),
   timeOfDay: z.enum(["morning", "afternoon", "evening", "all-day"]).optional(),
   isRecurring: z.boolean().default(false),
   recurrenceFrequency: z.enum(["daily", "weekly", "monthly"]).optional(),
@@ -55,6 +56,9 @@ const submitEventSchema = z.object({
   recurrenceEndDate: z.string().optional(),
   recurrenceOccurrences: z.number().min(1).max(100).optional(),
   isFree: z.boolean(),
+  fixedPrice: z.number().optional(),
+  minPrice: z.number().optional(),
+  maxPrice: z.number().optional(),
   costMin: z.number().optional(),
   costMax: z.number().optional(),
   costType: z.enum(["fixed", "range", "donation", "pay-what-you-can", "sliding-scale"]).optional(),
@@ -1350,7 +1354,7 @@ This transparency helps build trust with your community, even if not every detai
                     </div>
                     <Select
                       value={accessibility.caregiver?.changeTableLocations || "unknown"}
-                      onValueChange={(value) => updateAccessibility("caregiver", "changeTableLocations", value)}
+                      onValueChange={(value) => updateAccessibility("caregiver", "changeTableLocations", value as AccessibilityValue)}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select location..." />
@@ -1567,7 +1571,7 @@ This transparency helps build trust with your community, even if not every detai
                     </div>
                     <Select
                       value={accessibility.mobility?.parkingDistance || "unknown"}
-                      onValueChange={(value) => updateAccessibility("mobility", "parkingDistance", value)}
+                      onValueChange={(value) => updateAccessibility("mobility", "parkingDistance", value as AccessibilityValue)}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select parking distance" />
@@ -1597,7 +1601,7 @@ This transparency helps build trust with your community, even if not every detai
                     </div>
                     <Select
                       value={accessibility.mobility?.busStopDistance || "unknown"}
-                      onValueChange={(value) => updateAccessibility("mobility", "busStopDistance", value)}
+                      onValueChange={(value) => updateAccessibility("mobility", "busStopDistance", value as AccessibilityValue)}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select bus stop distance" />
@@ -1951,7 +1955,7 @@ This transparency helps build trust with your community, even if not every detai
 
         <ImageLibraryModal
           open={showImageLibrary}
-          onClose={() => setShowImageLibrary(false)}
+          onOpenChange={setShowImageLibrary}
           onSelectImage={(url) => {
             setImageUrl(url);
             setImagePreview(url);

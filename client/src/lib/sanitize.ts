@@ -1,4 +1,4 @@
-import DOMPurify from "isomorphic-dompurify";
+import DOMPurify from "dompurify";
 
 /**
  * Sanitizes HTML content to prevent XSS attacks while preserving safe formatting.
