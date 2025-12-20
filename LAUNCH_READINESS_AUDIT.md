@@ -10,6 +10,10 @@
 
 - ✅ Event submission form with 40+ accessibility fields
 
+- ✅ **Multi-day event support** with automatic duration calculation and display
+
+- ✅ **Event image uploads** with 1200×630px optimization for desktop/mobile
+
 - ✅ Event moderation workflow (pending → published/rejected)
 
 - ✅ Browse events with advanced filtering
@@ -21,6 +25,10 @@
 - ✅ Organizer dashboard for managing submitted events
 
 - ✅ Admin dashboard for event moderation
+
+- ✅ **CSV bulk upload** for importing multiple events at once
+
+- ✅ **CSV export** for downloading all events as backup
 
 ### User Authentication
 
@@ -95,15 +103,23 @@
 
 - ✅ **ORGANIZER_EVENT_FIELDS_GUIDE.md** - Comprehensive guide listing all 60+ event fields with required/optional markers
 
-- ✅ **event_upload_example.csv** - Sample CSV with 4 example events
+- ✅ **event_upload_example.csv** - Sample CSV with 6 example events including multi-day events
 
 - ✅ **event_upload_template.csv** - Blank CSV template for bulk uploads
 
+- ✅ **CSV_IMPORT_GUIDE.md** - Comprehensive 400+ line guide covering CSV format, field specifications, multi-day events, error troubleshooting, and export functionality
+
 ### Bulk Upload Support
 
-- ⚠️ CSV templates created, but **bulk upload functionality not yet implemented**
+- ✅ **CSV bulk upload feature fully implemented** in admin dashboard
 
-- **Action needed:** You'll need to share CSVs with me to manually import events until bulk upload feature is built
+- ✅ **CSV export feature** for downloading all events as backup
+
+- ✅ Bulk upload accessible via "Bulk Upload CSV" button in Admin → Events tab
+
+- ✅ Preview events before importing with validation and error reporting
+
+- ✅ All imported events auto-published and synced to ClickUp
 
 ---
 

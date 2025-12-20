@@ -882,3 +882,10 @@
 - [x] Add image size/ratio recommendations (desktop and mobile optimized: 1200x630px, 1.91:1 ratio)
 - [x] Review and update CSV template documentation (created CSV_IMPORT_GUIDE.md)
 - [x] Identify any other documentation gaps (all major docs updated)
+
+## Admin Dashboard UX Bug Fix (December 20, 2024)
+- [x] Fix bulk upload button visibility - should always be visible, not conditional on pending events
+- [x] Fix export button visibility - should always be visible
+- [x] Move buttons outside of conditional rendering block
+- [x] Test with empty pending queue to verify buttons appear
+- [x] Update LAUNCH_READINESS_AUDIT.md with completed features (multi-day events, CSV tools, image uploads)

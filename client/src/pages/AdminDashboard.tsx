@@ -322,33 +322,34 @@ export default function AdminDashboard() {
                   toast.success("Events imported successfully!");
                 }}
               />
-            ) : isLoading ? (
-              <div className="text-center py-12">
-                <p className="text-muted-foreground">Loading pending events...</p>
-              </div>
-            ) : pendingEvents && pendingEvents.length > 0 ? (
-          <>
-            {/* Bulk Actions Toolbar */}
-            <div className="flex items-center justify-between mb-4 p-4 bg-muted/30 rounded-lg">
-              <div className="flex items-center gap-4">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowBulkUpload(true)}
-                >
-                  <Calendar className="w-4 h-4 mr-2" />
-                  Bulk Upload CSV
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleExportAll}
-                >
-                  <TrendingUp className="w-4 h-4 mr-2" />
-                  Download All Events
-                </Button>
-              </div>
-            </div>
+            ) : (
+              <>
+                {/* Import/Export Toolbar - Always Visible */}
+                <div className="flex items-center gap-4 mb-4 p-4 bg-muted/30 rounded-lg">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowBulkUpload(true)}
+                  >
+                    <Calendar className="w-4 h-4 mr-2" />
+                    Bulk Upload CSV
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleExportAll}
+                  >
+                    <TrendingUp className="w-4 h-4 mr-2" />
+                    Download All Events
+                  </Button>
+                </div>
+
+                {isLoading ? (
+                  <div className="text-center py-12">
+                    <p className="text-muted-foreground">Loading pending events...</p>
+                  </div>
+                ) : pendingEvents && pendingEvents.length > 0 ? (
+                  <>
             <div className="flex items-center justify-between mb-4 p-4 bg-muted/30 rounded-lg">
               <div className="flex items-center gap-4">
                 <Checkbox
@@ -492,11 +493,13 @@ export default function AdminDashboard() {
           </div>
           </>
             ) : (
-              <Card className="p-12 text-center">
-                <CheckCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-semibold mb-2">All caught up!</h3>
-                <p className="text-muted-foreground">There are no pending events to review.</p>
-              </Card>
+                  <Card className="p-12 text-center">
+                    <CheckCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold mb-2">All caught up!</h3>
+                    <p className="text-muted-foreground">There are no pending events to review.</p>
+                  </Card>
+                )}
+              </>
             )}
           </>
         )}
