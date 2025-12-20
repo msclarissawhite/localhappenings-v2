@@ -992,3 +992,12 @@
 - [x] Test rich text editor with various formatting combinations (ready for user testing)
 - [x] Update ORGANIZER_QUICKSTART_GUIDE.md with rich text editor usage
 - [x] Update USER_MANUAL.md with rich text formatting capabilities
+
+## DOMPurify HTML Sanitization (December 20, 2024)
+- [x] Install DOMPurify package (dompurify 3.3.1, types included)
+- [x] Create sanitizeHtml utility function with DOMPurify (client/src/lib/sanitize.ts)
+- [x] Configure allowed tags (b, strong, i, em, ul, ol, li, a, h2, h3, p, br) and safe href attributes
+- [x] Update EventDetail page to sanitize HTML before rendering (using sanitizeHtml wrapper)
+- [x] Test with malicious HTML examples (script tags, onclick handlers, iframes) - 22 tests passing
+- [x] Verify safe formatting is preserved (bold, italic, lists, links, headings) - all tests passing
+- [x] Update documentation with security implementation notes (USER_MANUAL.md updated)

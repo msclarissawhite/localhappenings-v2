@@ -3,6 +3,7 @@ import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { sanitizeHtml } from "@/lib/sanitize";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, MapPin, DollarSign, Users, Clock, Building, Mail, Phone, Globe, ArrowLeft, Share2, Link2, Check, ShieldCheck, Bookmark, BookmarkCheck } from "lucide-react";
 import { format } from "date-fns";
@@ -358,7 +359,7 @@ export default function EventDetail() {
             <h2 className="text-xl font-semibold mb-3">What It Is</h2>
             <div 
               className="prose prose-sm max-w-none text-foreground leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: event.description }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(event.description) }}
             />
           </Card>
 
