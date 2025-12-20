@@ -840,3 +840,25 @@
 - [x] Auto-publish imported events (skip approval workflow)
 - [x] Sync imported events to ClickUp
 - [ ] Test with event_upload_example.csv
+
+## Date Range Support (December 20, 2024)
+- [x] Verify endDate field exists in database schema
+- [x] Event submission form already includes optional end date
+- [x] Event edit form already includes optional end date
+- [x] Update event display logic to show date ranges (startDate - endDate)
+- [x] Update Browse Events to display date ranges properly
+- [x] Update Event Detail page to display date ranges with time of day
+- [ ] Update CSV templates with endDate field
+- [ ] Test multi-day events with recurring patterns
+
+## CSV Export All Events (December 20, 2024)
+- [x] Create backend procedure to export all events to CSV format
+- [x] Add "Download All Events" button to admin dashboard
+- [x] Include all event fields in export (matching import template)
+- [ ] Test export with existing events
+
+## Bulk Delete Feature (December 20, 2024)
+- [x] Add bulk delete button to admin dashboard
+- [x] Use existing backend delete procedure
+- [x] Add confirmation dialog for bulk delete
+- [ ] Test bulk delete with multiple selected events

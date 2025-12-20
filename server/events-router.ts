@@ -706,4 +706,79 @@ export const eventsRouter = router({
 
       return results;
     }),
+
+  // Admin: Export all events to CSV
+  exportAll: adminProcedure.query(async () => {
+    const events = await eventsDb.getAllEvents();
+    
+    // Convert events to CSV format
+    const headers = [
+      "name", "description", "province", "municipality", "neighborhoodCommunity",
+      "venue", "address", "startDate", "endDate", "timeOfDay", "isRecurring", "recurrenceType",
+      "isFree", "costMin", "costMax", "costType", "kidsFree", "freeCompanion",
+      "allAges", "familyFriendly", "youngChildren", "kids", "teens", "adultsOnly", "seniors",
+      "isIndoor", "isOutdoor", "shortDuration", "dropIn", "canReenter",
+      "accessibility", "organizerName", "organizerType", "organizerEmail", "organizerPhone",
+      "organizerWebsite", "displayOrganizerInfo", "notes", "imageUrl"
+    ];
+
+    const rows = events.map(event => [
+      event.name,
+      event.description,
+      event.province,
+      event.municipality,
+      event.neighborhoodCommunity || "",
+      event.venue || "",
+      event.address || "",
+      event.startDate ? new Date(event.startDate).toISOString() : "",
+      event.endDate ? new Date(event.endDate).toISOString() : "",
+      event.timeOfDay || "",
+      event.isRecurring ? "true" : "false",
+      event.recurrenceType || "one-time",
+      event.isFree ? "true" : "false",
+      event.costMin || "",
+      event.costMax || "",
+      event.costType || "",
+      event.kidsFree ? "true" : "false",
+      event.freeCompanion ? "true" : "false",
+      event.allAges ? "true" : "false",
+      event.familyFriendly ? "true" : "false",
+      event.youngChildren ? "true" : "false",
+      event.kids ? "true" : "false",
+      event.teens ? "true" : "false",
+      event.adultsOnly ? "true" : "false",
+      event.seniors ? "true" : "false",
+      event.isIndoor ? "true" : "false",
+      event.isOutdoor ? "true" : "false",
+      event.shortDuration ? "true" : "false",
+      event.dropIn ? "true" : "false",
+      event.canReenter ? "true" : "false",
+      event.accessibility || "{}",
+      event.organizerName || "",
+      event.organizerType || "",
+      event.organizerEmail || "",
+      event.organizerPhone || "",
+      event.organizerWebsite || "",
+      event.displayOrganizerInfo ? "true" : "false",
+      event.notes || "",
+      event.imageUrl || ""
+    ]);
+
+    // Escape CSV values
+    const escapeCsvValue = (value: any): string => {
+      const str = String(value || "");
+      if (str.includes(",") || str.includes('"') || str.includes("\n")) {
+        return `"${str.replace(/"/g, '""')}"`;
+      }
+      return str;
+    };
+
+    const csvContent = [
+      headers.join(","),
+      ...rows.map(row => row.map(escapeCsvValue).join(","))
+    ].join("\n");
+
+    return { csv: csvContent, count: events.length };
+  }),
 });
+

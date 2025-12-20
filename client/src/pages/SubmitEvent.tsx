@@ -641,6 +641,19 @@ export default function SubmitEvent() {
                 </div>
 
                 <div>
+                  <Label htmlFor="endDate">End Date (optional - for multi-day events)</Label>
+                  <Input id="endDate" type="datetime-local" {...register("endDate")} />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Leave blank for single-day events
+                  </p>
+                  {errors.endDate && (
+                    <p className="text-sm text-destructive mt-1">{errors.endDate.message}</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
                   <Label htmlFor="timeOfDay">Time of Day</Label>
                   <Select onValueChange={(value: any) => setValue("timeOfDay", value)}>
                     <SelectTrigger>
@@ -653,6 +666,9 @@ export default function SubmitEvent() {
                       <SelectItem value="all-day">All Day</SelectItem>
                     </SelectContent>
                   </Select>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    When the event happens each day (if multi-day)
+                  </p>
                 </div>
               </div>
 

@@ -773,7 +773,12 @@ export default function BrowseEvents() {
                     <div className="space-y-2 text-sm text-muted-foreground mb-3">
                       <div className="flex items-center gap-2">
                         <Calendar className="w-4 h-4" />
-                        <span>{format(new Date(event.startDate), "MMM d, yyyy")}</span>
+                        <span>
+                          {event.endDate && event.endDate !== event.startDate
+                            ? `${format(new Date(event.startDate), "MMM d")} - ${format(new Date(event.endDate), "MMM d, yyyy")}`
+                            : format(new Date(event.startDate), "MMM d, yyyy")}
+                          {event.timeOfDay && ` • ${event.timeOfDay.charAt(0).toUpperCase() + event.timeOfDay.slice(1).replace("-", " ")}`}
+                        </span>
                       </div>
                       <div className="flex items-center gap-2">
                         <MapPin className="w-4 h-4" />

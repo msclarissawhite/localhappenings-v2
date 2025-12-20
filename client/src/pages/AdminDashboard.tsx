@@ -159,6 +159,27 @@ export default function AdminDashboard() {
     });
   };
 
+  const handleExportAll = async () => {
+    try {
+      const result = await trpc.events.exportAll.query();
+      
+      // Create blob and download
+      const blob = new Blob([result.csv], { type: "text/csv" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `local-happenings-events-${new Date().toISOString().split("T")[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      
+      toast.success(`Exported ${result.count} events to CSV`);
+    } catch (error) {
+      toast.error("Failed to export events");
+    }
+  };
+
   const toggleEventSelection = (eventId: number) => {
     const newSelection = new Set(selectedEvents);
     if (newSelection.has(eventId)) {
@@ -203,6 +224,27 @@ export default function AdminDashboard() {
     setSelectedEvents(new Set());
     toast.success(`Rejected ${selectedEvents.size} event(s)`);
     refetch();
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedEvents.size === 0) return;
+    
+    const confirmed = window.confirm(
+      `Are you sure you want to permanently delete ${selectedEvents.size} event(s)? This action cannot be undone.`
+    );
+    
+    if (!confirmed) return;
+    
+    try {
+      for (const eventId of Array.from(selectedEvents)) {
+        await trpc.events.delete.mutate({ id: eventId });
+      }
+      setSelectedEvents(new Set());
+      toast.success(`Deleted ${selectedEvents.size} event(s)`);
+      refetch();
+    } catch (error) {
+      toast.error("Failed to delete events");
+    }
   };
 
   return (
@@ -297,6 +339,14 @@ export default function AdminDashboard() {
                   <Calendar className="w-4 h-4 mr-2" />
                   Bulk Upload CSV
                 </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleExportAll}
+                >
+                  <TrendingUp className="w-4 h-4 mr-2" />
+                  Download All Events
+                </Button>
               </div>
             </div>
             <div className="flex items-center justify-between mb-4 p-4 bg-muted/30 rounded-lg">
@@ -329,6 +379,16 @@ export default function AdminDashboard() {
                   >
                     <XCircle className="w-4 h-4 mr-2" />
                     Reject ({selectedEvents.size})
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={handleBulkDelete}
+                    disabled={updateStatusMutation.isPending}
+                    className="border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground"
+                  >
+                    <XCircle className="w-4 h-4 mr-2" />
+                    Delete ({selectedEvents.size})
                   </Button>
                   <span className="text-xs text-muted-foreground self-center ml-2">
                     Shift+A to approve, Shift+R to reject

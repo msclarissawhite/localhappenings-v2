@@ -367,16 +367,19 @@ export default function EventDetail() {
                 <Calendar className="w-5 h-5 mt-0.5 text-muted-foreground" />
                 <div>
                   <p className="font-medium">
-                    {format(new Date(event.startDate), "EEEE, MMMM d, yyyy")}
+                    {event.endDate && event.endDate !== event.startDate
+                      ? `${format(new Date(event.startDate), "MMMM d")} - ${format(new Date(event.endDate), "MMMM d, yyyy")}`
+                      : format(new Date(event.startDate), "EEEE, MMMM d, yyyy")}
                   </p>
-                  {event.endDate && (
-                    <p className="text-sm text-muted-foreground">
-                      Until {format(new Date(event.endDate), "MMMM d, yyyy")}
-                    </p>
-                  )}
                   {event.timeOfDay && (
                     <p className="text-sm text-muted-foreground capitalize">
                       {event.timeOfDay.replace("-", " ")}
+                      {event.endDate && event.endDate !== event.startDate && " (each day)"}
+                    </p>
+                  )}
+                  {event.isRecurring && event.recurrenceType && (
+                    <p className="text-sm text-muted-foreground capitalize">
+                      Recurring: {event.recurrenceType.replace("-", " ")}
                     </p>
                   )}
                 </div>

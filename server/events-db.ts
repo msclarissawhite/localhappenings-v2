@@ -1,4 +1,4 @@
-import { and, desc, eq, gte, lte, or, sql } from "drizzle-orm";
+import { eq, and, or, gte, lte, like, inArray, sql, desc } from "drizzle-orm";
 import { events, eventTypes, eventToEventTypes, collections, collectionToEvents, organizers } from "../drizzle/schema";
 import { getDb } from "./db";
 import type { EventFilters } from "../shared/types";
@@ -404,4 +404,14 @@ export async function getLocations() {
   const neighborhoodCommunities = Array.from(new Set(publishedEvents.map((e) => e.neighborhoodCommunity))).filter(Boolean).sort();
 
   return { provinces, municipalities, neighborhoodCommunities };
+}
+
+/**
+ * Get all events (for admin export)
+ */
+export async function getAllEvents() {
+  const db = await getDb();
+  if (!db) return [];
+
+  return await db.select().from(events).orderBy(desc(events.createdAt));
 }
