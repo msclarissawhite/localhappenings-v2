@@ -558,3 +558,46 @@
 - [x] Maintain visual cleanliness and accessibility
 - [x] Updated three benefit cards: Accessibility First, Honest Information, Community-Powered
 - [x] Test homepage with enhanced messaging
+
+## Homepage Messaging Refinement (Real-Life Logistics Framing)
+- [x] Update hero tagline to "Find events with the accessibility and real-life details you *actually* need"
+- [x] Rename "Accessibility First" card to "Accessibility & Real-Life Logistics First"
+- [x] Update card description to reflect practical logistics framing (parking, transit, crowd levels)
+- [x] Test updated messaging for clarity and approachability
+
+## Monetization Strategy Planning
+- [x] Discuss monetization options with user
+- [x] Select initial monetization features aligned with project values
+- [x] Maintain commitment to free event listings always
+- [x] Selected: Featured Event Placement + Voluntary Donations (table Organizer Pro for later)
+
+## Monetization Implementation - Phase 1: Stripe Integration
+- [ ] Add Stripe feature to project using webdev_add_feature
+- [ ] Request Stripe API keys from user (STRIPE_SECRET_KEY, STRIPE_PUBLISHABLE_KEY)
+- [ ] Create featured_events table (event_id, start_date, end_date, payment_status, stripe_payment_id)
+- [ ] Create donations table (donor_name, amount, message, timestamp, stripe_payment_id)
+- [ ] Test Stripe connection
+
+## Monetization Implementation - Phase 2: Featured Event Placement
+- [ ] Create Stripe checkout session for featured event payment ($10-20 for 7-14 days)
+- [ ] Build payment success/cancel handlers
+- [ ] Add isFeatured flag to event queries
+- [ ] Update Browse Events to show featured events at top with badge
+- [ ] Add "Feature This Event" button to organizer dashboard
+- [ ] Create admin view for featured events revenue
+- [ ] Write vitest tests for featured event logic
+
+## Monetization Implementation - Phase 3: Voluntary Donations
+- [ ] Create Stripe checkout session for donations
+- [ ] Support preset amounts ($5, $10, $25) + custom amount field
+- [ ] Build payment success/thank you page
+- [ ] Create optional donor wall page (public thank you)
+- [ ] Add transparency page explaining fund usage
+- [ ] Write vitest tests for donation flow
+
+## Monetization Implementation - Phase 4: UI Placement
+- [ ] Discuss UI placement options with user
+- [ ] Implement "Feature This Event" button placement
+- [ ] Implement "Support Local Happenings" donation button placement
+- [ ] Ensure UI is non-intrusive and accessible
+- [ ] Test complete user flows end-to-end

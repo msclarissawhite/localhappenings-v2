@@ -13,11 +13,8 @@ export default function Home() {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
               What's happening near you today?
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground mb-4">
-              The first event platform built for families with accessibility needs.
-            </p>
-            <p className="text-base md:text-lg text-muted-foreground mb-8">
-              Every event includes detailed accessibility information—wheelchair access, sensory-friendly options, transit details, and more—so you can plan with confidence.
+            <p className="text-lg md:text-xl text-muted-foreground mb-8">
+              Find events with the accessibility and real-life details you <em>actually</em> need—wheelchair access, parking distance, transit options, sensory environments, and more.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/browse">
@@ -48,9 +45,9 @@ export default function Home() {
               <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Shield className="w-6 h-6 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Accessibility First</h3>
+              <h3 className="text-xl font-semibold mb-3">Accessibility & Real-Life Logistics First</h3>
               <p className="text-muted-foreground">
-                Filter by wheelchair access, sensory-friendly environments, parking, transit options, and 20+ accessibility features. No more guessing or calling ahead.
+                Filter by wheelchair access, sensory-friendly environments, parking distance, transit options, crowd levels, and 20+ practical details. No more guessing or calling ahead.
               </p>
             </Card>
 
