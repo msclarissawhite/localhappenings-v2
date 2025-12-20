@@ -1,4 +1,4 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { int, json, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -377,3 +377,27 @@ export const organizerImages = mysqlTable("organizerImages", {
 
 export type OrganizerImage = typeof organizerImages.$inferSelect;
 export type InsertOrganizerImage = typeof organizerImages.$inferInsert;
+
+/**
+ * Event Templates - Reusable event configurations
+ * Allows organizers to save recurring event types as templates
+ * for faster event creation with pre-filled fields
+ */
+export const eventTemplates = mysqlTable("eventTemplates", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(), // References users.id (organizer)
+  
+  // Template metadata
+  templateName: varchar("templateName", { length: 255 }).notNull(), // User-friendly name
+  description: text("description"), // Optional description of what this template is for
+  
+  // Event data (JSON-encoded event fields)
+  templateData: json("templateData").notNull(), // Stores all event fields as JSON
+  
+  // Timestamps
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type EventTemplate = typeof eventTemplates.$inferSelect;
+export type InsertEventTemplate = typeof eventTemplates.$inferInsert;

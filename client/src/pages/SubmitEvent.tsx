@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { ImageLibraryModal } from "@/components/ImageLibraryModal";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -88,6 +89,7 @@ export default function SubmitEvent() {
   const [imageUrl, setImageUrl] = useState<string>("");
   const [uploadingImage, setUploadingImage] = useState(false);
   const [imagePreview, setImagePreview] = useState<string>("");
+  const [showImageLibrary, setShowImageLibrary] = useState(false);
   const [selectedProvince, setSelectedProvince] = useState<string>("");
   const [availableCities, setAvailableCities] = useState<string[]>([]);
   const [showPreview, setShowPreview] = useState(false);
@@ -283,6 +285,12 @@ export default function SubmitEvent() {
       toast.error(error.message || "Failed to submit event");
     },
   });
+
+  const handleSelectFromLibrary = (url: string) => {
+    setImageUrl(url);
+    setImagePreview(url);
+    toast.success("Image selected from your library!");
+  };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -608,15 +616,29 @@ export default function SubmitEvent() {
               <div>
                 <Label htmlFor="eventImage">Event Image (Optional)</Label>
                 <p className="text-sm text-muted-foreground mb-2">
-                  Upload a photo to make your event stand out (max 5MB)
+                  Upload a photo or choose from your library
                 </p>
-                <Input
-                  id="eventImage"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  disabled={uploadingImage}
-                />
+                <div className="flex gap-2">
+                  <div className="flex-1">
+                    <Input
+                      id="eventImage"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      disabled={uploadingImage}
+                    />
+                  </div>
+                  {organizer && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setShowImageLibrary(true)}
+                      disabled={uploadingImage}
+                    >
+                      Choose from Library
+                    </Button>
+                  )}
+                </div>
                 {uploadingImage && (
                   <p className="text-sm text-muted-foreground mt-2">Uploading image...</p>
                 )}
@@ -627,9 +649,27 @@ export default function SubmitEvent() {
                       alt="Event preview"
                       className="max-w-md rounded-lg border"
                     />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="mt-2"
+                      onClick={() => {
+                        setImagePreview("");
+                        setImageUrl("");
+                      }}
+                    >
+                      Remove Image
+                    </Button>
                   </div>
                 )}
               </div>
+
+              <ImageLibraryModal
+                open={showImageLibrary}
+                onOpenChange={setShowImageLibrary}
+                onSelectImage={handleSelectFromLibrary}
+              />
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>

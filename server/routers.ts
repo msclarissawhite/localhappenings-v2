@@ -4,6 +4,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { uploadRouter } from "./upload-router";
 import { imageLibraryRouter } from "./image-library-router";
+import { eventTemplatesRouter } from "./event-templates-router";
 import { eventsRouter } from "./events-router";
 import { contactRouter } from "./contact-router";
 import { organizerRouter } from "./organizer-router";
@@ -18,6 +19,7 @@ export const appRouter = router({
   system: systemRouter,
   upload: uploadRouter,
   imageLibrary: imageLibraryRouter,
+  eventTemplates: eventTemplatesRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {

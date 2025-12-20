@@ -476,11 +476,12 @@ export default function OrganizerDashboard() {
                 Browse Events
               </Button>
             </div>
-            <SavedEventsContent organizerId={organizer!.id} />
+            <SavedEventsContent organizerId={organizer.id} />
           </>
         )}
 
         {activeTab === "images" && <MyImages />}
+        {activeTab === "templates" && <EventTemplates />}
 
         {activeTab === "locations" && (
           <>

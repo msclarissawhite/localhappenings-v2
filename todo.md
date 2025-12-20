@@ -935,3 +935,35 @@
 - [ ] Create example ZIP file with CSV + images for testing
 - [ ] Test ZIP upload with multiple events and images
 - [ ] Update CSV_IMPORT_GUIDE.md with ZIP upload instructions
+
+## Image Selection Modal for Event Submission (December 20, 2024)
+- [x] Create ImageLibraryModal component for selecting images from library
+- [x] Add "Choose from Library" button to event submission form
+- [x] Integrate modal with image upload section in SubmitEvent
+- [x] Allow selecting image from library instead of uploading new one
+- [x] Update event submission to use selected library image URL
+- [ ] Test image selection workflow in event submission (ready for testing)
+
+## Event Templates Feature (December 20, 2024)
+- [x] Create eventTemplates table in database schema (migration 0015 applied)
+- [x] Add tRPC procedures for templates (create, list, get, update, delete)
+- [x] Create EventTemplates component for organizer dashboard
+- [x] Add "Templates" tab to organizer dashboard
+- [ ] Build template creation UI (save current event as template) - next step
+- [ ] Build template application UI (apply template to new event) - next step
+- [ ] Add "Save as Template" button to event submission form
+- [ ] Add "Use Template" option when creating new event
+- [ ] Test template creation and application workflow
+- [ ] Update USER_MANUAL.md with event templates documentation
+- [ ] Update ORGANIZER_QUICKSTART_GUIDE.md with templates feature
+
+## Batch Edit Tool for Admin (December 20, 2024)
+- [x] Add checkbox selection to admin event list (already existed)
+- [x] Create BatchEditModal component
+- [x] Add "Batch Edit" button to admin dashboard (shows count when events selected)
+- [x] Build batch edit form (venue, organizer info, accessibility)
+- [x] Add tRPC procedure for batch update (events.batchUpdate)
+- [x] Implement batch update logic in backend
+- [ ] Add "Select All" / "Deselect All" functionality (future enhancement)
+- [ ] Test batch edit with multiple events (ready for testing)
+- [ ] Update USER_MANUAL.md with batch edit documentation

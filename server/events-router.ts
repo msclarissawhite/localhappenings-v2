@@ -11,6 +11,9 @@ import { generateEventInstances, generateRecurringDates, type RecurrencePattern 
 import * as analyticsDb from "./analytics-db";
 import * as organizerDb from "./organizer-db";
 import { findPotentialDuplicates } from "./duplicate-detection";
+import { getDb } from "./db";
+import { events } from "../drizzle/schema";
+import { inArray } from "drizzle-orm";
 
 // Validation schemas
 const accessibilitySchema = z.object({
@@ -810,5 +813,46 @@ export const eventsRouter = router({
 
     return { csv: csvContent, count: events.length };
   }),
+
+  /**
+   * Batch update multiple events
+   */
+  batchUpdate: adminProcedure
+    .input(
+      z.object({
+        eventIds: z.array(z.number()),
+        updates: z.object({
+          venue: z.string().optional(),
+          organizerName: z.string().optional(),
+          organizerEmail: z.string().email().optional(),
+          organizerPhone: z.string().optional(),
+          wheelchairAccessible: z.enum(["yes", "no", "partial", "unknown"]).optional(),
+          accessibleParking: z.enum(["yes", "no", "unknown"]).optional(),
+          accessibleWashrooms: z.enum(["yes", "no", "unknown"]).optional(),
+        }),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const db = await getDb();
+      if (!db) throw new Error("Database not available");
+
+      // Build update object
+      const updateData: any = {};
+      if (input.updates.venue !== undefined) updateData.venue = input.updates.venue;
+      if (input.updates.organizerName !== undefined) updateData.organizerName = input.updates.organizerName;
+      if (input.updates.organizerEmail !== undefined) updateData.organizerEmail = input.updates.organizerEmail;
+      if (input.updates.organizerPhone !== undefined) updateData.organizerPhone = input.updates.organizerPhone;
+      if (input.updates.wheelchairAccessible !== undefined) updateData.wheelchairAccessible = input.updates.wheelchairAccessible;
+      if (input.updates.accessibleParking !== undefined) updateData.accessibleParking = input.updates.accessibleParking;
+      if (input.updates.accessibleWashrooms !== undefined) updateData.accessibleWashrooms = input.updates.accessibleWashrooms;
+
+      // Update all events
+      await db
+        .update(events)
+        .set(updateData)
+        .where(inArray(events.id, input.eventIds));
+
+      return { success: true, updatedCount: input.eventIds.length };
+    }),
 });
 

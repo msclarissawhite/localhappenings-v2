@@ -23,6 +23,7 @@ import type { Event } from "@shared/types";
 import { EventEditDialog } from "@/components/EventEditDialog";
 import { DuplicateWarning } from "@/components/DuplicateWarning";
 import { BulkUpload } from "@/components/BulkUpload";
+import { BatchEditModal } from "@/components/BatchEditModal";
 
 export default function AdminDashboard() {
   const { user, isAuthenticated } = useAuth();
@@ -34,6 +35,7 @@ export default function AdminDashboard() {
   const [selectedEvents, setSelectedEvents] = useState<Set<number>>(new Set());
   const [activeTab, setActiveTab] = useState<"events" | "pending-edits" | "closed-events" | "organizers" | "feature-requests" | "donations">("events");
   const [showBulkUpload, setShowBulkUpload] = useState(false);
+  const [showBatchEdit, setShowBatchEdit] = useState(false);
 
   const { data: pendingEvents, isLoading, refetch } = trpc.events.getPending.useQuery(undefined, {
     enabled: isAuthenticated && user?.role === "admin",
@@ -326,9 +328,8 @@ export default function AdminDashboard() {
               <>
                 {/* Import/Export Toolbar - Always Visible */}
                 <div className="flex items-center gap-4 mb-4 p-4 bg-muted/30 rounded-lg">
-                  <Button
+                    <Button
                     variant="outline"
-                    size="sm"
                     onClick={() => setShowBulkUpload(true)}
                   >
                     <Calendar className="w-4 h-4 mr-2" />
@@ -336,12 +337,20 @@ export default function AdminDashboard() {
                   </Button>
                   <Button
                     variant="outline"
-                    size="sm"
+                    disabled={exportMutation.isPending}
                     onClick={handleExportAll}
                   >
                     <TrendingUp className="w-4 h-4 mr-2" />
                     Download All Events
                   </Button>
+                  {selectedEvents.size > 0 && (
+                    <Button
+                      variant="default"
+                      onClick={() => setShowBatchEdit(true)}
+                    >
+                      Batch Edit ({selectedEvents.size})
+                    </Button>
+                  )}
                 </div>
 
                 {isLoading ? (
@@ -996,6 +1005,16 @@ export default function AdminDashboard() {
           onOpenChange={setShowEditDialog}
           onSuccess={() => {
             setSelectedEvent(null);
+            refetch();
+          }}
+        />
+
+        <BatchEditModal
+          open={showBatchEdit}
+          onOpenChange={setShowBatchEdit}
+          selectedEventIds={Array.from(selectedEvents)}
+          onSuccess={() => {
+            setSelectedEvents(new Set());
             refetch();
           }}
         />
