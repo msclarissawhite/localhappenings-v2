@@ -800,3 +800,9 @@
 - [x] Verify organizer receives email when edit is approved
 - [x] Verify organizer receives email when edit is rejected
 - [x] Email notifications already fully implemented and working
+
+## Admin Dashboard Enhancements (December 20, 2024)
+- [x] Add "Closed Events" tab to admin dashboard
+- [x] Create backend query to fetch closed events
+- [x] Display closed events with reopen option
+- [ ] Document notification viewing locations in user manual

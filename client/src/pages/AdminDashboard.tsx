@@ -31,7 +31,7 @@ export default function AdminDashboard() {
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [reviewAction, setReviewAction] = useState<"published" | "rejected" | "needs-clarification">("published");
   const [selectedEvents, setSelectedEvents] = useState<Set<number>>(new Set());
-  const [activeTab, setActiveTab] = useState<"events" | "pending-edits" | "organizers" | "feature-requests" | "donations">("events");
+  const [activeTab, setActiveTab] = useState<"events" | "pending-edits" | "closed-events" | "organizers" | "feature-requests" | "donations">("events");
 
   const { data: pendingEvents, isLoading, refetch } = trpc.events.getPending.useQuery(undefined, {
     enabled: isAuthenticated && user?.role === "admin",
@@ -40,6 +40,11 @@ export default function AdminDashboard() {
   const { data: eventsWithPendingEdits, isLoading: pendingEditsLoading, refetch: refetchPendingEdits } = trpc.events.list.useQuery(
     { hasUnreviewedEdit: true, limit: 100, offset: 0 },
     { enabled: isAuthenticated && user?.role === "admin" && activeTab === "pending-edits" }
+  );
+
+  const { data: closedEvents, isLoading: closedEventsLoading, refetch: refetchClosedEvents } = trpc.events.list.useQuery(
+    { status: "closed", limit: 100, offset: 0 },
+    { enabled: isAuthenticated && user?.role === "admin" && activeTab === "closed-events" }
   );
 
   const { data: organizers, isLoading: organizersLoading, refetch: refetchOrganizers } = trpc.organizer.getAllOrganizers.useQuery(undefined, {
@@ -228,6 +233,14 @@ export default function AdminDashboard() {
                 {eventsWithPendingEdits.length}
               </Badge>
             )}
+          </Button>
+          <Button
+            variant={activeTab === "closed-events" ? "default" : "ghost"}
+            onClick={() => setActiveTab("closed-events")}
+            className="rounded-b-none"
+          >
+            <XCircle className="w-4 h-4 mr-2" />
+            Closed Events
           </Button>
           <Button
             variant={activeTab === "organizers" ? "default" : "ghost"}
@@ -772,6 +785,74 @@ export default function AdminDashboard() {
                 <DollarSign className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                 <h3 className="text-lg font-semibold mb-2">No donations yet</h3>
                 <p className="text-muted-foreground">Donation statistics will appear here when supporters contribute.</p>
+              </Card>
+            )}
+          </>
+        )}
+
+        {activeTab === "closed-events" && (
+          <>
+            {closedEventsLoading ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Loading closed events...</p>
+              </div>
+            ) : closedEvents && closedEvents.length > 0 ? (
+              <div className="space-y-4">
+                {closedEvents.map((event) => (
+                  <Card key={event.id} className="p-6">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <h3 className="text-lg font-semibold">{event.name}</h3>
+                          <Badge variant="secondary">Closed</Badge>
+                        </div>
+                        <div className="space-y-1 text-sm text-muted-foreground mb-3">
+                          <div className="flex items-center gap-2">
+                            <Calendar className="w-4 h-4" />
+                            <span>{format(new Date(event.startDate), "MMM d, yyyy 'at' h:mm a")}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <MapPin className="w-4 h-4" />
+                            <span>{event.municipality}, {event.province}</span>
+                          </div>
+                        </div>
+                        <p className="text-sm text-muted-foreground mb-3">
+                          Organizer: {event.organizerName || "Unknown"} • Closed on: {event.updatedAt ? format(new Date(event.updatedAt), "MMM d, yyyy") : "Unknown"}
+                        </p>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => window.open(`/event/${event.id}`, "_blank")}
+                        >
+                          View Details
+                        </Button>
+                        <Button
+                          size="sm"
+                          onClick={() => {
+                            if (confirm("Reopen this event and make it visible to the public again?")) {
+                              updateStatusMutation.mutate({
+                                eventId: event.id,
+                                status: "published",
+                                reviewNotes: "Event reopened by admin",
+                              });
+                            }
+                          }}
+                        >
+                          <CheckCircle className="w-4 h-4 mr-2" />
+                          Reopen Event
+                        </Button>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <Card className="p-12 text-center">
+                <XCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">No closed events</h3>
+                <p className="text-muted-foreground">Events that organizers have closed will appear here.</p>
               </Card>
             )}
           </>

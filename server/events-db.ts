@@ -10,8 +10,19 @@ export async function getEvents(filters: EventFilters = {}) {
   const db = await getDb();
   if (!db) return [];
 
-  // Only show published events (exclude pending, rejected, needs-clarification, and closed)
-  const conditions = [eq(events.status, "published")];
+  // Status filter (default to published for public queries)
+  const conditions = [];
+  if (filters.status) {
+    conditions.push(eq(events.status, filters.status));
+  } else {
+    // Only show published events by default (exclude pending, rejected, needs-clarification, and closed)
+    conditions.push(eq(events.status, "published"));
+  }
+  
+  // Admin filter: events with pending edits
+  if (filters.hasUnreviewedEdit !== undefined) {
+    conditions.push(eq(events.hasUnreviewedEdit, filters.hasUnreviewedEdit ? 1 : 0));
+  }
 
   // By default, exclude past events (unless showArchived is true)
   if (!filters.showArchived) {

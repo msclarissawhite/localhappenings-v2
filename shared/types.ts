@@ -147,6 +147,10 @@ export interface EventFilters {
   // Archive
   showArchived?: boolean;
   
+  // Admin filters
+  status?: "pending" | "published" | "rejected" | "needs-clarification" | "closed";
+  hasUnreviewedEdit?: boolean;
+  
   // Pagination
   limit?: number;
   offset?: number;
