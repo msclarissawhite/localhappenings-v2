@@ -15,6 +15,12 @@ import { toast } from "sonner";
 import { useLocation, Link } from "wouter";
 import { Info, Eye } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import type { AccessibilityValue } from "@shared/types";
 import { CANADIAN_PROVINCES, CANADIAN_CITIES } from "@shared/canadian-locations";
 import { EventPreview } from "@/components/EventPreview";
@@ -346,6 +352,55 @@ export default function SubmitEvent() {
     }));
   };
 
+  const CrowdLevelField = () => (
+    <div className="space-y-2">
+      <div className="flex items-center gap-2">
+        <Label className="text-sm">Crowd level</Label>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Info className="w-4 h-4 text-muted-foreground cursor-help" />
+          </TooltipTrigger>
+          <TooltipContent className="max-w-xs">
+            <p className="text-sm">How crowded will the event be? This helps families with sensory sensitivities plan accordingly.</p>
+          </TooltipContent>
+        </Tooltip>
+      </div>
+      <RadioGroup
+        value={accessibility.sensory?.crowdLevel || "unknown"}
+        onValueChange={(value: AccessibilityValue) =>
+          updateAccessibility("sensory", "crowdLevel", value)
+        }
+      >
+        <div className="flex flex-wrap gap-4">
+          <div className="flex items-center gap-2">
+            <RadioGroupItem value="spacious" id="sensory-crowdLevel-spacious" />
+            <Label htmlFor="sensory-crowdLevel-spacious" className="cursor-pointer font-normal">
+              Spacious
+            </Label>
+          </div>
+          <div className="flex items-center gap-2">
+            <RadioGroupItem value="moderate" id="sensory-crowdLevel-moderate" />
+            <Label htmlFor="sensory-crowdLevel-moderate" className="cursor-pointer font-normal">
+              Moderate
+            </Label>
+          </div>
+          <div className="flex items-center gap-2">
+            <RadioGroupItem value="crowded" id="sensory-crowdLevel-crowded" />
+            <Label htmlFor="sensory-crowdLevel-crowded" className="cursor-pointer font-normal">
+              Crowded
+            </Label>
+          </div>
+          <div className="flex items-center gap-2">
+            <RadioGroupItem value="unknown" id="sensory-crowdLevel-unknown" />
+            <Label htmlFor="sensory-crowdLevel-unknown" className="cursor-pointer font-normal">
+              Unknown
+            </Label>
+          </div>
+        </div>
+      </RadioGroup>
+    </div>
+  );
+
   const AccessibilityField = ({
     category,
     field,
@@ -445,68 +500,83 @@ export default function SubmitEvent() {
               </p>
             </div>
 
-            <div className="mt-6">
-              <h3 className="font-semibold mb-2" style={{fontSize: '18px', paddingTop: '20px'}}>What We're Looking For (Approval Guidelines)</h3>
-              <p className="mb-2" style={{fontSize: '16px'}}>Your event is likely to be approved if:</p>
-              
-              <div className="space-y-3 ml-2">
-                <div>
-                  <p className="font-medium" style={{fontSize: '16px', paddingTop: '20px'}}>✅ Clear, Complete Event Details</p>
-                  <p className="text-muted-foreground" style={{fontSize: '16px'}}>Please include: a clear event name and description, a valid location (at minimum: province and municipality), a start date (and end date, if applicable), and cost information (free, donation-based, or a price range).</p>
-                </div>
-
-                <div>
-                  <p className="font-medium" style={{fontSize: '16px', paddingTop: '20px'}}>♿ Accessibility Information Is Thoughtfully Completed</p>
-                  <p className="text-muted-foreground" style={{fontSize: '16px', paddingTop: '10px'}}>
-                    The accessibility section must be completed. It's okay to select "Unknown" for any field if you're truly not sure — the section can't be left blank. If you select "Unknown," we ask that you confirm and update that information as soon as possible.
-                  </p>
-                  <p className="text-muted-foreground mt-1" style={{fontSize: '16px', paddingTop: '10px'}}>
-                    The "Unknown" option exists to support honesty — not to avoid sharing available information. Clear, accurate accessibility details help people decide whether they can attend safely and comfortably.
-                  </p>
-                  <p className="text-muted-foreground mt-1 font-medium" style={{fontSize: '16px', paddingTop: '10px'}}>
-                    Honesty and transparency are core values of Local Happenings. If accessibility information is intentionally withheld or misrepresented, we reserve the right to limit or remove an organizer's ability to submit future listings.
-                  </p>
-                </div>
-
-                <div>
-                  <p className="font-medium" style={{fontSize: '16px', paddingTop: '20px'}}>🤝 Community-Appropriate Content</p>
-                  <p className="text-muted-foreground" style={{fontSize: '16px', paddingTop: '10px'}}>
-                    Events should be suitable for a community platform. No hate speech, discrimination, or harassment. No illegal activities. No misleading or harmful content.
-                  </p>
-                  <p className="text-muted-foreground mt-1" style={{fontSize: '16px', paddingTop: '10px'}}>
-                    Events hosted by businesses are absolutely welcome, as long as they offer clear community value (for example: markets, workshops, classes, performances, or public gatherings).
-                  </p>
-                  <p className="text-muted-foreground mt-1" style={{fontSize: '16px', paddingTop: '10px'}}>
-                    If you're looking to promote a business more directly, we'd love to chat about sponsoring the project —{" "}
-                    <Link href="/contact" className="text-primary hover:underline font-medium">
-                      you can reach out via our contact form
-                    </Link>.
-                  </p>
-                </div>
-
-                <div>
-                  <p className="font-medium" style={{fontSize: '16px', paddingTop: '20px'}}>📍 Reasonably Accurate Information</p>
-                  <p className="text-muted-foreground" style={{fontSize: '16px', paddingTop: '10px'}}>
-                    Event dates and locations should be real and verifiable. If something appears unclear or incorrect, we may mark the submission as "Needs Info" and ask for clarification before publishing.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-6">
-              <h3 className="font-semibold mb-2" style={{fontSize: '18px', paddingTop: '20px'}}>When Submissions Aren't Approved (Rejection Guidelines)</h3>
-              <p className="mb-2" style={{fontSize: '16px'}}>An event may be declined if it falls into one of the following categories:</p>
-              <ul className="list-disc list-inside space-y-1 ml-2 text-muted-foreground">
-                <li style={{fontSize: '16px'}}>Spam or automated submissions</li>
-                <li style={{fontSize: '16px'}}>Duplicate events (if the same event is already published)</li>
-                <li style={{fontSize: '16px'}}>Purely promotional advertisements with no community event component</li>
-                <li style={{fontSize: '16px'}}>Events promoting illegal activity, discrimination, or harm</li>
-                <li style={{fontSize: '16px'}}>Completely fabricated, misleading, or nonsensical information</li>
-              </ul>
-              <p className="mt-2 text-muted-foreground" style={{fontSize: '16px', paddingTop: '10px'}}>
-                If an event is rejected, we'll always include a clear note explaining why. This helps organizers understand what happened and improve future submissions.
+            {/* Sponsorship Callout - Separate Section */}
+            <Card className="mt-6 p-4 bg-muted/50 border-primary/20">
+              <p className="text-sm" style={{fontSize: '16px'}}>
+                <strong>Looking to promote your business more directly?</strong> We'd love to chat about sponsoring the project —{" "}
+                <Link href="/contact" className="text-primary hover:underline font-medium">
+                  reach out via our contact form
+                </Link>.
               </p>
-            </div>
+            </Card>
+
+            {/* Collapsible Guidelines Sections */}
+            <Accordion type="multiple" className="mt-6">
+              <AccordionItem value="approval-guidelines">
+                <AccordionTrigger className="text-lg font-semibold hover:no-underline">
+                  What We're Looking For (Approval Guidelines)
+                </AccordionTrigger>
+                <AccordionContent>
+                  <p className="mb-4" style={{fontSize: '16px'}}>Your event is likely to be approved if:</p>
+                  
+                  <div className="space-y-3 ml-2">
+                    <div>
+                      <p className="font-medium" style={{fontSize: '16px', paddingTop: '20px'}}>✅ Clear, Complete Event Details</p>
+                      <p className="text-muted-foreground" style={{fontSize: '16px'}}>Please include: a clear event name and description, a valid location (at minimum: province and municipality), a start date (and end date, if applicable), and cost information (free, donation-based, or a price range).</p>
+                    </div>
+
+                    <div>
+                      <p className="font-medium" style={{fontSize: '16px', paddingTop: '20px'}}>♿ Accessibility Information Is Thoughtfully Completed</p>
+                      <p className="text-muted-foreground" style={{fontSize: '16px', paddingTop: '10px'}}>
+                        The accessibility section must be completed. It's okay to select "Unknown" for any field if you're truly not sure — the section can't be left blank. If you select "Unknown," we ask that you confirm and update that information as soon as possible.
+                      </p>
+                      <p className="text-muted-foreground mt-1" style={{fontSize: '16px', paddingTop: '10px'}}>
+                        The "Unknown" option exists to support honesty — not to avoid sharing available information. Clear, accurate accessibility details help people decide whether they can attend safely and comfortably.
+                      </p>
+                      <p className="text-muted-foreground mt-1 font-medium" style={{fontSize: '16px', paddingTop: '10px'}}>
+                        Honesty and transparency are core values of Local Happenings. If accessibility information is intentionally withheld or misrepresented, we reserve the right to limit or remove an organizer's ability to submit future listings.
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="font-medium" style={{fontSize: '16px', paddingTop: '20px'}}>🤝 Community-Appropriate Content</p>
+                      <p className="text-muted-foreground" style={{fontSize: '16px', paddingTop: '10px'}}>
+                        Events should be suitable for a community platform. No hate speech, discrimination, or harassment. No illegal activities. No misleading or harmful content.
+                      </p>
+                      <p className="text-muted-foreground mt-1" style={{fontSize: '16px', paddingTop: '10px'}}>
+                        Events hosted by businesses are absolutely welcome, as long as they offer clear community value (for example: markets, workshops, classes, performances, or public gatherings).
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="font-medium" style={{fontSize: '16px', paddingTop: '20px'}}>📍 Reasonably Accurate Information</p>
+                      <p className="text-muted-foreground" style={{fontSize: '16px', paddingTop: '10px'}}>
+                        Event dates and locations should be real and verifiable. If something appears unclear or incorrect, we may mark the submission as "Needs Info" and ask for clarification before publishing.
+                      </p>
+                    </div>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="rejection-guidelines">
+                <AccordionTrigger className="text-lg font-semibold hover:no-underline">
+                  When Submissions Aren't Approved (Rejection Guidelines)
+                </AccordionTrigger>
+                <AccordionContent>
+                  <p className="mb-2" style={{fontSize: '16px'}}>An event may be declined if it falls into one of the following categories:</p>
+                  <ul className="list-disc list-inside space-y-1 ml-2 text-muted-foreground">
+                    <li style={{fontSize: '16px'}}>Spam or automated submissions</li>
+                    <li style={{fontSize: '16px'}}>Duplicate events (if the same event is already published)</li>
+                    <li style={{fontSize: '16px'}}>Purely promotional advertisements with no community event component</li>
+                    <li style={{fontSize: '16px'}}>Events promoting illegal activity, discrimination, or harm</li>
+                    <li style={{fontSize: '16px'}}>Completely fabricated, misleading, or nonsensical information</li>
+                  </ul>
+                  <p className="mt-2 text-muted-foreground" style={{fontSize: '16px', paddingTop: '10px'}}>
+                    If an event is rejected, we'll always include a clear note explaining why. This helps organizers understand what happened and improve future submissions.
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
         </Card>
 
@@ -1070,7 +1140,10 @@ export default function SubmitEvent() {
                 <strong>Detailed accessibility information helps families make informed decisions about attending your event.</strong> Parents of children with disabilities, sensory sensitivities, or specific needs rely on this information to know if their family can participate safely and comfortably.
               </p>
               <p className="text-sm text-muted-foreground">
-                This section is required, but "Unknown" is always acceptable. Honest information helps families plan with confidence. Select "Not Relevant" for features that don't apply to your venue or event type. Each field includes a tooltip (ℹ️) explaining why it matters.
+                This section is required, but "Unknown" is always acceptable if you're truly unsure. <strong>However, we strongly encourage you to confirm and update "Unknown" fields as soon as possible.</strong> Families rely on complete accessibility information to decide if they can attend safely and comfortably. Select "Not Relevant" for features that don't apply to your venue or event type. Each field includes a tooltip (ℹ️) explaining why it matters.
+              </p>
+              <p className="text-sm text-muted-foreground mt-2">
+                <strong>Note:</strong> When your event is published, "Unknown" fields will display to users as "The organizer hasn't confirmed this detail yet," which may discourage attendance. Providing complete information helps build trust and increases participation.
               </p>
             </div>
 
@@ -1251,6 +1324,59 @@ export default function SubmitEvent() {
                       </SelectContent>
                     </Select>
                   </div>
+
+                  {/* Public Transit & Active Transportation */}
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Label className="text-sm">Closest bus stop distance to entrance</Label>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Info className="w-4 h-4 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent className="max-w-xs">
+                          <p className="text-sm">How far is the nearest public transit stop from the venue entrance? This helps families who use public transportation.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+                    <Select
+                      value={accessibility.mobility?.busStopDistance || "unknown"}
+                      onValueChange={(value) => updateAccessibility("mobility", "busStopDistance", value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select bus stop distance" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="short">Short walk (under 2 minutes)</SelectItem>
+                        <SelectItem value="moderate">Moderate walk (2-5 minutes)</SelectItem>
+                        <SelectItem value="long">Long walk (5+ minutes)</SelectItem>
+                        <SelectItem value="unknown">Unknown</SelectItem>
+                        <SelectItem value="not-relevant">Not Relevant</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <AccessibilityField
+                    category="mobility"
+                    field="accessibleSidewalks"
+                    label="Accessible sidewalks to venue"
+                    tooltip="Are the sidewalks leading to the venue accessible (smooth, curb cuts, well-maintained)?"
+                  />
+
+                  <AccessibilityField
+                    category="mobility"
+                    field="bikeRacks"
+                    label="Bike racks available"
+                    tooltip="Are there bike racks available near the venue entrance?"
+                    showNotRelevant
+                  />
+
+                  <AccessibilityField
+                    category="mobility"
+                    field="coveredBikeParking"
+                    label="Covered bike parking"
+                    tooltip="Is there covered/sheltered bike parking available?"
+                    showNotRelevant
+                  />
                 </div>
               </div>
 
@@ -1282,12 +1408,7 @@ export default function SubmitEvent() {
                     label="Flashing lights"
                     tooltip="Will there be flashing or strobe lights?"
                   />
-                  <AccessibilityField
-                    category="sensory"
-                    field="crowdLevel"
-                    label="Crowd level (spacious/moderate/crowded)"
-                    tooltip="How crowded will the event be?"
-                  />
+                  <CrowdLevelField />
                   <AccessibilityField
                     category="sensory"
                     field="quietRoom"

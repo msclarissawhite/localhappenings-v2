@@ -438,3 +438,18 @@
 - [x] Added optional chaining (?.) to both provinces and municipalities for safety
 - [x] Test advanced filters dialog functionality
 - [x] Verify all filter options display correctly
+
+## Submit Event Form UX Improvements
+- [x] Separate sponsorship callout into distinct visual section (Card with muted background)
+- [x] Make approval guidelines collapsible (Accordion component, collapsed by default)
+- [x] Make rejection guidelines collapsible (Accordion component, collapsed by default)
+- [x] Clarify "Unknown" tooltip to encourage completion while allowing honesty
+- [x] Added note about how "Unknown" displays to users ("organizer hasn't confirmed")
+- [x] Fix crowd level options from yes/no/unknown to spacious/moderate/crowded/unknown (CrowdLevelField component)
+- [x] Add public transit accessibility options:
+  - [x] Bus stop distance to entrance (short/moderate/long/unknown/not-relevant)
+  - [x] Accessible sidewalks to venue (yes/no/unknown)
+  - [x] Bike racks available (yes/no/unknown/not-relevant)
+  - [x] Covered bike parking (yes/no/unknown/not-relevant)
+- [ ] Test all new accessibility fields and ensure they save correctly
+- [ ] Align accessibility features with browse/filter options
