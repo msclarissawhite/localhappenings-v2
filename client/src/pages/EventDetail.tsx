@@ -10,6 +10,7 @@ import { Link } from "wouter";
 import type { AccessibilityData } from "@shared/types";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { useUserAuth } from "@/hooks/useUserAuth";
+import { useLocation } from "wouter";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -225,6 +226,10 @@ function ShareButtons({ eventName, eventId }: { eventName: string; eventId: numb
 export default function EventDetail() {
   const [, params] = useRoute("/event/:id");
   const eventId = params?.id ? parseInt(params.id) : 0;
+  const [, navigate] = useLocation();
+  
+  // Check if user is an organizer
+  const { user: organizer, isAuthenticated: isOrganizer } = useAuth();
 
   const { data: event, isLoading, error } = trpc.events.getById.useQuery({ id: eventId });
 
@@ -283,13 +288,27 @@ export default function EventDetail() {
   return (
     <div className="py-8">
       <div className="container max-w-4xl">
-        {/* Back Button */}
-        <Link href="/browse">
-          <Button variant="ghost" className="mb-6">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Events
-          </Button>
-        </Link>
+        {/* Back Buttons */}
+        <div className="flex items-center gap-2 mb-6">
+          <Link href="/browse">
+            <Button variant="ghost">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Events
+            </Button>
+          </Link>
+          
+          {/* Show Back to Dashboard for organizers */}
+          {isOrganizer && (
+            <Button 
+              variant="outline" 
+              onClick={() => navigate("/organizer/dashboard")}
+              className="ml-auto"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Dashboard
+            </Button>
+          )}
+        </div>
 
         {/* Event Image */}
         {event.imageUrl && (

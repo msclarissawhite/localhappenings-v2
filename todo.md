@@ -417,3 +417,10 @@
 - [x] Allow organizer privileges regardless of login method (organizer or magic link)
 - [x] Test complete workflow: organizer login → dashboard → my saved events → stay in organizer context
 - [x] Created comprehensive test suite (11 tests passing)
+
+## Feature: Back to Dashboard Button for Organizers
+- [x] Add "Back to Dashboard" button to EventDetail page
+- [x] Show button only for logged-in organizers (check useAuth())
+- [x] Position button prominently at top of event detail page (aligned right with ml-auto)
+- [x] Test navigation from event detail to organizer dashboard
+- [x] Created comprehensive test suite (15 tests passing)
