@@ -1,0 +1,28 @@
+{
+  "query": "SELECT * FROM homepageBanners WHERE title LIKE '%New Year%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT * FROM homepageBanners WHERE title LIKE '%New Year%';",
+  "rows": [
+    {
+      "id": "30001",
+      "title": "Ring in the New Year!",
+      "description": "Celebrate 2026 with countdowns, parties, and fresh starts across Nova Scotia",
+      "bgGradient": "from-blue-900 to-purple-600",
+      "textColor": "text-white",
+      "icon": "🎆",
+      "eventTypeIds": "NULL",
+      "provinces": "NULL",
+      "municipalities": "NULL",
+      "startDate": "2025-12-26",
+      "endDate": "2026-01-05",
+      "isActive": "1",
+      "sortOrder": "0",
+      "activeMonths": "[11, 0]",
+      "createdAt": "2025-12-21 16:48:40",
+      "updatedAt": "2025-12-21 16:50:49"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tdescription\tbgGradient\ttextColor\ticon\teventTypeIds\tprovinces\tmunicipalities\tstartDate\tendDate\tisActive\tsortOrder\tactiveMonths\tcreatedAt\tupdatedAt\n30001\tRing in the New Year!\tCelebrate 2026 with countdowns, parties, and fresh starts across Nova Scotia\tfrom-blue-900 to-purple-600\ttext-white\t🎆\tNULL\tNULL\tNULL\t2025-12-26\t2026-01-05\t1\t0\t[11, 0]\t2025-12-21 16:48:40\t2025-12-21 16:50:49\n",
+  "stderr": "",
+  "execution_time_ms": 54
+}

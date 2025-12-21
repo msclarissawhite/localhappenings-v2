@@ -1,0 +1,24 @@
+{
+  "query": "SELECT id, title, isActive, activeMonths, sortOrder FROM homepageBanners ORDER BY id;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT id, title, isActive, activeMonths, sortOrder FROM homepageBanners ORDER BY id;",
+  "rows": [
+    {
+      "id": "1",
+      "title": "Festive Holidays",
+      "isActive": "1",
+      "activeMonths": "[11]",
+      "sortOrder": "0"
+    },
+    {
+      "id": "30001",
+      "title": "Ring in the New Year!",
+      "isActive": "1",
+      "activeMonths": "[11, 0]",
+      "sortOrder": "0"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tisActive\tactiveMonths\tsortOrder\n1\tFestive Holidays\t1\t[11]\t0\n30001\tRing in the New Year!\t1\t[11, 0]\t0\n",
+  "stderr": "",
+  "execution_time_ms": 66
+}

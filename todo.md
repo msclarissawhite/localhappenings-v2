@@ -1448,3 +1448,9 @@
 - [x] Review USER_MANUAL.md for completeness
 - [x] Verify all recent features are documented
 - [x] Identify critical incomplete issues
+
+## New Year's Banner
+- [x] Create New Year's seasonal banner in database
+- [x] Set banner to active and visible on homepage
+- [x] Verify banner displays correctly (will show in January)
+- [x] Fix Festive Holidays banner month index (was 12, now 11 for December)

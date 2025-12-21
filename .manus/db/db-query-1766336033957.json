@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO homepageBanners (title, description, bgGradient, textColor, icon, eventTypeIds, activeMonths, isActive, sortOrder)\nVALUES (\n  'Ring in the New Year!',\n  'Celebrate the start of 2026 with exciting New Year events and festivities',\n  'from-purple-600 via-indigo-600 to-blue-600',\n  'text-white',\n  'Sparkles',\n  NULL,\n  JSON_ARRAY(11, 0),\n  1,\n  1\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute INSERT INTO homepageBanners (title, description, bgGradient, textColor, icon, eventTypeIds, activeMonths, isActive, sortOrder)\nVALUES (\n  'Ring in the New Year!',\n  'Celebrate the start of 2026 with exciting New Year events and festivities',\n  'from-purple-600 via-indigo-600 to-blue-600',\n  'text-white',\n  'Sparkles',\n  NULL,\n  JSON_ARRAY(11, 0),\n  1,\n  1\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 59
+}

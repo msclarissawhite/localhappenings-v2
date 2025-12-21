@@ -1,0 +1,28 @@
+{
+  "query": "SELECT * FROM homepageBanners LIMIT 1;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT * FROM homepageBanners LIMIT 1;",
+  "rows": [
+    {
+      "id": "1",
+      "title": "Festive Holidays",
+      "description": "Celebrate the season with holiday events, markets, and festive activities across Nova Scotia",
+      "bgGradient": "from-red-500 to-green-600",
+      "textColor": "text-white",
+      "icon": "gift",
+      "eventTypeIds": "NULL",
+      "provinces": "NULL",
+      "municipalities": "NULL",
+      "startDate": "NULL",
+      "endDate": "NULL",
+      "isActive": "1",
+      "sortOrder": "0",
+      "activeMonths": "[12]",
+      "createdAt": "2025-12-21 16:00:08",
+      "updatedAt": "2025-12-21 16:00:08"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tdescription\tbgGradient\ttextColor\ticon\teventTypeIds\tprovinces\tmunicipalities\tstartDate\tendDate\tisActive\tsortOrder\tactiveMonths\tcreatedAt\tupdatedAt\n1\tFestive Holidays\tCelebrate the season with holiday events, markets, and festive activities across Nova Scotia\tfrom-red-500 to-green-600\ttext-white\tgift\tNULL\tNULL\tNULL\tNULL\tNULL\t1\t0\t[12]\t2025-12-21 16:00:08\t2025-12-21 16:00:08\n",
+  "stderr": "",
+  "execution_time_ms": 57
+}
