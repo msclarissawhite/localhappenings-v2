@@ -16,6 +16,8 @@ import { format } from "date-fns";
 
 import type { EventFilters } from "@shared/types";
 import { BackToTop } from "@/components/BackToTop";
+import { EventTypeTags } from "@/components/EventTypeTags";
+import { EventTypeSelector } from "@/components/EventTypeSelector";
 import { CANADIAN_PROVINCES, CANADIAN_CITIES } from "@shared/canadian-locations";
 import {
   Accordion,
@@ -37,6 +39,9 @@ export default function BrowseEvents() {
   const { data: eventsData, isLoading } = trpc.events.list.useQuery(filters);
   const allEvents = eventsData?.events || [];
   const totalCount = eventsData?.total || 0;
+  
+  // Load all event types for filtering
+  const { data: eventTypes = [] } = trpc.events.getEventTypes.useQuery();
   
   // Show only the first displayedCount events
   const events = allEvents.slice(0, displayedCount);
@@ -406,6 +411,16 @@ export default function BrowseEvents() {
                       </Select>
                     </div>
                   </div>
+                </div>
+
+                {/* Event Types Filter */}
+                <div>
+                  <h3 className="font-semibold mb-3">Event Types</h3>
+                  <EventTypeSelector
+                    eventTypes={eventTypes}
+                    selectedIds={filters.eventTypeIds || []}
+                    onChange={(ids) => updateFilter('eventTypeIds', ids.length > 0 ? ids : undefined)}
+                  />
                 </div>
 
                 {/* Age Filters */}
@@ -820,6 +835,13 @@ export default function BrowseEvents() {
                         </div>
                       )}
                     </div>
+
+                    {/* Event Type Tags */}
+                    {event.eventTypes && event.eventTypes.length > 0 && (
+                      <div className="mb-3">
+                        <EventTypeTags eventTypes={event.eventTypes} maxDisplay={2} size="sm" />
+                      </div>
+                    )}
 
                     <div className="flex flex-wrap gap-2 mb-3">
                       {!!event.familyFriendly && (

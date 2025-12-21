@@ -1210,13 +1210,16 @@
 - [x] Test collections management interface
 
 ## Tag-Based Event Categories Expansion (IN PROGRESS)
-- [x] Seed all event types from design brief into database
-- [x] Add category field to eventTypes table schema (audience-based: family-kids, arts-culture, community-social, recreation-sports, markets-festivals, seasonal)
-- [x] Seed 32 event types across 6 audience-based categories
-- [ ] Update event submission form to show categorized event types
-- [ ] Update Browse Events filters to show categorized types
+- [x] Seed 32 event types across 6 audience-based categories to database
+- [x] Add tag selection to event submission form (grouped by category)
+- [ ] Add tag selection to admin edit form
+- [ ] Add tag selection to organizer edit event form
+- [x] Display tags on event cards (Browse Events, Archive, Saved Events)
+- [ ] Display tags on event detail pages
+- [x] Add tag filtering to Browse Events advanced filters
+- [x] Update backend to handle tag associations (eventToEventTypes junction table)
 - [ ] Create Event Type Management admin interface for easy tag additions
-- [ ] Test event type selection and filtering
+- [ ] Test tag selection, display, and filtering
 
 ## Collection Landing Pages (IN PROGRESS)
 - [ ] Create public collection page route (/collections/[slug])

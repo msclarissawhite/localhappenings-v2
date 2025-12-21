@@ -165,6 +165,7 @@ const submitEventSchema = z.object({
   notes: z.string().optional(),
   imageUrl: z.string().url().optional().or(z.literal("")),
   organizerId: z.number().optional(),
+  eventTypeIds: z.array(z.number()).optional().default([]),
 });
 
 // Admin-only procedure
@@ -329,6 +330,12 @@ export const eventsRouter = router({
         };
         
         const eventId = await eventsDb.createEvent(instanceData);
+        
+        // Associate event types if provided
+        if (input.eventTypeIds && input.eventTypeIds.length > 0) {
+          await eventsDb.associateEventTypes(eventId, input.eventTypeIds);
+        }
+        
         eventIds.push(eventId);
       }
       
@@ -371,6 +378,11 @@ export const eventsRouter = router({
     };
 
     const eventId = await eventsDb.createEvent(eventData);
+    
+    // Associate event types if provided
+    if (input.eventTypeIds && input.eventTypeIds.length > 0) {
+      await eventsDb.associateEventTypes(eventId, input.eventTypeIds);
+    }
     
     // Notify admin of new submission
     try {

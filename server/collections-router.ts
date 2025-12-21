@@ -92,14 +92,14 @@ export const collectionsRouter = router({
       const [result] = await db.insert(collections).values({
         name: input.name,
         slug: input.slug,
-        description: input.description || null,
-        imageUrl: input.imageUrl || null,
+        description: input.description || undefined,
+        imageUrl: input.imageUrl || undefined,
         sortOrder: input.sortOrder,
-        eventTypeIds: input.eventTypeIds || null,
-        provinces: input.provinces || null,
-        municipalities: input.municipalities || null,
-        startDate: input.startDate || null,
-        endDate: input.endDate || null,
+        eventTypeIds: input.eventTypeIds || undefined,
+        provinces: input.provinces || undefined,
+        municipalities: input.municipalities || undefined,
+        startDate: input.startDate ? new Date(input.startDate) : undefined,
+        endDate: input.endDate ? new Date(input.endDate) : undefined,
         isActive: 0, // Inactive by default
       });
 

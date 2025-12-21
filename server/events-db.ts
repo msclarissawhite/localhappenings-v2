@@ -101,6 +101,9 @@ export async function getEvents(filters: EventFilters = {}) {
   if (filters.isOutdoor) {
     conditions.push(eq(events.isOutdoor, 1));
   }
+  
+  // Event type filter - will be applied after fetching event types
+  const hasEventTypeFilter = filters.eventTypeIds && filters.eventTypeIds.length > 0;
 
   let query = db
     .select({
@@ -217,6 +220,43 @@ export async function getEvents(filters: EventFilters = {}) {
     });
   }
 
+  // Fetch event types for all events
+  const eventIds = results.map(e => e.id);
+  let eventTypesMap: Record<number, any[]> = {};
+  
+  if (eventIds.length > 0) {
+    const eventTypesResult = await db
+      .select({
+        eventId: eventToEventTypes.eventId,
+        eventType: eventTypes,
+      })
+      .from(eventToEventTypes)
+      .innerJoin(eventTypes, eq(eventToEventTypes.eventTypeId, eventTypes.id))
+      .where(inArray(eventToEventTypes.eventId, eventIds));
+    
+    // Group event types by event ID
+    eventTypesResult.forEach(row => {
+      if (!eventTypesMap[row.eventId]) {
+        eventTypesMap[row.eventId] = [];
+      }
+      eventTypesMap[row.eventId].push(row.eventType);
+    });
+  }
+  
+  // Add event types to each event
+  let eventsWithTypes = results.map(event => ({
+    ...event,
+    eventTypes: eventTypesMap[event.id] || [],
+  }));
+  
+  // Filter by event types if specified
+  if (hasEventTypeFilter) {
+    eventsWithTypes = eventsWithTypes.filter(event => {
+      const eventTypeIds = event.eventTypes.map((t: any) => t.id);
+      return filters.eventTypeIds!.some(id => eventTypeIds.includes(id));
+    });
+  }
+
   // Get total count (without limit/offset for pagination)
   const totalQuery = db
     .select({ count: sql<number>`count(*)` })
@@ -227,7 +267,7 @@ export async function getEvents(filters: EventFilters = {}) {
   const [{ count: total }] = await totalQuery;
 
   return {
-    events: results,
+    events: eventsWithTypes,
     total: Number(total) || 0,
   };
 }
@@ -283,6 +323,25 @@ export async function getAllEventTypes() {
 
   return await db.select().from(eventTypes).orderBy(eventTypes.name);
 }
+
+/**
+ * Associate event types with an event
+ */
+export async function associateEventTypes(eventId: number, eventTypeIds: number[]) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  if (eventTypeIds.length === 0) return;
+
+  const associations = eventTypeIds.map(typeId => ({
+    eventId,
+    eventTypeId: typeId,
+  }));
+
+  await db.insert(eventToEventTypes).values(associations);
+}
+
+
 
 /**
  * Create a new event submission

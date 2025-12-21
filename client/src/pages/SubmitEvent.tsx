@@ -35,6 +35,7 @@ import type { AccessibilityValue } from "@shared/types";
 import { CANADIAN_PROVINCES, CANADIAN_CITIES } from "@shared/canadian-locations";
 import { EventPreview } from "@/components/EventPreview";
 import { RecurringPreview } from "@/components/RecurringPreview";
+import { EventTypeSelector } from "@/components/EventTypeSelector";
 
 const submitEventSchema = z.object({
   name: z.string().min(1, "Event name is required"),
@@ -116,6 +117,7 @@ export default function SubmitEvent() {
   const [showSaveTemplate, setShowSaveTemplate] = useState(false);
   const [templateName, setTemplateName] = useState("");
   const [templateDescription, setTemplateDescription] = useState("");
+  const [selectedEventTypeIds, setSelectedEventTypeIds] = useState<number[]>([]);
   const searchParams = useSearch();
   const urlParams = new URLSearchParams(searchParams);
 
@@ -142,6 +144,9 @@ export default function SubmitEvent() {
     { organizerId: organizer?.id || 0 },
     { enabled: !!organizer }
   );
+
+  // Load all event types
+  const { data: eventTypes = [] } = trpc.events.getEventTypes.useQuery();
 
   // Initialize form BEFORE useEffect hooks that use setValue
   const {
@@ -461,6 +466,7 @@ export default function SubmitEvent() {
       imageUrl: imageUrl || undefined,
       organizerId: organizer?.id || undefined,
       recurrencePattern,
+      eventTypeIds: selectedEventTypeIds,
     } as any);
   };
 
@@ -952,6 +958,16 @@ export default function SubmitEvent() {
                 )}
               </div>
             </div>
+          </Card>
+
+          {/* Event Types */}
+          <Card className="p-6">
+            <h2 className="text-xl font-semibold mb-4">Event Types</h2>
+            <EventTypeSelector
+              eventTypes={eventTypes}
+              selectedIds={selectedEventTypeIds}
+              onChange={setSelectedEventTypeIds}
+            />
           </Card>
 
           {/* Location */}
