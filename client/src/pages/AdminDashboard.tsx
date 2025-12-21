@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { Calendar, MapPin, CheckCircle, XCircle, AlertCircle, ShieldCheck, Users, DollarSign, TrendingUp, Repeat } from "lucide-react";
+import { Calendar, MapPin, CheckCircle, XCircle, AlertCircle, ShieldCheck, Users, DollarSign, TrendingUp, Repeat, MessageSquare } from "lucide-react";
 import type { Event } from "@shared/types";
 import { EventEditDialog } from "@/components/EventEditDialog";
 import { DuplicateWarning } from "@/components/DuplicateWarning";
@@ -920,6 +920,14 @@ export default function AdminDashboard() {
                           onClick={() => window.open(`/event/${event.id}`, "_blank")}
                         >
                           View Details
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => window.location.href = `/admin/feedback/${event.id}`}
+                        >
+                          <MessageSquare className="w-4 h-4 mr-2" />
+                          View Feedback
                         </Button>
                         <Button
                           size="sm"

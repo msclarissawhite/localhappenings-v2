@@ -1,7 +1,14 @@
-import { ENV } from "./_core/env";
 import { getDb } from "./db";
 import { events, eventFeedback } from "../drizzle/schema";
-import { eq, and, sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
+
+// ClickUp Custom Field IDs (from Event Submissions list 901708732695)
+const CLICKUP_FIELD_IDS = {
+  feedbackCount: "e01c05e6-3bcb-46e8-acd9-f1139f06e649",
+  attendedCount: "54a48edc-36b1-4e2a-b119-6ae0f73b6d8e",
+  averageAccuracy: "1f8bc01a-f18a-44f6-b7bb-49775a842626",
+  lastFeedbackDate: "703fd023-4dd2-4053-b332-c6f9e69f34b0",
+};
 
 interface FeedbackData {
   id: number;
@@ -85,29 +92,26 @@ async function updateClickUpCustomFields(
     lastFeedbackDate: Date;
   }
 ): Promise<void> {
-  const apiKey = ENV.CLICKUP_API_KEY;
+  const apiKey = process.env.CLICKUP_API_KEY;
   if (!apiKey) {
     throw new Error("CLICKUP_API_KEY not configured");
   }
 
-  // Note: You'll need to create these custom fields in ClickUp first
-  // and get their field IDs. For now, this is a placeholder structure.
-  
   const customFields = [
     {
-      id: "feedback_count", // Replace with actual field ID from ClickUp
+      id: CLICKUP_FIELD_IDS.feedbackCount,
       value: stats.feedbackCount,
     },
     {
-      id: "attended_count", // Replace with actual field ID
+      id: CLICKUP_FIELD_IDS.attendedCount,
       value: stats.attendedCount,
     },
     {
-      id: "average_accuracy", // Replace with actual field ID
+      id: CLICKUP_FIELD_IDS.averageAccuracy,
       value: stats.averageAccuracy,
     },
     {
-      id: "last_feedback_date", // Replace with actual field ID
+      id: CLICKUP_FIELD_IDS.lastFeedbackDate,
       value: stats.lastFeedbackDate.getTime(),
     },
   ];
@@ -133,7 +137,7 @@ async function updateClickUpCustomFields(
  * Add feedback as a comment on the ClickUp task
  */
 async function addClickUpComment(taskId: string, feedback: FeedbackData): Promise<void> {
-  const apiKey = ENV.CLICKUP_API_KEY;
+  const apiKey = process.env.CLICKUP_API_KEY;
   if (!apiKey) {
     throw new Error("CLICKUP_API_KEY not configured");
   }

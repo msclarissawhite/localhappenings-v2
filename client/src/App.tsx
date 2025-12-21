@@ -11,6 +11,7 @@ import Analytics from "./pages/Analytics";
 import Archive from "./pages/Archive";
 import EventDetail from "./pages/EventDetail";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminFeedback from "./pages/AdminFeedback";
 import Contact from "./pages/Contact";
 import OrganizerLogin from "./pages/OrganizerLogin";
 import OrganizerVerify from "./pages/OrganizerVerify";
@@ -41,6 +42,7 @@ function Router() {
           <Route path="/submit" component={SubmitEvent} />
           <Route path="/event/:id" component={EventDetail} />
           <Route path="/admin" component={AdminDashboard} />
+          <Route path="/admin/feedback/:id" component={AdminFeedback} />
           <Route path={"/analytics"} component={Analytics} />
       <Route path={"/archive"} component={Archive} />
       <Route path={"/contact"} component={Contact} />

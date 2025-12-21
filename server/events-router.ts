@@ -173,6 +173,21 @@ const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
 });
 
 export const eventsRouter = router({
+  // Get feedback stats for multiple events (for Browse Events page)
+  getFeedbackStats: publicProcedure
+    .input(z.object({ eventIds: z.array(z.number()) }))
+    .query(async ({ input }) => {
+      const { getFeedbackStatsForEvents } = await import("./feedback-stats-db");
+      const statsMap = await getFeedbackStatsForEvents(input.eventIds);
+      
+      // Convert Map to plain object for tRPC serialization
+      const result: Record<number, { totalFeedback: number; attendedCount: number; avgAccuracy: number | null }> = {};
+      statsMap.forEach((stats, eventId) => {
+        result[eventId] = stats;
+      });
+      return result;
+    }),
+
   // Public: List events with filters
   list: publicProcedure.input(eventFiltersSchema).query(async ({ input }) => {
     return await eventsDb.getEvents(input);

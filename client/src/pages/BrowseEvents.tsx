@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "wouter";
 import { 
   Calendar, MapPin, DollarSign, Users, Filter, X, Search,
-  Baby, Volume2, Eye, Heart, Accessibility
+  Baby, Volume2, Eye, Heart, Accessibility, Star
 } from "lucide-react";
 import { format } from "date-fns";
 import type { EventFilters } from "@shared/types";
@@ -30,6 +30,13 @@ export default function BrowseEvents() {
   const [showFilters, setShowFilters] = useState(false);
 
   const { data: events, isLoading } = trpc.events.list.useQuery(filters);
+  
+  // Get feedback stats for all events
+  const eventIds = events?.map(e => e.id) || [];
+  const { data: feedbackStats } = trpc.events.getFeedbackStats.useQuery(
+    { eventIds },
+    { enabled: eventIds.length > 0 }
+  );
   
   // Use shared location constants for consistent data across the site
   const provinces = CANADIAN_PROVINCES.map(p => p.name);
@@ -810,15 +817,28 @@ export default function BrowseEvents() {
                       {!!event.isOutdoor && <Badge variant="outline">Outdoor</Badge>}
                     </div>
 
-                    {/* Accessibility Icons */}
-                    {hasAccessibilityInfo(event) && (
-                      <div className="flex items-center gap-2 pt-2 border-t">
-                        <Accessibility className="w-4 h-4 text-primary" />
-                        <span className="text-xs text-muted-foreground">
-                          Accessibility info available
-                        </span>
-                      </div>
-                    )}
+                    {/* Trust Signals & Accessibility */}
+                    <div className="space-y-2">
+                      {feedbackStats?.[event.id]?.avgAccuracy && feedbackStats[event.id].attendedCount >= 3 && (
+                        <div className="flex items-center gap-2 pt-2 border-t">
+                          <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                          <span className="text-sm font-medium">
+                            {feedbackStats[event.id].avgAccuracy.toFixed(1)}/5
+                          </span>
+                          <span className="text-xs text-muted-foreground">
+                            ({feedbackStats[event.id].attendedCount} attendee{feedbackStats[event.id].attendedCount !== 1 ? 's' : ''})
+                          </span>
+                        </div>
+                      )}
+                      {hasAccessibilityInfo(event) && (
+                        <div className="flex items-center gap-2 pt-2 border-t">
+                          <Accessibility className="w-4 h-4 text-primary" />
+                          <span className="text-xs text-muted-foreground">
+                            Accessibility info available
+                          </span>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </Card>
               </Link>

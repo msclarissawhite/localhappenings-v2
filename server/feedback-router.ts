@@ -55,6 +55,48 @@ export const feedbackRouter = router({
     }),
 
   /**
+   * Get all feedback for an event (admin only)
+   */
+  getForEvent: protectedProcedure
+    .input(z.object({ eventId: z.number() }))
+    .query(async ({ ctx, input }) => {
+      // Only admins can view individual feedback
+      if (ctx.user.role !== "admin") {
+        throw new Error("Unauthorized: Admin access required");
+      }
+
+      const db = await getDb();
+      if (!db) throw new Error("Database not available");
+
+      const feedbackList = await db
+        .select()
+        .from(eventFeedback)
+        .where(eq(eventFeedback.eventId, input.eventId))
+        .orderBy(sql`submittedAt DESC`);
+
+      return feedbackList;
+    }),
+
+  /**
+   * Delete feedback (admin only, for spam/harassment)
+   */
+  delete: protectedProcedure
+    .input(z.object({ feedbackId: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      // Only admins can delete feedback
+      if (ctx.user.role !== "admin") {
+        throw new Error("Unauthorized: Admin access required");
+      }
+
+      const db = await getDb();
+      if (!db) throw new Error("Database not available");
+
+      await db.delete(eventFeedback).where(eq(eventFeedback.id, input.feedbackId));
+
+      return { success: true };
+    }),
+
+  /**
    * Get feedback statistics for an event (public)
    */
   getStats: publicProcedure
@@ -75,35 +117,7 @@ export const feedbackRouter = router({
       return stats[0] || { totalFeedback: 0, attendedCount: 0, avgAccuracy: null };
     }),
 
-  /**
-   * Get all feedback for an event (admin only)
-   */
-  getForEvent: protectedProcedure
-    .input(z.object({ eventId: z.number() }))
-    .query(async ({ input, ctx }) => {
-      // Only admins can view individual feedback
-      if (ctx.user.role !== "admin") {
-        throw new Error("Unauthorized");
-      }
 
-      const db = await getDb();
-      if (!db) throw new Error("Database not available");
-      
-      const feedback = await db
-        .select()
-        .from(eventFeedback)
-        .where(eq(eventFeedback.eventId, input.eventId))
-        .orderBy(sql`submittedAt DESC`);
-
-      // Parse JSON fields
-      return feedback.map((f) => ({
-        ...f,
-        attended: f.attended === 1,
-        syncedToClickUp: f.syncedToClickUp === 1,
-        helpfulDetails: f.helpfulDetails ? JSON.parse(f.helpfulDetails as string) : [],
-        inaccurateDetails: f.inaccurateDetails ? JSON.parse(f.inaccurateDetails as string) : [],
-      }));
-    }),
 
   /**
    * Get feedback that needs ClickUp sync (admin only, for background job)
