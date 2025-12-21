@@ -1,1 +1,0 @@
-ALTER TABLE `events` MODIFY COLUMN `status` enum('pending','published','rejected','needs-clarification','closed') NOT NULL DEFAULT 'pending';

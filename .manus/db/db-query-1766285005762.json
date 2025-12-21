@@ -1,9 +1,0 @@
-{
-  "query": "UPDATE event_claim_tokens \nSET eventIds = '[13]' \nWHERE token = 'ff9fc530005eac6a70bcefb30ed65fb4996b5e645d6b35d016108be674dff816';",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute UPDATE event_claim_tokens \nSET eventIds = '[13]' \nWHERE token = 'ff9fc530005eac6a70bcefb30ed65fb4996b5e645d6b35d016108be674dff816';",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 60
-}

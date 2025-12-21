@@ -1,1 +1,0 @@
-ALTER TABLE `events` ADD `displayOrganizerInfo` int DEFAULT 1 NOT NULL;

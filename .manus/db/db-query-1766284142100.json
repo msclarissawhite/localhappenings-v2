@@ -1,9 +1,0 @@
-{
-  "query": "INSERT INTO event_claim_tokens (token, organizerEmail, eventIds, claimed, expiresAt) \nVALUES ('8081a3920e905129ef6319bc623c29e5d715626727df0ed41f68c2e611c95b7c', 'test@example.com', '[11]', 0, '2026-01-20 02:28:56');",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute INSERT INTO event_claim_tokens (token, organizerEmail, eventIds, claimed, expiresAt) \nVALUES ('8081a3920e905129ef6319bc623c29e5d715626727df0ed41f68c2e611c95b7c', 'test@example.com', '[11]', 0, '2026-01-20 02:28:56');",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 65
-}

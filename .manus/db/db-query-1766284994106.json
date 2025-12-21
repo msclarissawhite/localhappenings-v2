@@ -1,9 +1,0 @@
-{
-  "query": "INSERT INTO events (\n  name, description, province, municipality, startDate, \n  isRecurring, isFree, allAges, familyFriendly, youngChildren,\n  isIndoor, accessibility, status, organizerName, organizerType,\n  venue, address\n) VALUES (\n  'Test Event - Family Storytime at Library',\n  'Weekly storytime session for families. Interactive reading, songs, and crafts. Perfect for ages 2-6.',\n  'Nova Scotia',\n  'Halifax',\n  '2025-01-22 10:00:00',\n  1,\n  1,\n  0,\n  1,\n  1,\n  1,\n  '{\"mobility\":{\"wheelchairAccessible\":true},\"caregiver\":{\"nursingArea\":true}}',\n  'published',\n  'Halifax Public Libraries',\n  'school-library',\n  'Halifax Central Library',\n  '5440 Spring Garden Road, Halifax, NS'\n);",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute INSERT INTO events (\n  name, description, province, municipality, startDate, \n  isRecurring, isFree, allAges, familyFriendly, youngChildren,\n  isIndoor, accessibility, status, organizerName, organizerType,\n  venue, address\n) VALUES (\n  'Test Event - Family Storytime at Library',\n  'Weekly storytime session for families. Interactive reading, songs, and crafts. Perfect for ages 2-6.',\n  'Nova Scotia',\n  'Halifax',\n  '2025-01-22 10:00:00',\n  1,\n  1,\n  0,\n  1,\n  1,\n  1,\n  '{\"mobility\":{\"wheelchairAccessible\":true},\"caregiver\":{\"nursingArea\":true}}',\n  'published',\n  'Halifax Public Libraries',\n  'school-library',\n  'Halifax Central Library',\n  '5440 Spring Garden Road, Halifax, NS'\n);",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 67
-}

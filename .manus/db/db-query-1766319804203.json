@@ -1,9 +1,0 @@
-{
-  "query": "INSERT INTO eventTypes (name, category) VALUES\n('Seeing Santa', 'family-kids'),\n('Storytime / Library Events', 'family-kids'),\n('Skating', 'family-kids'),\n('Swimming', 'family-kids'),\n('Petting Zoos / Farms', 'family-kids'),\n('Kids Crafts', 'family-kids'),\n('Puppet Shows', 'family-kids'),\n('Face Painting', 'family-kids')\nON DUPLICATE KEY UPDATE category = VALUES(category)",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute INSERT INTO eventTypes (name, category) VALUES\n('Seeing Santa', 'family-kids'),\n('Storytime / Library Events', 'family-kids'),\n('Skating', 'family-kids'),\n('Swimming', 'family-kids'),\n('Petting Zoos / Farms', 'family-kids'),\n('Kids Crafts', 'family-kids'),\n('Puppet Shows', 'family-kids'),\n('Face Painting', 'family-kids')\nON DUPLICATE KEY UPDATE category = VALUES(category)",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 72
-}

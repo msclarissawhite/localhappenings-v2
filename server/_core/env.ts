@@ -1,4 +1,4 @@
-export const env = {
+export const ENV = {
   appId: process.env.VITE_APP_ID ?? "",
   cookieSecret: process.env.JWT_SECRET ?? "",
   databaseUrl: process.env.DATABASE_URL ?? "",
@@ -7,14 +7,4 @@ export const env = {
   isProduction: process.env.NODE_ENV === "production",
   forgeApiUrl: process.env.BUILT_IN_FORGE_API_URL ?? "",
   forgeApiKey: process.env.BUILT_IN_FORGE_API_KEY ?? "",
-  // Stripe
-  STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY ?? "",
-  STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET ?? "",
-  // ClickUp
-  CLICKUP_API_KEY: process.env.CLICKUP_API_KEY ?? "",
-  CLICKUP_LIST_ID: process.env.CLICKUP_LIST_ID ?? "", // Contact form submissions
-  CLICKUP_EVENT_LIST_ID: process.env.CLICKUP_EVENT_LIST_ID ?? "", // Event submissions
 };
-
-// Backward compatibility export
-export const ENV = env;

@@ -1,8 +1,0 @@
-{
-  "query": "UPDATE eventTypes SET category = 'community-social' WHERE category = 'core';\nUPDATE eventTypes SET category = 'family-kids' WHERE category = 'family';\nUPDATE eventTypes SET category = 'arts-culture' WHERE category = 'cultural'",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute UPDATE eventTypes SET category = 'community-social' WHERE category = 'core';\nUPDATE eventTypes SET category = 'family-kids' WHERE category = 'family';\nUPDATE eventTypes SET category = 'arts-culture' WHERE category = 'cultural'",
-  "returncode": 1,
-  "logs": [
-    "ERROR 1265 (01000) at line 1: Data truncated for column '%s' at row %d"
-  ]
-}

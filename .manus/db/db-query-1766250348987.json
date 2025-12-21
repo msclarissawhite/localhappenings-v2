@@ -1,9 +1,0 @@
-{
-  "query": "UPDATE featureRequests SET clickupTaskId = '86dyym6xp', clickupTaskUrl = 'https://app.clickup.com/t/86dyym6xp' WHERE id = 1;",
-  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute UPDATE featureRequests SET clickupTaskId = '86dyym6xp', clickupTaskUrl = 'https://app.clickup.com/t/86dyym6xp' WHERE id = 1;",
-  "rows": [],
-  "messages": [],
-  "stdout": "",
-  "stderr": "",
-  "execution_time_ms": 57
-}

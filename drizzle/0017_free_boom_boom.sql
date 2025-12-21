@@ -1,1 +1,0 @@
-ALTER TABLE `eventTypes` MODIFY COLUMN `category` enum('family-kids','arts-culture','community-social','recreation-sports','markets-festivals','seasonal') NOT NULL DEFAULT 'community-social';
