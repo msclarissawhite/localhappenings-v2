@@ -1582,3 +1582,10 @@
 - [x] Test autocomplete with various venue types (Neptune Theatre, Halifax Central Library)
 - [x] Verify auto-fill works correctly (keyboard navigation method)
 - [x] Remove debug console.log statements from production code
+
+
+## Bug Fix - Nested Anchor Tags on Homepage
+- [x] Investigate nested anchor tag error on homepage
+- [x] Identify component with nested <a> tags (FeaturedEventsCarousel)
+- [x] Fix nested anchor structure (replaced Link wrapper with onClick navigation)
+- [x] Test homepage to verify error is resolved

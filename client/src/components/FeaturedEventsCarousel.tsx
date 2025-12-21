@@ -5,12 +5,13 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Calendar, MapPin, Clock } from "lucide-react";
 import { format } from "date-fns";
-import { Link } from "wouter";
+import { useLocation } from "wouter";
 import type { Event } from "@shared/types";
 import ReactMarkdown from "react-markdown";
 
 
 export function FeaturedEventsCarousel() {
+  const [, navigate] = useLocation();
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" });
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
@@ -77,8 +78,10 @@ export function FeaturedEventsCarousel() {
         <div className="flex">
           {featuredEvents.map((event: Event) => (
             <div key={event.id} className="flex-[0_0_100%] min-w-0 md:flex-[0_0_50%] lg:flex-[0_0_33.33%] px-2">
-              <Link href={`/event/${event.id}`}>
-                <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer h-full">
+              <Card 
+                className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer h-full"
+                onClick={() => navigate(`/event/${event.id}`)}
+              >
                   <div className="relative h-48 overflow-hidden">
                     <img
                       src={getEventImage(event)}
@@ -115,7 +118,6 @@ export function FeaturedEventsCarousel() {
                     </div>
                   </div>
                 </Card>
-              </Link>
             </div>
           ))}
         </div>
