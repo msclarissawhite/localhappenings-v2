@@ -1064,3 +1064,9 @@
 - [x] Implement CSV generation from organizer stats data
 - [x] Update user manual with organizer analytics section
 - [x] Review and update organizer quickstart if needed
+
+## Organizer Analytics Date Range Filter
+- [x] Add date range parameters to backend organizer analytics queries
+- [x] Update getFeedbackStats and getEventFeedback to filter by date
+- [x] Add date range filter UI to admin dashboard organizer tab
+- [ ] Test date filtering with different time periods

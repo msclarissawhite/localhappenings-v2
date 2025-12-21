@@ -51,13 +51,42 @@ export default function AdminDashboard() {
     { enabled: isAuthenticated && user?.role === "admin" && activeTab === "closed-events" }
   );
 
-  const { data: organizerStats, isLoading: organizerStatsLoading } = trpc.organizerAnalytics.getFeedbackStats.useQuery(undefined, {
-    enabled: isAuthenticated && user?.role === "admin" && activeTab === "organizers",
-  });
-  
   const [expandedOrganizer, setExpandedOrganizer] = useState<string | null>(null);
+  const [dateFilter, setDateFilter] = useState<"all" | "30days" | "6months" | "1year">("all");
+  
+  // Calculate date range based on filter
+  const getDateRange = () => {
+    const now = new Date();
+    switch (dateFilter) {
+      case "30days":
+        const thirtyDaysAgo = new Date(now);
+        thirtyDaysAgo.setDate(now.getDate() - 30);
+        return { startDate: thirtyDaysAgo.toISOString(), endDate: now.toISOString() };
+      case "6months":
+        const sixMonthsAgo = new Date(now);
+        sixMonthsAgo.setMonth(now.getMonth() - 6);
+        return { startDate: sixMonthsAgo.toISOString(), endDate: now.toISOString() };
+      case "1year":
+        const oneYearAgo = new Date(now);
+        oneYearAgo.setFullYear(now.getFullYear() - 1);
+        return { startDate: oneYearAgo.toISOString(), endDate: now.toISOString() };
+      default:
+        return undefined;
+    }
+  };
+  
+  const { data: organizerStats, isLoading: organizerStatsLoading } = trpc.organizerAnalytics.getFeedbackStats.useQuery(
+    getDateRange(),
+    {
+      enabled: isAuthenticated && user?.role === "admin" && activeTab === "organizers",
+    }
+  );
+  
   const { data: organizerEvents } = trpc.organizerAnalytics.getEventFeedback.useQuery(
-    { organizerName: expandedOrganizer! },
+    { 
+      organizerName: expandedOrganizer!,
+      ...getDateRange()
+    },
     { enabled: !!expandedOrganizer }
   );
 
@@ -666,48 +695,88 @@ export default function AdminDashboard() {
 
         {activeTab === "organizers" && (
           <>
-            <div className="mb-4 flex items-start justify-between">
-              <div>
-                <h2 className="text-2xl font-bold mb-2">Organizer Feedback Analytics</h2>
-                <p className="text-muted-foreground">Track organizer performance based on attendee feedback across all their events.</p>
+            <div className="mb-4">
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <h2 className="text-2xl font-bold mb-2">Organizer Feedback Analytics</h2>
+                  <p className="text-muted-foreground">Track organizer performance based on attendee feedback across all their events.</p>
+                </div>
+                {organizerStats && organizerStats.length > 0 && (
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      // Generate CSV
+                      const headers = ['Organizer Name', 'Email', 'Verified', 'Total Events', 'Events with Feedback', 'Total Responses', 'Attended Count', 'Avg Accuracy', 'Last Feedback Date'];
+                      const rows = organizerStats.map(org => [
+                        org.organizerName,
+                        org.organizerEmail || '',
+                        org.organizerIsVerified === 1 ? 'Yes' : 'No',
+                        org.totalEvents,
+                        org.eventsWithFeedback,
+                        org.totalFeedback,
+                        org.totalAttended,
+                        org.avgAccuracy ? org.avgAccuracy.toFixed(2) : 'N/A',
+                        org.lastFeedbackDate ? format(new Date(org.lastFeedbackDate), 'yyyy-MM-dd HH:mm:ss') : 'N/A'
+                      ]);
+                      
+                      const csvContent = [
+                        headers.join(','),
+                        ...rows.map(row => row.map(cell => 
+                          typeof cell === 'string' && cell.includes(',') ? `"${cell}"` : cell
+                        ).join(','))
+                      ].join('\n');
+                      
+                      // Download
+                      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                      const link = document.createElement('a');
+                      link.href = URL.createObjectURL(blob);
+                      link.download = `organizer-analytics-${format(new Date(), 'yyyy-MM-dd')}.csv`;
+                      link.click();
+                    }}
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Export CSV
+                  </Button>
+                )}
               </div>
-              {organizerStats && organizerStats.length > 0 && (
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    // Generate CSV
-                    const headers = ['Organizer Name', 'Email', 'Verified', 'Total Events', 'Events with Feedback', 'Total Responses', 'Attended Count', 'Avg Accuracy', 'Last Feedback Date'];
-                    const rows = organizerStats.map(org => [
-                      org.organizerName,
-                      org.organizerEmail || '',
-                      org.organizerIsVerified === 1 ? 'Yes' : 'No',
-                      org.totalEvents,
-                      org.eventsWithFeedback,
-                      org.totalFeedback,
-                      org.totalAttended,
-                      org.avgAccuracy ? org.avgAccuracy.toFixed(2) : 'N/A',
-                      org.lastFeedbackDate ? format(new Date(org.lastFeedbackDate), 'yyyy-MM-dd HH:mm:ss') : 'N/A'
-                    ]);
-                    
-                    const csvContent = [
-                      headers.join(','),
-                      ...rows.map(row => row.map(cell => 
-                        typeof cell === 'string' && cell.includes(',') ? `"${cell}"` : cell
-                      ).join(','))
-                    ].join('\n');
-                    
-                    // Download
-                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                    const link = document.createElement('a');
-                    link.href = URL.createObjectURL(blob);
-                    link.download = `organizer-analytics-${format(new Date(), 'yyyy-MM-dd')}.csv`;
-                    link.click();
-                  }}
-                >
-                  <Download className="w-4 h-4 mr-2" />
-                  Export CSV
-                </Button>
-              )}
+              
+              {/* Date Range Filter */}
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium">Time Period:</span>
+                <div className="flex gap-2">
+                  <Button
+                    variant={dateFilter === "all" ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setDateFilter("all")}
+                  >
+                    All Time
+                  </Button>
+                  <Button
+                    variant={dateFilter === "30days" ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setDateFilter("30days")}
+                  >
+                    Last 30 Days
+                  </Button>
+                  <Button
+                    variant={dateFilter === "6months" ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setDateFilter("6months")}
+                  >
+                    Last 6 Months
+                  </Button>
+                  <Button
+                    variant={dateFilter === "1year" ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setDateFilter("1year")}
+                  >
+                    Last Year
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            <div className="hidden">
             </div>
 
             {organizerStatsLoading ? (

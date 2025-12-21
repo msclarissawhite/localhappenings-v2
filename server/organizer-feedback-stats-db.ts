@@ -30,7 +30,7 @@ export interface OrganizerEventFeedback {
  * Get aggregated feedback stats for all organizers
  * Returns organizers sorted by average accuracy (highest first)
  */
-export async function getOrganizerFeedbackStats(): Promise<OrganizerFeedbackStats[]> {
+export async function getOrganizerFeedbackStats(dateRange?: { startDate?: Date; endDate?: Date }): Promise<OrganizerFeedbackStats[]> {
   const db = await getDb();
   if (!db) return [];
 
@@ -53,7 +53,9 @@ export async function getOrganizerFeedbackStats(): Promise<OrganizerFeedbackStat
     .where(
       and(
         isNotNull(events.organizerName),
-        eq(events.status, "published")
+        eq(events.status, "published"),
+        dateRange?.startDate ? sql`${eventFeedback.submittedAt} >= ${dateRange.startDate}` : undefined,
+        dateRange?.endDate ? sql`${eventFeedback.submittedAt} <= ${dateRange.endDate}` : undefined
       )
     )
     .groupBy(events.organizerName, events.organizerEmail)
@@ -75,9 +77,7 @@ export async function getOrganizerFeedbackStats(): Promise<OrganizerFeedbackStat
 /**
  * Get feedback breakdown by event for a specific organizer
  */
-export async function getOrganizerEventFeedback(
-  organizerName: string
-): Promise<OrganizerEventFeedback[]> {
+export async function getOrganizerEventFeedback(organizerName: string, dateRange?: { startDate?: Date; endDate?: Date }): Promise<OrganizerEventFeedback[]> {
   const db = await getDb();
   if (!db) return [];
 
@@ -96,7 +96,9 @@ export async function getOrganizerEventFeedback(
     .where(
       and(
         eq(events.organizerName, organizerName),
-        eq(events.status, "published")
+        eq(events.status, "published"),
+        dateRange?.startDate ? sql`${eventFeedback.submittedAt} >= ${dateRange.startDate}` : undefined,
+        dateRange?.endDate ? sql`${eventFeedback.submittedAt} <= ${dateRange.endDate}` : undefined
       )
     )
     .groupBy(events.id, events.name, events.startDate)
