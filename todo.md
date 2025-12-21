@@ -1541,3 +1541,9 @@
 - [x] Fix event times changing when opening admin edit form
 - [x] Investigate timezone conversion between UTC and local time (toISOString was converting to UTC)
 - [x] Ensure datetime-local inputs preserve original times (now using local timezone formatter)
+
+
+## Featured Carousel Bugs
+- [x] Fix featured card 404 error when clicking from homepage carousel (was /events/ instead of /event/)
+- [x] Fix raw markdown showing in fallback event descriptions
+- [x] Add markdown rendering for event descriptions in carousel (using ReactMarkdown)

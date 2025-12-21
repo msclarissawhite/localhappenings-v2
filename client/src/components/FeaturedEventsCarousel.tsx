@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight, Calendar, MapPin, Clock } from "lucide-react
 import { format } from "date-fns";
 import { Link } from "wouter";
 import type { Event } from "@shared/types";
+import ReactMarkdown from "react-markdown";
 
 
 export function FeaturedEventsCarousel() {
@@ -76,7 +77,7 @@ export function FeaturedEventsCarousel() {
         <div className="flex">
           {featuredEvents.map((event: Event) => (
             <div key={event.id} className="flex-[0_0_100%] min-w-0 md:flex-[0_0_50%] lg:flex-[0_0_33.33%] px-2">
-              <Link href={`/events/${event.id}`}>
+              <Link href={`/event/${event.id}`}>
                 <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer h-full">
                   <div className="relative h-48 overflow-hidden">
                     <img
@@ -93,7 +94,9 @@ export function FeaturedEventsCarousel() {
                     {(event as any).subtitle && (
                       <p className="text-sm text-primary italic mb-2">"{(event as any).subtitle}"</p>
                     )}
-                    <p className="text-muted-foreground mb-4 line-clamp-2">{event.description}</p>
+                    <div className="text-muted-foreground mb-4 line-clamp-2 prose prose-sm max-w-none">
+                      <ReactMarkdown>{event.description}</ReactMarkdown>
+                    </div>
                     <div className="space-y-2 text-sm">
                       <div className="flex items-center gap-2 text-muted-foreground">
                         <Calendar className="w-4 h-4" />
