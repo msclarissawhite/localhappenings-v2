@@ -6,6 +6,7 @@ import { useUserAuth } from "@/hooks/useUserAuth";
 import { Calendar, Menu, X, User, Bookmark, LogIn, Settings } from "lucide-react";
 import { useState } from "react";
 import { SettingsPanel } from "./SettingsPanel";
+import { CollectionsNav } from "./CollectionsNav";
 
 export default function Header() {
   const { user, isAuthenticated } = useAuth();
@@ -35,6 +36,7 @@ export default function Header() {
             <Link href="/archive" className="text-foreground hover:text-primary font-medium transition-colors flex items-center">
               Archive
             </Link>
+            <CollectionsNav />
             {isUserAuthenticated && (
               <>
                 <Link href="/my-saved-events" className="text-foreground hover:text-primary font-medium transition-colors flex items-center gap-1">

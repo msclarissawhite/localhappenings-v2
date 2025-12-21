@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE IF NOT EXISTS `homepageBanners` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `title` varchar(255) NOT NULL,\n  `description` text NOT NULL,\n  `bgGradient` varchar(255) NOT NULL,\n  `textColor` varchar(100) NOT NULL,\n  `icon` varchar(50),\n  `eventTypeIds` json,\n  `provinces` json,\n  `municipalities` json,\n  `startDate` date,\n  `endDate` date,\n  `isActive` int NOT NULL DEFAULT 1,\n  `sortOrder` int NOT NULL DEFAULT 0,\n  `activeMonths` json,\n  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  CONSTRAINT `homepageBanners_id` PRIMARY KEY(`id`)\n)",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute CREATE TABLE IF NOT EXISTS `homepageBanners` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `title` varchar(255) NOT NULL,\n  `description` text NOT NULL,\n  `bgGradient` varchar(255) NOT NULL,\n  `textColor` varchar(100) NOT NULL,\n  `icon` varchar(50),\n  `eventTypeIds` json,\n  `provinces` json,\n  `municipalities` json,\n  `startDate` date,\n  `endDate` date,\n  `isActive` int NOT NULL DEFAULT 1,\n  `sortOrder` int NOT NULL DEFAULT 0,\n  `activeMonths` json,\n  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  CONSTRAINT `homepageBanners_id` PRIMARY KEY(`id`)\n)",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 273
+}

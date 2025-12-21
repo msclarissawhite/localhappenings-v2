@@ -37,7 +37,7 @@ export default function AdminDashboard() {
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [reviewAction, setReviewAction] = useState<"published" | "rejected" | "needs-clarification">("published");
   const [selectedEvents, setSelectedEvents] = useState<Set<number>>(new Set());
-  const [activeTab, setActiveTab] = useState<"events" | "pending-edits" | "closed-events" | "organizers" | "feature-requests" | "donations" | "feedback" | "analytics" | "collections">("events");
+  const [activeTab, setActiveTab] = useState<"events" | "pending-edits" | "closed-events" | "organizers" | "feature-requests" | "donations" | "feedback" | "analytics" | "collections" | "banners">("events");
   const [showBulkUpload, setShowBulkUpload] = useState(false);
   const [showBatchEdit, setShowBatchEdit] = useState(false);
 
@@ -388,6 +388,14 @@ export default function AdminDashboard() {
           >
             <Layers className="w-4 h-4 mr-2" />
             Collections
+          </Button>
+          <Button
+            variant={activeTab === "banners" ? "default" : "ghost"}
+            onClick={() => setActiveTab("banners")}
+            className="rounded-b-none"
+          >
+            <Layers className="w-4 h-4 mr-2" />
+            Banners
           </Button>
         </div>
 
@@ -1110,6 +1118,17 @@ export default function AdminDashboard() {
 
         {activeTab === "collections" && (
           <CollectionsManagement />
+        )}
+
+        {activeTab === "banners" && (
+          <div>
+            <p className="text-muted-foreground mb-4">
+              Manage homepage banners from the dedicated page:
+            </p>
+            <Link href="/admin/banners">
+              <Button>Go to Banner Management</Button>
+            </Link>
+          </div>
         )}
 
         {activeTab === "closed-events" && (

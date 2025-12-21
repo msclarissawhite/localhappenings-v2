@@ -14,6 +14,7 @@ import EventDetail from "./pages/EventDetail";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminFeedback from "./pages/AdminFeedback";
 import { AdminClaimAssignment } from "./pages/AdminClaimAssignment";
+import BannerManagement from "./pages/admin/BannerManagement";
 import AdminEditEvent from "./pages/AdminEditEvent";
 import ClaimEvents from "./pages/ClaimEvents";
 import Contact from "./pages/Contact";
@@ -32,6 +33,7 @@ import VerifyEmailChange from "./pages/VerifyEmailChange";
 import Donate from "./pages/Donate";
 import DonorWall from "./pages/DonorWall";
 import DonateThankYou from "./pages/DonateThankYou";
+import CollectionPage from "./pages/CollectionPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -49,6 +51,7 @@ function Router() {
           <Route path="/admin/feedback/:id" component={AdminFeedback} />
           <Route path="/admin/claim-assignment" component={AdminClaimAssignment} />
           <Route path="/admin/edit-event/:id" component={AdminEditEvent} />
+          <Route path="/admin/banners" component={BannerManagement} />
           <Route path="/claim/:token" component={ClaimEvents} />
           <Route path={"/analytics"} component={Analytics} />
       <Route path={"/archive"} component={Archive} />
@@ -68,6 +71,7 @@ function Router() {
       <Route path="/donate" component={Donate} />
       <Route path="/donor-wall" component={DonorWall} />
       <Route path="/donate/thank-you" component={DonateThankYou} />
+      <Route path="/collections/:slug" component={CollectionPage} />
       <Route path={"/404"} component={NotFound} />          <Route component={NotFound} />
         </Switch>
       </main>

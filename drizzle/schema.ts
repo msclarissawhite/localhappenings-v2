@@ -140,6 +140,34 @@ export const eventToEventTypes = mysqlTable("eventToEventTypes", {
 });
 
 /**
+ * Homepage banners for seasonal/promotional content
+ */
+export const homepageBanners = mysqlTable("homepageBanners", {
+  id: int("id").autoincrement().primaryKey(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+  bgGradient: varchar("bgGradient", { length: 255 }).notNull(), // Tailwind gradient classes like "from-red-500 to-green-600"
+  textColor: varchar("textColor", { length: 100 }).notNull(), // Tailwind text color like "text-white"
+  icon: varchar("icon", { length: 50 }), // Icon name from lucide-react
+  // Filter criteria to apply when clicked
+  eventTypeIds: json("eventTypeIds").$type<number[]>(),
+  provinces: json("provinces").$type<string[]>(),
+  municipalities: json("municipalities").$type<string[]>(),
+  startDate: date("startDate"),
+  endDate: date("endDate"),
+  // Display control
+  isActive: int("isActive").default(1).notNull(),
+  sortOrder: int("sortOrder").default(0).notNull(),
+  // Auto-activation based on month (optional)
+  activeMonths: json("activeMonths").$type<number[]>(), // Array of month numbers (0-11) for automatic activation
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type HomepageBanner = typeof homepageBanners.$inferSelect;
+export type InsertHomepageBanner = typeof homepageBanners.$inferInsert;
+
+/**
  * Curated collections for seasonal/themed event groupings
  */
 export const collections = mysqlTable("collections", {
@@ -155,6 +183,7 @@ export const collections = mysqlTable("collections", {
   startDate: date("startDate"), // Optional start date for seasonal collections
   endDate: date("endDate"), // Optional end date for seasonal collections
   isActive: int("isActive").default(1).notNull(),
+  isPublished: int("isPublished").default(0).notNull(), // Whether collection landing page is publicly visible
   sortOrder: int("sortOrder").default(0).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),

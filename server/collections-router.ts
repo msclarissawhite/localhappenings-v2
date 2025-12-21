@@ -101,6 +101,7 @@ export const collectionsRouter = router({
         startDate: input.startDate ? new Date(input.startDate) : undefined,
         endDate: input.endDate ? new Date(input.endDate) : undefined,
         isActive: 0, // Inactive by default
+        isPublished: 0, // Not published by default
       });
 
       return { success: true, id: result.insertId };
@@ -119,6 +120,7 @@ export const collectionsRouter = router({
         imageUrl: z.string().optional(),
         sortOrder: z.number().optional(),
         isActive: z.boolean().optional(),
+        isPublished: z.boolean().optional(),
         eventTypeIds: z.array(z.number()).optional(),
         provinces: z.array(z.string()).optional(),
         municipalities: z.array(z.string()).optional(),
@@ -153,6 +155,7 @@ export const collectionsRouter = router({
       if (input.imageUrl !== undefined) updateData.imageUrl = input.imageUrl;
       if (input.sortOrder !== undefined) updateData.sortOrder = input.sortOrder;
       if (input.isActive !== undefined) updateData.isActive = input.isActive ? 1 : 0;
+      if (input.isPublished !== undefined) updateData.isPublished = input.isPublished ? 1 : 0;
       if (input.eventTypeIds !== undefined) updateData.eventTypeIds = input.eventTypeIds;
       if (input.provinces !== undefined) updateData.provinces = input.provinces;
       if (input.municipalities !== undefined) updateData.municipalities = input.municipalities;
@@ -214,4 +217,48 @@ export const collectionsRouter = router({
 
       return { success: true, isActive: collection.isActive === 0 };
     }),
+
+  /**
+   * Toggle collection published status (admin only)
+   */
+  togglePublished: protectedProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      if (ctx.user.role !== "admin") {
+        throw new Error("Unauthorized: Admin access required");
+      }
+
+      const db = await getDb();
+      if (!db) throw new Error("Database not available");
+
+      const [collection] = await db
+        .select()
+        .from(collections)
+        .where(eq(collections.id, input.id));
+
+      if (!collection) {
+        throw new Error("Collection not found");
+      }
+
+      await db
+        .update(collections)
+        .set({ isPublished: collection.isPublished === 1 ? 0 : 1 })
+        .where(eq(collections.id, input.id));
+
+      return { success: true, isPublished: collection.isPublished === 0 };
+    }),
+
+  /**
+   * Get published collections for public display
+   */
+  listPublished: publicProcedure.query(async () => {
+    const db = await getDb();
+    if (!db) throw new Error("Database not available");
+
+    return await db
+      .select()
+      .from(collections)
+      .where(eq(collections.isPublished, 1))
+      .orderBy(collections.sortOrder);
+  }),
 });

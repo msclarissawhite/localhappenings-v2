@@ -54,7 +54,17 @@ export function CollectionsManagement() {
       utils.collections.listAll.invalidate();
     },
     onError: (error) => {
-      toast.error(error.message || "Failed to create collection");
+      toast.error(error.message || "Failed to toggle active status");
+    },
+  });
+
+  const togglePublishedMutation = trpc.collections.togglePublished.useMutation({
+    onSuccess: (data) => {
+      toast.success(data.isPublished ? "Collection published" : "Collection unpublished");
+      utils.collections.listAll.invalidate();
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to toggle published status");
     },
   });
 
@@ -213,6 +223,15 @@ export function CollectionsManagement() {
                         Inactive
                       </span>
                     )}
+                    {collection.isPublished === 1 ? (
+                      <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 text-xs font-medium rounded">
+                        Published
+                      </span>
+                    ) : (
+                      <span className="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 text-xs font-medium rounded">
+                        Draft
+                      </span>
+                    )}
                   </div>
                   <p className="text-sm text-muted-foreground mb-2">
                     <strong>URL:</strong> /collections/{collection.slug}
@@ -237,6 +256,18 @@ export function CollectionsManagement() {
                       <><EyeOff className="w-4 h-4 mr-1" /> Deactivate</>
                     ) : (
                       <><Eye className="w-4 h-4 mr-1" /> Activate</>
+                    )}
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant={collection.isPublished === 1 ? "outline" : "default"}
+                    onClick={() => togglePublishedMutation.mutate({ id: collection.id })}
+                    disabled={togglePublishedMutation.isPending}
+                  >
+                    {collection.isPublished === 1 ? (
+                      <><EyeOff className="w-4 h-4 mr-1" /> Unpublish</>
+                    ) : (
+                      <><Eye className="w-4 h-4 mr-1" /> Publish</>
                     )}
                   </Button>
                   <Button

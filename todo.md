@@ -1360,3 +1360,38 @@
 - [ ] Seasonal collection landing pages
 - [ ] Calendar view for events
 - [ ] Event templates UI
+
+## Homepage Banner Management & Collections Enhancement
+- [ ] Create homepage banners database table (title, description, bgColor, textColor, eventTypeIds, provinces, municipalities, startDate, endDate, isActive, sortOrder)
+- [ ] Build admin UI for managing homepage banners (create, edit, delete, activate/deactivate, reorder)
+- [ ] Update Home.tsx to fetch and display active banners from database
+- [ ] Add isPublished field to collections table for publish/hide control
+- [ ] Enhance Collections Management UI with publish/hide toggle and better instructions
+- [ ] Create public collection landing pages (/collections/:slug) that apply saved filter criteria
+- [ ] Add Collections link to footer or main navigation for discoverability
+- [ ] Update USER_MANUAL.md with banner management and collection publishing instructions
+- [ ] Test complete workflow: create banner → publish → display on homepage
+- [ ] Test complete workflow: create collection → set filters → publish → public page
+
+## Navigation Alignment Fix
+- [x] Fix desktop navigation alignment on homepage
+- [x] Ensure all nav links are properly aligned vertically
+
+## Homepage Banner Management
+- [x] Create database table for homepage banners
+- [x] Build banner router with CRUD operations
+- [x] Create admin UI for banner management
+- [x] Update SeasonalBanner component to fetch from database
+- [x] Add banner management link to admin navigation
+
+## Collections Enhancement
+- [x] Add isPublished field to collections table
+- [x] Update collections router with publish/hide controls
+- [x] Enhance Collections Management UI with publish toggle
+- [x] Add explicit instructions in user manual
+
+## Collections Navigation
+- [x] Create collection landing pages (/collections/:slug)
+- [x] Add Collections dropdown to main navigation
+- [x] Implement filter application from collections
+- [x] Add future-proofing for geographic expansion

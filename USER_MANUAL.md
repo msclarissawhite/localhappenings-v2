@@ -480,6 +480,90 @@ Admins receive email notifications for all status changes (approval, rejection, 
 
 Regularly review the Analytics dashboard to understand platform usage patterns. Key metrics to monitor include approval rate (target: 80%+ approval rate indicates clear submission guidelines), pending queue size (aim to keep pending events under 10 to ensure timely moderation), top cities (identifies where to focus community outreach), and submission trends (helps plan for busy periods like holiday seasons).
 
+### Homepage Banner Management
+
+The **Banners** tab in the admin dashboard allows you to create and manage seasonal promotional banners that appear on the homepage.
+
+#### Creating a New Banner
+
+1. Navigate to Admin Dashboard → Banners tab
+2. Click "Create Banner" button
+3. Fill in the banner details:
+   - **Title**: Short, catchy name (e.g., "Festive Holidays")
+   - **Description**: Brief description that appears on the banner
+   - **Background Gradient**: Choose from preset color combinations
+   - **Icon**: Select an icon that matches the theme
+   - **Event Types to Filter**: Select which event types to show when users click the banner
+   - **Start/End Date** (optional): Set specific date ranges for the banner
+   - **Active Months** (optional): Auto-activate during specific months (e.g., December for Christmas)
+   - **Sort Order**: Lower numbers appear first if multiple banners are active
+   - **Active**: Toggle to show/hide the banner on the homepage
+
+#### Managing Existing Banners
+
+- **Edit**: Click the edit icon to modify banner details
+- **Toggle Active**: Click the eye icon to show/hide the banner without deleting it
+- **Delete**: Remove the banner permanently
+- **Preview**: Each banner card shows a live preview of how it will appear on the homepage
+
+#### Banner Display Logic
+
+Only one banner displays at a time on the homepage (the one with the lowest sort order among active banners). Banners can be automatically activated/deactivated based on:
+- Date ranges (startDate/endDate)
+- Active months (e.g., show only in December)
+- Manual active/inactive toggle
+
+When users click a banner, they are redirected to Browse Events with the selected event type filters pre-applied.
+
+### Collections Management
+
+The **Collections** tab allows you to create curated landing pages for specific event themes or regions (e.g., "Christmas in Halifax", "Free Summer Activities").
+
+#### Creating a Collection
+
+1. Navigate to Admin Dashboard → Collections tab
+2. Click "Create Collection"
+3. Fill in the collection details:
+   - **Collection Name**: Descriptive title (e.g., "Christmas Events in Halifax")
+   - **URL Slug**: URL-friendly version (e.g., "christmas-halifax") - will create /collections/christmas-halifax
+   - **Description**: SEO-friendly description for the collection
+   - **Image URL** (optional): Hero image for the collection landing page
+   - **Sort Order**: Controls display order in navigation dropdown
+
+#### Publishing Collections
+
+Collections have two separate toggles:
+- **Active/Inactive**: Internal status for your workflow
+- **Published/Draft**: Controls public visibility
+
+Only **Published** collections appear in:
+- The Collections dropdown in the main navigation
+- Public collection landing pages (/collections/slug)
+
+This allows you to prepare collections in advance and publish them when ready.
+
+#### Collection Landing Pages
+
+Each published collection gets its own landing page at `/collections/your-slug` featuring:
+- Hero section with collection name, description, and optional image
+- Filtered list of events matching the collection criteria
+- "View All in Browse" button to see results in the full browse interface
+
+#### Managing Collections
+
+- **Activate/Deactivate**: Toggle internal active status
+- **Publish/Unpublish**: Control public visibility
+- **Edit**: Modify collection details and filters
+- **Delete**: Remove the collection permanently
+
+#### Best Practices for Collections
+
+- Use specific, descriptive names ("Christmas in Halifax" vs. "Holiday Events")
+- Add SEO-friendly descriptions to improve search visibility
+- Consider geographic specificity when expanding beyond Nova Scotia
+- Publish collections 2-4 weeks before the relevant season/event period
+- Unpublish outdated collections to keep navigation clean
+
 ### Organizer Feedback Analytics
 
 The **Organizers** tab in the admin dashboard provides comprehensive feedback analytics to help identify high-performing organizers and make informed verification decisions.
