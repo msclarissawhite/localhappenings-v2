@@ -5,8 +5,9 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { GripVertical, X, Plus, Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { GripVertical, X, Plus, Star, ChevronLeft, ChevronRight, Eye } from "lucide-react";
 import { format } from "date-fns";
 import type { Event } from "@shared/types";
 import {
@@ -32,9 +33,10 @@ interface SortableItemProps {
   item: any;
   onRemove: (id: number) => void;
   onUpdateSubtitle: (id: number, subtitle: string) => void;
+  isCurated: boolean;
 }
 
-function SortableItem({ id, item, onRemove, onUpdateSubtitle }: SortableItemProps) {
+function SortableItem({ id, item, onRemove, onUpdateSubtitle, isCurated }: SortableItemProps) {
   const [subtitle, setSubtitle] = useState(item.subtitle || "");
   const [isEditing, setIsEditing] = useState(false);
   
@@ -64,16 +66,25 @@ function SortableItem({ id, item, onRemove, onUpdateSubtitle }: SortableItemProp
       style={style}
       className="flex items-start gap-3 p-4 border rounded-lg bg-card"
     >
-      <div
-        {...attributes}
-        {...listeners}
-        className="cursor-grab active:cursor-grabbing mt-2"
-      >
-        <GripVertical className="w-5 h-5 text-muted-foreground" />
-      </div>
+      {isCurated && (
+        <div
+          {...attributes}
+          {...listeners}
+          className="cursor-grab active:cursor-grabbing mt-2"
+        >
+          <GripVertical className="w-5 h-5 text-muted-foreground" />
+        </div>
+      )}
 
       <div className="flex-1">
-        <div className="font-medium">{item.event.name}</div>
+        <div className="flex items-center gap-2 mb-1">
+          <div className="font-medium">{item.event.name}</div>
+          {isCurated ? (
+            <Badge variant="default" className="text-xs">Curated</Badge>
+          ) : (
+            <Badge variant="secondary" className="text-xs">Auto Fallback</Badge>
+          )}
+        </div>
         <div className="text-sm text-muted-foreground">
           {format(new Date(item.event.startDate), "MMM d, yyyy")} •{" "}
           {item.event.municipality}
@@ -98,7 +109,7 @@ function SortableItem({ id, item, onRemove, onUpdateSubtitle }: SortableItemProp
               </Button>
               <Button
                 size="sm"
-                variant="ghost"
+                variant="outline"
                 onClick={() => {
                   setSubtitle(item.subtitle || "");
                   setIsEditing(false);
@@ -109,20 +120,18 @@ function SortableItem({ id, item, onRemove, onUpdateSubtitle }: SortableItemProp
             </div>
           </div>
         ) : (
-          <div className="mt-1">
+          <div className="mt-2">
             {subtitle ? (
-              <div className="text-sm text-muted-foreground italic">
+              <div className="text-sm italic text-muted-foreground">
                 "{subtitle}"
               </div>
             ) : (
-              <div className="text-xs text-muted-foreground">
-                No subtitle
-              </div>
+              <div className="text-sm text-muted-foreground">No subtitle</div>
             )}
             <Button
               size="sm"
               variant="link"
-              className="h-auto p-0 text-xs"
+              className="p-0 h-auto mt-1"
               onClick={() => setIsEditing(true)}
             >
               {subtitle ? "Edit subtitle" : "Add subtitle"}
@@ -131,14 +140,16 @@ function SortableItem({ id, item, onRemove, onUpdateSubtitle }: SortableItemProp
         )}
       </div>
 
-      <Button
-        size="sm"
-        variant="ghost"
-        onClick={() => onRemove(id)}
-        className="text-destructive hover:text-destructive"
-      >
-        <X className="w-4 h-4" />
-      </Button>
+      {isCurated && (
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => onRemove(id)}
+          className="text-destructive hover:text-destructive"
+        >
+          <X className="w-4 h-4" />
+        </Button>
+      )}
     </div>
   );
 }
@@ -147,6 +158,9 @@ export function FeaturedEventsManagement() {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
+  const { data: carouselPreview = [], refetch: refetchPreview } =
+    trpc.homepageFeatured.getCarouselPreview.useQuery();
 
   const { data: featuredEvents = [], refetch: refetchFeatured } =
     trpc.homepageFeatured.listAll.useQuery();
@@ -171,6 +185,7 @@ export function FeaturedEventsManagement() {
     onSuccess: () => {
       toast.success("Event added to featured carousel");
       refetchFeatured();
+      refetchPreview();
       setSearchQuery("");
       setCurrentPage(1);
     },
@@ -183,6 +198,7 @@ export function FeaturedEventsManagement() {
     onSuccess: () => {
       toast.success("Event removed from featured carousel");
       refetchFeatured();
+      refetchPreview();
     },
     onError: (error: any) => {
       toast.error(error.message);
@@ -193,6 +209,7 @@ export function FeaturedEventsManagement() {
     onSuccess: () => {
       toast.success("Featured events reordered");
       refetchFeatured();
+      refetchPreview();
     },
     onError: (error: any) => {
       toast.error(error.message);
@@ -203,6 +220,7 @@ export function FeaturedEventsManagement() {
     onSuccess: () => {
       toast.success("Subtitle updated");
       refetchFeatured();
+      refetchPreview();
     },
     onError: (error: any) => {
       toast.error(error.message);
@@ -229,7 +247,7 @@ export function FeaturedEventsManagement() {
         id: item.id,
         sortOrder: idx,
       }));
-      
+
       reorderMutation.mutate({ items });
     }
   };
@@ -243,7 +261,7 @@ export function FeaturedEventsManagement() {
   };
 
   const handleUpdateSubtitle = (id: number, subtitle: string) => {
-    updateSubtitleMutation.mutate({ id, subtitle: subtitle || null });
+    updateSubtitleMutation.mutate({ id, subtitle });
   };
 
   return (
@@ -251,106 +269,61 @@ export function FeaturedEventsManagement() {
       <div>
         <h2 className="text-2xl font-bold mb-2">Featured Events Carousel</h2>
         <p className="text-muted-foreground">
-          Manually curate events to display on the homepage carousel. If no events are selected,
-          the carousel will automatically show the closest upcoming events. Drag to reorder.
+          Curate events to highlight on the homepage. Drag to reorder. If no events are curated, 
+          the carousel automatically shows the 5 closest upcoming events.
         </p>
       </div>
 
-      {/* Add Event Section */}
+      {/* Carousel Preview Section */}
       <Card className="p-6">
-        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <Plus className="w-5 h-5" />
-          Add Event to Carousel
-        </h3>
-        
-        <div className="space-y-4">
-          <div>
-            <Input
-              placeholder="Search events by name..."
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                setCurrentPage(1);
-              }}
-            />
-          </div>
-
-          {searchQuery.length > 2 && paginatedResults.length > 0 && (
-            <>
-              <div className="border rounded-lg divide-y max-h-96 overflow-y-auto">
-                {paginatedResults.map((event: Event) => (
-                  <div
-                    key={event.id}
-                    className="p-3 hover:bg-accent cursor-pointer flex items-center justify-between"
-                    onClick={() => handleAddEvent(event.id)}
-                  >
-                    <div>
-                      <div className="font-medium">{event.name}</div>
-                      <div className="text-sm text-muted-foreground">
-                        {format(new Date(event.startDate), "MMM d, yyyy")} • {event.municipality}
-                      </div>
-                    </div>
-                    <Button size="sm" variant="ghost">
-                      <Plus className="w-4 h-4" />
-                    </Button>
-                  </div>
-                ))}
-              </div>
-
-              {/* Pagination Controls */}
-              {totalPages > 1 && (
-                <div className="flex items-center justify-between">
-                  <div className="text-sm text-muted-foreground">
-                    Page {currentPage} of {totalPages} ({searchResults.length} results)
-                  </div>
-                  <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                      disabled={currentPage === 1}
-                    >
-                      <ChevronLeft className="w-4 h-4" />
-                      Previous
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                      disabled={currentPage === totalPages}
-                    >
-                      Next
-                      <ChevronRight className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </>
-          )}
-
-          {searchQuery.length > 2 && searchResults.length === 0 && (
-            <p className="text-sm text-muted-foreground text-center py-4">
-              No published events found
-            </p>
-          )}
+        <div className="flex items-center gap-2 mb-4">
+          <Eye className="w-5 h-5" />
+          <h3 className="text-lg font-semibold">Current Carousel Preview</h3>
+          <Badge variant="outline" className="ml-auto">
+            {carouselPreview.length} {carouselPreview.length === 1 ? 'event' : 'events'}
+          </Badge>
         </div>
-      </Card>
-
-      {/* Featured Events List with Drag and Drop */}
-      <Card className="p-6">
-        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <Star className="w-5 h-5" />
-          Current Featured Events ({featuredEvents.length})
-        </h3>
-
-        {featuredEvents.length === 0 ? (
+        <p className="text-sm text-muted-foreground mb-4">
+          This is what visitors currently see on the homepage carousel. 
+          {carouselPreview.some((e: any) => e.isFallback) && 
+            " Auto-fallback events are shown because you haven't curated any events yet."}
+        </p>
+        
+        {carouselPreview.length === 0 ? (
           <div className="text-center py-8 text-muted-foreground">
-            <p>No manually curated events.</p>
-            <p className="text-sm mt-2">
-              The homepage will automatically display the closest upcoming events.
-            </p>
+            No events to display. Add some published events to see them here.
           </div>
         ) : (
+          <div className="space-y-3">
+            {carouselPreview.map((item: any, index: number) => (
+              <SortableItem
+                key={item.id}
+                id={item.featuredId || item.id}
+                item={{ event: item, subtitle: item.subtitle }}
+                onRemove={handleRemoveEvent}
+                onUpdateSubtitle={(id, subtitle) => {
+                  if (item.featuredId) {
+                    handleUpdateSubtitle(item.featuredId, subtitle);
+                  } else {
+                    // For fallback events, add them to curated first
+                    addMutation.mutate({ eventId: item.id });
+                  }
+                }}
+                isCurated={item.isCurated}
+              />
+            ))}
+          </div>
+        )}
+      </Card>
+
+      {/* Current Featured Events (Curated) */}
+      {featuredEvents.length > 0 && (
+        <Card className="p-6">
+          <h3 className="text-lg font-semibold mb-4">Manage Curated Events</h3>
+          <p className="text-sm text-muted-foreground mb-4">
+            Drag events to reorder them. The order here determines the carousel display order.
+          </p>
+          
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
@@ -360,7 +333,7 @@ export function FeaturedEventsManagement() {
               items={featuredEvents.map((item: any) => item.id)}
               strategy={verticalListSortingStrategy}
             >
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {featuredEvents.map((item: any) => (
                   <SortableItem
                     key={item.id}
@@ -368,12 +341,110 @@ export function FeaturedEventsManagement() {
                     item={item}
                     onRemove={handleRemoveEvent}
                     onUpdateSubtitle={handleUpdateSubtitle}
+                    isCurated={true}
                   />
                 ))}
               </div>
             </SortableContext>
           </DndContext>
-        )}
+        </Card>
+      )}
+
+      {/* Search and Add Events */}
+      <Card className="p-6">
+        <h3 className="text-lg font-semibold mb-4">Add Events to Carousel</h3>
+        
+        <div className="space-y-4">
+          <div>
+            <Label htmlFor="search">Search Events</Label>
+            <Input
+              id="search"
+              placeholder="Type at least 3 characters to search..."
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setCurrentPage(1);
+              }}
+            />
+          </div>
+
+          {searchResults.length > 0 && (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <p className="text-sm text-muted-foreground">
+                  {searchResults.length} {searchResults.length === 1 ? 'result' : 'results'}
+                </p>
+                {totalPages > 1 && (
+                  <div className="flex items-center gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                      disabled={currentPage === 1}
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                    </Button>
+                    <span className="text-sm">
+                      Page {currentPage} of {totalPages}
+                    </span>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                      disabled={currentPage === totalPages}
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </Button>
+                  </div>
+                )}
+              </div>
+
+              {paginatedResults.map((event: Event) => {
+                const isAlreadyFeatured = featuredEvents.some(
+                  (f: any) => f.eventId === event.id
+                );
+
+                return (
+                  <div
+                    key={event.id}
+                    className="flex items-center justify-between p-4 border rounded-lg"
+                  >
+                    <div>
+                      <div className="font-medium">{event.name}</div>
+                      <div className="text-sm text-muted-foreground">
+                        {format(new Date(event.startDate), "MMM d, yyyy")} •{" "}
+                        {event.municipality}
+                      </div>
+                    </div>
+                    <Button
+                      size="sm"
+                      onClick={() => handleAddEvent(event.id)}
+                      disabled={isAlreadyFeatured || addMutation.isPending}
+                    >
+                      {isAlreadyFeatured ? (
+                        <>
+                          <Star className="w-4 h-4 mr-2 fill-current" />
+                          Featured
+                        </>
+                      ) : (
+                        <>
+                          <Plus className="w-4 h-4 mr-2" />
+                          Add
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {searchQuery.length > 0 && searchQuery.length <= 2 && (
+            <p className="text-sm text-muted-foreground text-center py-4">
+              Type at least 3 characters to search
+            </p>
+          )}
+        </div>
       </Card>
     </div>
   );

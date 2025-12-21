@@ -1433,3 +1433,9 @@
 - [x] Fix any raw markdown formatting in event descriptions (added Streamdown to carousel)
 - [x] Verify subtitle field is accessible in admin UI
 - [x] Document where subtitle field can be edited
+
+## Carousel Preview in Admin UI
+- [x] Add backend endpoint to get current carousel preview (curated + fallbacks)
+- [x] Update admin UI to show all carousel events with curated/fallback indicators
+- [x] Enable subtitle editing for fallback events
+- [x] Add visual distinction between curated and fallback events

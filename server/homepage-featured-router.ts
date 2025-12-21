@@ -55,6 +55,66 @@ export const homepageFeaturedRouter = router({
   }),
 
   /**
+   * Get carousel preview showing what's currently displayed (admin only)
+   * Returns curated events and fallbacks with indicators
+   */
+  getCarouselPreview: adminProcedure.query(async () => {
+    const db = await getDb();
+    if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+    
+    // Get manually curated events
+    const curated = await db
+      .select({
+        id: homepageFeaturedEvents.id,
+        eventId: homepageFeaturedEvents.eventId,
+        subtitle: homepageFeaturedEvents.subtitle,
+        sortOrder: homepageFeaturedEvents.sortOrder,
+        event: events,
+      })
+      .from(homepageFeaturedEvents)
+      .innerJoin(events, eq(homepageFeaturedEvents.eventId, events.id))
+      .where(
+        and(
+          eq(events.status, "published"),
+          gte(events.startDate, new Date())
+        )
+      )
+      .orderBy(asc(homepageFeaturedEvents.sortOrder));
+    
+    // If we have curated events, return them marked as curated
+    if (curated.length > 0) {
+      return curated.map(f => ({
+        ...f.event,
+        subtitle: f.subtitle,
+        featuredId: f.id,
+        isCurated: true,
+        isFallback: false,
+      }));
+    }
+    
+    // Otherwise, get fallback events (closest upcoming)
+    const fallbacks = await db
+      .select()
+      .from(events)
+      .where(
+        and(
+          eq(events.status, "published"),
+          gte(events.startDate, new Date())
+        )
+      )
+      .orderBy(asc(events.startDate))
+      .limit(5);
+    
+    return fallbacks.map(event => ({
+      ...event,
+      subtitle: null,
+      featuredId: null,
+      isCurated: false,
+      isFallback: true,
+    }));
+  }),
+
+  /**
    * Get all featured events (admin only)
    */
   listAll: adminProcedure.query(async () => {
