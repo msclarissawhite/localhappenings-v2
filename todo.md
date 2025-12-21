@@ -1113,3 +1113,8 @@
 ## Bug Fixes - Admin Edit Form
 - [x] Fix mutation error: "Invalid input: expected object, received undefined"
 - [x] Fix uncontrolled input warnings in admin edit form
+
+## Admin Edit Form Improvements
+- [x] Add success/error toast notifications
+- [x] Add "Save and Close" button
+- [x] Add change history log for tracking admin edits

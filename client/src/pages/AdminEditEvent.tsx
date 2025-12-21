@@ -29,12 +29,21 @@ export default function AdminEditEvent() {
     { enabled: !!id }
   );
 
+  const { data: editHistory = [] } = trpc.events.getEditHistory.useQuery(
+    { id: Number(id) },
+    { enabled: !!id }
+  );
+
+  const [shouldNavigateAfterSave, setShouldNavigateAfterSave] = useState(false);
+
   const updateMutation = trpc.events.update.useMutation({
     onSuccess: () => {
       toast.success("Event Updated", {
         description: "Changes saved successfully!",
       });
-      navigate(`/event/${id}`);
+      if (shouldNavigateAfterSave) {
+        navigate(`/event/${id}`);
+      }
     },
     onError: (error) => {
       toast.error("Error", {
@@ -632,9 +641,22 @@ export default function AdminEditEvent() {
         </Card>
 
         <div className="flex gap-4">
-          <Button type="submit" disabled={updateMutation.isPending}>
+          <Button 
+            type="submit" 
+            disabled={updateMutation.isPending}
+            onClick={() => setShouldNavigateAfterSave(false)}
+          >
             {updateMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Save Changes
+          </Button>
+          <Button 
+            type="submit" 
+            variant="secondary"
+            disabled={updateMutation.isPending}
+            onClick={() => setShouldNavigateAfterSave(true)}
+          >
+            {updateMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            Save and Close
           </Button>
           <Button
             type="button"
@@ -644,6 +666,44 @@ export default function AdminEditEvent() {
             Cancel
           </Button>
         </div>
+
+        {/* Edit History */}
+        {editHistory.length > 0 && (
+          <Card className="p-6 mt-6">
+            <h2 className="text-xl font-semibold mb-4">Edit History</h2>
+            <div className="space-y-4">
+              {editHistory.map((entry: any) => (
+                <div key={entry.id} className="border-l-2 border-primary pl-4 py-2">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-medium">{entry.adminName}</span>
+                    <span className="text-sm text-muted-foreground">
+                      {new Date(entry.editedAt).toLocaleString()}
+                    </span>
+                  </div>
+                  <div className="text-sm space-y-1">
+                    {(() => {
+                      try {
+                        const changes = typeof entry.changedFields === 'string' 
+                          ? JSON.parse(entry.changedFields) 
+                          : entry.changedFields;
+                        return Object.keys(changes).map((field) => (
+                          <div key={field} className="text-muted-foreground">
+                            <span className="font-medium">{field}:</span>{" "}
+                            <span className="line-through">{String(changes[field].old)}</span>
+                            {" → "}
+                            <span className="text-foreground">{String(changes[field].new)}</span>
+                          </div>
+                        ));
+                      } catch (e) {
+                        return <span className="text-muted-foreground">Changes recorded</span>;
+                      }
+                    })()}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+        )}
       </form>
     </div>
   );

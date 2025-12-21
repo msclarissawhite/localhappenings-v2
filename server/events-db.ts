@@ -415,3 +415,38 @@ export async function getAllEvents() {
 
   return await db.select().from(events).orderBy(desc(events.createdAt));
 }
+
+/**
+ * Log an admin edit to the event history
+ */
+export async function logEventEdit(eventId: number, adminId: number, adminName: string, changedFields: any) {
+  const db = await getDb();
+  if (!db) return;
+
+  const { eventEditHistory } = await import("../drizzle/schema");
+  
+  await db.insert(eventEditHistory).values({
+    eventId,
+    adminId,
+    adminName,
+    changedFields: JSON.stringify(changedFields),
+  });
+}
+
+/**
+ * Get edit history for an event
+ */
+export async function getEventEditHistory(eventId: number) {
+  const db = await getDb();
+  if (!db) return [];
+
+  const { eventEditHistory } = await import("../drizzle/schema");
+  
+  const history = await db
+    .select()
+    .from(eventEditHistory)
+    .where(eq(eventEditHistory.eventId, eventId))
+    .orderBy(desc(eventEditHistory.editedAt));
+
+  return history;
+}

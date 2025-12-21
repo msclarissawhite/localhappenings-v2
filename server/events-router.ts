@@ -255,6 +255,11 @@ export const eventsRouter = router({
     return await eventsDb.getEventById(input.id);
   }),
 
+  // Admin: Get edit history for an event
+  getEditHistory: adminProcedure.input(z.object({ id: z.number() })).query(async ({ input }) => {
+    return await eventsDb.getEventEditHistory(input.id);
+  }),
+
   // Admin: Get analytics
   analytics: adminProcedure.query(async () => {
     return await analyticsDb.getAnalytics();
@@ -492,7 +497,10 @@ export const eventsRouter = router({
         data: submitEventSchema.partial(),
       })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
+      // Get current event data before updating
+      const currentEvent = await eventsDb.getEventById(input.id);
+      
       const updateData: any = { ...input.data };
       
       // Convert booleans to integers
@@ -512,7 +520,33 @@ export const eventsRouter = router({
         updateData.accessibility = JSON.stringify(updateData.accessibility);
       }
 
+      // Track changed fields for history
+      const changedFields: any = {};
+      if (currentEvent) {
+        const eventData = currentEvent as any;
+        Object.keys(updateData).forEach(key => {
+          if (updateData[key] !== eventData[key]) {
+            changedFields[key] = {
+              old: eventData[key],
+              new: updateData[key],
+            };
+          }
+        });
+      }
+
+      // Update the event
       await eventsDb.updateEvent(input.id, updateData);
+      
+      // Log the edit to history if there were changes
+      if (Object.keys(changedFields).length > 0) {
+        await eventsDb.logEventEdit(
+          input.id,
+          ctx.user.id,
+          ctx.user.name || ctx.user.email || "Admin",
+          changedFields
+        );
+      }
+      
       return { success: true };
     }),
 

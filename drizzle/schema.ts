@@ -449,3 +449,18 @@ export const eventClaimTokens = mysqlTable("event_claim_tokens", {
 
 export type EventClaimToken = typeof eventClaimTokens.$inferSelect;
 export type InsertEventClaimToken = typeof eventClaimTokens.$inferInsert;
+
+/**
+ * Event Edit History - Tracks all admin edits to events for audit trail
+ */
+export const eventEditHistory = mysqlTable("eventEditHistory", {
+  id: int("id").autoincrement().primaryKey(),
+  eventId: int("eventId").notNull(), // References events.id
+  adminId: int("adminId").notNull(), // References users.id
+  adminName: text("adminName"), // Snapshot of admin name at time of edit
+  changedFields: json("changedFields"), // Object with field names and their old/new values
+  editedAt: timestamp("editedAt").defaultNow().notNull(),
+});
+
+export type EventEditHistory = typeof eventEditHistory.$inferSelect;
+export type InsertEventEditHistory = typeof eventEditHistory.$inferInsert;
