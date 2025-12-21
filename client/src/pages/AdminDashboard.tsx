@@ -51,9 +51,15 @@ export default function AdminDashboard() {
     { enabled: isAuthenticated && user?.role === "admin" && activeTab === "closed-events" }
   );
 
-  const { data: organizers, isLoading: organizersLoading, refetch: refetchOrganizers } = trpc.organizer.getAllOrganizers.useQuery(undefined, {
+  const { data: organizerStats, isLoading: organizerStatsLoading } = trpc.organizerAnalytics.getFeedbackStats.useQuery(undefined, {
     enabled: isAuthenticated && user?.role === "admin" && activeTab === "organizers",
   });
+  
+  const [expandedOrganizer, setExpandedOrganizer] = useState<string | null>(null);
+  const { data: organizerEvents } = trpc.organizerAnalytics.getEventFeedback.useQuery(
+    { organizerName: expandedOrganizer! },
+    { enabled: !!expandedOrganizer }
+  );
 
   const { data: featureRequests, isLoading: featureRequestsLoading, refetch: refetchFeatureRequests } = trpc.featureRequests.list.useQuery(undefined, {
     enabled: isAuthenticated && user?.role === "admin" && activeTab === "feature-requests",
@@ -660,53 +666,107 @@ export default function AdminDashboard() {
 
         {activeTab === "organizers" && (
           <>
-            {organizersLoading ? (
+            <div className="mb-4">
+              <h2 className="text-2xl font-bold mb-2">Organizer Feedback Analytics</h2>
+              <p className="text-muted-foreground">Track organizer performance based on attendee feedback across all their events.</p>
+            </div>
+
+            {organizerStatsLoading ? (
               <div className="text-center py-12">
-                <p className="text-muted-foreground">Loading organizers...</p>
+                <p className="text-muted-foreground">Loading organizer analytics...</p>
               </div>
-            ) : organizers && organizers.length > 0 ? (
+            ) : organizerStats && organizerStats.length > 0 ? (
               <div className="space-y-4">
-                {organizers.map((organizer) => (
-                  <Card key={organizer.id} className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h3 className="font-semibold text-lg">
-                            {organizer.name || organizer.email}
-                          </h3>
-                          {organizer.isVerified === 1 && (
-                            <Badge variant="default" className="gap-1 bg-emerald-600 hover:bg-emerald-700">
-                              <ShieldCheck className="w-3 h-3" />
-                              Verified
-                            </Badge>
+                {organizerStats.map((organizer) => (
+                  <Card key={organizer.organizerName} className="p-6">
+                    <div className="space-y-4">
+                      {/* Header */}
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="font-semibold text-lg">{organizer.organizerName}</h3>
+                            {organizer.organizerIsVerified === 1 && (
+                              <Badge variant="default" className="gap-1 bg-emerald-600 hover:bg-emerald-700">
+                                <ShieldCheck className="w-3 h-3" />
+                                Verified
+                              </Badge>
+                            )}
+                          </div>
+                          {organizer.organizerEmail && (
+                            <p className="text-sm text-muted-foreground">{organizer.organizerEmail}</p>
                           )}
                         </div>
-                        <p className="text-sm text-muted-foreground">{organizer.email}</p>
-                        {organizer.organizationName && (
-                          <p className="text-sm text-muted-foreground mt-1">
-                            Organization: {organizer.organizationName}
-                          </p>
-                        )}
-                        <p className="text-xs text-muted-foreground mt-2">
-                          Joined: {format(new Date(organizer.createdAt), "MMM d, yyyy")}
-                        </p>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setExpandedOrganizer(
+                            expandedOrganizer === organizer.organizerName ? null : organizer.organizerName
+                          )}
+                        >
+                          {expandedOrganizer === organizer.organizerName ? "Hide" : "View"} Events
+                        </Button>
                       </div>
-                      <div className="flex items-center gap-3">
-                        <Label htmlFor={`verify-${organizer.id}`} className="text-sm font-medium">
-                          Verified Organizer
-                        </Label>
-                        <Switch
-                          id={`verify-${organizer.id}`}
-                          checked={organizer.isVerified === 1}
-                          onCheckedChange={(checked) => {
-                            toggleVerificationMutation.mutate({
-                              organizerId: organizer.id,
-                              isVerified: checked,
-                            });
-                          }}
-                          disabled={toggleVerificationMutation.isPending}
-                        />
+
+                      {/* Stats Grid */}
+                      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        <div>
+                          <div className="text-2xl font-bold">{organizer.totalEvents}</div>
+                          <div className="text-xs text-muted-foreground">Total Events</div>
+                        </div>
+                        <div>
+                          <div className="text-2xl font-bold">{organizer.eventsWithFeedback}</div>
+                          <div className="text-xs text-muted-foreground">With Feedback</div>
+                        </div>
+                        <div>
+                          <div className="text-2xl font-bold">{organizer.totalFeedback}</div>
+                          <div className="text-xs text-muted-foreground">Total Responses</div>
+                        </div>
+                        <div>
+                          <div className="text-2xl font-bold">{organizer.totalAttended}</div>
+                          <div className="text-xs text-muted-foreground">Attended</div>
+                        </div>
+                        <div>
+                          <div className="text-2xl font-bold">
+                            {organizer.avgAccuracy ? organizer.avgAccuracy.toFixed(1) : "N/A"}
+                          </div>
+                          <div className="text-xs text-muted-foreground">Avg Accuracy</div>
+                        </div>
                       </div>
+
+                      {/* Expanded Event List */}
+                      {expandedOrganizer === organizer.organizerName && organizerEvents && (
+                        <div className="border-t pt-4 mt-4">
+                          <h4 className="font-medium mb-3">Event Breakdown</h4>
+                          <div className="space-y-2">
+                            {organizerEvents.map((event) => (
+                              <div key={event.eventId} className="flex items-center justify-between p-3 bg-muted/50 rounded">
+                                <div className="flex-1">
+                                  <div className="font-medium">{event.eventName}</div>
+                                  <div className="text-xs text-muted-foreground">
+                                    {format(new Date(event.eventDate), "MMM d, yyyy")}
+                                  </div>
+                                </div>
+                                <div className="flex items-center gap-4 text-sm">
+                                  <div className="text-center">
+                                    <div className="font-medium">{event.feedbackCount}</div>
+                                    <div className="text-xs text-muted-foreground">Responses</div>
+                                  </div>
+                                  <div className="text-center">
+                                    <div className="font-medium">{event.attendedCount}</div>
+                                    <div className="text-xs text-muted-foreground">Attended</div>
+                                  </div>
+                                  <div className="text-center">
+                                    <div className="font-medium">
+                                      {event.avgAccuracy ? event.avgAccuracy.toFixed(1) : "N/A"}
+                                    </div>
+                                    <div className="text-xs text-muted-foreground">Accuracy</div>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </Card>
                 ))}
@@ -714,8 +774,8 @@ export default function AdminDashboard() {
             ) : (
               <Card className="p-12 text-center">
                 <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-semibold mb-2">No organizers yet</h3>
-                <p className="text-muted-foreground">Organizers will appear here once they submit events.</p>
+                <h3 className="text-lg font-semibold mb-2">No feedback data yet</h3>
+                <p className="text-muted-foreground">Organizer analytics will appear here once events receive feedback.</p>
               </Card>
             )}
           </>

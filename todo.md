@@ -1051,3 +1051,10 @@
 - [x] Add feedback comments to ClickUp task as comments
 - [x] Test feedback submission and ClickUp synchronization
 - [ ] Add feedback metrics to organizer dashboard (accuracy rating) - Future enhancement
+
+## Organizer Feedback Analytics
+- [x] Create database query to aggregate feedback by organizer
+- [x] Add organizer feedback stats API endpoint
+- [x] Build organizer analytics section in admin dashboard
+- [x] Show organizer list with aggregate stats (avg accuracy, total events, total feedback)
+- [x] Add expandable view to see individual event breakdown per organizer
