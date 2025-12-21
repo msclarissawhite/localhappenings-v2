@@ -1644,3 +1644,11 @@
 - [x] Add logic to show "Start time: 7:00 PM" when no end time exists
 - [x] Update all event card locations (BrowseEvents, FeaturedEventsCarousel, EventDetail)
 - [ ] Test with events that have only start time
+
+
+## Bug: Admin Edit Removing Tags
+- [x] Investigate why tags are removed when editing events
+- [x] Check form initialization in AdminEditEvent (missing fields found)
+- [x] Add missing fields to form initialization (shortDuration, dropIn, canReenter, timeOfDay, lat/lng)
+- [x] Add missing Boolean conversions to update payload
+- [ ] Test editing event without losing tags

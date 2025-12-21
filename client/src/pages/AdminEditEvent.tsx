@@ -141,6 +141,12 @@ export default function AdminEditEvent() {
         seniors: event.seniors || false,
         isIndoor: event.isIndoor || false,
         isOutdoor: event.isOutdoor || false,
+        shortDuration: event.shortDuration || false,
+        dropIn: event.dropIn || false,
+        canReenter: event.canReenter || false,
+        timeOfDay: event.timeOfDay || "",
+        latitude: event.latitude || null,
+        longitude: event.longitude || null,
         accessibility: (() => {
           let parsed: any = {};
           if (typeof event.accessibility === 'string' && event.accessibility) {
@@ -241,6 +247,9 @@ export default function AdminEditEvent() {
       kids: Boolean(formData.kids),
       teens: Boolean(formData.teens),
       seniors: Boolean(formData.seniors),
+      shortDuration: Boolean(formData.shortDuration),
+      dropIn: Boolean(formData.dropIn),
+      canReenter: Boolean(formData.canReenter),
       displayOrganizerInfo: Boolean(formData.displayOrganizerInfo),
       eventTypeIds: formData.eventTypeIds || [], // Explicitly include event type IDs
     };
