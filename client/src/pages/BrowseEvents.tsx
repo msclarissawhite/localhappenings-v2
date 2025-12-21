@@ -13,6 +13,7 @@ import {
   Baby, Volume2, Eye, Heart, Accessibility, Star
 } from "lucide-react";
 import { format } from "date-fns";
+import { Pagination } from "@/components/Pagination";
 import type { EventFilters } from "@shared/types";
 import { CANADIAN_PROVINCES, CANADIAN_CITIES } from "@shared/canadian-locations";
 import {
@@ -22,14 +23,20 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
+const EVENTS_PER_PAGE = 20;
+
 export default function BrowseEvents() {
+  const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState<EventFilters>({
-    limit: 20,
+    limit: EVENTS_PER_PAGE,
     offset: 0,
   });
   const [showFilters, setShowFilters] = useState(false);
 
-  const { data: events, isLoading } = trpc.events.list.useQuery(filters);
+  const { data: eventsData, isLoading } = trpc.events.list.useQuery(filters);
+  const events = eventsData?.events || [];
+  const totalCount = eventsData?.total || 0;
+  const totalPages = Math.ceil(totalCount / EVENTS_PER_PAGE);
   
   // Get feedback stats for all events
   const eventIds = events?.map(e => e.id) || [];
@@ -49,14 +56,22 @@ export default function BrowseEvents() {
 
   const updateFilter = (key: keyof EventFilters, value: any) => {
     setFilters((prev) => ({ ...prev, [key]: value, offset: 0 }));
+    setCurrentPage(1);
   };
 
   const toggleFilter = (key: keyof EventFilters) => {
     setFilters((prev) => ({ ...prev, [key]: !prev[key], offset: 0 }));
+    setCurrentPage(1);
   };
 
   const clearFilters = () => {
-    setFilters({ limit: 20, offset: 0 });
+    setFilters({ limit: EVENTS_PER_PAGE, offset: 0 });
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    setFilters((prev) => ({ ...prev, offset: (page - 1) * EVENTS_PER_PAGE }));
   };
 
   const activeFilterCount = useMemo(() => {
@@ -843,6 +858,17 @@ export default function BrowseEvents() {
                 </Card>
               </Link>
             ))}
+          </div>
+        )}
+
+        {/* Pagination */}
+        {!isLoading && events && events.length > 0 && (
+          <div className="mt-8">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
           </div>
         )}
       </div>

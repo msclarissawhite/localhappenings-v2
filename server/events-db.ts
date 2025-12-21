@@ -217,7 +217,19 @@ export async function getEvents(filters: EventFilters = {}) {
     });
   }
 
-  return results;
+  // Get total count (without limit/offset for pagination)
+  const totalQuery = db
+    .select({ count: sql<number>`count(*)` })
+    .from(events)
+    .leftJoin(organizers, eq(events.organizerId, organizers.id))
+    .where(and(...conditions));
+  
+  const [{ count: total }] = await totalQuery;
+
+  return {
+    events: results,
+    total: Number(total) || 0,
+  };
 }
 
 /**
