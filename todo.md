@@ -1395,3 +1395,6 @@
 - [x] Add Collections dropdown to main navigation
 - [x] Implement filter application from collections
 - [x] Add future-proofing for geographic expansion
+
+## Bug Fix - Missing Link Import
+- [x] Add missing Link import to AdminDashboard component
