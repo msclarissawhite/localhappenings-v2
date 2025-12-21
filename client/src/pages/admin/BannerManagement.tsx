@@ -23,6 +23,24 @@ import {
 import { Plus, Edit, Trash2, Eye, EyeOff, GripVertical } from "lucide-react";
 import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { SortableBannerItem } from "@/components/SortableBannerItem";
 
 const MONTH_NAMES = [
   "January", "February", "March", "April", "May", "June",
@@ -31,6 +49,7 @@ const MONTH_NAMES = [
 
 const GRADIENT_PRESETS = [
   { name: "Festive (Red to Green)", value: "from-red-500 to-green-600", textColor: "text-white" },
+  { name: "New Year (Purple to Blue)", value: "from-purple-600 to-blue-500", textColor: "text-white" },
   { name: "Halloween (Orange to Purple)", value: "from-orange-500 to-purple-600", textColor: "text-white" },
   { name: "Easter (Pink to Purple)", value: "from-pink-400 to-purple-500", textColor: "text-white" },
   { name: "Summer (Yellow to Orange)", value: "from-yellow-400 to-orange-500", textColor: "text-white" },
@@ -87,6 +106,44 @@ export default function BannerManagement() {
       refetch();
     },
   });
+  
+  const reorderMutation = trpc.banner.reorder.useMutation({
+    onSuccess: () => {
+      toast("Banner order updated");
+      refetch();
+    },
+    onError: (error: any) => {
+      toast.error(error.message);
+    },
+  });
+  
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+  
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    
+    if (!over || active.id === over.id) {
+      return;
+    }
+    
+    const oldIndex = banners.findIndex((b: any) => b.id === active.id);
+    const newIndex = banners.findIndex((b: any) => b.id === over.id);
+    
+    const reorderedBanners = arrayMove(banners, oldIndex, newIndex);
+    
+    // Update sort order for all banners
+    const updates = reorderedBanners.map((banner: any, index: number) => ({
+      id: banner.id,
+      sortOrder: index,
+    }));
+    
+    reorderMutation.mutate(updates);
+  };
   
   const [formData, setFormData] = useState({
     title: "",
@@ -188,74 +245,28 @@ export default function BannerManagement() {
             <p className="text-muted-foreground">No banners created yet. Click "Create Banner" to get started.</p>
           </Card>
         ) : (
-          banners.map((banner: any) => (
-            <Card key={banner.id} className="p-6">
-              <div className="flex items-start gap-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-3">
-                    <h3 className="text-lg font-semibold">{banner.title}</h3>
-                    {banner.isActive === 1 ? (
-                      <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded">Active</span>
-                    ) : (
-                      <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">Inactive</span>
-                    )}
-                  </div>
-                  <p className="text-sm text-muted-foreground mb-3">{banner.description}</p>
-                  
-                  {/* Preview */}
-                  <div className={`bg-gradient-to-r ${banner.bgGradient} p-4 rounded-lg mb-3`}>
-                    <div className={`${banner.textColor} font-medium`}>
-                      {banner.title}
-                    </div>
-                    <div className={`${banner.textColor} text-sm opacity-90`}>
-                      {banner.description}
-                    </div>
-                  </div>
-                  
-                  <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-                    {banner.eventTypeIds && banner.eventTypeIds.length > 0 && (
-                      <span>Filters: {banner.eventTypeIds.length} event type(s)</span>
-                    )}
-                    {banner.startDate && banner.endDate && (
-                      <span>
-                        Dates: {new Date(banner.startDate).toLocaleDateString()} - {new Date(banner.endDate).toLocaleDateString()}
-                      </span>
-                    )}
-                    {banner.activeMonths && banner.activeMonths.length > 0 && (
-                      <span>
-                        Months: {banner.activeMonths.map((m: number) => MONTH_NAMES[m]).join(", ")}
-                      </span>
-                    )}
-                    <span>Sort Order: {banner.sortOrder}</span>
-                  </div>
-                </div>
-                
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleToggleActive(banner.id, banner.isActive)}
-                  >
-                    {banner.isActive === 1 ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleEdit(banner)}
-                  >
-                    <Edit className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleDelete(banner.id)}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </div>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={banners.map((b: any) => b.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              <div className="space-y-4">
+                {banners.map((banner: any) => (
+                  <SortableBannerItem
+                    key={banner.id}
+                    banner={banner}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                    onToggleActive={handleToggleActive}
+                  />
+                ))}
               </div>
-            </Card>
-          ))
+            </SortableContext>
+          </DndContext>
         )}
       </div>
       

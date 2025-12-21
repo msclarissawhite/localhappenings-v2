@@ -1459,3 +1459,12 @@
 - [x] Update SeasonalBanner component to show all active banners
 - [x] Add responsive grid layout for multiple banners
 - [x] Test with both Festive Holidays and New Year's banners visible
+
+
+## Banner Management Improvements
+- [x] Add sortOrder field to homepageBanners table
+- [x] Add drag-and-drop reordering to BannerManagement component
+- [x] Update SeasonalBanner to respect sortOrder when displaying banners
+- [x] Add purple-to-blue gradient to gradient dropdown options
+- [x] Update New Year's banner with higher contrast gradient
+- [x] Test banner reordering functionality
