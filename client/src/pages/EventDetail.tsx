@@ -402,34 +402,47 @@ export default function EventDetail() {
               <div className="flex items-start gap-3">
                 <Calendar className="w-5 h-5 mt-0.5 text-muted-foreground" />
                 <div>
-                  <p className="font-medium">
-                    {event.endDate && event.endDate !== event.startDate
-                      ? `${format(new Date(event.startDate), "MMMM d")} - ${format(new Date(event.endDate), "MMMM d, yyyy")}`
-                      : format(new Date(event.startDate), "EEEE, MMMM d, yyyy")}
-                  </p>
-                  {event.endDate && event.endDate !== event.startDate && (() => {
+                  {(() => {
                     const start = new Date(event.startDate);
-                    const end = new Date(event.endDate);
-                    // Only show multi-day if events span different calendar days (ignoring time)
+                    const end = event.endDate ? new Date(event.endDate) : null;
                     const startDay = new Date(start.getFullYear(), start.getMonth(), start.getDate());
-                    const endDay = new Date(end.getFullYear(), end.getMonth(), end.getDate());
-                    const daysDiff = Math.round((endDay.getTime() - startDay.getTime()) / (1000 * 60 * 60 * 24));
+                    const endDay = end ? new Date(end.getFullYear(), end.getMonth(), end.getDate()) : null;
+                    const isSameDay = endDay && startDay.getTime() === endDay.getTime();
+                    const daysDiff = endDay ? Math.round((endDay.getTime() - startDay.getTime()) / (1000 * 60 * 60 * 24)) : 0;
                     
-                    if (daysDiff > 0) {
-                      return (
-                        <p className="text-sm text-muted-foreground">
-                          {daysDiff + 1}-day event
+                    return (
+                      <>
+                        <p className="font-medium">
+                          {!isSameDay && end && daysDiff > 0
+                            ? `${format(start, "MMMM d")} - ${format(end, "MMMM d, yyyy")}`
+                            : format(start, "EEEE, MMMM d, yyyy")}
                         </p>
-                      );
-                    }
-                    return null;
+                        {/* Show time range for same-day events or single time for multi-day */}
+                        {isSameDay && end && (
+                          <p className="text-sm text-muted-foreground">
+                            {format(start, "h:mm a")} - {format(end, "h:mm a")}
+                          </p>
+                        )}
+                        {!isSameDay && daysDiff > 0 && (
+                          <>
+                            <p className="text-sm text-muted-foreground">
+                              {daysDiff + 1}-day event
+                            </p>
+                            {event.timeOfDay && (
+                              <p className="text-sm text-muted-foreground capitalize">
+                                {event.timeOfDay.replace("-", " ")} (each day)
+                              </p>
+                            )}
+                          </>
+                        )}
+                        {!end && event.timeOfDay && (
+                          <p className="text-sm text-muted-foreground capitalize">
+                            {event.timeOfDay.replace("-", " ")}
+                          </p>
+                        )}
+                      </>
+                    );
                   })()}
-                  {event.timeOfDay && (
-                    <p className="text-sm text-muted-foreground capitalize">
-                      {event.timeOfDay.replace("-", " ")}
-                      {event.endDate && event.endDate !== event.startDate && " (each day)"}
-                    </p>
-                  )}
                   {event.isRecurring && event.recurrenceType && (
                     <p className="text-sm text-muted-foreground capitalize">
                       Recurring: {event.recurrenceType.replace("-", " ")}

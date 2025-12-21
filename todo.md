@@ -1493,3 +1493,9 @@
 ## Admin Edit Event Form Bug
 - [x] Fix data type validation errors (dates, numbers, booleans)
 - [x] Transform form data to correct types before submission
+
+
+## Event Date/Time Display Improvements
+- [x] Show date once when start and end dates are the same day
+- [x] Display start and end times on event detail page
+- [x] Display start and end times on event preview cards

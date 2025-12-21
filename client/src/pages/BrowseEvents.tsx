@@ -844,22 +844,34 @@ export default function BrowseEvents() {
                       <div className="flex items-center gap-2">
                         <Calendar className="w-4 h-4" />
                         <span>
-                          {event.endDate && event.endDate !== event.startDate
-                            ? `${format(new Date(event.startDate), "MMM d")} - ${format(new Date(event.endDate), "MMM d, yyyy")}`
-                            : format(new Date(event.startDate), "MMM d, yyyy")}
-                          {event.timeOfDay && ` • ${event.timeOfDay.charAt(0).toUpperCase() + event.timeOfDay.slice(1).replace("-", " ")}`}
-                          {event.endDate && event.endDate !== event.startDate && (() => {
+                          {(() => {
                             const start = new Date(event.startDate);
-                            const end = new Date(event.endDate);
-                            // Only show multi-day if events span different calendar days (ignoring time)
+                            const end = event.endDate ? new Date(event.endDate) : null;
                             const startDay = new Date(start.getFullYear(), start.getMonth(), start.getDate());
-                            const endDay = new Date(end.getFullYear(), end.getMonth(), end.getDate());
-                            const daysDiff = Math.round((endDay.getTime() - startDay.getTime()) / (1000 * 60 * 60 * 24));
+                            const endDay = end ? new Date(end.getFullYear(), end.getMonth(), end.getDate()) : null;
+                            const isSameDay = endDay && startDay.getTime() === endDay.getTime();
+                            const daysDiff = endDay ? Math.round((endDay.getTime() - startDay.getTime()) / (1000 * 60 * 60 * 24)) : 0;
                             
-                            if (daysDiff > 0) {
-                              return ` • ${daysDiff + 1}-day event`;
+                            let dateStr = '';
+                            if (!isSameDay && end && daysDiff > 0) {
+                              dateStr = `${format(start, "MMM d")} - ${format(end, "MMM d, yyyy")}`;
+                            } else {
+                              dateStr = format(start, "MMM d, yyyy");
                             }
-                            return '';
+                            
+                            // Add time range for same-day events
+                            if (isSameDay && end) {
+                              dateStr += ` • ${format(start, "h:mm a")} - ${format(end, "h:mm a")}`;
+                            } else if (event.timeOfDay) {
+                              dateStr += ` • ${event.timeOfDay.charAt(0).toUpperCase() + event.timeOfDay.slice(1).replace("-", " ")}`;
+                            }
+                            
+                            // Add multi-day indicator
+                            if (!isSameDay && daysDiff > 0) {
+                              dateStr += ` • ${daysDiff + 1}-day event`;
+                            }
+                            
+                            return dateStr;
                           })()}
                         </span>
                       </div>
