@@ -1156,3 +1156,14 @@
 - [x] Add BackToTop button to Archive page
 - [x] Add BackToTop button to Saved Events page
 - [x] Test BackToTop functionality on all pages
+
+## Feedback Moderation Admin Interface
+- [x] Create backend tRPC procedures for feedback management (list, delete, bulk delete, export)
+- [x] Create FeedbackModeration component with filtering UI
+- [x] Add event context display (event name, date, organizer)
+- [x] Implement delete and bulk delete actions
+- [x] Add filters (by event, date range, rating)
+- [x] Display author information for accountability
+- [x] Implement CSV export functionality
+- [x] Add Feedback Moderation tab to admin dashboard
+- [x] Test feedback moderation with sample data

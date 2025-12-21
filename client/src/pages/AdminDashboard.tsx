@@ -24,6 +24,7 @@ import { EventEditDialog } from "@/components/EventEditDialog";
 import { DuplicateWarning } from "@/components/DuplicateWarning";
 import { BulkUpload } from "@/components/BulkUpload";
 import { BatchEditModal } from "@/components/BatchEditModal";
+import FeedbackModeration from "@/pages/admin/FeedbackModeration";
 
 export default function AdminDashboard() {
   const { user, isAuthenticated } = useAuth();
@@ -34,7 +35,7 @@ export default function AdminDashboard() {
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [reviewAction, setReviewAction] = useState<"published" | "rejected" | "needs-clarification">("published");
   const [selectedEvents, setSelectedEvents] = useState<Set<number>>(new Set());
-  const [activeTab, setActiveTab] = useState<"events" | "pending-edits" | "closed-events" | "organizers" | "feature-requests" | "donations">("events");
+  const [activeTab, setActiveTab] = useState<"events" | "pending-edits" | "closed-events" | "organizers" | "feature-requests" | "donations" | "feedback">("events");
   const [showBulkUpload, setShowBulkUpload] = useState(false);
   const [showBatchEdit, setShowBatchEdit] = useState(false);
 
@@ -357,6 +358,14 @@ export default function AdminDashboard() {
           >
             <DollarSign className="w-4 h-4 mr-2" />
             Donations
+          </Button>
+          <Button
+            variant={activeTab === "feedback" ? "default" : "ghost"}
+            onClick={() => setActiveTab("feedback")}
+            className="rounded-b-none"
+          >
+            <MessageSquare className="w-4 h-4 mr-2" />
+            Feedback
           </Button>
         </div>
 
@@ -1067,6 +1076,10 @@ export default function AdminDashboard() {
               </Card>
             )}
           </>
+        )}
+
+        {activeTab === "feedback" && (
+          <FeedbackModeration />
         )}
 
         {activeTab === "closed-events" && (

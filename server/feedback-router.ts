@@ -168,4 +168,210 @@ export const feedbackRouter = router({
 
       return { success: true };
     }),
+
+  /**
+   * List all feedback with event context and filtering (admin moderation)
+   */
+  listAll: protectedProcedure
+    .input(
+      z.object({
+        eventId: z.number().optional(),
+        startDate: z.string().optional(),
+        endDate: z.string().optional(),
+        minRating: z.number().min(1).max(5).optional(),
+        maxRating: z.number().min(1).max(5).optional(),
+      }).optional()
+    )
+    .query(async ({ ctx, input }) => {
+      if (ctx.user.role !== "admin") {
+        throw new Error("Unauthorized: Admin access required");
+      }
+
+      const db = await getDb();
+      if (!db) throw new Error("Database not available");
+
+      let query = sql`
+        SELECT 
+          f.id,
+          f.eventId,
+          e.name as eventName,
+          e.startDate as eventDate,
+          e.organizerName,
+          f.attended,
+          f.accuracyRating,
+          f.helpfulDetails,
+          f.inaccurateDetails,
+          f.comments,
+          f.submittedAt
+        FROM eventFeedback f
+        LEFT JOIN events e ON f.eventId = e.id
+        WHERE 1=1
+      `;
+
+      const conditions = [];
+      if (input?.eventId) {
+        conditions.push(sql`f.eventId = ${input.eventId}`);
+      }
+      if (input?.startDate) {
+        conditions.push(sql`f.submittedAt >= ${new Date(input.startDate)}`);
+      }
+      if (input?.endDate) {
+        conditions.push(sql`f.submittedAt <= ${new Date(input.endDate)}`);
+      }
+      if (input?.minRating !== undefined) {
+        conditions.push(sql`f.accuracyRating >= ${input.minRating}`);
+      }
+      if (input?.maxRating !== undefined) {
+        conditions.push(sql`f.accuracyRating <= ${input.maxRating}`);
+      }
+
+      if (conditions.length > 0) {
+        query = sql`${query} AND ${sql.join(conditions, sql` AND `)}`;
+      }
+
+      query = sql`${query} ORDER BY f.submittedAt DESC`;
+
+      const result: any = await db.execute(query);
+      return (result[0] || []) as any[];
+    }),
+
+  /**
+   * Bulk delete multiple feedback entries (admin only)
+   */
+  bulkDelete: protectedProcedure
+    .input(z.object({ ids: z.array(z.number()) }))
+    .mutation(async ({ ctx, input }) => {
+      if (ctx.user.role !== "admin") {
+        throw new Error("Unauthorized: Admin access required");
+      }
+
+      if (input.ids.length === 0) {
+        return { success: true, count: 0 };
+      }
+
+      const db = await getDb();
+      if (!db) throw new Error("Database not available");
+
+      // Use drizzle's inArray for type-safe bulk delete
+      const { inArray } = await import('drizzle-orm');
+      await db.delete(eventFeedback).where(inArray(eventFeedback.id, input.ids));
+
+      return { success: true, count: input.ids.length };
+    }),
+
+  /**
+   * Get overall feedback statistics (admin only)
+   */
+  overallStats: protectedProcedure.query(async ({ ctx }) => {
+    if (ctx.user.role !== "admin") {
+      throw new Error("Unauthorized: Admin access required");
+    }
+
+    const db = await getDb();
+    if (!db) throw new Error("Database not available");
+
+    const result = await db
+      .select({
+        total: sql<number>`count(*)`,
+        attended: sql<number>`sum(case when ${eventFeedback.attended} = 1 then 1 else 0 end)`,
+        avgRating: sql<number>`avg(${eventFeedback.accuracyRating})`,
+      })
+      .from(eventFeedback);
+
+    return result[0] || { total: 0, attended: 0, avgRating: null };
+  }),
+
+  /**
+   * Export feedback data as CSV (admin only)
+   */
+  exportCSV: protectedProcedure
+    .input(
+      z.object({
+        eventId: z.number().optional(),
+        startDate: z.string().optional(),
+        endDate: z.string().optional(),
+      }).optional()
+    )
+    .query(async ({ ctx, input }) => {
+      if (ctx.user.role !== "admin") {
+        throw new Error("Unauthorized: Admin access required");
+      }
+
+      const db = await getDb();
+      if (!db) throw new Error("Database not available");
+
+      let query = sql`
+        SELECT 
+          f.id,
+          f.eventId,
+          e.name as eventName,
+          e.startDate as eventDate,
+          e.organizerName,
+          f.attended,
+          f.accuracyRating,
+          f.helpfulDetails,
+          f.inaccurateDetails,
+          f.comments,
+          f.submittedAt
+        FROM eventFeedback f
+        LEFT JOIN events e ON f.eventId = e.id
+        WHERE 1=1
+      `;
+
+      const conditions = [];
+      if (input?.eventId) {
+        conditions.push(sql`f.eventId = ${input.eventId}`);
+      }
+      if (input?.startDate) {
+        conditions.push(sql`f.submittedAt >= ${new Date(input.startDate)}`);
+      }
+      if (input?.endDate) {
+        conditions.push(sql`f.submittedAt <= ${new Date(input.endDate)}`);
+      }
+
+      if (conditions.length > 0) {
+        query = sql`${query} AND ${sql.join(conditions, sql` AND `)}`;
+      }
+
+      query = sql`${query} ORDER BY f.submittedAt DESC`;
+
+      const result: any = await db.execute(query);
+      const feedbackList = (result[0] || []) as any[];
+
+      // Convert to CSV format
+      const headers = [
+        "Feedback ID",
+        "Event ID",
+        "Event Name",
+        "Event Date",
+        "Organizer",
+        "Attended",
+        "Rating",
+        "Helpful Details",
+        "Inaccurate Details",
+        "Comments",
+        "Submitted At",
+      ];
+
+      const rows = feedbackList.map((f: any) => [
+        f.id,
+        f.eventId,
+        f.eventName || "Unknown",
+        f.eventDate ? new Date(f.eventDate).toISOString().split("T")[0] : "",
+        f.organizerName || "Unknown",
+        f.attended === 1 ? "Yes" : "No",
+        f.accuracyRating || "N/A",
+        f.helpfulDetails || "[]",
+        f.inaccurateDetails || "[]",
+        (f.comments || "").replace(/"/g, '""'), // Escape quotes
+        f.submittedAt ? new Date(f.submittedAt).toISOString() : "",
+      ]);
+
+      const csvContent = [
+        headers.map((h) => `"${h}"`).join(","),
+        ...rows.map((row) => row.map((cell) => `"${cell}"`).join(",")),
+      ].join("\n");
+
+      return { csv: csvContent };
+    }),
 });
