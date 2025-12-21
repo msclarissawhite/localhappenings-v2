@@ -1,6 +1,6 @@
 # Local Happenings - User Manual & Testing Guide
 
-**Version:** 3.5  
+**Version:** 3.6  
 **Last Updated:** December 21, 2025  
 **Author:** Manus AI
 
@@ -580,10 +580,17 @@ This ensures your homepage always has compelling content, even if you haven't ha
 #### Managing Featured Events
 
 1. Navigate to **Admin Dashboard → Featured Events tab**
-2. Use the search bar to find events by name
-3. Click on an event from search results to add it to the carousel
-4. Reorder events using the up/down arrow buttons
-5. Remove events by clicking the X button
+2. **View Current Carousel**: The "Current Carousel Preview" section shows exactly what visitors see on the homepage, including both manually curated events and automatic fallbacks
+3. **Add Events**: Use the search bar to find events by name (type at least 3 characters), then click "Add" to include them in the carousel
+4. **Reorder Events**: Drag and drop events in the "Manage Curated Events" section to change their display order
+5. **Add Subtitles**: Click "Add subtitle" or "Edit subtitle" on any event to provide contextual information (e.g., "Perfect for families with young children"). Subtitles appear in italic below event titles on the carousel
+6. **Remove Events**: Click the X button on curated events to remove them from the carousel
+
+**Carousel Preview Features:**
+- **Curated vs. Fallback Indicators**: Events are labeled with "Curated" (your selections) or "Auto Fallback" (system-generated) badges
+- **Subtitle Editing for Fallbacks**: You can add subtitles to auto-fallback events, which automatically promotes them to curated status
+- **Real-time Preview**: See exactly what visitors see on the homepage before they visit
+- **Pagination**: Search results show 10 events per page for easier browsing
 
 **Best Practices:**
 
@@ -599,6 +606,8 @@ This ensures your homepage always has compelling content, even if you haven't ha
 - **Manual navigation**: Users can click prev/next arrows or dot indicators
 - **Responsive design**: Shows 1 event on mobile, 2 on tablets, 3 on desktop
 - **Click to view**: Each event card links to the full event details page
+- **Subtitle Display**: Optional subtitles appear in italic below event titles for additional context
+- **Image Fallback**: Events without images show placeholder graphics
 
 #### When to Use Manual Curation vs. Automatic
 
