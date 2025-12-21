@@ -105,9 +105,9 @@ export function SavedLocationForm({ locationId, organizerId }: SavedLocationForm
     };
 
     if (locationId) {
-      updateMutation.mutate({ id: locationId, ...locationData });
+      updateMutation.mutate({ id: locationId, ...locationData } as any);
     } else {
-      createMutation.mutate(locationData);
+      createMutation.mutate(locationData as any);
     }
   };
 

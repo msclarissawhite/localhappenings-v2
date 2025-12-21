@@ -24,7 +24,7 @@ export default function MySavedEvents() {
   
   // Use whichever authentication is active
   const user = organizerAuth.user || userAuth.user;
-  const authLoading = organizerAuth.isLoading || userAuth.isLoading;
+  const authLoading = organizerAuth.loading || userAuth.isLoading;
   const isOrganizer = organizerAuth.isAuthenticated;
   
   const utils = trpc.useUtils();

@@ -6,10 +6,13 @@ interface AccessibilityDisplayProps {
 }
 
 export function AccessibilityDisplay({ accessibility }: AccessibilityDisplayProps) {
-  // Helper function to check if a value is meaningful (not null, undefined, empty, or "unknown")
+  // Helper function to check if a value is meaningful (not null, undefined, empty, "unknown", or "not-relevant")
   const hasValue = (value: any): boolean => {
     if (value === null || value === undefined || value === "") return false;
-    if (typeof value === "string" && value.toLowerCase() === "unknown") return false;
+    if (typeof value === "string") {
+      const lower = value.toLowerCase();
+      if (lower === "unknown" || lower === "not-relevant" || lower === "not relevant") return false;
+    }
     return true;
   };
 
@@ -20,7 +23,7 @@ export function AccessibilityDisplay({ accessibility }: AccessibilityDisplayProp
     // Handle boolean values
     if (typeof value === "boolean") {
       return (
-        <div className="flex justify-between items-center py-2 border-b border-border last:border-0">
+        <div key={label} className="flex justify-between items-center py-2 border-b border-border last:border-0">
           <span className="text-sm text-muted-foreground">{label}</span>
           <span className="text-sm font-medium">{value ? "Yes" : "No"}</span>
         </div>
@@ -29,42 +32,22 @@ export function AccessibilityDisplay({ accessibility }: AccessibilityDisplayProp
     
     // Handle string values
     return (
-      <div className="flex justify-between items-center py-2 border-b border-border last:border-0">
+      <div key={label} className="flex justify-between items-center py-2 border-b border-border last:border-0">
         <span className="text-sm text-muted-foreground">{label}</span>
-        <span className="text-sm font-medium">{value}</span>
+        <span className="text-sm font-medium capitalize">{value}</span>
       </div>
     );
   };
 
-  // Check if mobility section has any data
-  const hasMobilityData = 
-    hasValue(accessibility.wheelchairAccessible) ||
-    hasValue(accessibility.accessibleParking) ||
-    hasValue(accessibility.accessibleRestrooms) ||
-    hasValue(accessibility.elevatorAccess) ||
-    hasValue(accessibility.stepFreeAccess);
-
-  // Check if sensory section has any data
-  const hasSensoryData =
-    hasValue(accessibility.quietSpaceAvailable) ||
-    hasValue(accessibility.lowLighting) ||
-    hasValue(accessibility.noFlashingLights) ||
-    hasValue(accessibility.noiseLevelInfo);
-
-  // Check if family section has any data
-  const hasFamilyData =
-    hasValue(accessibility.strollerAccessible) ||
-    hasValue(accessibility.nursingRoomAvailable) ||
-    hasValue(accessibility.changingTableAvailable);
-
-  // Check if transportation section has any data
-  const hasTransportationData =
-    hasValue(accessibility.publicTransitAccess) ||
-    hasValue(accessibility.parkingAvailable) ||
-    hasValue(accessibility.bikeRackAvailable);
+  // Check if each category has any data
+  const hasCaregiverData = accessibility.caregiver && Object.values(accessibility.caregiver).some(hasValue);
+  const hasMobilityData = accessibility.mobility && Object.values(accessibility.mobility).some(hasValue);
+  const hasSensoryData = accessibility.sensory && Object.values(accessibility.sensory).some(hasValue);
+  const hasCognitiveData = accessibility.cognitive && Object.values(accessibility.cognitive).some(hasValue);
+  const hasSocialData = accessibility.social && Object.values(accessibility.social).some(hasValue);
 
   // If no accessibility data at all, show a message
-  const hasAnyData = hasMobilityData || hasSensoryData || hasFamilyData || hasTransportationData;
+  const hasAnyData = hasCaregiverData || hasMobilityData || hasSensoryData || hasCognitiveData || hasSocialData;
 
   if (!hasAnyData) {
     return (
@@ -76,49 +59,87 @@ export function AccessibilityDisplay({ accessibility }: AccessibilityDisplayProp
 
   return (
     <div className="space-y-4">
+      {hasCaregiverData && (
+        <div>
+          <h4 className="font-medium mb-2">Caregiver & Infant</h4>
+          <div className="space-y-1">
+            {renderField("Change tables present", accessibility.caregiver?.changeTablesPresent)}
+            {renderField("Change table locations", accessibility.caregiver?.changeTableLocations)}
+            {renderField("Nursing/breastfeeding friendly", accessibility.caregiver?.nursingFriendly)}
+            {renderField("Private feeding area", accessibility.caregiver?.privateFeedingArea)}
+            {renderField("Bottle warming", accessibility.caregiver?.bottleWarming)}
+            {renderField("High chairs", accessibility.caregiver?.highChairs)}
+            {renderField("Stroller space", accessibility.caregiver?.strollerSpace)}
+            {renderField("Bag/coat storage", accessibility.caregiver?.storage)}
+          </div>
+        </div>
+      )}
+
       {hasMobilityData && (
         <div>
           <h4 className="font-medium mb-2">Mobility & Physical Access</h4>
           <div className="space-y-1">
-            {renderField("Wheelchair Accessible", accessibility.wheelchairAccessible)}
-            {renderField("Accessible Parking", accessibility.accessibleParking)}
-            {renderField("Accessible Restrooms", accessibility.accessibleRestrooms)}
-            {renderField("Elevator Access", accessibility.elevatorAccess)}
-            {renderField("Step-Free Access", accessibility.stepFreeAccess)}
+            {renderField("Stroller accessible", accessibility.mobility?.strollerAccessible)}
+            {renderField("Wheelchair accessible entrance", accessibility.mobility?.wheelchairEntrance)}
+            {renderField("Step-free entry", accessibility.mobility?.stepFreeEntry)}
+            {renderField("Elevator access", accessibility.mobility?.elevatorAccess)}
+            {renderField("Wide doorways", accessibility.mobility?.wideDoorways)}
+            {renderField("Accessible seating", accessibility.mobility?.accessibleSeating)}
+            {renderField("Accessible washrooms", accessibility.mobility?.accessibleWashrooms)}
+            {renderField("Accessible parking", accessibility.mobility?.accessibleParking)}
+            {renderField("Terrain type", accessibility.mobility?.terrainInfo)}
+            {renderField("Parking distance", accessibility.mobility?.parkingDistance)}
+            {renderField("Bus stop distance", accessibility.mobility?.busStopDistance)}
+            {renderField("Accessible sidewalks", accessibility.mobility?.accessibleSidewalks)}
+            {renderField("Bike racks", accessibility.mobility?.bikeRacks)}
+            {renderField("Covered bike parking", accessibility.mobility?.coveredBikeParking)}
           </div>
         </div>
       )}
 
       {hasSensoryData && (
         <div>
-          <h4 className="font-medium mb-2">Sensory Considerations</h4>
+          <h4 className="font-medium mb-2">Sensory & Neurodivergent</h4>
           <div className="space-y-1">
-            {renderField("Quiet Space Available", accessibility.quietSpaceAvailable)}
-            {renderField("Low Lighting", accessibility.lowLighting)}
-            {renderField("No Flashing Lights", accessibility.noFlashingLights)}
-            {renderField("Noise Level", accessibility.noiseLevelInfo)}
+            {renderField("Sensory-friendly environment", accessibility.sensory?.sensoryFriendly)}
+            {renderField("Quiet environment", accessibility.sensory?.quietEnvironment)}
+            {renderField("Loud noises expected", accessibility.sensory?.loudNoises)}
+            {renderField("Flashing lights", accessibility.sensory?.flashingLights)}
+            {renderField("Crowd level", accessibility.sensory?.crowdLevel)}
+            {renderField("Quiet room available", accessibility.sensory?.quietRoom)}
+            {renderField("Sensory-friendly time slot", accessibility.sensory?.sensoryTimeSlot)}
+            {renderField("Predictable schedule", accessibility.sensory?.predictableSchedule)}
           </div>
         </div>
       )}
 
-      {hasFamilyData && (
+      {hasCognitiveData && (
         <div>
-          <h4 className="font-medium mb-2">Family Amenities</h4>
+          <h4 className="font-medium mb-2">Cognitive & Communication</h4>
           <div className="space-y-1">
-            {renderField("Stroller Accessible", accessibility.strollerAccessible)}
-            {renderField("Nursing Room Available", accessibility.nursingRoomAvailable)}
-            {renderField("Changing Table Available", accessibility.changingTableAvailable)}
+            {renderField("Clear signage", accessibility.cognitive?.clearSignage)}
+            {renderField("Simple instructions", accessibility.cognitive?.simpleInstructions)}
+            {renderField("Written materials", accessibility.cognitive?.writtenMaterials)}
+            {renderField("ASL interpretation", accessibility.cognitive?.aslInterpretation)}
+            {renderField("Live captions", accessibility.cognitive?.liveCaptions)}
+            {renderField("Multilingual support", accessibility.cognitive?.multilingualSupport)}
           </div>
         </div>
       )}
 
-      {hasTransportationData && (
+      {hasSocialData && (
         <div>
-          <h4 className="font-medium mb-2">Transportation & Parking</h4>
+          <h4 className="font-medium mb-2">Social & Emotional</h4>
           <div className="space-y-1">
-            {renderField("Public Transit Access", accessibility.publicTransitAccess)}
-            {renderField("Parking Available", accessibility.parkingAvailable)}
-            {renderField("Bike Rack Available", accessibility.bikeRackAvailable)}
+            {renderField("Service animals welcome", accessibility.social?.serviceAnimalsWelcome)}
+            {renderField("Flexible participation", accessibility.social?.flexibleParticipation)}
+            {renderField("Gender-neutral washrooms", accessibility.social?.genderNeutralWashrooms)}
+            {renderField("LGBTQIA+ friendly", accessibility.social?.lgbtqiaFriendly)}
+            {renderField("Mask-friendly", accessibility.social?.maskFriendly)}
+            {renderField("Scent-free", accessibility.social?.scentFree)}
+            {renderField("Alcohol-free", accessibility.social?.alcoholFree)}
+            {renderField("Substance-free", accessibility.social?.substanceFree)}
+            {renderField("Trauma-informed approach", accessibility.social?.traumaInformed)}
           </div>
         </div>
       )}

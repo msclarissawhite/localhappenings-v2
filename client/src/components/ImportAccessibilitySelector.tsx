@@ -21,9 +21,9 @@ export function ImportAccessibilitySelector({ organizerId, onImport }: ImportAcc
   });
 
   // Filter to only this organizer's events
-  const organizerEvents = events?.events?.filter(
+  const organizerEvents = (events && 'events' in events) ? events.events.filter(
     (item: any) => item.event?.organizerId === organizerId
-  ).map((item: any) => item.event) || [];
+  ).map((item: any) => item.event) : [];
 
   const handleImport = () => {
     if (!selectedEventId) return;

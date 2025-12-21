@@ -50,7 +50,7 @@ export function AccessibilityFields({ accessibility, updateAccessibility }: Acce
         </Tooltip>
       </div>
       <RadioGroup
-        value={accessibility[category]?.[field] || "unknown"}
+        value={(accessibility as any)[category]?.[field] || "unknown"}
         onValueChange={(value: AccessibilityValue) =>
           updateAccessibility(category, field, value)
         }

@@ -1342,7 +1342,12 @@
 
 ## Critical Fixes - December 21, 2025
 - [x] Fix "No pending edit found for this event" error in admin dashboard
-- [x] Fix TypeScript errors (28+ errors in codebase) - KNOWN ISSUE: Type mismatches from accessibility restructuring, non-blocking, code works at runtime
+- [ ] Fix TypeScript errors (123 errors in codebase)
+  - [x] Fix accessibility type mismatches in EventDetail.tsx (59 errors fixed with optional chaining)
+  - [x] Fix accessibility type mismatches in AccessibilityDisplay.tsx (30 errors fixed by rewriting to new schema)
+  - [ ] Fix form resolver type errors in SubmitEvent.tsx
+  - [ ] Fix SavedLocationForm accessibility type errors
+  - [ ] Verify clean TypeScript build with 0 errors
 - [x] Stripe sandbox claim (if accepting donations at launch)
 
 ## Incomplete Public-Facing Features

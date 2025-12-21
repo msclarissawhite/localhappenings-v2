@@ -53,8 +53,8 @@ export default function BrowseEvents() {
   const recordTagClick = trpc.events.recordTagClick.useMutation();
 
   const { data: eventsData, isLoading } = trpc.events.list.useQuery(filters);
-  const allEvents = eventsData?.events || [];
-  const totalCount = eventsData?.total || 0;
+  const allEvents = (eventsData && 'events' in eventsData) ? eventsData.events : [];
+  const totalCount = (eventsData && 'total' in eventsData) ? eventsData.total : 0;
   
   // Load all event types for filtering
   const { data: eventTypes = [] } = trpc.events.getEventTypes.useQuery();
@@ -64,7 +64,7 @@ export default function BrowseEvents() {
   const hasMore = displayedCount < allEvents.length;
   
   // Get feedback stats for all events
-  const eventIds = events?.map(e => e.id) || [];
+  const eventIds = events?.map((e: any) => e.id) || [];
   const { data: feedbackStats } = trpc.events.getFeedbackStats.useQuery(
     { eventIds },
     { enabled: eventIds.length > 0 }
@@ -825,7 +825,7 @@ export default function BrowseEvents() {
           )
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {events.map((event) => (
+              {events.map((event: any) => (
               <Link key={event.id} href={`/event/${event.id}`}>
                 <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer overflow-hidden">
                   {event.imageUrl && (
@@ -907,7 +907,7 @@ export default function BrowseEvents() {
                         <div className="flex items-center gap-2 pt-2 border-t">
                           <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
                           <span className="text-sm font-medium">
-                            {feedbackStats[event.id].avgAccuracy.toFixed(1)}/5
+                            {feedbackStats[event.id]?.avgAccuracy?.toFixed(1) || '0'}/5
                           </span>
                           <span className="text-xs text-muted-foreground">
                             ({feedbackStats[event.id].attendedCount} attendee{feedbackStats[event.id].attendedCount !== 1 ? 's' : ''})

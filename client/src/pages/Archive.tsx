@@ -24,12 +24,12 @@ export default function Archive() {
 
   // Filter to only show past events within the cutoff period
   const filteredEvents = useMemo(() => {
-    if (!eventsData?.events) return [];
+    if (!eventsData || !('events' in eventsData)) return [];
     
     const now = new Date();
     const cutoffDate = subMonths(now, ARCHIVE_CUTOFF_MONTHS);
     
-    return eventsData.events.filter((event) => {
+    return eventsData.events.filter((event: any) => {
       const eventDate = new Date(event.startDate);
       // Event must be in the past but not older than cutoff
       return eventDate < now && eventDate >= cutoffDate;
@@ -87,7 +87,7 @@ export default function Archive() {
           <div className="space-y-6">
             <p className="text-sm text-muted-foreground">{filteredEvents.length} archived events</p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {displayedEvents.map((event) => (
+              {displayedEvents.map((event: any) => (
                 <Link key={event.id} href={`/event/${event.id}`}>
                   <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer h-full flex flex-col opacity-75">
                     {event.imageUrl && (

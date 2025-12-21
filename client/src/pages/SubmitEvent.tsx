@@ -156,7 +156,7 @@ export default function SubmitEvent() {
     setValue,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(submitEventSchema),
+    resolver: zodResolver(submitEventSchema) as any,
     defaultValues: {
       isFree: false,
       kidsFree: false,
@@ -172,6 +172,7 @@ export default function SubmitEvent() {
       isOutdoor: false,
       isRecurring: false,
       recurrenceInterval: 1,
+      displayOrganizerInfo: false,
     },
   });
 

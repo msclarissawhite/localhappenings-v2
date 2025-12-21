@@ -99,7 +99,7 @@ export function BulkUpload({ onComplete }: { onComplete: () => void }) {
       }
 
       // Parse CSV content
-      const csvText = await csvFile.async("text");
+      const csvText = await (csvFile as any).async("text");
       await parseCSVContent(csvText, imageFiles);
     } catch (error) {
       console.error("ZIP parsing error:", error);

@@ -111,7 +111,7 @@ export default function AdminDashboard() {
   const toggleVerificationMutation = trpc.organizer.toggleVerification.useMutation({
     onSuccess: () => {
       toast.success("Organizer verification status updated");
-      refetchOrganizers();
+      utils.organizerAnalytics.getFeedbackStats.invalidate();
     },
     onError: (error) => {
       toast.error(error.message || "Failed to update verification status");
@@ -212,7 +212,7 @@ export default function AdminDashboard() {
 
   const handleExportAll = async () => {
     try {
-      const result = await trpc.events.exportAll.query();
+      const result = await utils.client.events.exportAll.query();
       
       // Create blob and download
       const blob = new Blob([result.csv], { type: "text/csv" });
@@ -288,7 +288,7 @@ export default function AdminDashboard() {
     
     try {
       for (const eventId of Array.from(selectedEvents)) {
-        await trpc.events.delete.mutate({ id: eventId });
+        await utils.client.events.delete.mutate({ id: eventId });
       }
       setSelectedEvents(new Set());
       toast.success(`Deleted ${selectedEvents.size} event(s)`);
@@ -327,9 +327,9 @@ export default function AdminDashboard() {
           >
             <AlertCircle className="w-4 h-4 mr-2" />
             Pending Edits
-            {eventsWithPendingEdits && eventsWithPendingEdits.length > 0 && (
+            {eventsWithPendingEdits && 'events' in eventsWithPendingEdits && eventsWithPendingEdits.events.length > 0 && (
               <Badge variant="destructive" className="ml-2">
-                {eventsWithPendingEdits.length}
+                {eventsWithPendingEdits.events.length}
               </Badge>
             )}
           </Button>
@@ -602,9 +602,9 @@ export default function AdminDashboard() {
               <div className="text-center py-12">
                 <p className="text-muted-foreground">Loading events with pending edits...</p>
               </div>
-            ) : eventsWithPendingEdits && eventsWithPendingEdits.length > 0 ? (
+            ) : eventsWithPendingEdits && 'events' in eventsWithPendingEdits && eventsWithPendingEdits.events.length > 0 ? (
               <div className="space-y-6">
-                {eventsWithPendingEdits.map((event) => {
+                {eventsWithPendingEdits.events.map((event) => {
                   const pendingEdit = event.pendingEditData ? JSON.parse(event.pendingEditData) : null;
                   
                   return (
@@ -976,7 +976,7 @@ export default function AdminDashboard() {
                           value={request.status}
                           onChange={(e) => {
                             updateFeatureRequestStatusMutation.mutate({
-                              featureRequestId: request.id,
+                              id: request.id,
                               status: e.target.value as any,
                             });
                           }}
@@ -1118,9 +1118,9 @@ export default function AdminDashboard() {
               <div className="text-center py-12">
                 <p className="text-muted-foreground">Loading closed events...</p>
               </div>
-            ) : closedEvents && closedEvents.length > 0 ? (
+            ) : closedEvents && 'events' in closedEvents && closedEvents.events.length > 0 ? (
               <div className="space-y-4">
-                {closedEvents.map((event) => (
+                {closedEvents.events.map((event) => (
                   <Card key={event.id} className="p-6">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">

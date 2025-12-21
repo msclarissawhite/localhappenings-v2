@@ -35,7 +35,7 @@ export default function EditEvent() {
 
   const updateMutation = trpc.organizer.updateEvent.useMutation({
     onSuccess: (result) => {
-      if (result.requiresReview) {
+      if (result.requiresApproval) {
         toast.success("Edit Submitted", {
           description: "Your changes are pending admin approval. The original event remains published.",
         });
@@ -308,7 +308,7 @@ export default function EditEvent() {
         <AccessibilityFields
           accessibility={formData.accessibility}
           updateAccessibility={(category, field, value) => {
-            setFormData(prev => ({
+            setFormData((prev: any) => ({
               ...prev,
               accessibility: {
                 ...prev.accessibility,

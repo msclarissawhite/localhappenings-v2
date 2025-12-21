@@ -514,81 +514,81 @@ export default function EventDetail() {
 
               <div className="space-y-6">
                 {/* Caregiver & Infant - ALL 8 FIELDS */}
-                {accessibility.caregiver && Object.keys(accessibility.caregiver).length > 0 && (
+                {accessibility?.caregiver && Object.keys(accessibility.caregiver).length > 0 && (
                   <div>
                     <h3 className="font-semibold mb-3 text-lg">Caregiver & Infant</h3>
                     <div className="space-y-1">
                       <AccessibilityRow 
                         label="Change tables present" 
-                        value={accessibility.caregiver.changeTablesPresent} 
+                        value={accessibility?.caregiver?.changeTablesPresent} 
                       />
                       <AccessibilityRow 
                         label="Change table locations" 
-                        value={accessibility.caregiver.changeTableLocations} 
+                        value={accessibility?.caregiver?.changeTableLocations} 
                       />
                       <AccessibilityRow 
                         label="Nursing/breastfeeding friendly" 
-                        value={accessibility.caregiver.nursingFriendly} 
+                        value={accessibility?.caregiver?.nursingFriendly} 
                       />
                       <AccessibilityRow 
                         label="Private feeding area available" 
-                        value={accessibility.caregiver.privateFeedingArea} 
+                        value={accessibility?.caregiver?.privateFeedingArea} 
                       />
                       <AccessibilityRow 
                         label="Bottle warming available" 
-                        value={accessibility.caregiver.bottleWarming} 
+                        value={accessibility?.caregiver?.bottleWarming} 
                       />
                       <AccessibilityRow 
                         label="High chairs available" 
-                        value={accessibility.caregiver.highChairs} 
+                        value={accessibility?.caregiver?.highChairs} 
                       />
                       <AccessibilityRow 
                         label="Space for strollers" 
-                        value={accessibility.caregiver.strollerSpace} 
+                        value={accessibility?.caregiver?.strollerSpace} 
                       />
                       <AccessibilityRow 
                         label="Bag/coat storage" 
-                        value={accessibility.caregiver.storage} 
+                        value={accessibility?.caregiver?.storage} 
                       />
                     </div>
                   </div>
                 )}
 
                 {/* Mobility & Physical Access - ALL 10 FIELDS */}
-                {accessibility.mobility && Object.keys(accessibility.mobility).length > 0 && (
+                {accessibility?.mobility && Object.keys(accessibility.mobility).length > 0 && (
                   <div>
                     <h3 className="font-semibold mb-3 text-lg">Mobility & Physical Access</h3>
                     <div className="space-y-1">
                       <AccessibilityRow 
                         label="Stroller accessible" 
-                        value={accessibility.mobility.strollerAccessible} 
+                        value={accessibility?.mobility?.strollerAccessible} 
                       />
                       <AccessibilityRow 
                         label="Wheelchair accessible entrance" 
-                        value={accessibility.mobility.wheelchairEntrance} 
+                        value={accessibility?.mobility?.wheelchairEntrance} 
                       />
                       <AccessibilityRow 
                         label="Step-free entry" 
-                        value={accessibility.mobility.stepFreeEntry} 
+                        value={accessibility?.mobility?.stepFreeEntry} 
                       />
                       <AccessibilityRow 
                         label="Elevator access" 
-                        value={accessibility.mobility.elevatorAccess} 
+                        value={accessibility?.mobility?.elevatorAccess} 
                       />
                       <AccessibilityRow 
                         label="Wide doorways (32 inches+ clear width)" 
-                        value={accessibility.mobility.wideDoorways} 
+                        value={accessibility?.mobility?.wideDoorways} 
                       />
                       <AccessibilityRow 
                         label="Accessible seating" 
-                        value={accessibility.mobility.accessibleSeating} 
+                        value={accessibility?.mobility?.accessibleSeating} 
                       />
                       <AccessibilityRow 
                         label="Accessible washrooms" 
-                        value={accessibility.mobility.accessibleWashrooms} 
+                        value={accessibility?.mobility?.accessibleWashrooms} 
                       />
                       {/* Washroom Availability - Array Display */}
-                      {accessibility.mobility.washroomAvailability && Array.isArray(accessibility.mobility.washroomAvailability) && accessibility.mobility.washroomAvailability.length > 0 && (
+                      {accessibility?.mobility?.washroomAvailability && Array.isArray(accessibility.mobility.washroomAvailability) && accessibility.mobility.washroomAvailability.length > 0 && (
                         <div className="flex justify-between items-center py-2 border-b last:border-0">
                           <span className="text-sm">Washroom availability</span>
                           <span className="text-sm font-medium text-right">
@@ -611,150 +611,150 @@ export default function EventDetail() {
                       )}
                       <AccessibilityRow 
                         label="Accessible parking nearby" 
-                        value={accessibility.mobility.accessibleParking} 
+                        value={accessibility?.mobility?.accessibleParking} 
                       />
                       <AccessibilityRow 
                         label="Terrain type" 
-                        value={accessibility.mobility.terrainInfo} 
+                        value={accessibility?.mobility?.terrainInfo} 
                       />
                       <AccessibilityRow 
                         label="Parking distance to entrance" 
-                        value={accessibility.mobility.parkingDistance} 
+                        value={accessibility?.mobility?.parkingDistance} 
                       />
                       <AccessibilityRow 
                         label="Bus stop distance to entrance" 
-                        value={accessibility.mobility.busStopDistance} 
+                        value={accessibility?.mobility?.busStopDistance} 
                       />
                       <AccessibilityRow 
                         label="Accessible sidewalks to venue" 
-                        value={accessibility.mobility.accessibleSidewalks} 
+                        value={accessibility?.mobility?.accessibleSidewalks} 
                       />
                       <AccessibilityRow 
                         label="Bike racks available" 
-                        value={accessibility.mobility.bikeRacks} 
+                        value={accessibility?.mobility?.bikeRacks} 
                       />
                       <AccessibilityRow 
                         label="Covered bike parking" 
-                        value={accessibility.mobility.coveredBikeParking} 
+                        value={accessibility?.mobility?.coveredBikeParking} 
                       />
                     </div>
                   </div>
                 )}
 
                 {/* Sensory & Neurodivergent - ALL 8 FIELDS */}
-                {accessibility.sensory && Object.keys(accessibility.sensory).length > 0 && (
+                {accessibility?.sensory && Object.keys(accessibility.sensory).length > 0 && (
                   <div>
                     <h3 className="font-semibold mb-3 text-lg">Sensory & Neurodivergent</h3>
                     <div className="space-y-1">
                       <AccessibilityRow 
                         label="Sensory-friendly environment" 
-                        value={accessibility.sensory.sensoryFriendly} 
+                        value={accessibility?.sensory?.sensoryFriendly} 
                       />
                       <AccessibilityRow 
                         label="Quiet environment" 
-                        value={accessibility.sensory.quietEnvironment} 
+                        value={accessibility?.sensory?.quietEnvironment} 
                       />
                       <AccessibilityRow 
                         label="Loud noises expected" 
-                        value={accessibility.sensory.loudNoises} 
+                        value={accessibility?.sensory?.loudNoises} 
                       />
                       <AccessibilityRow 
                         label="Flashing lights" 
-                        value={accessibility.sensory.flashingLights} 
+                        value={accessibility?.sensory?.flashingLights} 
                       />
                       <AccessibilityRow 
                         label="Crowd level" 
-                        value={accessibility.sensory.crowdLevel} 
+                        value={accessibility?.sensory?.crowdLevel} 
                       />
                       <AccessibilityRow 
                         label="Quiet room/break space available" 
-                        value={accessibility.sensory.quietRoom} 
+                        value={accessibility?.sensory?.quietRoom} 
                       />
                       <AccessibilityRow 
                         label="Sensory-friendly time slot available" 
-                        value={accessibility.sensory.sensoryTimeSlot} 
+                        value={accessibility?.sensory?.sensoryTimeSlot} 
                       />
                       <AccessibilityRow 
                         label="Predictable schedule/routine" 
-                        value={accessibility.sensory.predictableSchedule} 
+                        value={accessibility?.sensory?.predictableSchedule} 
                       />
                     </div>
                   </div>
                 )}
 
                 {/* Cognitive & Communication - ALL 6 FIELDS */}
-                {accessibility.cognitive && Object.keys(accessibility.cognitive).length > 0 && (
+                {accessibility?.cognitive && Object.keys(accessibility.cognitive).length > 0 && (
                   <div>
                     <h3 className="font-semibold mb-3 text-lg">Cognitive & Communication</h3>
                     <div className="space-y-1">
                       <AccessibilityRow 
                         label="Clear signage" 
-                        value={accessibility.cognitive.clearSignage} 
+                        value={accessibility?.cognitive?.clearSignage} 
                       />
                       <AccessibilityRow 
                         label="Simple instructions provided" 
-                        value={accessibility.cognitive.simpleInstructions} 
+                        value={accessibility?.cognitive?.simpleInstructions} 
                       />
                       <AccessibilityRow 
                         label="Written materials available" 
-                        value={accessibility.cognitive.writtenMaterials} 
+                        value={accessibility?.cognitive?.writtenMaterials} 
                       />
                       <AccessibilityRow 
                         label="ASL interpretation available" 
-                        value={accessibility.cognitive.aslInterpretation} 
+                        value={accessibility?.cognitive?.aslInterpretation} 
                       />
                       <AccessibilityRow 
                         label="Live captions/subtitles" 
-                        value={accessibility.cognitive.liveCaptions} 
+                        value={accessibility?.cognitive?.liveCaptions} 
                       />
                       <AccessibilityRow 
                         label="Multilingual support" 
-                        value={accessibility.cognitive.multilingualSupport} 
+                        value={accessibility?.cognitive?.multilingualSupport} 
                       />
                     </div>
                   </div>
                 )}
 
                 {/* Social & Emotional - ALL 7 FIELDS */}
-                {accessibility.social && Object.keys(accessibility.social).length > 0 && (
+                {accessibility?.social && Object.keys(accessibility.social).length > 0 && (
                   <div>
                     <h3 className="font-semibold mb-3 text-lg">Social & Emotional</h3>
                     <div className="space-y-1">
                       <AccessibilityRow 
                         label="Service animals welcome" 
-                        value={accessibility.social.serviceAnimalsWelcome} 
+                        value={accessibility?.social?.serviceAnimalsWelcome} 
                       />
                       <AccessibilityRow 
                         label="Flexible participation" 
-                        value={accessibility.social.flexibleParticipation} 
+                        value={accessibility?.social?.flexibleParticipation} 
                       />
                       <AccessibilityRow 
                         label="Gender-neutral washrooms" 
-                        value={accessibility.social.genderNeutralWashrooms} 
+                        value={accessibility?.social?.genderNeutralWashrooms} 
                       />
                       <AccessibilityRow 
                         label="LGBTQIA+ friendly" 
-                        value={accessibility.social.lgbtqiaFriendly} 
+                        value={accessibility?.social?.lgbtqiaFriendly} 
                       />
                       <AccessibilityRow 
                         label="Mask-friendly" 
-                        value={accessibility.social.maskFriendly} 
+                        value={accessibility?.social?.maskFriendly} 
                       />
                       <AccessibilityRow 
                         label="Scent-free environment" 
-                        value={accessibility.social.scentFree} 
+                        value={accessibility?.social?.scentFree} 
                       />
                       <AccessibilityRow 
                         label="Alcohol-free" 
-                        value={accessibility.social.alcoholFree} 
+                        value={accessibility?.social?.alcoholFree} 
                       />
                       <AccessibilityRow 
                         label="Substance-free" 
-                        value={accessibility.social.substanceFree} 
+                        value={accessibility?.social?.substanceFree} 
                       />
                       <AccessibilityRow 
                         label="Trauma-informed approach" 
-                        value={accessibility.social.traumaInformed} 
+                        value={accessibility?.social?.traumaInformed} 
                       />
                     </div>
                   </div>
