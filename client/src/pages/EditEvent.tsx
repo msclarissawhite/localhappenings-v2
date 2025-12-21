@@ -20,6 +20,7 @@ import { Loader2, ArrowLeft } from "lucide-react";
 import { CANADIAN_PROVINCES, CANADIAN_CITIES } from "@shared/canadian-locations";
 import { AccessibilityFields } from "@/components/AccessibilityFields";
 import { EventTypeSelector } from "@/components/EventTypeSelector";
+import { PlacesAutocomplete, PlaceDetails } from "@/components/PlacesAutocomplete";
 
 export default function EditEvent() {
   const { id } = useParams<{ id: string }>();
@@ -285,21 +286,41 @@ export default function EditEvent() {
               />
             </div>
 
-            <div>
-              <Label htmlFor="venue">Venue Name</Label>
-              <Input
-                id="venue"
-                value={formData.venue}
-                onChange={(e) => setFormData({ ...formData, venue: e.target.value })}
-              />
-            </div>
+            <PlacesAutocomplete
+              label="Venue Name"
+              placeholder="Search for a venue or location..."
+              value={formData.venue}
+              onChange={(value) => setFormData({ ...formData, venue: value })}
+              onPlaceSelected={(details: PlaceDetails) => {
+                // Auto-fill venue name
+                setFormData(prev => ({
+                  ...prev,
+                  venue: details.venue,
+                  address: details.address || prev.address,
+                  province: details.province || prev.province,
+                  municipality: details.municipality || prev.municipality,
+                }));
+                
+                // Update cities list if province changed
+                if (details.province) {
+                  setSelectedProvince(details.province);
+                  const provinceCode = CANADIAN_PROVINCES.find(p => p.name === details.province)?.code;
+                  if (provinceCode) {
+                    setCities(CANADIAN_CITIES[provinceCode] || []);
+                  }
+                }
+                
+                toast.success("Location details auto-filled!");
+              }}
+            />
 
             <div>
-              <Label htmlFor="address">Address</Label>
+              <Label htmlFor="address">Full Address</Label>
               <Input
                 id="address"
                 value={formData.address}
                 onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                placeholder="Auto-filled from venue selection above"
               />
             </div>
           </div>

@@ -36,6 +36,7 @@ import { CANADIAN_PROVINCES, CANADIAN_CITIES } from "@shared/canadian-locations"
 import { EventPreview } from "@/components/EventPreview";
 import { RecurringPreview } from "@/components/RecurringPreview";
 import { EventTypeSelector } from "@/components/EventTypeSelector";
+import { PlacesAutocomplete, PlaceDetails } from "@/components/PlacesAutocomplete";
 
 const submitEventSchema = z.object({
   name: z.string().min(1, "Event name is required"),
@@ -1102,14 +1103,48 @@ export default function SubmitEvent() {
                 <Input id="neighborhoodCommunity" {...register("neighborhoodCommunity")} placeholder="e.g., North End" />
               </div>
 
-              <div>
-                <Label htmlFor="venue">Venue Name</Label>
-                <Input id="venue" {...register("venue")} />
-              </div>
+              <PlacesAutocomplete
+                label="Venue Name"
+                placeholder="Search for a venue or location..."
+                value={watch("venue") || ""}
+                onChange={(value) => setValue("venue", value)}
+                onPlaceSelected={(details: PlaceDetails) => {
+                  // Auto-fill venue name
+                  setValue("venue", details.venue);
+                  
+                  // Auto-fill address
+                  if (details.address) {
+                    setValue("address", details.address);
+                  }
+                  
+                  // Auto-fill province
+                  if (details.province) {
+                    setValue("province", details.province);
+                    setSelectedProvince(details.province);
+                    
+                    // Update available cities for the province
+                    const provinceCode = CANADIAN_PROVINCES.find(p => p.name === details.province)?.code;
+                    if (provinceCode) {
+                      setAvailableCities(CANADIAN_CITIES[provinceCode] || []);
+                    }
+                  }
+                  
+                  // Auto-fill municipality
+                  if (details.municipality) {
+                    setValue("municipality", details.municipality);
+                  }
+                  
+                  toast.success("Location details auto-filled!");
+                }}
+              />
 
               <div>
-                <Label htmlFor="address">Address</Label>
-                <Input id="address" {...register("address")} />
+                <Label htmlFor="address">Full Address</Label>
+                <Input 
+                  id="address" 
+                  {...register("address")} 
+                  placeholder="Auto-filled from venue selection above"
+                />
               </div>
             </div>
           </Card>

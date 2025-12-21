@@ -1559,3 +1559,26 @@
 - [x] Fix municipality field being disabled/greyed out (now checks formData.province)
 - [x] Ensure municipality value displays when form loads
 - [x] Fix cities list population based on province (added separate useEffect for sync)
+
+
+## Google Places Autocomplete Integration
+- [x] Review existing Maps component and proxy setup
+- [x] Create reusable PlacesAutocomplete component
+- [x] Integrate autocomplete into SubmitEvent form (venue + address fields)
+- [x] Integrate autocomplete into AdminEditEvent form
+- [x] Integrate autocomplete into EditEvent (organizer) form
+- [x] Add auto-fill logic for province, municipality, and address
+- [ ] Test autocomplete with various venue types
+- [ ] Update documentation with autocomplete feature
+
+
+## Google Places Autocomplete Integration
+- [x] Review existing Maps component and proxy setup
+- [x] Create reusable PlacesAutocomplete component
+- [x] Integrate autocomplete into SubmitEvent form (venue + address fields)
+- [x] Integrate autocomplete into AdminEditEvent form
+- [x] Integrate autocomplete into EditEvent (organizer) form
+- [x] Add auto-fill logic for province, municipality, and address
+- [x] Test autocomplete with various venue types (Neptune Theatre, Halifax Central Library)
+- [x] Verify auto-fill works correctly (keyboard navigation method)
+- [x] Remove debug console.log statements from production code
