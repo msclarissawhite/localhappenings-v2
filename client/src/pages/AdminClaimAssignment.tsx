@@ -56,10 +56,10 @@ export function AdminClaimAssignment() {
     toast.success("Claim URL copied to clipboard");
   };
 
-  // Filter events without organizer
-  const eventsToAssign = unclaimedEvents?.events.filter(
-    (event) => !event.organizerEmail
-  );
+  // Filter events without organizer - handle nested structure from events.list
+  const eventsToAssign = unclaimedEvents?.events?.filter(
+    (item: any) => !item.event?.organizerId && !item.organizer
+  ).map((item: any) => item.event);
 
   return (
     <div className="container max-w-4xl py-8">
@@ -92,7 +92,7 @@ export function AdminClaimAssignment() {
                 <p className="text-sm text-muted-foreground">No unclaimed events available</p>
               )}
 
-              {eventsToAssign?.map((event) => (
+              {eventsToAssign?.map((event: any) => (
                 <div key={event.id} className="flex items-start gap-3 p-2 hover:bg-muted/50 rounded">
                   <Checkbox
                     checked={selectedEventIds.includes(event.id)}

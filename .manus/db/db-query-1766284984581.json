@@ -1,0 +1,60 @@
+{
+  "query": "SELECT id, name, status FROM events ORDER BY id DESC LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT id, name, status FROM events ORDER BY id DESC LIMIT 10;",
+  "rows": [
+    {
+      "id": "360001",
+      "name": "Test Event - Family Storytime",
+      "status": "published"
+    },
+    {
+      "id": "300008",
+      "name": "Test Event with Unknown Values",
+      "status": "published"
+    },
+    {
+      "id": "300007",
+      "name": "Comprehensive Accessibility Test Event",
+      "status": "published"
+    },
+    {
+      "id": "300006",
+      "name": "Test Event with Crowd Level",
+      "status": "published"
+    },
+    {
+      "id": "300005",
+      "name": "Test Event with Public Transit",
+      "status": "published"
+    },
+    {
+      "id": "300004",
+      "name": "Test Event with Unknown Values",
+      "status": "published"
+    },
+    {
+      "id": "300003",
+      "name": "Comprehensive Accessibility Test Event",
+      "status": "published"
+    },
+    {
+      "id": "300002",
+      "name": "Test Event with Crowd Level",
+      "status": "published"
+    },
+    {
+      "id": "300001",
+      "name": "Test Event with Public Transit",
+      "status": "published"
+    },
+    {
+      "id": "150018",
+      "name": "Teen Game Night",
+      "status": "rejected"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tstatus\n360001\tTest Event - Family Storytime\tpublished\n300008\tTest Event with Unknown Values\tpublished\n300007\tComprehensive Accessibility Test Event\tpublished\n300006\tTest Event with Crowd Level\tpublished\n300005\tTest Event with Public Transit\tpublished\n300004\tTest Event with Unknown Values\tpublished\n300003\tComprehensive Accessibility Test Event\tpublished\n300002\tTest Event with Crowd Level\tpublished\n300001\tTest Event with Public Transit\tpublished\n150018\tTeen Game Night\trejected\n",
+  "stderr": "",
+  "execution_time_ms": 52
+}

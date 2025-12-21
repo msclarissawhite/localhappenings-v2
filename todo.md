@@ -1080,3 +1080,8 @@
 - [x] Auto-create organizer account on first claim
 - [x] Mark organizer as pending verification after claim
 - [ ] Test complete claim flow from admin assignment to organizer login
+
+## Test Claim Flow
+- [ ] Create test event in database
+- [ ] Generate claim token for test organizer email
+- [ ] Verify claim link works and creates organizer account
