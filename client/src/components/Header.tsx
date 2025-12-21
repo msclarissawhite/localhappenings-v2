@@ -26,13 +26,13 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
-            <Link href="/browse" className="text-foreground hover:text-primary font-medium transition-colors">
+            <Link href="/browse" className="text-foreground hover:text-primary font-medium transition-colors flex items-center">
               Browse Events
             </Link>
-            <Link href="/submit" className="text-foreground hover:text-primary font-medium transition-colors">
+            <Link href="/submit" className="text-foreground hover:text-primary font-medium transition-colors flex items-center">
               Submit Event
             </Link>
-            <Link href="/archive" className="text-foreground hover:text-primary font-medium transition-colors">
+            <Link href="/archive" className="text-foreground hover:text-primary font-medium transition-colors flex items-center">
               Archive
             </Link>
             {isUserAuthenticated && (
@@ -55,10 +55,10 @@ export default function Header() {
             )}
             {isAuthenticated && user?.role === "admin" && (
               <>
-                <Link href="/admin" className="text-foreground hover:text-primary font-medium transition-colors">
+                <Link href="/admin" className="text-foreground hover:text-primary font-medium transition-colors flex items-center">
                   Admin
                 </Link>
-                <Link href="/analytics" className="text-foreground hover:text-primary font-medium transition-colors">
+                <Link href="/analytics" className="text-foreground hover:text-primary font-medium transition-colors flex items-center">
                   Analytics
                 </Link>
               </>
