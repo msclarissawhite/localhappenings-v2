@@ -1177,3 +1177,8 @@
 - [x] Update admin Feedback Moderation interface to highlight spam
 - [x] Add spam filter toggle in admin interface
 - [x] Test spam detection with various scenarios (duplicates, rapid submissions, identical text)
+
+## Documentation Updates
+- [x] Update USER_MANUAL.md with spam detection feature
+- [x] Document admin spam moderation workflow
+- [x] Review and clean up completed tasks in todo.md

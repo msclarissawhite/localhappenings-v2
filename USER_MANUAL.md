@@ -496,6 +496,61 @@ When deciding whether to verify an organizer, consider:
 
 Recommended verification threshold: 4.5+ average accuracy with 10+ total feedback responses from at least 3 different events. Adjust these thresholds based on your community's needs and feedback volume.
 
+### Feedback Moderation
+
+The Feedback Moderation tab in the admin dashboard provides comprehensive tools to review, filter, and moderate user-submitted event feedback. Access this tab to monitor feedback quality and remove spam or inappropriate submissions.
+
+#### Viewing Feedback
+
+The Feedback tab displays all submitted feedback with full event context. Each feedback card shows the event name, organizer name, event date, whether the user attended, accuracy rating (1-5 stars), submission timestamp, comments, helpful details, and inaccurate details reported by the attendee.
+
+#### Filtering Feedback
+
+Click **Show Filters** to access filtering options that help you find specific feedback:
+
+- **Event ID**: Filter feedback for a specific event by entering its numeric ID
+- **Date Range**: Filter by submission date using Start Date and End Date fields
+- **Rating Range**: Filter by accuracy rating (1-5 stars) using Min Rating and Max Rating dropdowns
+- **Show Spam Only**: Toggle this checkbox to display only feedback flagged by the automated spam detection system
+
+Click **Apply Filters** to update the results, or **Clear Filters** to reset all filters and show all feedback.
+
+#### Spam Detection
+
+Local Happenings includes automated spam detection that flags suspicious feedback submissions without blocking them. Flagged feedback appears with a red border and a **⚠️ FLAGGED AS SPAM** warning badge at the top of the card, along with the specific reason for flagging.
+
+The spam detection system identifies four types of suspicious patterns:
+
+**Duplicate Submission**: The same comment text was submitted for the same event within the last 24 hours. This catches users who accidentally submit feedback multiple times or intentionally spam the same message.
+
+**Rapid Submission**: Five or more feedback submissions for the same event were made within a 5-minute window. This pattern indicates automated bots or coordinated spam attacks.
+
+**Identical Text Multiple Events**: The exact same comment was posted on three or more different events within 1 hour. This catches generic spam messages being copy-pasted across multiple events.
+
+**Suspiciously Short Comment**: The comment field contains fewer than 5 characters (excluding empty comments, which are allowed). Very short comments like "bad" or "lol" are often low-quality spam.
+
+Spam detection runs automatically when feedback is submitted. Flagged submissions are still saved to the database and visible to admins, but they are marked for review. This approach prevents false positives from blocking legitimate feedback while still alerting admins to suspicious activity.
+
+#### Deleting Feedback
+
+To delete individual feedback, click the trash icon on any feedback card. A confirmation dialog will appear to prevent accidental deletion. Deleted feedback is permanently removed from the database and cannot be recovered.
+
+For bulk deletion, select multiple feedback entries using the checkboxes on the left side of each card. Once selected, a **Delete Selected (N)** button appears at the top of the page showing how many items are selected. Click this button to delete all selected feedback at once after confirming the action.
+
+Use deletion sparingly and only for spam, inappropriate content, or duplicate submissions. Legitimate negative feedback should generally be preserved as it provides valuable data quality signals to organizers.
+
+#### Exporting Feedback Data
+
+Click the **Export CSV** button at the top of the Feedback tab to download all feedback data (or filtered results if filters are active). The CSV export includes all feedback fields: event ID, event name, organizer name, event date, attended status, accuracy rating, helpful details, inaccurate details, comments, submission timestamp, spam flag, and spam reason.
+
+Use exported data for offline analysis, sharing with organizers, identifying data quality trends, or generating reports for stakeholders.
+
+#### Monitoring Spam Trends
+
+Regularly review the spam-flagged feedback to understand common spam patterns on your platform. If you notice high false positive rates (legitimate feedback being flagged), consider adjusting the spam detection thresholds or reporting patterns to the development team.
+
+The **Show Spam Only** filter is particularly useful for daily spam review. Enable this filter to quickly scan all flagged submissions and delete obvious spam in bulk, then review borderline cases individually.
+
 ---
 
 ## Database Management
