@@ -1439,3 +1439,7 @@
 - [x] Update admin UI to show all carousel events with curated/fallback indicators
 - [x] Enable subtitle editing for fallback events
 - [x] Add visual distinction between curated and fallback events
+
+## Nested Anchor Tag Fix
+- [x] Fix nested <a> tags in FeaturedEventsCarousel
+- [x] Remove Streamdown from carousel or restructure to avoid nesting
