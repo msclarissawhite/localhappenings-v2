@@ -337,7 +337,6 @@ export default function AdminDashboard() {
                   </Button>
                   <Button
                     variant="outline"
-                    disabled={exportMutation.isPending}
                     onClick={handleExportAll}
                   >
                     <TrendingUp className="w-4 h-4 mr-2" />
