@@ -15,7 +15,7 @@ export function FeaturedEventsManagement() {
   const { data: featuredEvents = [], refetch: refetchFeatured } =
     trpc.homepageFeatured.listAll.useQuery();
   
-  const { data: eventsData } = trpc.events.list.useQuery();
+  const { data: eventsData } = trpc.events.list.useQuery({});
   
   const searchResults = searchQuery.length > 2 && eventsData?.events
     ? eventsData.events.filter((event: Event) =>

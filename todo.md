@@ -1415,3 +1415,7 @@
 
 ## Documentation Update
 - [x] Add featured events carousel section to USER_MANUAL.md
+
+## tRPC Query Error Fix
+- [x] Investigate invalid input error on admin page
+- [x] Fix query that expects object but receives undefined
