@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { useUserAuth } from "@/hooks/useUserAuth";
@@ -6,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "wouter";
 import { Bookmark, Calendar, MapPin, DollarSign, Trash2, ArrowLeft } from "lucide-react";
+import { BackToTop } from "@/components/BackToTop";
 
 import { toast } from "sonner";
 
@@ -93,6 +95,7 @@ export default function MySavedEvents() {
   };
 
   return (
+    <>
     <div className="container py-12">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-8">
@@ -276,5 +279,7 @@ export default function MySavedEvents() {
         )}
       </div>
     </div>
+    <BackToTop />
+    </>
   );
 }

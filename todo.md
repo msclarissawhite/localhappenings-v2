@@ -1148,3 +1148,11 @@
 - [x] Replace pagination with Load More button on Archive page
 - [x] Replace pagination with Load More button on Saved Events page
 - [x] Test Load More functionality on all three pages
+
+## Archive Page Improvements & Back to Top Button
+- [x] Add feedback encouragement blurb to Archive page
+- [x] Create reusable BackToTop component
+- [x] Add BackToTop button to Browse Events page
+- [x] Add BackToTop button to Archive page
+- [x] Add BackToTop button to Saved Events page
+- [x] Test BackToTop functionality on all pages

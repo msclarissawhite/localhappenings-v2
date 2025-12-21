@@ -15,6 +15,7 @@ import {
 import { format } from "date-fns";
 
 import type { EventFilters } from "@shared/types";
+import { BackToTop } from "@/components/BackToTop";
 import { CANADIAN_PROVINCES, CANADIAN_CITIES } from "@shared/canadian-locations";
 import {
   Accordion,
@@ -97,9 +98,9 @@ export default function BrowseEvents() {
       return false;
     }
   };
-
   return (
-    <div className="py-8">
+    <>
+    <div className="py-12">
       <div className="container">
         {/* Header */}
         <div className="mb-8">
@@ -876,5 +877,7 @@ export default function BrowseEvents() {
         )}
       </div>
     </div>
+    <BackToTop />
+    </>
   );
 }

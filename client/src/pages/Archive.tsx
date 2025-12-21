@@ -6,6 +6,8 @@ import { Link } from "wouter";
 import { Calendar, MapPin, Clock, DollarSign } from "lucide-react";
 import { format, subMonths } from "date-fns";
 import { Button } from "@/components/ui/button";
+import { BackToTop } from "@/components/BackToTop";
+import { MessageCircle } from "lucide-react";
 
 const EVENTS_PER_PAGE = 20;
 const ARCHIVE_CUTOFF_MONTHS = 6; // Hide events older than 6 months
@@ -46,13 +48,27 @@ export default function Archive() {
   };
 
   return (
+    <>
     <div className="py-12">
       <div className="container">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Event Archive</h1>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground mb-4">
             Browse past events from the last {ARCHIVE_CUTOFF_MONTHS} months. These events have already occurred but remain here for reference.
           </p>
+          
+          {/* Feedback Encouragement Blurb */}
+          <Card className="p-6 bg-primary/5 border-primary/20">
+            <div className="flex items-start gap-4">
+              <MessageCircle className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+              <div>
+                <h3 className="font-semibold text-lg mb-2">Help Us Improve Event Listings</h3>
+                <p className="text-sm text-muted-foreground">
+                  Did you attend one of these events? Your feedback is invaluable! Click on any event you attended to review the listing details and let us know if the accessibility information, venue details, or other information was accurate. Your insights help future attendees make informed decisions.
+                </p>
+              </div>
+            </div>
+          </Card>
         </div>
 
         {isLoading && (
@@ -168,5 +184,7 @@ export default function Archive() {
         )}
       </div>
     </div>
+    <BackToTop />
+    </>
   );
 }
