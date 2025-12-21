@@ -1519,3 +1519,8 @@
 
 ## Event Detail Display Bug
 - [x] Remove stray "0" appearing in When & Where section (was isRecurring field rendering as 0)
+
+
+## Event Duration Display Improvement
+- [x] Fix events under 24 hours showing as multi-day when crossing midnight
+- [x] Show time range instead of "2-day event" for short events (now checks actual hours not calendar days)

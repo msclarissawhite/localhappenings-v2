@@ -409,6 +409,8 @@ export default function EventDetail() {
                     const endDay = end ? new Date(end.getFullYear(), end.getMonth(), end.getDate()) : null;
                     const isSameDay = endDay && startDay.getTime() === endDay.getTime();
                     const daysDiff = endDay ? Math.round((endDay.getTime() - startDay.getTime()) / (1000 * 60 * 60 * 24)) : 0;
+                    const hoursDiff = end ? (end.getTime() - start.getTime()) / (1000 * 60 * 60) : 0;
+                    const isUnder24Hours = hoursDiff < 24;
                     
                     return (
                       <>
@@ -417,13 +419,13 @@ export default function EventDetail() {
                             ? `${format(start, "MMMM d")} - ${format(end, "MMMM d, yyyy")}`
                             : format(start, "EEEE, MMMM d, yyyy")}
                         </p>
-                        {/* Show time range for same-day events or single time for multi-day */}
-                        {isSameDay && end && (
+                        {/* Show time range for same-day events or events under 24 hours */}
+                        {end && isUnder24Hours && (
                           <p className="text-sm text-muted-foreground">
                             {format(start, "h:mm a")} - {format(end, "h:mm a")}
                           </p>
                         )}
-                        {!isSameDay && daysDiff > 0 && (
+                        {!isSameDay && daysDiff > 0 && !isUnder24Hours && (
                           <>
                             <p className="text-sm text-muted-foreground">
                               {daysDiff + 1}-day event

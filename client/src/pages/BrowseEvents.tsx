@@ -844,30 +844,32 @@ export default function BrowseEvents() {
                       <div className="flex items-center gap-2">
                         <Calendar className="w-4 h-4" />
                         <span>
-                          {(() => {
-                            const start = new Date(event.startDate);
-                            const end = event.endDate ? new Date(event.endDate) : null;
-                            const startDay = new Date(start.getFullYear(), start.getMonth(), start.getDate());
-                            const endDay = end ? new Date(end.getFullYear(), end.getMonth(), end.getDate()) : null;
-                            const isSameDay = endDay && startDay.getTime() === endDay.getTime();
-                            const daysDiff = endDay ? Math.round((endDay.getTime() - startDay.getTime()) / (1000 * 60 * 60 * 24)) : 0;
+                  {(() => {
+                    const start = new Date(event.startDate);
+                    const end = event.endDate ? new Date(event.endDate) : null;
+                    const startDay = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+                    const endDay = end ? new Date(end.getFullYear(), end.getMonth(), end.getDate()) : null;
+                    const isSameDay = endDay && startDay.getTime() === endDay.getTime();
+                    const daysDiff = endDay ? Math.round((endDay.getTime() - startDay.getTime()) / (1000 * 60 * 60 * 24)) : 0;
+                    const hoursDiff = end ? (end.getTime() - start.getTime()) / (1000 * 60 * 60) : 0;
+                    const isUnder24Hours = hoursDiff < 24;
                             
                             let dateStr = '';
-                            if (!isSameDay && end && daysDiff > 0) {
+                            if (!isSameDay && end && daysDiff > 0 && !isUnder24Hours) {
                               dateStr = `${format(start, "MMM d")} - ${format(end, "MMM d, yyyy")}`;
                             } else {
                               dateStr = format(start, "MMM d, yyyy");
                             }
                             
-                            // Add time range for same-day events
-                            if (isSameDay && end) {
+                            // Add time range for events under 24 hours
+                            if (end && isUnder24Hours) {
                               dateStr += ` • ${format(start, "h:mm a")} - ${format(end, "h:mm a")}`;
                             } else if (event.timeOfDay) {
                               dateStr += ` • ${event.timeOfDay.charAt(0).toUpperCase() + event.timeOfDay.slice(1).replace("-", " ")}`;
                             }
                             
-                            // Add multi-day indicator
-                            if (!isSameDay && daysDiff > 0) {
+                            // Add multi-day indicator only for events 24+ hours
+                            if (!isSameDay && daysDiff > 0 && !isUnder24Hours) {
                               dateStr += ` • ${daysDiff + 1}-day event`;
                             }
                             
