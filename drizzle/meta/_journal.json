@@ -141,6 +141,27 @@
       "when": 1766322981737,
       "tag": "0019_tiny_korvac",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "5",
+      "when": 1766326521508,
+      "tag": "0020_far_master_mold",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "5",
+      "when": 1766327398315,
+      "tag": "0021_icy_nitro",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "5",
+      "when": 1766327482090,
+      "tag": "0022_thick_tattoo",
+      "breakpoints": true
     }
   ]
 }

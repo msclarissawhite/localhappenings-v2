@@ -374,6 +374,17 @@ export default function EventDetail() {
           </div>
         </div>
 
+        {/* Claim Event Notice for Unclaimed Events */}
+        {!event.organizerId && (
+          <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg flex items-start gap-3">
+            <div className="flex-1">
+              <p className="text-sm text-blue-900 dark:text-blue-100">
+                <strong>Is this your event?</strong> We may have added it on your behalf. <Link href="/contact" className="text-blue-700 dark:text-blue-300 hover:underline font-medium">Contact us</Link> to claim it and manage future updates.
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Main Content */}
         <div className="space-y-6">
           {/* What It Is */}

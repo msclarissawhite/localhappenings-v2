@@ -138,6 +138,13 @@ export default function BrowseEvents() {
           </p>
         </div>
 
+        {/* Claim Event Blurb */}
+        <div className="mb-6 p-4 bg-accent/10 border border-accent/20 rounded-lg">
+          <p className="text-sm text-muted-foreground">
+            <strong>See your event listed here?</strong> If we've added your event on your behalf, you can <Link href="/contact" className="text-accent hover:underline font-medium">contact us</Link> to claim it and manage future updates.
+          </p>
+        </div>
+
         {/* Search Bar */}
         <div className="mb-6">
           <div className="relative max-w-2xl">
