@@ -214,6 +214,7 @@ export default function AdminEditEvent() {
       teens: Boolean(formData.teens),
       seniors: Boolean(formData.seniors),
       displayOrganizerInfo: Boolean(formData.displayOrganizerInfo),
+      eventTypeIds: formData.eventTypeIds || [], // Explicitly include event type IDs
     };
     
     updateMutation.mutate({

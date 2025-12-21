@@ -1529,3 +1529,9 @@
 ## Event Price Display Bug
 - [x] Fix fixed-price events showing as range ($10-$10)
 - [x] Show single price when costMin equals costMax
+
+
+## Admin Edit Event Tags Bug
+- [x] Fix event tags being dropped when saving through admin edit
+- [x] Investigate why charity, live music, and other tags are lost (eventTypeIds not explicitly included)
+- [x] Ensure all tag fields are properly loaded and saved
