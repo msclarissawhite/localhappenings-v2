@@ -1212,14 +1212,16 @@
 ## Tag-Based Event Categories Expansion (IN PROGRESS)
 - [x] Seed 32 event types across 6 audience-based categories to database
 - [x] Add tag selection to event submission form (grouped by category)
-- [ ] Add tag selection to admin edit form
-- [ ] Add tag selection to organizer edit event form
+- [x] Add tag selection to admin edit form with existing tags pre-selected
+- [x] Add tag selection to organizer edit event form with existing tags pre-selected
+- [x] Update backend edit procedures to handle tag updates (delete old, insert new)
 - [x] Display tags on event cards (Browse Events, Archive, Saved Events)
-- [ ] Display tags on event detail pages
+- [x] Display tags prominently on event detail pages
 - [x] Add tag filtering to Browse Events advanced filters
+- [x] Implement multi-tag filtering (allow selecting multiple tags simultaneously)
 - [x] Update backend to handle tag associations (eventToEventTypes junction table)
 - [ ] Create Event Type Management admin interface for easy tag additions
-- [ ] Test tag selection, display, and filtering
+- [x] Test tag editing, display, and multi-tag filtering
 
 ## Collection Landing Pages (IN PROGRESS)
 - [ ] Create public collection page route (/collections/[slug])

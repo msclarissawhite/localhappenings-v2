@@ -23,6 +23,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { FeedbackForm } from "@/components/FeedbackForm";
+import { EventTypeTags } from "@/components/EventTypeTags";
 
 // Bookmark Button Component
 function BookmarkButton({ eventId }: { eventId: number }) {
@@ -343,6 +344,14 @@ export default function EventDetail() {
               <ShareButtons eventName={event.name} eventId={event.id} />
             </div>
           </div>
+          
+          {/* Event Type Tags */}
+          {(event as any).eventTypes && (event as any).eventTypes.length > 0 && (
+            <div className="mb-4">
+              <EventTypeTags eventTypes={(event as any).eventTypes} />
+            </div>
+          )}
+          
           <div className="flex flex-wrap gap-3">
             {!!event.isFree && (
               <Badge variant="secondary" className="text-base px-3 py-1">

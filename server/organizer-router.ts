@@ -140,6 +140,7 @@ export const organizerRouter = router({
         organizerEmail: z.string().optional(),
         organizerPhone: z.string().optional(),
         notes: z.string().optional(),
+        eventTypeIds: z.array(z.number()).optional(),
       }),
     }))
     .mutation(async ({ input }) => {
@@ -183,8 +184,16 @@ export const organizerRouter = router({
       
       if (organizer?.isVerified === 1) {
         // Verified organizer: Apply changes immediately
+        const eventTypeIds = updateData.eventTypeIds;
+        delete updateData.eventTypeIds; // Remove from main update data
+        
         updateData.updatedAt = new Date();
         await eventsDb.updateEvent(eventId, updateData);
+        
+        // Update event types if provided
+        if (eventTypeIds !== undefined) {
+          await eventsDb.updateEventTypes(eventId, eventTypeIds);
+        }
         
         return { success: true, requiresApproval: false };
       } else {

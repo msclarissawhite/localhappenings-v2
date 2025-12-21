@@ -19,6 +19,7 @@ import { toast } from "sonner";
 import { Loader2, ArrowLeft, Shield } from "lucide-react";
 import { CANADIAN_PROVINCES, CANADIAN_CITIES } from "@shared/canadian-locations";
 import { AccessibilityFields } from "@/components/AccessibilityFields";
+import { EventTypeSelector } from "@/components/EventTypeSelector";
 
 export default function AdminEditEvent() {
   const { id } = useParams<{ id: string }>();
@@ -33,6 +34,8 @@ export default function AdminEditEvent() {
     { id: Number(id) },
     { enabled: !!id }
   );
+  
+  const { data: eventTypes = [] } = trpc.events.getEventTypes.useQuery();
 
   const [shouldNavigateAfterSave, setShouldNavigateAfterSave] = useState(false);
 
@@ -91,6 +94,7 @@ export default function AdminEditEvent() {
     displayOrganizerInfo: false,
     notes: "",
     imageUrl: "",
+    eventTypeIds: [],
   });
   const [selectedProvince, setSelectedProvince] = useState<string>("");
   const [cities, setCities] = useState<string[]>([]);
@@ -149,6 +153,7 @@ export default function AdminEditEvent() {
         displayOrganizerInfo: event.displayOrganizerInfo || false,
         notes: event.notes || "",
         imageUrl: event.imageUrl || "",
+        eventTypeIds: (event as any).eventTypes?.map((t: any) => t.id) || [],
       });
       
       if (event.province) {
@@ -272,6 +277,15 @@ export default function AdminEditEvent() {
               />
             </div>
           </div>
+        </Card>
+
+        <Card className="p-6">
+          <h2 className="text-xl font-semibold mb-4">Event Types</h2>
+          <EventTypeSelector
+            eventTypes={eventTypes}
+            selectedIds={formData.eventTypeIds}
+            onChange={(ids) => setFormData({ ...formData, eventTypeIds: ids })}
+          />
         </Card>
 
         <Card className="p-6">

@@ -546,8 +546,17 @@ export const eventsRouter = router({
         });
       }
 
+      // Handle event type updates separately
+      const eventTypeIds = updateData.eventTypeIds;
+      delete updateData.eventTypeIds; // Remove from main update data
+      
       // Update the event
       await eventsDb.updateEvent(input.id, updateData);
+      
+      // Update event types if provided
+      if (eventTypeIds !== undefined) {
+        await eventsDb.updateEventTypes(input.id, eventTypeIds);
+      }
       
       // Log the edit to history if there were changes
       if (Object.keys(changedFields).length > 0) {

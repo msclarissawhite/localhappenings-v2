@@ -341,6 +341,26 @@ export async function associateEventTypes(eventId: number, eventTypeIds: number[
   await db.insert(eventToEventTypes).values(associations);
 }
 
+/**
+ * Update event types for an event (delete old, insert new)
+ */
+export async function updateEventTypes(eventId: number, eventTypeIds: number[]) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  // Delete existing associations
+  await db.delete(eventToEventTypes).where(eq(eventToEventTypes.eventId, eventId));
+
+  // Insert new associations if any
+  if (eventTypeIds.length > 0) {
+    const associations = eventTypeIds.map(typeId => ({
+      eventId,
+      eventTypeId: typeId,
+    }));
+    await db.insert(eventToEventTypes).values(associations);
+  }
+}
+
 
 
 /**
