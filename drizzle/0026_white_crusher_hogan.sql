@@ -1,0 +1,1 @@
+ALTER TABLE `homepageFeaturedEvents` ADD `subtitle` text;

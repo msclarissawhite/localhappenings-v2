@@ -89,6 +89,9 @@ export function FeaturedEventsCarousel() {
                   </div>
                   <div className="p-6">
                     <h3 className="text-xl font-bold mb-2 line-clamp-2">{event.name}</h3>
+                    {(event as any).subtitle && (
+                      <p className="text-sm text-primary italic mb-2">"{(event as any).subtitle}"</p>
+                    )}
                     <p className="text-muted-foreground mb-4 line-clamp-2">{event.description}</p>
                     <div className="space-y-2 text-sm">
                       <div className="flex items-center gap-2 text-muted-foreground">

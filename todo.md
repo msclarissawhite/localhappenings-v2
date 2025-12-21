@@ -1419,3 +1419,11 @@
 ## tRPC Query Error Fix
 - [x] Investigate invalid input error on admin page
 - [x] Fix query that expects object but receives undefined
+
+## Featured Events Enhancements
+- [x] Add subtitle field to homepageFeaturedEvents table
+- [x] Update backend API to support subtitle field
+- [x] Implement drag-and-drop reordering in FeaturedEventsManagement
+- [x] Add pagination to event search results
+- [x] Update carousel component to display subtitles
+- [ ] Test all enhancements end-to-end

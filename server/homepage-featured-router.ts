@@ -19,6 +19,7 @@ export const homepageFeaturedRouter = router({
       .select({
         id: homepageFeaturedEvents.id,
         eventId: homepageFeaturedEvents.eventId,
+        subtitle: homepageFeaturedEvents.subtitle,
         sortOrder: homepageFeaturedEvents.sortOrder,
         event: events,
       })
@@ -32,9 +33,9 @@ export const homepageFeaturedRouter = router({
       )
       .orderBy(asc(homepageFeaturedEvents.sortOrder));
     
-    // If we have curated events, return them
+    // If we have curated events, return them with subtitles
     if (featured.length > 0) {
-      return featured.map(f => f.event);
+      return featured.map(f => ({ ...f.event, subtitle: f.subtitle }));
     }
     
     // Otherwise, fall back to closest upcoming events
@@ -64,6 +65,7 @@ export const homepageFeaturedRouter = router({
       .select({
         id: homepageFeaturedEvents.id,
         eventId: homepageFeaturedEvents.eventId,
+        subtitle: homepageFeaturedEvents.subtitle,
         sortOrder: homepageFeaturedEvents.sortOrder,
         event: events,
       })
@@ -177,6 +179,26 @@ export const homepageFeaturedRouter = router({
           .set({ sortOrder: item.sortOrder })
           .where(eq(homepageFeaturedEvents.id, item.id));
       }
+      
+      return { success: true };
+    }),
+
+  /**
+   * Update subtitle for a featured event
+   */
+  updateSubtitle: adminProcedure
+    .input(z.object({
+      id: z.number(),
+      subtitle: z.string().nullable(),
+    }))
+    .mutation(async ({ input }) => {
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+      
+      await db
+        .update(homepageFeaturedEvents)
+        .set({ subtitle: input.subtitle })
+        .where(eq(homepageFeaturedEvents.id, input.id));
       
       return { success: true };
     }),

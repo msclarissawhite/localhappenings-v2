@@ -183,6 +183,13 @@
       "when": 1766333030894,
       "tag": "0025_romantic_cerise",
       "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "5",
+      "when": 1766334259625,
+      "tag": "0026_white_crusher_hogan",
+      "breakpoints": true
     }
   ]
 }

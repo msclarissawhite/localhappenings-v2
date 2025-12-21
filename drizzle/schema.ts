@@ -174,6 +174,7 @@ export type InsertHomepageBanner = typeof homepageBanners.$inferInsert;
 export const homepageFeaturedEvents = mysqlTable("homepageFeaturedEvents", {
   id: int("id").autoincrement().primaryKey(),
   eventId: int("eventId").notNull().references(() => events.id, { onDelete: "cascade" }),
+  subtitle: text("subtitle"),
   sortOrder: int("sortOrder").default(0).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
