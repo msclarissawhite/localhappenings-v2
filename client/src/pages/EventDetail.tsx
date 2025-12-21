@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { sanitizeHtml } from "@/lib/sanitize";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, MapPin, DollarSign, Users, Clock, Building, Mail, Phone, Globe, ArrowLeft, Share2, Link2, Check, ShieldCheck, Bookmark, BookmarkCheck } from "lucide-react";
+import { Calendar, MapPin, DollarSign, Users, Clock, Building, Mail, Phone, Globe, ArrowLeft, Share2, Link2, Check, ShieldCheck, Bookmark, BookmarkCheck, Edit } from "lucide-react";
 import { format } from "date-fns";
 import { Link } from "wouter";
 import type { AccessibilityData } from "@shared/types";
@@ -328,6 +328,17 @@ export default function EventDetail() {
           <div className="flex items-start justify-between gap-4 mb-4">
             <h1 className="text-3xl md:text-4xl font-bold flex-1">{event.name}</h1>
             <div className="flex items-center gap-2">
+              {organizer?.role === "admin" && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => navigate(`/admin/edit-event/${event.id}`)}
+                  className="gap-2"
+                >
+                  <Edit className="h-4 w-4" />
+                  Admin Edit
+                </Button>
+              )}
               <BookmarkButton eventId={event.id} />
               <ShareButtons eventName={event.name} eventId={event.id} />
             </div>

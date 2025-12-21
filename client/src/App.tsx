@@ -13,6 +13,7 @@ import EventDetail from "./pages/EventDetail";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminFeedback from "./pages/AdminFeedback";
 import { AdminClaimAssignment } from "./pages/AdminClaimAssignment";
+import AdminEditEvent from "./pages/AdminEditEvent";
 import ClaimEvents from "./pages/ClaimEvents";
 import Contact from "./pages/Contact";
 import OrganizerLogin from "./pages/OrganizerLogin";
@@ -46,6 +47,7 @@ function Router() {
           <Route path="/admin" component={AdminDashboard} />
           <Route path="/admin/feedback/:id" component={AdminFeedback} />
           <Route path="/admin/claim-assignment" component={AdminClaimAssignment} />
+          <Route path="/admin/edit-event/:id" component={AdminEditEvent} />
           <Route path="/claim/:token" component={ClaimEvents} />
           <Route path={"/analytics"} component={Analytics} />
       <Route path={"/archive"} component={Archive} />
