@@ -1499,3 +1499,8 @@
 - [x] Show date once when start and end dates are the same day
 - [x] Display start and end times on event detail page
 - [x] Display start and end times on event preview cards
+
+
+## Admin Edit Event Date Error
+- [x] Investigate error when updating event dates via admin edit
+- [x] Fix date/time validation or transformation issue (endDate now properly handles empty strings)

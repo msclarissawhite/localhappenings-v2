@@ -175,7 +175,7 @@ export default function AdminEditEvent() {
     const transformedData = {
       ...formData,
       startDate: formData.startDate ? new Date(formData.startDate) : undefined,
-      endDate: formData.endDate ? new Date(formData.endDate) : undefined,
+      endDate: formData.endDate && formData.endDate.trim() !== '' ? new Date(formData.endDate) : null,
       costMin: formData.costMin ? parseFloat(formData.costMin) : undefined,
       costMax: formData.costMax ? parseFloat(formData.costMax) : undefined,
       costType: formData.costType || undefined,
