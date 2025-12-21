@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight, Calendar, MapPin, Clock } from "lucide-react
 import { format } from "date-fns";
 import { Link } from "wouter";
 import type { Event } from "@shared/types";
+import { Streamdown } from "streamdown";
 
 export function FeaturedEventsCarousel() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" });
@@ -92,7 +93,9 @@ export function FeaturedEventsCarousel() {
                     {(event as any).subtitle && (
                       <p className="text-sm text-primary italic mb-2">"{(event as any).subtitle}"</p>
                     )}
-                    <p className="text-muted-foreground mb-4 line-clamp-2">{event.description}</p>
+                    <div className="text-muted-foreground mb-4 line-clamp-2">
+                      <Streamdown>{event.description}</Streamdown>
+                    </div>
                     <div className="space-y-2 text-sm">
                       <div className="flex items-center gap-2 text-muted-foreground">
                         <Calendar className="w-4 h-4" />

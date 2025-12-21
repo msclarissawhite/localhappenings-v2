@@ -1,0 +1,51 @@
+{
+  "query": "SELECT id, name, LEFT(description, 200) as description_preview FROM events WHERE description LIKE '%**%' OR description LIKE '%##%' OR description LIKE '%- %' LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT id, name, LEFT(description, 200) as description_preview FROM events WHERE description LIKE '%**%' OR description LIKE '%##%' OR description LIKE '%- %' LIMIT 10;",
+  "rows": [
+    {
+      "id": "510002",
+      "name": "Holiday Movie: Red One",
+      "description_preview": "**PG | 2025 | 2h 3min**"
+    },
+    {
+      "id": "510004",
+      "name": "Holiday Movie & Craft: Elf",
+      "description_preview": "Enjoy the holiday favourite **Elf** while crafting some movie-themed ornaments like a movable elf, a narwhal, or Buddy's famous plate of breakfast spaghetti."
+    },
+    {
+      "id": "510005",
+      "name": "Teen Night: Reindeer Games",
+      "description_preview": "With only two days left until Christmas, the Reindeer Games are well underway! To earn a spot on the sleigh team you'll need speed, mental acuity, and vast knowledge of all things Christmas."
+    },
+    {
+      "id": "510007",
+      "name": "Fa-la-la Christmas Stories",
+      "description_preview": "With the dazzling Rouge Fatale! A family-friendly hour of holiday magic featuring festive storytelling and entertainment."
+    },
+    {
+      "id": "510010",
+      "name": "New Year's Eve Dance at Sackawa Canoe Club",
+      "description_preview": "Ring in 2026 at the Sackawa New Year's Dance! Join them for a night of celebration to count down to the New Year with great music, dancing, drinks, and friends."
+    },
+    {
+      "id": "510011",
+      "name": "New Year's Eve Party at Freeman's Little New York",
+      "description_preview": "Ring in the new year with great music by Blackburn and James, champagne at midnight, and the incredible staff at Freeman's. Tickets are $10 and proceeds will be donated to the Salvation Army!"
+    }
+  ],
+  "messages": [
+    "Red One is a comedy action film starring Dwayne Johnson, Chris Evans, and Lucy Liu.",
+    "After Santa Claus (code name: Red One) is kidnapped, the North Pole's Head of Security mus",
+    "**Rated PG | 2003 | 1h 37min**",
+    "Elf is th",
+    "Tuesday ",
+    "**FREE admission**",
+    "[More information on Sackville Business website](https://",
+    "**Event highlights:**",
+    "- Free snacks th",
+    "**$10 a"
+  ],
+  "stdout": "id\tname\tdescription_preview\n510002\tHoliday Movie: Red One\t**PG | 2025 | 2h 3min**\n\nRed One is a comedy action film starring Dwayne Johnson, Chris Evans, and Lucy Liu.\n\nAfter Santa Claus (code name: Red One) is kidnapped, the North Pole's Head of Security mus\n510004\tHoliday Movie & Craft: Elf\tEnjoy the holiday favourite **Elf** while crafting some movie-themed ornaments like a movable elf, a narwhal, or Buddy's famous plate of breakfast spaghetti.\n\n**Rated PG | 2003 | 1h 37min**\n\nElf is th\n510005\tTeen Night: Reindeer Games\tWith only two days left until Christmas, the Reindeer Games are well underway! To earn a spot on the sleigh team you'll need speed, mental acuity, and vast knowledge of all things Christmas.\n\nTuesday \n510007\tFa-la-la Christmas Stories\tWith the dazzling Rouge Fatale! A family-friendly hour of holiday magic featuring festive storytelling and entertainment.\n\n**FREE admission**\n\n[More information on Sackville Business website](https://\n510010\tNew Year's Eve Dance at Sackawa Canoe Club\tRing in 2026 at the Sackawa New Year's Dance! Join them for a night of celebration to count down to the New Year with great music, dancing, drinks, and friends.\n\n**Event highlights:**\n- Free snacks th\n510011\tNew Year's Eve Party at Freeman's Little New York\tRing in the new year with great music by Blackburn and James, champagne at midnight, and the incredible staff at Freeman's. Tickets are $10 and proceeds will be donated to the Salvation Army!\n\n**$10 a\n",
+  "stderr": "",
+  "execution_time_ms": 80
+}

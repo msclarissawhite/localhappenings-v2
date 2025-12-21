@@ -1427,3 +1427,9 @@
 - [x] Add pagination to event search results
 - [x] Update carousel component to display subtitles
 - [ ] Test all enhancements end-to-end
+
+## Event Description Formatting & Subtitle UI
+- [x] Check seeded events for raw markdown in descriptions
+- [x] Fix any raw markdown formatting in event descriptions (added Streamdown to carousel)
+- [x] Verify subtitle field is accessible in admin UI
+- [x] Document where subtitle field can be edited
