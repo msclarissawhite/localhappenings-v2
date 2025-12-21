@@ -1023,3 +1023,11 @@
 - [x] Rename "Neighbourhood" to "Neighbourhood/Community" (field doesn't exist in codebase)
 - [ ] Write vitest tests for filtering logic
 - [ ] Write vitest tests for accessibility features
+
+## Vitest Tests for Filtering and Accessibility (December 20, 2024)
+- [x] Write tests for location filtering (province, municipality) - filtering.test.ts
+- [x] Write tests for date filtering (date range, time of day) - filtering.test.ts
+- [x] Write tests for accessibility filtering (wheelchair, sensory, stroller, etc.) - filtering.test.ts
+- [x] Write tests for cost filtering (free, paid, kids free) - filtering.test.ts
+- [x] Write tests for accessibility features validation in event submission - accessibility.test.ts
+- [x] Run all tests and verify they pass (33 passing, 20 skipped database integration tests)
