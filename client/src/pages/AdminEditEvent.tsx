@@ -44,6 +44,30 @@ export default function AdminEditEvent() {
   });
 
   const [formData, setFormData] = useState<any>({
+    name: "",
+    description: "",
+    startDate: "",
+    endDate: "",
+    province: "",
+    municipality: "",
+    neighborhoodCommunity: "",
+    venue: "",
+    address: "",
+    isFree: false,
+    costType: "",
+    costMin: "",
+    costMax: "",
+    kidsFree: false,
+    freeCompanion: false,
+    allAges: false,
+    familyFriendly: false,
+    youngChildren: false,
+    kids: false,
+    teens: false,
+    adultsOnly: false,
+    seniors: false,
+    isIndoor: false,
+    isOutdoor: false,
     accessibility: {
       caregiver: {},
       mobility: {},
@@ -51,6 +75,13 @@ export default function AdminEditEvent() {
       cognitive: {},
       social: {},
     },
+    organizerName: "",
+    organizerEmail: "",
+    organizerPhone: "",
+    organizerWebsite: "",
+    displayOrganizerInfo: false,
+    notes: "",
+    imageUrl: "",
   });
   const [selectedProvince, setSelectedProvince] = useState<string>("");
   const [cities, setCities] = useState<string[]>([]);
@@ -128,9 +159,11 @@ export default function AdminEditEvent() {
     
     updateMutation.mutate({
       id: Number(id),
-      ...formData,
-      startDate: formData.startDate ? new Date(formData.startDate).toISOString() : undefined,
-      endDate: formData.endDate ? new Date(formData.endDate).toISOString() : undefined,
+      data: {
+        ...formData,
+        startDate: formData.startDate ? new Date(formData.startDate).toISOString() : undefined,
+        endDate: formData.endDate ? new Date(formData.endDate).toISOString() : undefined,
+      },
     });
   };
 

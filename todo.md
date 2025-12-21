@@ -1109,3 +1109,7 @@
 ## Admin Event Management
 - [x] Add admin-only edit button on event detail pages
 - [x] Create comprehensive edit form with all fields including accessibility criteria
+
+## Bug Fixes - Admin Edit Form
+- [x] Fix mutation error: "Invalid input: expected object, received undefined"
+- [x] Fix uncontrolled input warnings in admin edit form
