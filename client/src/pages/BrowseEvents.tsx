@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "wouter";
 import { 
   Calendar, MapPin, DollarSign, Users, Filter, X, Search,
-  Baby, Volume2, Eye, Heart, Accessibility, Star
+  Baby, Volume2, Eye, Heart, Accessibility, Star, Navigation
 } from "lucide-react";
 import { format } from "date-fns";
 
@@ -18,6 +18,8 @@ import type { EventFilters } from "@shared/types";
 import { BackToTop } from "@/components/BackToTop";
 import { EventTypeTags } from "@/components/EventTypeTags";
 import { EventTypeSelector } from "@/components/EventTypeSelector";
+import { EventsNearMe } from "@/components/EventsNearMe";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { CANADIAN_PROVINCES, CANADIAN_CITIES } from "@shared/canadian-locations";
 import {
   Accordion,
@@ -242,6 +244,20 @@ export default function BrowseEvents() {
 
         {/* Quick Toggles */}
         <div className="mb-6 flex flex-wrap gap-3">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm">
+                <Navigation className="w-4 h-4 mr-2" />
+                Near Me
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>Events Near You</DialogTitle>
+              </DialogHeader>
+              <EventsNearMe />
+            </DialogContent>
+          </Dialog>
           <Button
             variant={filters.today ? "default" : "outline"}
             size="sm"

@@ -1,4 +1,4 @@
-import { eq, and, or, gte, lte, like, inArray, sql, desc } from "drizzle-orm";
+import { eq, and, or, gte, lte, like, inArray, sql, desc, asc, isNotNull } from "drizzle-orm";
 import { events, eventTypes, eventToEventTypes, collections, collectionToEvents, organizers } from "../drizzle/schema";
 import { getDb } from "./db";
 import type { EventFilters } from "../shared/types";
@@ -604,6 +604,83 @@ export async function getPopularTags(limit: number = 8) {
     .leftJoin(eventTypeClicks, eq(eventTypes.id, eventTypeClicks.eventTypeId))
     .groupBy(eventTypes.id, eventTypes.name, eventTypes.category)
     .orderBy(desc(sql`COUNT(${eventTypeClicks.id})`))
+    .limit(limit);
+
+  return results;
+}
+
+/**
+ * Get nearby events based on user's geolocation
+ * Uses the Haversine formula to calculate distances
+ */
+export async function getNearbyEvents(
+  userLat: number,
+  userLon: number,
+  radiusKm: number = 50,
+  limit: number = 20
+) {
+  const db = await getDb();
+  if (!db) return [];
+
+  const { sql } = await import("drizzle-orm");
+  
+  // Haversine formula to calculate distance in kilometers
+  // Formula: 2 * R * asin(sqrt(sin²((lat2-lat1)/2) + cos(lat1) * cos(lat2) * sin²((lon2-lon1)/2)))
+  // where R = Earth's radius in km (6371)
+  const distanceFormula = sql<number>`
+    (6371 * acos(
+      cos(radians(${userLat})) *
+      cos(radians(${events.latitude})) *
+      cos(radians(${events.longitude}) - radians(${userLon})) +
+      sin(radians(${userLat})) *
+      sin(radians(${events.latitude}))
+    ))
+  `;
+
+  const now = new Date();
+  
+  const results = await db
+    .select({
+      id: events.id,
+      name: events.name,
+      description: events.description,
+      province: events.province,
+      municipality: events.municipality,
+      neighborhoodCommunity: events.neighborhoodCommunity,
+      venue: events.venue,
+      address: events.address,
+      latitude: events.latitude,
+      longitude: events.longitude,
+      startDate: events.startDate,
+      endDate: events.endDate,
+      timeOfDay: events.timeOfDay,
+      isFree: events.isFree,
+      costMin: events.costMin,
+      costMax: events.costMax,
+      allAges: events.allAges,
+      familyFriendly: events.familyFriendly,
+      youngChildren: events.youngChildren,
+      kids: events.kids,
+      teens: events.teens,
+      adultsOnly: events.adultsOnly,
+      seniors: events.seniors,
+      isIndoor: events.isIndoor,
+      isOutdoor: events.isOutdoor,
+      imageUrl: events.imageUrl,
+      status: events.status,
+      distance: distanceFormula.as('distance'),
+    })
+    .from(events)
+    .where(
+      and(
+        eq(events.status, "published"),
+        gte(events.startDate, now),
+        isNotNull(events.latitude),
+        isNotNull(events.longitude),
+        sql`${distanceFormula} <= ${radiusKm}`
+      )
+    )
+    .orderBy(asc(distanceFormula))
     .limit(limit);
 
   return results;

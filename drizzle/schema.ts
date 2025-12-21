@@ -1,4 +1,4 @@
-import { date, int, json, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { date, decimal, int, json, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -42,6 +42,8 @@ export const events = mysqlTable("events", {
   neighborhoodCommunity: varchar("neighborhoodCommunity", { length: 150 }),
   venue: text("venue"),
   address: text("address"),
+  latitude: decimal("latitude", { precision: 10, scale: 7 }), // Geocoded latitude (-90 to 90)
+  longitude: decimal("longitude", { precision: 10, scale: 7 }), // Geocoded longitude (-180 to 180)
   
   // Date & Time
   startDate: timestamp("startDate").notNull(),

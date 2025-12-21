@@ -1589,3 +1589,19 @@
 - [x] Identify component with nested <a> tags (FeaturedEventsCarousel)
 - [x] Fix nested anchor structure (replaced Link wrapper with onClick navigation)
 - [x] Test homepage to verify error is resolved
+
+
+## Geolocation-Based Event Discovery - Events Near Me
+- [x] Review current event schema for latitude/longitude fields
+- [x] Add latitude/longitude columns to events table
+- [x] Create distance calculation utility (Haversine formula)
+- [x] Add tRPC procedure for nearby events query
+- [x] Implement getNearbyEvents database function with Haversine formula
+- [x] Create EventsNearMe component with geolocation UI
+- [x] Handle browser geolocation permissions and errors
+- [x] Display events with distance information
+- [x] Sort events by distance from user location (handled by backend)
+- [x] Add "Near Me" button/section to Browse Events page
+- [x] Geocode existing events with coordinates (11 events geocoded successfully)
+- [x] Create geocoding script for populating event coordinates
+- [x] Test geolocation feature implementation

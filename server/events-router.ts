@@ -959,5 +959,26 @@ export const eventsRouter = router({
     .query(async ({ input }) => {
       return await eventsDb.getPopularTags(input.limit);
     }),
+
+  /**
+   * Get nearby events based on user's geolocation
+   */
+  nearbyEvents: publicProcedure
+    .input(
+      z.object({
+        latitude: z.number().min(-90).max(90),
+        longitude: z.number().min(-180).max(180),
+        radiusKm: z.number().optional().default(50), // Default 50km radius
+        limit: z.number().optional().default(20),
+      })
+    )
+    .query(async ({ input }) => {
+      return await eventsDb.getNearbyEvents(
+        input.latitude,
+        input.longitude,
+        input.radiusKm,
+        input.limit
+      );
+    }),
 });
 
