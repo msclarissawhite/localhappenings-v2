@@ -105,12 +105,38 @@ export function FeaturedEventsCarousel() {
                         <Calendar className="w-4 h-4" />
                         <span>{format(new Date(event.startDate), "MMM d, yyyy")}</span>
                       </div>
-                      {event.timeOfDay && (
-                        <div className="flex items-center gap-2 text-muted-foreground">
-                          <Clock className="w-4 h-4" />
-                          <span className="capitalize">{event.timeOfDay.replace("-", " ")}</span>
-                        </div>
-                      )}
+                      {(() => {
+                        const start = new Date(event.startDate);
+                        const end = event.endDate ? new Date(event.endDate) : null;
+                        
+                        if (end) {
+                          const hoursDiff = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
+                          if (hoursDiff < 24) {
+                            return (
+                              <div className="flex items-center gap-2 text-muted-foreground">
+                                <Clock className="w-4 h-4" />
+                                <span>{format(start, "h:mm a")} - {format(end, "h:mm a")}</span>
+                              </div>
+                            );
+                          }
+                        } else if (start.getHours() !== 0) {
+                          // Show start time if no end time and not midnight
+                          return (
+                            <div className="flex items-center gap-2 text-muted-foreground">
+                              <Clock className="w-4 h-4" />
+                              <span>Start time: {format(start, "h:mm a")}</span>
+                            </div>
+                          );
+                        } else if (event.timeOfDay) {
+                          return (
+                            <div className="flex items-center gap-2 text-muted-foreground">
+                              <Clock className="w-4 h-4" />
+                              <span className="capitalize">{event.timeOfDay.replace("-", " ")}</span>
+                            </div>
+                          );
+                        }
+                        return null;
+                      })()}
                       <div className="flex items-center gap-2 text-muted-foreground">
                         <MapPin className="w-4 h-4" />
                         <span>{event.municipality}, {event.province}</span>

@@ -132,7 +132,7 @@ const submitEventSchema = z.object({
   venue: z.string().optional(),
   address: z.string().optional(),
   startDate: z.date(),
-  endDate: z.date().optional(),
+  endDate: z.date().nullable().optional(),
   timeOfDay: z.enum(["morning", "afternoon", "evening", "all-day"]).optional(),
   isRecurring: z.boolean().default(false),
   recurrenceType: z.enum(["one-time", "weekly", "monthly", "seasonal"]).default("one-time"),

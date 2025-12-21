@@ -972,6 +972,9 @@ export default function BrowseEvents() {
                             // Add time range for events under 24 hours
                             if (end && isUnder24Hours) {
                               dateStr += ` • ${format(start, "h:mm a")} - ${format(end, "h:mm a")}`;
+                            } else if (!end && start.getHours() !== 0) {
+                              // Show start time if no end time and start time is not midnight
+                              dateStr += ` • Start time: ${format(start, "h:mm a")}`;
                             } else if (event.timeOfDay) {
                               dateStr += ` • ${event.timeOfDay.charAt(0).toUpperCase() + event.timeOfDay.slice(1).replace("-", " ")}`;
                             }

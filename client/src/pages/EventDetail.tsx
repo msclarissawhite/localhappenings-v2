@@ -425,6 +425,12 @@ export default function EventDetail() {
                             {format(start, "h:mm a")} - {format(end, "h:mm a")}
                           </p>
                         )}
+                        {/* Show start time if no end time and not midnight */}
+                        {!end && start.getHours() !== 0 && (
+                          <p className="text-sm text-muted-foreground">
+                            Start time: {format(start, "h:mm a")}
+                          </p>
+                        )}
                         {!isSameDay && daysDiff > 0 && !isUnder24Hours && (
                           <>
                             <p className="text-sm text-muted-foreground">

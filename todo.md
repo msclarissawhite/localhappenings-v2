@@ -1630,3 +1630,17 @@
 - [x] Ensure autocomplete provides full address with street number
 - [x] Update SubmitEvent, AdminEditEvent, and EditEvent forms
 - [ ] Test autocomplete with address search
+
+
+## Fix Event Edit - Remove End Time Error
+- [x] Investigate error when removing end time from event
+- [x] Check validation logic for optional end time
+- [x] Fix form submission to allow empty end time (added .nullable())
+- [ ] Test editing event with no end time
+
+
+## UX: Display Start Time When No End Time
+- [x] Find event card date/time display logic
+- [x] Add logic to show "Start time: 7:00 PM" when no end time exists
+- [x] Update all event card locations (BrowseEvents, FeaturedEventsCarousel, EventDetail)
+- [ ] Test with events that have only start time
