@@ -28,6 +28,7 @@ import { BatchEditModal } from "@/components/BatchEditModal";
 import FeedbackModeration from "@/pages/admin/FeedbackModeration";
 import { FeedbackAnalytics } from "@/pages/admin/FeedbackAnalytics";
 import { CollectionsManagement } from "@/pages/admin/CollectionsManagement";
+import { FeaturedEventsManagement } from "@/pages/admin/FeaturedEventsManagement";
 
 export default function AdminDashboard() {
   const { user, isAuthenticated } = useAuth();
@@ -38,7 +39,7 @@ export default function AdminDashboard() {
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [reviewAction, setReviewAction] = useState<"published" | "rejected" | "needs-clarification">("published");
   const [selectedEvents, setSelectedEvents] = useState<Set<number>>(new Set());
-  const [activeTab, setActiveTab] = useState<"events" | "pending-edits" | "closed-events" | "organizers" | "feature-requests" | "donations" | "feedback" | "analytics" | "collections" | "banners">("events");
+  const [activeTab, setActiveTab] = useState<"events" | "pending-edits" | "closed-events" | "organizers" | "feature-requests" | "donations" | "feedback" | "analytics" | "collections" | "banners" | "featured">("events");
   const [showBulkUpload, setShowBulkUpload] = useState(false);
   const [showBatchEdit, setShowBatchEdit] = useState(false);
 
@@ -397,6 +398,14 @@ export default function AdminDashboard() {
           >
             <Layers className="w-4 h-4 mr-2" />
             Banners
+          </Button>
+          <Button
+            variant={activeTab === "featured" ? "default" : "ghost"}
+            onClick={() => setActiveTab("featured")}
+            className="rounded-b-none"
+          >
+            <Layers className="w-4 h-4 mr-2" />
+            Featured Events
           </Button>
         </div>
 
@@ -1130,6 +1139,10 @@ export default function AdminDashboard() {
               <Button>Go to Banner Management</Button>
             </Link>
           </div>
+        )}
+
+        {activeTab === "featured" && (
+          <FeaturedEventsManagement />
         )}
 
         {activeTab === "closed-events" && (

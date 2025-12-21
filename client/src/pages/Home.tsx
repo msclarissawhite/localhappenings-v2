@@ -7,6 +7,7 @@ import { trpc } from "@/lib/trpc";
 import { Badge } from "@/components/ui/badge";
 import { useLocation } from "wouter";
 import { SeasonalBanner } from "@/components/SeasonalBanner";
+import { FeaturedEventsCarousel } from "@/components/FeaturedEventsCarousel";
 
 export default function Home() {
   const [, navigate] = useLocation();
@@ -51,6 +52,16 @@ export default function Home() {
       {/* Seasonal Banner */}
       <section className="container py-8">
         <SeasonalBanner />
+      </section>
+
+      {/* Featured Events Carousel */}
+      <section className="py-12">
+        <div className="container">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">
+            Featured Events
+          </h2>
+          <FeaturedEventsCarousel />
+        </div>
       </section>
 
       {/* Popular Tags Section */}

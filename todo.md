@@ -1403,3 +1403,12 @@
 - [x] Investigate why festive holidays banner is not showing in banner management UI
 - [x] Migrate existing hardcoded banner data to database
 - [x] Ensure SeasonalBanner component displays database banners correctly
+
+## Featured Events Carousel
+- [x] Create featuredEvents table in database schema
+- [x] Build backend API for managing featured events (add/remove/reorder)
+- [x] Create admin UI for selecting and ordering featured events
+- [x] Build homepage carousel component with auto-advance
+- [x] Implement fallback logic to show closest upcoming events
+- [x] Add carousel navigation controls (prev/next/dots)
+- [ ] Test manual curation and automatic fallback

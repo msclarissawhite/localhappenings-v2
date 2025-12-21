@@ -168,6 +168,21 @@ export type HomepageBanner = typeof homepageBanners.$inferSelect;
 export type InsertHomepageBanner = typeof homepageBanners.$inferInsert;
 
 /**
+ * Homepage featured events - manually curated events for homepage carousel
+ * Separate from paid featured events
+ */
+export const homepageFeaturedEvents = mysqlTable("homepageFeaturedEvents", {
+  id: int("id").autoincrement().primaryKey(),
+  eventId: int("eventId").notNull().references(() => events.id, { onDelete: "cascade" }),
+  sortOrder: int("sortOrder").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type HomepageFeaturedEvent = typeof homepageFeaturedEvents.$inferSelect;
+export type InsertHomepageFeaturedEvent = typeof homepageFeaturedEvents.$inferInsert;
+
+/**
  * Curated collections for seasonal/themed event groupings
  */
 export const collections = mysqlTable("collections", {
