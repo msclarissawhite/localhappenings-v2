@@ -32,7 +32,7 @@ The submission form has seven sections. Required fields are marked with an aster
 
 **Environment** indicates whether your event is Indoor, Outdoor, or both.
 
-**Event Types** lets you select categories that describe your event (e.g., Live Music, Festivals & Fairs, Christmas Events). You can select multiple types. These tags help families discover your event through filtering and appear as badges on event cards.
+**Event Types** lets you select categories that describe your event (e.g., Live Music, Festivals & Fairs, Festive Holidays). You can select multiple types. These tags help families discover your event through filtering and appear as badges on event cards.
 
 **Accessibility Information** is mandatory but flexible. For each question, select Yes, No, Unknown, or Not Relevant. The platform values transparency—if you don't know whether your venue has an elevator, select "Unknown" rather than skipping the question. Hover over the tooltip icons (ℹ️) next to each field to understand what information is being requested and why it matters.
 

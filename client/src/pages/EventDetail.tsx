@@ -4,6 +4,7 @@ import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { sanitizeHtml } from "@/lib/sanitize";
+import { Streamdown } from "streamdown";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, MapPin, DollarSign, Users, Clock, Building, Mail, Phone, Globe, ArrowLeft, Share2, Link2, Check, ShieldCheck, Bookmark, BookmarkCheck, Edit } from "lucide-react";
 import { format } from "date-fns";
@@ -378,10 +379,9 @@ export default function EventDetail() {
           {/* What It Is */}
           <Card className="p-6">
             <h2 className="text-xl font-semibold mb-3">What It Is</h2>
-            <div 
-              className="prose prose-sm max-w-none text-foreground leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: sanitizeHtml(event.description) }}
-            />
+            <div className="prose prose-sm max-w-none text-foreground leading-relaxed">
+              <Streamdown>{event.description}</Streamdown>
+            </div>
           </Card>
 
           {/* When & Where */}
@@ -490,7 +490,7 @@ export default function EventDetail() {
           </Card>
 
           {/* Accessibility & Logistics - COMPREHENSIVE */}
-          {accessibility && (
+          {true && (
             <Card className="p-6">
               <h2 className="text-xl font-semibold mb-4">Accessibility & Logistics</h2>
               <p className="text-sm text-muted-foreground mb-6">
@@ -749,6 +749,13 @@ export default function EventDetail() {
                   </div>
                 )}
               </div>
+              
+              {/* Show message if no accessibility data at all */}
+              {!accessibility && (
+                <div className="text-sm text-muted-foreground italic mt-4">
+                  Accessibility information not available for this event. Please contact the organizer for specific accessibility details.
+                </div>
+              )}
             </Card>
           )}
 

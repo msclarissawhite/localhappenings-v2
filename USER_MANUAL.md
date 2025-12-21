@@ -37,7 +37,7 @@ The application is built with **React 19**, **TypeScript**, **tRPC**, **Drizzle 
 
 ### Accessing the Platform
 
-Navigate to your deployed URL or local development server. The homepage displays the main hero section with two primary call-to-action buttons: **Browse Events** and **Submit an Event**. Below the hero section, a **Seasonal Banner** highlights timely event types based on the current month (e.g., Christmas Events in December, Summer Activities in June-August). This banner is clickable and automatically filters Browse Events by the featured seasonal tag.
+Navigate to your deployed URL or local development server. The homepage displays the main hero section with two primary call-to-action buttons: **Browse Events** and **Submit an Event**. Below the hero section, a **Seasonal Banner** highlights timely event types based on the current month (e.g., Festive Holidays in December, Summer Activities in June-August). This banner is clickable and automatically filters Browse Events by the featured seasonal tag.
 
 The **Popular Event Types** section displays the top 8 most-clicked event type tags, showing what's trending in the community. Each tag displays its click count and is clickable to filter Browse Events by that specific event type. This section helps users discover popular categories and provides quick access to frequently searched event types.
 
@@ -96,7 +96,7 @@ For more specific searches, the **Advanced Filters** panel organizes options int
 - **Community & Social**: Community Meetings, Fundraisers & Charity Events, Language Meetups, Pride Events, Religious/Faith-Based Events, Workshops & Classes
 - **Recreation & Sports**: Outdoor Adventure, Sports & Recreation
 - **Markets & Festivals**: Craft Shows & Markets, Festivals & Fairs, Food & Drink
-- **Seasonal**: Canada Day Events, Christmas Events, Easter Events, Halloween Events, Summer Activities, Winter Activities
+- **Seasonal**: Canada Day Events, Festive Holidays, Easter Events, Halloween Events, Summer Activities, Winter Activities
 
 Users can select multiple event types simultaneously to find events matching any of the selected categories. The Advanced Filters button displays a count of active filters for easy reference.
 

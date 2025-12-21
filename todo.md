@@ -1305,3 +1305,37 @@
 - [x] Update User Manual with accessibility settings section
 - [x] Update Feature Roadmap with completed and future accessibility features
 - [x] Check all documentation for updates needed
+
+## Onboarding Tour & Event Seeding (IN PROGRESS)
+- [x] Create simple onboarding tour component for first-time users
+- [x] Highlight accessibility settings button in tour
+- [x] Add localStorage flag to track if user has seen tour
+- [x] Rename "Christmas Events" to "Festive Holidays" in eventTypes table
+- [x] Update seasonal banner mapping for December
+- [x] Update all documentation references to Festive Holidays
+- [x] Delete test events from database
+- [x] Scrape upcoming holiday events from Halifax Public Libraries
+- [x] Scrape upcoming holiday events from Sackville Business Association
+- [x] Filter for events after today's date
+- [x] Tag imported events with Festive Holidays event type
+- [x] Add event URLs to descriptions for more information
+- [x] Test imported events display correctly
+- [x] Fix event type tag associations for seeded events
+
+## Event Display Improvements (IN PROGRESS)
+- [x] Add prominent venue/location display to event cards in Browse Events
+- [x] Show venueName if available, otherwise show neighborhood/municipality
+- [x] Fix venue field name from venueName to venue in BrowseEvents
+- [x] Test venue display with seeded library events
+- [x] Fix markdown rendering in event descriptions (currently showing raw markdown)
+- [x] Use Streamdown component to render markdown properly
+- [x] Create AccessibilityDisplay component for smart field rendering
+- [x] Hide empty accessibility fields entirely (already implemented)
+- [x] Show "Unknown" or "Not Sure" values to indicate transparency (already implemented)
+- [x] Add fallback message when accessibility data is completely missing
+- [x] Always show Accessibility & Logistics card for transparency
+- [x] Add "Accessibility information not available" message for events with no data
+- [x] Test accessibility display with seeded events (minimal data) and user-submitted events (full data)
+- [x] Verify Unknown badges display correctly for all accessibility fields
+- [x] Confirm venue names display prominently on event cards
+- [x] Confirm markdown descriptions render properly with links and formatting

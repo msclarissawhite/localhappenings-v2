@@ -15,11 +15,11 @@ interface SeasonalTag {
 const getSeasonalTag = (): SeasonalTag | null => {
   const month = new Date().getMonth(); // 0-11
 
-  // December: Christmas Events
+  // December: Festive Holidays
   if (month === 11) {
     return {
       id: 30027,
-      name: "Christmas Events",
+      name: "Festive Holidays",
       icon: <Snowflake className="h-5 w-5" />,
       gradient: "from-red-500 to-green-600",
       textColor: "text-white",

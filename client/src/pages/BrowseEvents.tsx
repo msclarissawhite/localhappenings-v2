@@ -849,7 +849,21 @@ export default function BrowseEvents() {
                       </div>
                       <div className="flex items-center gap-2">
                         <MapPin className="w-4 h-4" />
-                        <span>{event.municipality}, {event.province}</span>
+                        <span>
+                          {event.venue ? (
+                            <>
+                              <span className="font-medium">{event.venue}</span>
+                              <span className="text-muted-foreground"> • {event.municipality}, {event.province}</span>
+                            </>
+                          ) : event.neighborhood ? (
+                            <>
+                              <span className="font-medium">{event.neighborhood}</span>
+                              <span className="text-muted-foreground"> • {event.municipality}, {event.province}</span>
+                            </>
+                          ) : (
+                            `${event.municipality}, ${event.province}`
+                          )}
+                        </span>
                       </div>
                       {!!event.isFree && (
                         <div className="flex items-center gap-2 text-accent">

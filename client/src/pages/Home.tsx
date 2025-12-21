@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Link } from "wouter";
+import { OnboardingTour } from "@/components/OnboardingTour";
 import { Calendar, Heart, MapPin, Search, Shield, Users, TrendingUp } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { Badge } from "@/components/ui/badge";
@@ -18,6 +19,7 @@ export default function Home() {
   
   return (
     <div>
+      <OnboardingTour />
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary/10 via-background to-accent/10 py-16 md:py-24">
         <div className="container">
