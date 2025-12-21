@@ -92,6 +92,13 @@
       "when": 1766283600080,
       "tag": "0012_fine_norrin_radd",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "5",
+      "when": 1766287771567,
+      "tag": "0013_shiny_mauler",
+      "breakpoints": true
     }
   ]
 }

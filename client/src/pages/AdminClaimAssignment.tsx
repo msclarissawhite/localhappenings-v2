@@ -13,12 +13,8 @@ export function AdminClaimAssignment() {
   const [selectedEventIds, setSelectedEventIds] = useState<number[]>([]);
   const [claimUrl, setClaimUrl] = useState("");
 
-  // Get all pending/published events without organizer
-  const { data: unclaimedEvents, isLoading } = trpc.events.list.useQuery({
-    status: "published",
-    limit: 100,
-    offset: 0,
-  });
+  // Get all unclaimed published events
+  const { data: unclaimedEvents, isLoading } = trpc.claim.getUnclaimedEvents.useQuery();
 
   const createClaimMutation = trpc.claim.createClaimToken.useMutation({
     onSuccess: (data) => {
@@ -56,10 +52,8 @@ export function AdminClaimAssignment() {
     toast.success("Claim URL copied to clipboard");
   };
 
-  // Filter events without organizer - handle nested structure from events.list
-  const eventsToAssign = unclaimedEvents?.events?.filter(
-    (item: any) => !item.event?.organizerId && !item.organizer
-  ).map((item: any) => item.event);
+  // Events are already filtered on the backend
+  const eventsToAssign = unclaimedEvents || [];
 
   return (
     <div className="container max-w-4xl py-8">
@@ -92,7 +86,7 @@ export function AdminClaimAssignment() {
                 <p className="text-sm text-muted-foreground">No unclaimed events available</p>
               )}
 
-              {eventsToAssign?.map((event: any) => (
+              {eventsToAssign.map((event) => (
                 <div key={event.id} className="flex items-start gap-3 p-2 hover:bg-muted/50 rounded">
                   <Checkbox
                     checked={selectedEventIds.includes(event.id)}

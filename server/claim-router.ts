@@ -1,11 +1,22 @@
 import { router, protectedProcedure, publicProcedure } from "./_core/trpc";
 import { z } from "zod";
 import { getDb } from "./db";
+import { getUnclaimedEvents } from "./unclaimed-events-db";
 import { events, eventClaimTokens, organizers } from "../drizzle/schema";
 import { eq, and, inArray } from "drizzle-orm";
 import { randomBytes } from "crypto";
 
 export const claimRouter = router({
+  /**
+   * Admin: Get all unclaimed published events
+   */
+  getUnclaimedEvents: protectedProcedure.query(async ({ ctx }) => {
+    if (ctx.user.role !== "admin") {
+      throw new Error("Unauthorized: Admin access required");
+    }
+    return await getUnclaimedEvents();
+  }),
+
   /**
    * Admin: Create claim token for organizer and assign events
    */

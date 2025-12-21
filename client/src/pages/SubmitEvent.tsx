@@ -78,6 +78,9 @@ const submitEventSchema = z.object({
   organizerPhone: z.string().optional(),
   organizerWebsite: z.string().optional(),
   displayOrganizerInfo: z.boolean(),
+  publicContactName: z.string().optional(),
+  publicContactEmail: z.string().email("Invalid email").optional().or(z.literal("")),
+  publicContactPhone: z.string().optional(),
   notes: z.string().optional(),
 }).refine(
   (data) => {
@@ -703,7 +706,7 @@ export default function SubmitEvent() {
           </div>
         </Card>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={handleSubmit(onSubmit as any)} className="space-y-8">
           {/* Basic Information */}
           <Card className="p-6">
             <h2 className="text-xl font-semibold mb-4">Basic Information</h2>
@@ -1803,11 +1806,11 @@ This transparency helps build trust with your community, even if not every detai
             </div>
           </Card>
 
-          {/* Organizer Information */}
+          {/* Organizer Details */}
           <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Organizer Information *</h2>
+            <h2 className="text-xl font-semibold mb-4">Organizer Details *</h2>
             <p className="text-sm text-muted-foreground mb-4">
-              We need contact information to reach you about this event if needed. At least one contact method (email or phone) is required.
+              Your contact information for admin communication and account management. At least one contact method (email or phone) is required.
             </p>
             <div className="space-y-4">
               <div>
@@ -1819,14 +1822,14 @@ This transparency helps build trust with your community, even if not every detai
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="organizerEmail">Contact Email *</Label>
+                  <Label htmlFor="organizerEmail">Email *</Label>
                   <Input id="organizerEmail" type="email" {...register("organizerEmail")} />
                   {errors.organizerEmail && (
                     <p className="text-sm text-destructive mt-1">{errors.organizerEmail.message}</p>
                   )}
                 </div>
                 <div>
-                  <Label htmlFor="organizerPhone">Contact Phone *</Label>
+                  <Label htmlFor="organizerPhone">Phone *</Label>
                   <Input id="organizerPhone" type="tel" {...register("organizerPhone")} placeholder="(902) 555-1234" />
                   {errors.organizerPhone && (
                     <p className="text-sm text-destructive mt-1">{errors.organizerPhone.message}</p>
@@ -1837,6 +1840,65 @@ This transparency helps build trust with your community, even if not every detai
                 <Label htmlFor="organizerWebsite">Website (Optional)</Label>
                 <Input id="organizerWebsite" type="url" {...register("organizerWebsite")} placeholder="https://" />
               </div>
+            </div>
+          </Card>
+
+          {/* Public Display Contact */}
+          <Card className="p-6">
+            <h2 className="text-xl font-semibold mb-4">Public Display Contact (Optional)</h2>
+            <p className="text-sm text-muted-foreground mb-4">
+              If you want attendees to contact a different person or inbox for event questions, provide those details here. Otherwise, your organizer details will be displayed.
+            </p>
+            <div className="space-y-4">
+              <div className="flex items-start gap-3 pb-2">
+                <Checkbox
+                  id="sameAsOrganizer"
+                  checked={watch("publicContactName") === "" && watch("publicContactEmail") === "" && watch("publicContactPhone") === ""}
+                  onCheckedChange={(checked) => {
+                    if (checked) {
+                      setValue("publicContactName", "");
+                      setValue("publicContactEmail", "");
+                      setValue("publicContactPhone", "");
+                    }
+                  }}
+                />
+                <div className="space-y-1">
+                  <Label htmlFor="sameAsOrganizer" className="cursor-pointer font-normal">
+                    Same as organizer details
+                  </Label>
+                  <p className="text-sm text-muted-foreground">
+                    Use the organizer contact information above for public display.
+                  </p>
+                </div>
+              </div>
+              <div>
+                <Label htmlFor="publicContactName">Public Contact Name</Label>
+                <Input 
+                  id="publicContactName" 
+                  {...register("publicContactName")} 
+                  placeholder="e.g., Events Coordinator"
+                />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="publicContactEmail">Public Email</Label>
+                  <Input 
+                    id="publicContactEmail" 
+                    type="email" 
+                    {...register("publicContactEmail")} 
+                    placeholder="events@example.com"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="publicContactPhone">Public Phone</Label>
+                  <Input 
+                    id="publicContactPhone" 
+                    type="tel" 
+                    {...register("publicContactPhone")} 
+                    placeholder="(902) 555-1234"
+                  />
+                </div>
+              </div>
               <div className="flex items-start gap-3 pt-2">
                 <Checkbox
                   id="displayOrganizerInfo"
@@ -1845,10 +1907,10 @@ This transparency helps build trust with your community, even if not every detai
                 />
                 <div className="space-y-1">
                   <Label htmlFor="displayOrganizerInfo" className="cursor-pointer font-normal">
-                    Display organizer contact information publicly
+                    Display contact information publicly
                   </Label>
                   <p className="text-sm text-muted-foreground">
-                    If checked, your contact information will be visible on the event page. If unchecked, only admins can see it.
+                    If checked, contact information will be visible on the event page. If unchecked, only admins can see it.
                   </p>
                 </div>
               </div>

@@ -1,0 +1,8 @@
+{
+  "query": "ALTER TABLE events \nADD COLUMN publicContactName VARCHAR(255) AFTER displayOrganizerInfo,\nADD COLUMN publicContactEmail VARCHAR(320) AFTER publicContactName,\nADD COLUMN publicContactPhone VARCHAR(50) AFTER publicContactEmail;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute ALTER TABLE events \nADD COLUMN publicContactName VARCHAR(255) AFTER displayOrganizerInfo,\nADD COLUMN publicContactEmail VARCHAR(320) AFTER publicContactName,\nADD COLUMN publicContactPhone VARCHAR(50) AFTER publicContactEmail;",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 1: Unknown column 'publiccontactname' in 'events'"
+  ]
+}

@@ -18,6 +18,7 @@ import {
 import { toast } from "sonner";
 import { Loader2, ArrowLeft } from "lucide-react";
 import { CANADIAN_PROVINCES, CANADIAN_CITIES } from "@shared/canadian-locations";
+import { AccessibilityFields } from "@/components/AccessibilityFields";
 
 export default function EditEvent() {
   const { id } = useParams<{ id: string }>();
@@ -291,6 +292,22 @@ export default function EditEvent() {
             </div>
           </div>
         </Card>
+
+        <AccessibilityFields
+          accessibility={formData.accessibility}
+          updateAccessibility={(category, field, value) => {
+            setFormData(prev => ({
+              ...prev,
+              accessibility: {
+                ...prev.accessibility,
+                [category]: {
+                  ...prev.accessibility[category],
+                  [field]: value,
+                },
+              },
+            }));
+          }}
+        />
 
         <div className="flex gap-4">
           <Button type="submit" disabled={updateMutation.isPending}>

@@ -1085,3 +1085,11 @@
 - [ ] Create test event in database
 - [ ] Generate claim token for test organizer email
 - [ ] Verify claim link works and creates organizer account
+
+## Admin & Organizer UX Improvements
+- [x] Fix admin claim assignment UI to properly display unclaimed events
+- [x] Add "Import accessibility from existing event" button to saved location form
+- [x] Add accessibility fields to organizer event edit form (currently only shows basic info and location)
+- [x] Add two-section contact form: "Organizer Details" and "Public Display Contact (Optional)"
+- [x] Add "Same as organizer details" checkbox to auto-fill public contact from organizer info
+- [x] Update event display to show public contact if provided, otherwise organizer contact

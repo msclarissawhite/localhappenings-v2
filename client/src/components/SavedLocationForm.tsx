@@ -9,6 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { ArrowLeft } from "lucide-react";
 import type { AccessibilityData } from "@shared/types";
+import { ImportAccessibilitySelector } from "@/components/ImportAccessibilitySelector";
 
 interface SavedLocationFormProps {
   locationId?: number;
@@ -32,6 +33,7 @@ export function SavedLocationForm({ locationId, organizerId }: SavedLocationForm
     cognitive: {},
     social: {},
   });
+  const [showEventSelector, setShowEventSelector] = useState(false);
 
   // Load existing location if editing
   const { data: existingLocation } = trpc.savedLocations.getById.useQuery(
@@ -227,12 +229,44 @@ export function SavedLocationForm({ locationId, organizerId }: SavedLocationForm
               </div>
             </div>
 
-            {/* Note about accessibility */}
-            <div className="bg-muted/50 p-4 rounded-lg">
-              <p className="text-sm text-muted-foreground">
-                💡 <strong>Tip:</strong> Accessibility details can be filled in when creating events. 
-                This form focuses on the basic location information that stays the same.
-              </p>
+            {/* Accessibility Import */}
+            <div className="space-y-4">
+              <div className="bg-primary/5 border-l-4 border-primary p-4 rounded-r-lg">
+                <h3 className="font-semibold mb-2">Accessibility Information (Optional)</h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Save accessibility details for this location so you can reuse them across multiple events. 
+                  Import from an existing event or fill in manually when creating events.
+                </p>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setShowEventSelector(!showEventSelector)}
+                  className="w-full sm:w-auto"
+                >
+                  {showEventSelector ? "Cancel Import" : "Import from Existing Event"}
+                </Button>
+              </div>
+
+              {showEventSelector && (
+                <ImportAccessibilitySelector
+                  organizerId={organizerId}
+                  onImport={(importedAccessibility) => {
+                    setAccessibility(importedAccessibility);
+                    setShowEventSelector(false);
+                    toast.success("Accessibility details imported successfully");
+                  }}
+                />
+              )}
+
+              {Object.keys(accessibility.caregiver || {}).length > 0 || 
+               Object.keys(accessibility.mobility || {}).length > 0 || 
+               Object.keys(accessibility.sensory || {}).length > 0 ? (
+                <div className="bg-green-50 border border-green-200 p-3 rounded-lg">
+                  <p className="text-sm text-green-800">
+                    ✓ Accessibility details saved for this location
+                  </p>
+                </div>
+              ) : null}
             </div>
 
             {/* Submit Buttons */}

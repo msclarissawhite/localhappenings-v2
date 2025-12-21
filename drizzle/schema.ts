@@ -89,6 +89,11 @@ export const events = mysqlTable("events", {
   organizerWebsite: text("organizerWebsite"),
   displayOrganizerInfo: int("displayOrganizerInfo").default(1).notNull(), // 0 = hide, 1 = show publicly
   
+  // Public Contact Info (optional - for displaying different contact than organizer account)
+  publicContactName: varchar("publicContactName", { length: 255 }),
+  publicContactEmail: varchar("publicContactEmail", { length: 320 }),
+  publicContactPhone: varchar("publicContactPhone", { length: 50 }),
+  
   // Additional Info
   notes: text("notes"),
   imageUrl: text("imageUrl"),

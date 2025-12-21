@@ -732,61 +732,71 @@ export default function EventDetail() {
             </Card>
           )}
 
-          {/* Organizer Info */}
-          {!!event.displayOrganizerInfo && (event.organizerName || event.organizerEmail || event.organizerPhone || event.organizerWebsite) && (
-            <Card className="p-6">
-              <h2 className="text-xl font-semibold mb-4">Organizer Information</h2>
-              <div className="space-y-3">
-                {event.organizerName && (
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <p className="font-medium">{event.organizerName}</p>
-                      {event.organizerIsVerified && (
-                        <Badge variant="default" className="gap-1 bg-emerald-600 hover:bg-emerald-700">
-                          <ShieldCheck className="w-3 h-3" />
-                          Verified
-                        </Badge>
+          {/* Contact Info */}
+          {!!event.displayOrganizerInfo && (() => {
+            // Use public contact if provided, otherwise fall back to organizer contact
+            const displayName = event.publicContactName || event.organizerName;
+            const displayEmail = event.publicContactEmail || event.organizerEmail;
+            const displayPhone = event.publicContactPhone || event.organizerPhone;
+            const hasContact = displayName || displayEmail || displayPhone || event.organizerWebsite;
+            
+            if (!hasContact) return null;
+            
+            return (
+              <Card className="p-6">
+                <h2 className="text-xl font-semibold mb-4">Contact Information</h2>
+                <div className="space-y-3">
+                  {displayName && (
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium">{displayName}</p>
+                        {event.organizerIsVerified && (
+                          <Badge variant="default" className="gap-1 bg-emerald-600 hover:bg-emerald-700">
+                            <ShieldCheck className="w-3 h-3" />
+                            Verified
+                          </Badge>
+                        )}
+                      </div>
+                      {event.organizerType && (
+                        <p className="text-sm text-muted-foreground capitalize">
+                          {event.organizerType.replace("-", " ")}
+                        </p>
                       )}
                     </div>
-                    {event.organizerType && (
-                      <p className="text-sm text-muted-foreground capitalize">
-                        {event.organizerType.replace("-", " ")}
-                      </p>
-                    )}
-                  </div>
-                )}
-                {event.organizerEmail && (
-                  <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-muted-foreground" />
-                    <a href={`mailto:${event.organizerEmail}`} className="text-primary hover:underline">
-                      {event.organizerEmail}
-                    </a>
-                  </div>
-                )}
-                {event.organizerPhone && (
-                  <div className="flex items-center gap-2">
-                    <Phone className="w-4 h-4 text-muted-foreground" />
-                    <a href={`tel:${event.organizerPhone}`} className="text-primary hover:underline">
-                      {event.organizerPhone}
-                    </a>
-                  </div>
-                )}
-                {event.organizerWebsite && (
-                  <div className="flex items-center gap-2">
-                    <Globe className="w-4 h-4 text-muted-foreground" />
-                    <a
-                      href={event.organizerWebsite}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-primary hover:underline"
-                    >
-                      Visit website
-                    </a>
-                  </div>
-                )}
-              </div>
-            </Card>
-          )}
+                  )}
+                  {displayEmail && (
+                    <div className="flex items-center gap-2">
+                      <Mail className="w-4 h-4 text-muted-foreground" />
+                      <a href={`mailto:${displayEmail}`} className="text-primary hover:underline">
+                        {displayEmail}
+                      </a>
+                    </div>
+                  )}
+                  {displayPhone && (
+                    <div className="flex items-center gap-2">
+                      <Phone className="w-4 h-4 text-muted-foreground" />
+                      <a href={`tel:${displayPhone}`} className="text-primary hover:underline">
+                        {displayPhone}
+                      </a>
+                    </div>
+                  )}
+                  {event.organizerWebsite && (
+                    <div className="flex items-center gap-2">
+                      <Globe className="w-4 h-4 text-muted-foreground" />
+                      <a
+                        href={event.organizerWebsite}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline"
+                      >
+                        Visit website
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </Card>
+            );
+          })()}
 
           {/* Additional Notes */}
           {event.notes && (
