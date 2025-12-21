@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Loader2, ArrowLeft, Shield } from "lucide-react";
+import { useRef } from "react";
 import { CANADIAN_PROVINCES, CANADIAN_CITIES } from "@shared/canadian-locations";
 import { AccessibilityFields } from "@/components/AccessibilityFields";
 import { EventTypeSelector } from "@/components/EventTypeSelector";
@@ -109,9 +110,11 @@ export default function AdminEditEvent() {
   const [selectedProvince, setSelectedProvince] = useState<string>("");
   const [cities, setCities] = useState<string[]>([]);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
+  const formInitialized = useRef(false);
 
   useEffect(() => {
-    if (event) {
+    if (event && !formInitialized.current) {
+      formInitialized.current = true;
       setFormData({
         name: event.name || "",
         description: event.description || "",

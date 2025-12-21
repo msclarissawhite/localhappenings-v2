@@ -1547,3 +1547,9 @@
 - [x] Fix featured card 404 error when clicking from homepage carousel (was /events/ instead of /event/)
 - [x] Fix raw markdown showing in fallback event descriptions
 - [x] Add markdown rendering for event descriptions in carousel (using ReactMarkdown)
+
+
+## Admin Edit Form State Reset Bug
+- [x] Fix form losing unsaved changes when switching windows/tabs
+- [x] Investigate useEffect dependencies causing form reset (event refetch was resetting form)
+- [x] Preserve user input when component re-renders (using formInitialized ref)
