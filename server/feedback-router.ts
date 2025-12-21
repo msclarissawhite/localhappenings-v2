@@ -4,6 +4,7 @@ import { getDb } from "./db";
 import { eventFeedback } from "../drizzle/schema";
 import { eq, and, gte, desc, sql } from "drizzle-orm";
 import { detectSpam } from "./spam-detection";
+import { triggerSpamDigest } from "./spam-digest";
 import { syncFeedbackToClickUp } from "./clickup-feedback-sync";
 
 export const feedbackRouter = router({
@@ -291,6 +292,89 @@ export const feedbackRouter = router({
       .from(eventFeedback);
 
     return result[0] || { total: 0, attended: 0, avgRating: null };
+  }),
+
+  /**
+   * Get basic feedback analytics (admin only)
+   */
+  getAnalytics: protectedProcedure.query(async ({ ctx }) => {
+    if (ctx.user.role !== "admin") {
+      throw new Error("Unauthorized: Admin access required");
+    }
+
+    const db = await getDb();
+    if (!db) throw new Error("Database not available");
+
+    // Overall stats
+    const [overallStats] = await db
+      .select({
+        totalFeedback: sql<number>`COUNT(*)`,
+        totalAttended: sql<number>`SUM(CASE WHEN attended = 1 THEN 1 ELSE 0 END)`,
+        avgRating: sql<number>`AVG(CASE WHEN attended = 1 AND accuracyRating IS NOT NULL THEN accuracyRating ELSE NULL END)`,
+        spamCount: sql<number>`SUM(CASE WHEN isSpam = 1 THEN 1 ELSE 0 END)`,
+      })
+      .from(eventFeedback);
+
+    // Top rated events (by average accuracy)
+    const topEvents = await db
+      .select({
+        eventId: eventFeedback.eventId,
+        eventName: sql<string>`e.name`,
+        avgRating: sql<number>`AVG(CASE WHEN ${eventFeedback.attended} = 1 AND ${eventFeedback.accuracyRating} IS NOT NULL THEN ${eventFeedback.accuracyRating} ELSE NULL END)`,
+        feedbackCount: sql<number>`COUNT(*)`,
+        attendedCount: sql<number>`SUM(CASE WHEN ${eventFeedback.attended} = 1 THEN 1 ELSE 0 END)`,
+      })
+      .from(eventFeedback)
+      .leftJoin(sql`events e`, sql`e.id = ${eventFeedback.eventId}`)
+      .groupBy(eventFeedback.eventId, sql`e.name`)
+      .having(sql`COUNT(*) >= 3`) // At least 3 feedback submissions
+      .orderBy(sql`avgRating DESC`)
+      .limit(10);
+
+    // Recent feedback (last 30 days)
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    const [recentStats] = await db
+      .select({
+        count: sql<number>`COUNT(*)`,
+        attended: sql<number>`SUM(CASE WHEN attended = 1 THEN 1 ELSE 0 END)`,
+      })
+      .from(eventFeedback)
+      .where(gte(eventFeedback.submittedAt, thirtyDaysAgo));
+
+    return {
+      overall: {
+        totalFeedback: Number(overallStats.totalFeedback) || 0,
+        totalAttended: Number(overallStats.totalAttended) || 0,
+        avgRating: overallStats.avgRating ? parseFloat(Number(overallStats.avgRating).toFixed(2)) : null,
+        spamCount: Number(overallStats.spamCount) || 0,
+        attendanceRate: overallStats.totalFeedback
+          ? parseFloat(((Number(overallStats.totalAttended) / Number(overallStats.totalFeedback)) * 100).toFixed(1))
+          : 0,
+      },
+      topEvents: topEvents.map((e) => ({
+        eventId: e.eventId,
+        eventName: e.eventName,
+        avgRating: e.avgRating ? parseFloat(Number(e.avgRating).toFixed(2)) : null,
+        feedbackCount: Number(e.feedbackCount),
+        attendedCount: Number(e.attendedCount),
+      })),
+      recent: {
+        count: Number(recentStats.count) || 0,
+        attended: Number(recentStats.attended) || 0,
+      },
+    };
+  }),
+
+  /**
+   * Manually trigger spam digest email (admin only, for testing)
+   */
+  triggerSpamDigest: protectedProcedure.mutation(async ({ ctx }) => {
+    if (ctx.user.role !== "admin") {
+      throw new Error("Unauthorized: Admin access required");
+    }
+
+    const success = await triggerSpamDigest();
+    return { success };
   }),
 
   /**

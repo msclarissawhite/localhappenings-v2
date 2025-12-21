@@ -468,3 +468,20 @@ export const eventEditHistory = mysqlTable("eventEditHistory", {
 
 export type EventEditHistory = typeof eventEditHistory.$inferSelect;
 export type InsertEventEditHistory = typeof eventEditHistory.$inferInsert;
+
+/**
+ * Feedback Response Templates - Reusable email templates for responding to organizers
+ * Helps admins quickly respond to common organizer questions about feedback
+ */
+export const feedbackTemplates = mysqlTable("feedbackTemplates", {
+  id: int("id").primaryKey().autoincrement(),
+  name: varchar("name", { length: 255 }).notNull(),
+  subject: varchar("subject", { length: 500 }).notNull(),
+  body: text("body").notNull(),
+  category: varchar("category", { length: 100 }), // e.g., "accuracy_improvement", "general_inquiry", "technical_support"
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type FeedbackTemplate = typeof feedbackTemplates.$inferSelect;
+export type InsertFeedbackTemplate = typeof feedbackTemplates.$inferInsert;

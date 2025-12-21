@@ -1182,3 +1182,21 @@
 - [x] Update USER_MANUAL.md with spam detection feature
 - [x] Document admin spam moderation workflow
 - [x] Review and clean up completed tasks in todo.md
+
+## Email Notifications for Spam Alerts
+- [ ] Create backend procedure to fetch spam flagged in last 24 hours
+- [ ] Create email template for daily spam digest
+- [ ] Implement scheduled job to send daily spam digest to admin
+- [ ] Test spam digest email delivery
+
+## Feedback Response Templates
+- [ ] Create templates table in database schema
+- [ ] Create backend CRUD procedures for templates
+- [ ] Build Templates management UI in admin dashboard
+- [ ] Add quick-reply template selector to organizer communications
+- [ ] Test template creation and usage
+
+## Feedback Analytics Dashboard (Basic Version)
+- [x] Create backend procedure for basic analytics stats
+- [x] Add Analytics tab to admin dashboard with key metrics
+- [x] Test analytics display

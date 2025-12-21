@@ -25,6 +25,7 @@ import { DuplicateWarning } from "@/components/DuplicateWarning";
 import { BulkUpload } from "@/components/BulkUpload";
 import { BatchEditModal } from "@/components/BatchEditModal";
 import FeedbackModeration from "@/pages/admin/FeedbackModeration";
+import { FeedbackAnalytics } from "@/pages/admin/FeedbackAnalytics";
 
 export default function AdminDashboard() {
   const { user, isAuthenticated } = useAuth();
@@ -35,7 +36,7 @@ export default function AdminDashboard() {
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [reviewAction, setReviewAction] = useState<"published" | "rejected" | "needs-clarification">("published");
   const [selectedEvents, setSelectedEvents] = useState<Set<number>>(new Set());
-  const [activeTab, setActiveTab] = useState<"events" | "pending-edits" | "closed-events" | "organizers" | "feature-requests" | "donations" | "feedback">("events");
+  const [activeTab, setActiveTab] = useState<"events" | "pending-edits" | "closed-events" | "organizers" | "feature-requests" | "donations" | "feedback" | "analytics">("events");
   const [showBulkUpload, setShowBulkUpload] = useState(false);
   const [showBatchEdit, setShowBatchEdit] = useState(false);
 
@@ -366,6 +367,14 @@ export default function AdminDashboard() {
           >
             <MessageSquare className="w-4 h-4 mr-2" />
             Feedback
+          </Button>
+          <Button
+            variant={activeTab === "analytics" ? "default" : "ghost"}
+            onClick={() => setActiveTab("analytics")}
+            className="rounded-b-none"
+          >
+            <TrendingUp className="w-4 h-4 mr-2" />
+            Analytics
           </Button>
         </div>
 
@@ -1080,6 +1089,10 @@ export default function AdminDashboard() {
 
         {activeTab === "feedback" && (
           <FeedbackModeration />
+        )}
+
+        {activeTab === "analytics" && (
+          <FeedbackAnalytics />
         )}
 
         {activeTab === "closed-events" && (
