@@ -1488,3 +1488,8 @@
 ## Event Duration Display Bug
 - [x] Fix duration calculation showing days instead of hours for short events
 - [x] Investigate event detail page duration logic (fixed to compare calendar days, not timestamps)
+
+
+## Admin Edit Event Form Bug
+- [x] Fix data type validation errors (dates, numbers, booleans)
+- [x] Transform form data to correct types before submission

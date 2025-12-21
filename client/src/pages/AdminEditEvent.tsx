@@ -171,13 +171,32 @@ export default function AdminEditEvent() {
     
     if (!id) return;
     
+    // Transform form data to correct types
+    const transformedData = {
+      ...formData,
+      startDate: formData.startDate ? new Date(formData.startDate) : undefined,
+      endDate: formData.endDate ? new Date(formData.endDate) : undefined,
+      costMin: formData.costMin ? parseFloat(formData.costMin) : undefined,
+      costMax: formData.costMax ? parseFloat(formData.costMax) : undefined,
+      costType: formData.costType || undefined,
+      adultsOnly: Boolean(formData.adultsOnly),
+      isIndoor: Boolean(formData.isIndoor),
+      isOutdoor: Boolean(formData.isOutdoor),
+      isFree: Boolean(formData.isFree),
+      kidsFree: Boolean(formData.kidsFree),
+      freeCompanion: Boolean(formData.freeCompanion),
+      allAges: Boolean(formData.allAges),
+      familyFriendly: Boolean(formData.familyFriendly),
+      youngChildren: Boolean(formData.youngChildren),
+      kids: Boolean(formData.kids),
+      teens: Boolean(formData.teens),
+      seniors: Boolean(formData.seniors),
+      displayOrganizerInfo: Boolean(formData.displayOrganizerInfo),
+    };
+    
     updateMutation.mutate({
       id: Number(id),
-      data: {
-        ...formData,
-        startDate: formData.startDate ? new Date(formData.startDate).toISOString() : undefined,
-        endDate: formData.endDate ? new Date(formData.endDate).toISOString() : undefined,
-      },
+      data: transformedData,
     });
   };
 
