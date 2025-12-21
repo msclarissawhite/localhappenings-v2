@@ -1070,3 +1070,13 @@
 - [x] Update getFeedbackStats and getEventFeedback to filter by date
 - [x] Add date range filter UI to admin dashboard organizer tab
 - [ ] Test date filtering with different time periods
+
+## Event Claim Flow for Pre-Seeded Events
+- [x] Add claim token system to database schema
+- [x] Create admin procedure to assign events to organizer email
+- [x] Build admin UI for bulk event assignment
+- [x] Create organizer claim page with magic link authentication
+- [ ] Send email notification with claim link to organizer (manual for now - copy/paste from UI)
+- [x] Auto-create organizer account on first claim
+- [x] Mark organizer as pending verification after claim
+- [ ] Test complete claim flow from admin assignment to organizer login

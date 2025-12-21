@@ -85,6 +85,13 @@
       "when": 1766278875653,
       "tag": "0011_secret_malice",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "5",
+      "when": 1766283600080,
+      "tag": "0012_fine_norrin_radd",
+      "breakpoints": true
     }
   ]
 }

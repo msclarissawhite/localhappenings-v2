@@ -15,6 +15,7 @@ import { userAuthRouter } from "./user-auth-router";
 import { donationsRouter } from "./donations-router";
 import { feedbackRouter } from "./feedback-router";
 import { organizerAnalyticsRouter } from "./organizer-analytics-router";
+import { claimRouter } from "./claim-router";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -43,6 +44,7 @@ export const appRouter = router({
   donations: donationsRouter,
   feedback: feedbackRouter,
   organizerAnalytics: organizerAnalyticsRouter,
+  claim: claimRouter,
 });
 
 export type AppRouter = typeof appRouter;

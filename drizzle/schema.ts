@@ -427,3 +427,20 @@ export const eventFeedback = mysqlTable("eventFeedback", {
 
 export type EventFeedback = typeof eventFeedback.$inferSelect;
 export type InsertEventFeedback = typeof eventFeedback.$inferInsert;
+
+/**
+ * Event claim tokens - For assigning pre-seeded events to organizers
+ */
+export const eventClaimTokens = mysqlTable("event_claim_tokens", {
+  id: int("id").autoincrement().primaryKey(),
+  token: varchar("token", { length: 64 }).notNull().unique(),
+  organizerEmail: varchar("organizerEmail", { length: 320 }).notNull(),
+  eventIds: text("eventIds").notNull(), // JSON array of event IDs to claim
+  claimed: int("claimed").default(0).notNull(), // 0 = not claimed, 1 = claimed
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  claimedAt: timestamp("claimedAt"),
+  expiresAt: timestamp("expiresAt").notNull(), // Tokens expire after 30 days
+});
+
+export type EventClaimToken = typeof eventClaimTokens.$inferSelect;
+export type InsertEventClaimToken = typeof eventClaimTokens.$inferInsert;
