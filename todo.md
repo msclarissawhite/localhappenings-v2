@@ -1515,3 +1515,7 @@
 - [x] Add visual indicators for missing required fields (red borders and error messages)
 - [x] Highlight empty required fields before submission
 - [x] Auto-scroll to first missing field
+
+
+## Event Detail Display Bug
+- [x] Remove stray "0" appearing in When & Where section (was isRecurring field rendering as 0)

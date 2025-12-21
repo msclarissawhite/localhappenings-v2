@@ -434,20 +434,15 @@ export default function EventDetail() {
                               </p>
                             )}
                           </>
-                        )}
-                        {!end && event.timeOfDay && (
-                          <p className="text-sm text-muted-foreground capitalize">
-                            {event.timeOfDay.replace("-", " ")}
-                          </p>
-                        )}
-                      </>
-                    );
-                  })()}
-                  {event.isRecurring && event.recurrenceType && (
+                  )}
+                  {Boolean(event.isRecurring) && event.recurrenceType && (
                     <p className="text-sm text-muted-foreground capitalize">
                       Recurring: {event.recurrenceType.replace("-", " ")}
                     </p>
                   )}
+                      </>
+                    );
+                  })()}
                 </div>
               </div>
 
