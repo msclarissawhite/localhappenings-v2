@@ -110,7 +110,12 @@ const eventFiltersSchema = z.object({
   lgbtqiaFriendly: z.boolean().optional(),
   scentFree: z.boolean().optional(),
   eventTypeIds: z.array(z.number()).optional(),
-  sortBy: z.enum(["soonest", "latest", "name-az", "name-za"]).optional(),
+  // Geolocation (Near Me)
+  nearMe: z.boolean().optional(),
+  userLatitude: z.number().optional(),
+  userLongitude: z.number().optional(),
+  radiusKm: z.number().optional(),
+  sortBy: z.enum(["soonest", "latest", "name-az", "name-za", "distance"]).optional(),
   showArchived: z.boolean().optional(),
   hasUnreviewedEdit: z.boolean().optional(),
   status: z.enum(["pending", "published", "rejected", "needs-clarification", "closed"]).optional(),

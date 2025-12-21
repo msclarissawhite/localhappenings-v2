@@ -102,6 +102,26 @@ export async function getEvents(filters: EventFilters = {}) {
     conditions.push(eq(events.isOutdoor, 1));
   }
   
+  // Geolocation filter (Near Me)
+  if (filters.nearMe && filters.userLatitude && filters.userLongitude) {
+    conditions.push(isNotNull(events.latitude));
+    conditions.push(isNotNull(events.longitude));
+    
+    // Add distance filter if radius is specified
+    if (filters.radiusKm) {
+      const distanceFormula = sql<number>`
+        (6371 * acos(
+          cos(radians(${filters.userLatitude})) *
+          cos(radians(${events.latitude})) *
+          cos(radians(${events.longitude}) - radians(${filters.userLongitude})) +
+          sin(radians(${filters.userLatitude})) *
+          sin(radians(${events.latitude}))
+        ))
+      `;
+      conditions.push(sql`${distanceFormula} <= ${filters.radiusKm}`);
+    }
+  }
+  
   // Event type filter - will be applied after fetching event types
   const hasEventTypeFilter = filters.eventTypeIds && filters.eventTypeIds.length > 0;
 
@@ -136,7 +156,19 @@ export async function getEvents(filters: EventFilters = {}) {
   const hasAccessibilityFilters = Object.values(accessibilityFilters).some(v => v === true);
 
   // Sorting
-  if (filters.sortBy === "soonest") {
+  if (filters.sortBy === "distance" && filters.nearMe && filters.userLatitude && filters.userLongitude) {
+    // Sort by distance in SQL for Near Me
+    const distanceFormula = sql<number>`
+      (6371 * acos(
+        cos(radians(${filters.userLatitude})) *
+        cos(radians(${events.latitude})) *
+        cos(radians(${events.longitude}) - radians(${filters.userLongitude})) +
+        sin(radians(${filters.userLatitude})) *
+        sin(radians(${events.latitude}))
+      ))
+    `;
+    query = query.orderBy(distanceFormula);
+  } else if (filters.sortBy === "soonest") {
     query = query.orderBy(events.startDate);
   } else if (filters.sortBy === "latest") {
     query = query.orderBy(desc(events.startDate));
@@ -243,11 +275,34 @@ export async function getEvents(filters: EventFilters = {}) {
     });
   }
   
-  // Add event types to each event
-  let eventsWithTypes = results.map(event => ({
-    ...event,
-    eventTypes: eventTypesMap[event.id] || [],
-  }));
+  // Add event types and distance to each event
+  let eventsWithTypes = results.map(event => {
+    const eventData: any = {
+      ...event,
+      eventTypes: eventTypesMap[event.id] || [],
+    };
+    
+    // Calculate distance if Near Me is active
+    if (filters.nearMe && filters.userLatitude && filters.userLongitude && event.latitude && event.longitude) {
+      const lat1 = filters.userLatitude;
+      const lon1 = filters.userLongitude;
+      const lat2 = parseFloat(event.latitude as string);
+      const lon2 = parseFloat(event.longitude as string);
+      
+      // Haversine formula
+      const R = 6371; // Earth's radius in km
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = 
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      eventData.distance = R * c;
+    }
+    
+    return eventData;
+  });
   
   // Filter by event types if specified
   if (hasEventTypeFilter) {

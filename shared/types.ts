@@ -142,8 +142,14 @@ export interface EventFilters {
   // Search
   search?: string;
   
+  // Geolocation (Near Me)
+  nearMe?: boolean;
+  userLatitude?: number;
+  userLongitude?: number;
+  radiusKm?: number;
+  
   // Sorting
-  sortBy?: "soonest" | "latest" | "name-az" | "name-za";
+  sortBy?: "soonest" | "latest" | "name-az" | "name-za" | "distance";
   
   // Archive
   showArchived?: boolean;

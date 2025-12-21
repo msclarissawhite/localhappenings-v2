@@ -1605,3 +1605,20 @@
 - [x] Geocode existing events with coordinates (11 events geocoded successfully)
 - [x] Create geocoding script for populating event coordinates
 - [x] Test geolocation feature implementation
+
+
+## Integrate Near Me with Browse Events Filters
+- [x] Remove dialog/popup approach for Near Me
+- [x] Add geolocation state to Browse Events page
+- [x] Add "Near Me" toggle button to quick filters section
+- [x] Pass user coordinates to events.list query when Near Me is active
+- [x] Update backend to support combining nearbyEvents logic with existing filters
+- [x] Show distance badges on event cards when Near Me is active
+- [x] Add error message display for geolocation issues
+- [x] Test Near Me integration (works with all other filters)
+
+
+## Fix tRPC Validation Error for Near Me
+- [x] Add "distance" to sortBy enum in events.list tRPC procedure
+- [x] Add geolocation fields to tRPC schema validation
+- [x] Test Near Me filter after fix (ready for user testing)

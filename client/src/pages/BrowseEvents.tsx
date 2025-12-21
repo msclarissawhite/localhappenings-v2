@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "wouter";
 import { 
   Calendar, MapPin, DollarSign, Users, Filter, X, Search,
-  Baby, Volume2, Eye, Heart, Accessibility, Star, Navigation
+  Baby, Volume2, Eye, Heart, Accessibility, Star, Navigation, Loader2
 } from "lucide-react";
 import { format } from "date-fns";
 
@@ -18,8 +18,7 @@ import type { EventFilters } from "@shared/types";
 import { BackToTop } from "@/components/BackToTop";
 import { EventTypeTags } from "@/components/EventTypeTags";
 import { EventTypeSelector } from "@/components/EventTypeSelector";
-import { EventsNearMe } from "@/components/EventsNearMe";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+
 import { CANADIAN_PROVINCES, CANADIAN_CITIES } from "@shared/canadian-locations";
 import {
   Accordion,
@@ -30,8 +29,15 @@ import {
 
 const EVENTS_PER_PAGE = 20;
 
+type GeolocationState = 
+  | { status: "idle" }
+  | { status: "loading" }
+  | { status: "success"; latitude: number; longitude: number }
+  | { status: "error"; message: string };
+
 export default function BrowseEvents() {
   const [displayedCount, setDisplayedCount] = useState(EVENTS_PER_PAGE);
+  const [geoState, setGeoState] = useState<GeolocationState>({ status: "idle" });
   const [filters, setFilters] = useState<EventFilters>({
     limit: 1000, // Fetch all events, paginate client-side
     offset: 0,
@@ -100,7 +106,76 @@ export default function BrowseEvents() {
 
   const clearFilters = () => {
     setFilters({ limit: 1000, offset: 0 });
+    setGeoState({ status: "idle" });
     setDisplayedCount(EVENTS_PER_PAGE);
+  };
+
+  const handleNearMeToggle = () => {
+    if (filters.nearMe) {
+      // Turn off Near Me
+      setFilters(prev => ({
+        ...prev,
+        nearMe: false,
+        userLatitude: undefined,
+        userLongitude: undefined,
+        radiusKm: undefined,
+        sortBy: undefined,
+      }));
+      setGeoState({ status: "idle" });
+      setDisplayedCount(EVENTS_PER_PAGE);
+    } else {
+      // Turn on Near Me - request location
+      if (!navigator.geolocation) {
+        setGeoState({
+          status: "error",
+          message: "Geolocation is not supported by your browser",
+        });
+        return;
+      }
+
+      setGeoState({ status: "loading" });
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          setGeoState({
+            status: "success",
+            latitude: lat,
+            longitude: lon,
+          });
+          setFilters(prev => ({
+            ...prev,
+            nearMe: true,
+            userLatitude: lat,
+            userLongitude: lon,
+            radiusKm: 50,
+            sortBy: "distance",
+          }));
+          setDisplayedCount(EVENTS_PER_PAGE);
+        },
+        (error) => {
+          let message = "Unable to retrieve your location";
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              message = "Location permission denied. Please enable location access in your browser settings.";
+              break;
+            case error.POSITION_UNAVAILABLE:
+              message = "Location information is unavailable.";
+              break;
+            case error.TIMEOUT:
+              message = "Location request timed out.";
+              break;
+          }
+          setGeoState({ status: "error", message });
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 300000, // Cache for 5 minutes
+        }
+      );
+    }
   };
 
   const loadMore = () => {
@@ -242,22 +317,28 @@ export default function BrowseEvents() {
           </div>
         </div>
 
+        {/* Geolocation Error Message */}
+        {geoState.status === "error" && (
+          <div className="mb-4 p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
+            <p className="text-sm text-destructive">{geoState.message}</p>
+          </div>
+        )}
+
         {/* Quick Toggles */}
         <div className="mb-6 flex flex-wrap gap-3">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline" size="sm">
-                <Navigation className="w-4 h-4 mr-2" />
-                Near Me
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle>Events Near You</DialogTitle>
-              </DialogHeader>
-              <EventsNearMe />
-            </DialogContent>
-          </Dialog>
+          <Button
+            variant={filters.nearMe ? "default" : "outline"}
+            size="sm"
+            onClick={handleNearMeToggle}
+            disabled={geoState.status === "loading"}
+          >
+            {geoState.status === "loading" ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <Navigation className="w-4 h-4 mr-2" />
+            )}
+            Near Me
+          </Button>
           <Button
             variant={filters.today ? "default" : "outline"}
             size="sm"
@@ -854,7 +935,18 @@ export default function BrowseEvents() {
                     </div>
                   )}
                   <div className="p-5">
-                    <h3 className="font-semibold text-lg mb-2 line-clamp-2">{event.name}</h3>
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <h3 className="font-semibold text-lg line-clamp-2 flex-1">{event.name}</h3>
+                      {event.distance !== undefined && (
+                        <Badge variant="secondary" className="shrink-0">
+                          <Navigation className="w-3 h-3 mr-1" />
+                          {event.distance < 1 
+                            ? `${(event.distance * 1000).toFixed(0)}m`
+                            : `${event.distance.toFixed(1)}km`
+                          }
+                        </Badge>
+                      )}
+                    </div>
                     
                     <div className="space-y-2 text-sm text-muted-foreground mb-3">
                       <div className="flex items-center gap-2">
