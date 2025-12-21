@@ -27,6 +27,7 @@ import { BatchEditModal } from "@/components/BatchEditModal";
 
 export default function AdminDashboard() {
   const { user, isAuthenticated } = useAuth();
+  const utils = trpc.useUtils();
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [reviewNotes, setReviewNotes] = useState("");
   const [showReviewDialog, setShowReviewDialog] = useState(false);
@@ -43,7 +44,13 @@ export default function AdminDashboard() {
 
   const { data: eventsWithPendingEdits, isLoading: pendingEditsLoading, refetch: refetchPendingEdits } = trpc.events.list.useQuery(
     { hasUnreviewedEdit: true, limit: 100, offset: 0 },
-    { enabled: isAuthenticated && user?.role === "admin" && activeTab === "pending-edits" }
+    { 
+      enabled: isAuthenticated && user?.role === "admin" && activeTab === "pending-edits",
+      refetchOnMount: true,
+      refetchOnWindowFocus: true,
+      staleTime: 0,
+      gcTime: 0, // Disable caching completely
+    }
   );
 
   const { data: closedEvents, isLoading: closedEventsLoading, refetch: refetchClosedEvents } = trpc.events.list.useQuery(
@@ -121,7 +128,7 @@ export default function AdminDashboard() {
   const approvePendingEditMutation = trpc.events.approvePendingEdit.useMutation({
     onSuccess: () => {
       toast.success("Edit approved and published");
-      refetchPendingEdits();
+      utils.events.list.invalidate();
     },
     onError: (error) => {
       toast.error(error.message || "Failed to approve edit");
@@ -131,7 +138,7 @@ export default function AdminDashboard() {
   const rejectPendingEditMutation = trpc.events.rejectPendingEdit.useMutation({
     onSuccess: () => {
       toast.success("Edit rejected");
-      refetchPendingEdits();
+      utils.events.list.invalidate();
     },
     onError: (error) => {
       toast.error(error.message || "Failed to reject edit");
@@ -304,7 +311,11 @@ export default function AdminDashboard() {
           </Button>
           <Button
             variant={activeTab === "pending-edits" ? "default" : "ghost"}
-            onClick={() => setActiveTab("pending-edits")}
+            onClick={() => {
+              setActiveTab("pending-edits");
+              // Invalidate cache to force fresh data from server
+              utils.events.list.invalidate();
+            }}
             className="rounded-b-none"
           >
             <AlertCircle className="w-4 h-4 mr-2" />

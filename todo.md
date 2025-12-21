@@ -1093,3 +1093,9 @@
 - [x] Add two-section contact form: "Organizer Details" and "Public Display Contact (Optional)"
 - [x] Add "Same as organizer details" checkbox to auto-fill public contact from organizer info
 - [x] Update event display to show public contact if provided, otherwise organizer contact
+
+## Bug Fixes - Admin Dashboard
+- [ ] Fix "No pending edit found for this event" error in admin dashboard
+
+## Bug Fixes - Admin Dashboard
+- [x] Fix "No pending edit found for this event" error in admin dashboard (improved cache invalidation)
