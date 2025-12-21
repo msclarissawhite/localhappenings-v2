@@ -110,11 +110,17 @@ export const bannerRouter = router({
       if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
       
       const updateData: any = { ...input.data };
-      if (input.data.startDate) {
-        updateData.startDate = new Date(input.data.startDate);
+      
+      // Handle date fields - convert to Date or null
+      if (input.data.startDate !== undefined) {
+        updateData.startDate = input.data.startDate && input.data.startDate.trim() !== '' 
+          ? new Date(input.data.startDate) 
+          : null;
       }
-      if (input.data.endDate) {
-        updateData.endDate = new Date(input.data.endDate);
+      if (input.data.endDate !== undefined) {
+        updateData.endDate = input.data.endDate && input.data.endDate.trim() !== '' 
+          ? new Date(input.data.endDate) 
+          : null;
       }
       
       await db

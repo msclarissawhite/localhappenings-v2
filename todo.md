@@ -1468,3 +1468,8 @@
 - [x] Add purple-to-blue gradient to gradient dropdown options
 - [x] Update New Year's banner with higher contrast gradient
 - [x] Test banner reordering functionality
+
+
+## Banner Update Bug
+- [x] Fix banner update error when endDate is empty string
+- [x] Handle empty date strings in banner router update mutation
