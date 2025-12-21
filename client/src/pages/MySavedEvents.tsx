@@ -6,15 +6,15 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "wouter";
 import { Bookmark, Calendar, MapPin, DollarSign, Trash2, ArrowLeft } from "lucide-react";
-import { Pagination } from "@/components/Pagination";
+
 import { toast } from "sonner";
 
 const EVENTS_PER_PAGE = 20;
 
 export default function MySavedEvents() {
   const [, navigate] = useLocation();
-  const [upcomingPage, setUpcomingPage] = useState(1);
-  const [pastPage, setPastPage] = useState(1);
+  const [upcomingDisplayed, setUpcomingDisplayed] = useState(EVENTS_PER_PAGE);
+  const [pastDisplayed, setPastDisplayed] = useState(EVENTS_PER_PAGE);
   
   // Support both organizer (Manus OAuth) and user (magic link) authentication
   const organizerAuth = useAuth();
@@ -76,19 +76,21 @@ export default function MySavedEvents() {
     (event) => new Date(event.startDate) < new Date()
   ) || [];
 
-  // Pagination for upcoming events
-  const upcomingTotalPages = Math.ceil(upcomingEvents.length / EVENTS_PER_PAGE);
-  const paginatedUpcoming = upcomingEvents.slice(
-    (upcomingPage - 1) * EVENTS_PER_PAGE,
-    upcomingPage * EVENTS_PER_PAGE
-  );
+  // Display control for upcoming events
+  const displayedUpcoming = upcomingEvents.slice(0, upcomingDisplayed);
+  const hasMoreUpcoming = upcomingDisplayed < upcomingEvents.length;
 
-  // Pagination for past events
-  const pastTotalPages = Math.ceil(pastEvents.length / EVENTS_PER_PAGE);
-  const paginatedPast = pastEvents.slice(
-    (pastPage - 1) * EVENTS_PER_PAGE,
-    pastPage * EVENTS_PER_PAGE
-  );
+  // Display control for past events
+  const displayedPast = pastEvents.slice(0, pastDisplayed);
+  const hasMorePast = pastDisplayed < pastEvents.length;
+
+  const loadMoreUpcoming = () => {
+    setUpcomingDisplayed((prev) => prev + EVENTS_PER_PAGE);
+  };
+
+  const loadMorePast = () => {
+    setPastDisplayed((prev) => prev + EVENTS_PER_PAGE);
+  };
 
   return (
     <div className="container py-12">
@@ -128,7 +130,7 @@ export default function MySavedEvents() {
           <div className="mb-12">
             <h2 className="text-2xl font-bold mb-4">Upcoming Events ({upcomingEvents.length})</h2>
             <div className="space-y-4">
-              {paginatedUpcoming.map((event) => (
+              {displayedUpcoming.map((event) => (
                 <Card key={event.id} className="p-6">
                   <div className="flex justify-between items-start gap-4">
                     <div className="flex-1">
@@ -199,13 +201,14 @@ export default function MySavedEvents() {
                 </Card>
               ))}
             </div>
-            {upcomingTotalPages > 1 && (
-              <div className="mt-6">
-                <Pagination
-                  currentPage={upcomingPage}
-                  totalPages={upcomingTotalPages}
-                  onPageChange={setUpcomingPage}
-                />
+            {hasMoreUpcoming && (
+              <div className="mt-6 text-center">
+                <Button onClick={loadMoreUpcoming} variant="outline" size="lg">
+                  Load More Upcoming Events
+                </Button>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Showing {displayedUpcoming.length} of {upcomingEvents.length}
+                </p>
               </div>
             )}
           </div>
@@ -215,7 +218,7 @@ export default function MySavedEvents() {
           <div>
             <h2 className="text-2xl font-bold mb-4">Past Events ({pastEvents.length})</h2>
             <div className="space-y-4">
-              {paginatedPast.map((event) => (
+              {displayedPast.map((event) => (
                 <Card key={event.id} className="p-6 opacity-60">
                   <div className="flex justify-between items-start gap-4">
                     <div className="flex-1">
@@ -259,13 +262,14 @@ export default function MySavedEvents() {
                 </Card>
               ))}
             </div>
-            {pastTotalPages > 1 && (
-              <div className="mt-6">
-                <Pagination
-                  currentPage={pastPage}
-                  totalPages={pastTotalPages}
-                  onPageChange={setPastPage}
-                />
+            {hasMorePast && (
+              <div className="mt-6 text-center">
+                <Button onClick={loadMorePast} variant="outline" size="lg">
+                  Load More Past Events
+                </Button>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Showing {displayedPast.length} of {pastEvents.length}
+                </p>
               </div>
             )}
           </div>

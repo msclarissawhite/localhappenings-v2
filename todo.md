@@ -1142,3 +1142,9 @@
 - [x] Implement archive cutoff logic (hide events older than 6 months from archive)
 - [x] Test pagination on all three pages
 - [x] Test archive cutoff functionality
+
+## Load More Button Implementation
+- [x] Replace pagination with Load More button on Browse Events page
+- [x] Replace pagination with Load More button on Archive page
+- [x] Replace pagination with Load More button on Saved Events page
+- [x] Test Load More functionality on all three pages

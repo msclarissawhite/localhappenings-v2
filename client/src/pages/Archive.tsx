@@ -5,13 +5,13 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "wouter";
 import { Calendar, MapPin, Clock, DollarSign } from "lucide-react";
 import { format, subMonths } from "date-fns";
-import { Pagination } from "@/components/Pagination";
+import { Button } from "@/components/ui/button";
 
 const EVENTS_PER_PAGE = 20;
 const ARCHIVE_CUTOFF_MONTHS = 6; // Hide events older than 6 months
 
 export default function Archive() {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [displayedCount, setDisplayedCount] = useState(EVENTS_PER_PAGE);
 
   const { data: eventsData, isLoading } = trpc.events.list.useQuery({
     showArchived: true,
@@ -34,16 +34,15 @@ export default function Archive() {
     });
   }, [eventsData]);
 
-  // Paginate the filtered events
-  const totalPages = Math.ceil(filteredEvents.length / EVENTS_PER_PAGE);
-  const paginatedEvents = useMemo(() => {
-    const startIndex = (currentPage - 1) * EVENTS_PER_PAGE;
-    const endIndex = startIndex + EVENTS_PER_PAGE;
-    return filteredEvents.slice(startIndex, endIndex);
-  }, [filteredEvents, currentPage]);
+  // Show only the first displayedCount events
+  const displayedEvents = useMemo(() => {
+    return filteredEvents.slice(0, displayedCount);
+  }, [filteredEvents, displayedCount]);
+  
+  const hasMore = displayedCount < filteredEvents.length;
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+  const loadMore = () => {
+    setDisplayedCount((prev) => prev + EVENTS_PER_PAGE);
   };
 
   return (
@@ -72,7 +71,7 @@ export default function Archive() {
           <div className="space-y-6">
             <p className="text-sm text-muted-foreground">{filteredEvents.length} archived events</p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {paginatedEvents.map((event) => (
+              {displayedEvents.map((event) => (
                 <Link key={event.id} href={`/event/${event.id}`}>
                   <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer h-full flex flex-col opacity-75">
                     {event.imageUrl && (
@@ -154,14 +153,15 @@ export default function Archive() {
               ))}
             </div>
 
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="mt-8">
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={handlePageChange}
-                />
+            {/* Load More Button */}
+            {hasMore && (
+              <div className="mt-8 text-center">
+                <Button onClick={loadMore} variant="outline" size="lg">
+                  Load More Events
+                </Button>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Showing {displayedEvents.length} of {filteredEvents.length} archived events
+                </p>
               </div>
             )}
           </div>
