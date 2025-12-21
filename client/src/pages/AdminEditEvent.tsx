@@ -21,6 +21,16 @@ import { CANADIAN_PROVINCES, CANADIAN_CITIES } from "@shared/canadian-locations"
 import { AccessibilityFields } from "@/components/AccessibilityFields";
 import { EventTypeSelector } from "@/components/EventTypeSelector";
 
+// Helper to format Date to datetime-local input format in local timezone
+function formatDateForInput(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
 export default function AdminEditEvent() {
   const { id } = useParams<{ id: string }>();
   const [, navigate] = useLocation();
@@ -105,8 +115,8 @@ export default function AdminEditEvent() {
       setFormData({
         name: event.name || "",
         description: event.description || "",
-        startDate: event.startDate ? new Date(event.startDate).toISOString().slice(0, 16) : "",
-        endDate: event.endDate ? new Date(event.endDate).toISOString().slice(0, 16) : "",
+        startDate: event.startDate ? formatDateForInput(new Date(event.startDate)) : "",
+        endDate: event.endDate ? formatDateForInput(new Date(event.endDate)) : "",
         province: event.province || "",
         municipality: event.municipality || "",
         neighborhoodCommunity: event.neighborhoodCommunity || "",

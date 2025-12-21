@@ -1535,3 +1535,9 @@
 - [x] Fix event tags being dropped when saving through admin edit
 - [x] Investigate why charity, live music, and other tags are lost (eventTypeIds not explicitly included)
 - [x] Ensure all tag fields are properly loaded and saved
+
+
+## Admin Edit Time Conversion Bug
+- [x] Fix event times changing when opening admin edit form
+- [x] Investigate timezone conversion between UTC and local time (toISOString was converting to UTC)
+- [x] Ensure datetime-local inputs preserve original times (now using local timezone formatter)
