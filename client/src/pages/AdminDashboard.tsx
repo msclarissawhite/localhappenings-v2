@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { Calendar, MapPin, CheckCircle, XCircle, AlertCircle, ShieldCheck, Users, DollarSign, TrendingUp, Repeat, MessageSquare } from "lucide-react";
+import { Calendar, MapPin, CheckCircle, XCircle, AlertCircle, ShieldCheck, Users, DollarSign, TrendingUp, Repeat, MessageSquare, Download } from "lucide-react";
 import type { Event } from "@shared/types";
 import { EventEditDialog } from "@/components/EventEditDialog";
 import { DuplicateWarning } from "@/components/DuplicateWarning";
@@ -666,9 +666,48 @@ export default function AdminDashboard() {
 
         {activeTab === "organizers" && (
           <>
-            <div className="mb-4">
-              <h2 className="text-2xl font-bold mb-2">Organizer Feedback Analytics</h2>
-              <p className="text-muted-foreground">Track organizer performance based on attendee feedback across all their events.</p>
+            <div className="mb-4 flex items-start justify-between">
+              <div>
+                <h2 className="text-2xl font-bold mb-2">Organizer Feedback Analytics</h2>
+                <p className="text-muted-foreground">Track organizer performance based on attendee feedback across all their events.</p>
+              </div>
+              {organizerStats && organizerStats.length > 0 && (
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    // Generate CSV
+                    const headers = ['Organizer Name', 'Email', 'Verified', 'Total Events', 'Events with Feedback', 'Total Responses', 'Attended Count', 'Avg Accuracy', 'Last Feedback Date'];
+                    const rows = organizerStats.map(org => [
+                      org.organizerName,
+                      org.organizerEmail || '',
+                      org.organizerIsVerified === 1 ? 'Yes' : 'No',
+                      org.totalEvents,
+                      org.eventsWithFeedback,
+                      org.totalFeedback,
+                      org.totalAttended,
+                      org.avgAccuracy ? org.avgAccuracy.toFixed(2) : 'N/A',
+                      org.lastFeedbackDate ? format(new Date(org.lastFeedbackDate), 'yyyy-MM-dd HH:mm:ss') : 'N/A'
+                    ]);
+                    
+                    const csvContent = [
+                      headers.join(','),
+                      ...rows.map(row => row.map(cell => 
+                        typeof cell === 'string' && cell.includes(',') ? `"${cell}"` : cell
+                      ).join(','))
+                    ].join('\n');
+                    
+                    // Download
+                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = `organizer-analytics-${format(new Date(), 'yyyy-MM-dd')}.csv`;
+                    link.click();
+                  }}
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Export CSV
+                </Button>
+              )}
             </div>
 
             {organizerStatsLoading ? (

@@ -1,6 +1,6 @@
 # Local Happenings - User Manual & Testing Guide
 
-**Version:** 3.1  
+**Version:** 3.2  
 **Last Updated:** December 20, 2025  
 **Author:** Manus AI
 
@@ -446,6 +446,55 @@ Admins receive email notifications for all status changes (approval, rejection, 
 ### Analytics Review
 
 Regularly review the Analytics dashboard to understand platform usage patterns. Key metrics to monitor include approval rate (target: 80%+ approval rate indicates clear submission guidelines), pending queue size (aim to keep pending events under 10 to ensure timely moderation), top cities (identifies where to focus community outreach), and submission trends (helps plan for busy periods like holiday seasons).
+
+### Organizer Feedback Analytics
+
+The **Organizers** tab in the admin dashboard provides comprehensive feedback analytics to help identify high-performing organizers and make informed verification decisions.
+
+#### Viewing Organizer Stats
+
+Access the Organizers tab from the admin dashboard navigation. The page displays all organizers sorted by average accuracy rating (highest first). Each organizer card shows:
+
+- **Organizer Name** and email address
+- **Verified status** (indicated by a green badge)
+- **Total Events**: Number of events submitted by this organizer
+- **Events with Feedback**: How many of their events have received attendee feedback
+- **Total Responses**: Total number of feedback submissions across all events
+- **Attended Count**: Number of people who marked "Yes, I attended" in feedback
+- **Avg Accuracy**: Average accuracy rating from attendees (1-5 scale)
+
+#### Viewing Event Breakdown
+
+Click the **"View Events"** button on any organizer card to expand and see individual event performance. The breakdown shows:
+
+- Event name and date
+- Number of feedback responses per event
+- Number of attendees per event
+- Average accuracy rating per event
+
+This helps identify which specific events performed well or poorly, useful for understanding organizer consistency.
+
+#### Exporting Analytics Data
+
+Click the **"Export CSV"** button at the top of the Organizers tab to download a complete spreadsheet of organizer analytics. The CSV includes all metrics shown in the dashboard and is formatted for easy analysis in Excel or Google Sheets. The filename includes the current date (e.g., `organizer-analytics-2025-12-20.csv`).
+
+Use exported data for:
+
+- Quarterly performance reports
+- Sharing with stakeholders or community partners
+- Identifying verification candidates (e.g., organizers with 4.5+ avg accuracy and 10+ responses)
+- Tracking organizer performance trends over time
+
+#### Using Analytics for Verification Decisions
+
+When deciding whether to verify an organizer, consider:
+
+- **Consistency**: Do they have multiple events with feedback?
+- **Accuracy**: Is their average rating 4.0 or higher?
+- **Volume**: Have they received at least 5-10 feedback responses total?
+- **Attendance**: Do people actually attend their events (high attended count)?
+
+Recommended verification threshold: 4.5+ average accuracy with 10+ total feedback responses from at least 3 different events. Adjust these thresholds based on your community's needs and feedback volume.
 
 ---
 

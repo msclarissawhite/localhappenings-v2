@@ -1,6 +1,6 @@
 # Local Happenings: Organizer Quickstart Guide
 
-**Version 1.1** | **Last Updated:** December 20, 2024
+**Version 1.2** | **Last Updated:** December 20, 2025
 
 Welcome to Local Happenings! This guide will help you get started as an event organizer and make the most of the platform's features to reach families in your community.
 
@@ -292,6 +292,36 @@ Verified organizers have a green **"Verified"** badge next to their name on even
 - ✅ **Instant publishing** – no waiting for approval
 - ✅ **Instant edits** – changes go live immediately
 - ✅ **Trust badge** – families see you're an established organizer
+
+### **Building Your Reputation with Attendee Feedback**
+
+After your events end, attendees can provide feedback about the accuracy of your event listing. This feedback helps you improve future listings and can expedite your path to verification.
+
+**What Attendees Rate:**
+
+When someone views a past event, they can submit a quick 5-question feedback form:
+- Did they attend the event?
+- How accurate was the listing information? (1-5 stars)
+- What was helpful in the listing?
+- What was inaccurate or missing?
+- Additional comments
+
+**How Feedback Helps You:**
+
+- **Verification Priority:** Organizers with high accuracy ratings (4.5+ stars) and multiple feedback responses are prioritized for verification
+- **Improve Your Listings:** Learn what information families find most helpful and what details need clarification
+- **Build Trust:** Events with positive feedback show trust signals (star ratings) on event cards, encouraging more families to attend
+
+**Feedback is Visible to Admins Only:** Your feedback scores and individual responses are only visible in the admin dashboard. They're used to make verification decisions and help you improve, not to publicly shame or criticize.
+
+**How to Get Good Feedback:**
+
+1. **Be Accurate:** Ensure all details (time, location, cost, accessibility) match the actual event
+2. **Be Complete:** Fill out accessibility fields thoroughly – "Unknown" is okay, but confirmed details are better
+3. **Update When Things Change:** If the venue changes or new accessibility features are added, edit your event listing
+4. **Communicate Clearly:** Use the description field to set accurate expectations about what families will experience
+
+**Recommended Verification Threshold:** Most organizers who achieve 4.5+ average accuracy with 10+ feedback responses across at least 3 events are eligible for verification. This shows consistent quality and reliability.
 
 ---
 
