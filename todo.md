@@ -1504,3 +1504,9 @@
 ## Admin Edit Event Date Error
 - [x] Investigate error when updating event dates via admin edit
 - [x] Fix date/time validation or transformation issue (endDate now properly handles empty strings)
+
+
+## Admin Edit Municipality Field Bug
+- [x] Fix municipality field not loading properly in admin edit
+- [x] Ensure municipality dropdown populates based on selected province
+- [x] Fix validation to allow municipality in partial updates

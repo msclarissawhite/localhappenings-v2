@@ -509,7 +509,10 @@ export const eventsRouter = router({
     .input(
       z.object({
         id: z.number(),
-        data: submitEventSchema.partial(),
+        data: submitEventSchema.partial().extend({
+          // Override municipality to allow empty string in updates (will keep existing value)
+          municipality: z.string().optional(),
+        }),
       })
     )
     .mutation(async ({ input, ctx }) => {
