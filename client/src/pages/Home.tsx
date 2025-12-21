@@ -5,6 +5,7 @@ import { Calendar, Heart, MapPin, Search, Shield, Users, TrendingUp } from "luci
 import { trpc } from "@/lib/trpc";
 import { Badge } from "@/components/ui/badge";
 import { useLocation } from "wouter";
+import { SeasonalBanner } from "@/components/SeasonalBanner";
 
 export default function Home() {
   const [, navigate] = useLocation();
@@ -43,6 +44,11 @@ export default function Home() {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Seasonal Banner */}
+      <section className="container py-8">
+        <SeasonalBanner />
       </section>
 
       {/* Popular Tags Section */}

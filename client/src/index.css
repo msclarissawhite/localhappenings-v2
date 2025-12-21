@@ -118,13 +118,48 @@
   * {
     @apply border-border outline-ring/50;
   }
+  
+  /* Responsive base font size for better readability */
+  html {
+    font-size: 16px; /* Mobile base */
+  }
+  
+  @media (min-width: 640px) {
+    html {
+      font-size: 17px; /* Tablet/Desktop base - improves readability */
+    }
+  }
+  
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     line-height: 1.6; /* Exceeds WCAG recommendation of 1.5 for better readability */
   }
+  
+  /* Heading hierarchy with improved sizing */
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Poppins', 'Inter', sans-serif;
+    line-height: 1.3; /* Tighter line height for headings */
+  }
+  
+  /* Paragraph spacing for better text chunking */
+  p {
+    margin-bottom: 1em;
+  }
+  
+  p:last-child {
+    margin-bottom: 0;
+  }
+  
+  /* Improve small text readability - increase from 14px to 15px */
+  .text-sm {
+    font-size: 0.9375rem !important; /* 15px at 16px base, ~15.9px at 17px base */
+  }
+  
+  /* Ensure minimum touch target size for interactive elements */
+  button, [role="button"], a[href] {
+    min-height: 44px; /* WCAG 2.1 Level AAA recommendation */
+    min-width: 44px;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),

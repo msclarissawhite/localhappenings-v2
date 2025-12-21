@@ -1257,3 +1257,32 @@
 - [x] Query top 5-8 most-clicked tags for homepage display
 - [x] Style Popular Tags as clickable badges that filter Browse Events
 - [x] Test tag click tracking and analytics display
+
+## Seasonal Tag Promotions (COMPLETE)
+- [x] Create seasonal tag mapping (December→Christmas Events, June→Summer Activities, etc.)
+- [x] Build SeasonalBanner component with dynamic tag highlighting
+- [x] Add banner to homepage above Popular Event Types section
+- [x] Make banner clickable to filter Browse Events by seasonal tag
+- [x] Style banner with seasonal colors/themes
+- [x] Test banner displays correct seasonal tags throughout the year
+
+## Documentation Updates (IN PROGRESS)
+- [x] Update User Manual with tag filtering and Popular Tags section
+- [x] Update Feature Roadmap with completed tag analytics features
+- [x] Update Organizer Guide with event type tagging instructions
+- [x] Add seasonal promotion information to relevant docs
+
+## Visual Accessibility Review (COMPLETE)
+- [x] Audit current font sizes across all pages (body text, headings, labels, buttons)
+- [x] Review line spacing (line-height) for readability
+- [x] Check color contrast ratios for WCAG AA compliance
+- [x] Evaluate heading hierarchy and semantic structure
+- [x] Implement typography improvements based on findings
+- [x] Review focus indicators for keyboard navigation
+- [x] Create comprehensive accessibility audit document
+- [x] Implement responsive font scaling (16px mobile, 17px desktop)
+- [x] Increase small text from 14px to 15px
+- [x] Add paragraph spacing for better text chunking
+- [x] Add minimum touch target sizes (44px)
+- [ ] User testing with browser zoom (150%, 200%) - requires manual testing
+- [ ] User testing across different screen sizes - requires manual testing

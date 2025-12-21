@@ -1,6 +1,6 @@
 # Local Happenings - Organizer Quickstart Guide
 
-**Version:** 1.0  
+**Version:** 1.1  
 **Last Updated:** December 21, 2025  
 **Author:** Manus AI
 
@@ -31,6 +31,8 @@ The submission form has seven sections. Required fields are marked with an aster
 **Age Suitability** lets you select all age groups that apply: Family-Friendly, Young Children (0-5), Kids (6-12), Teens, Adults Only, Seniors, or All Ages.
 
 **Environment** indicates whether your event is Indoor, Outdoor, or both.
+
+**Event Types** lets you select categories that describe your event (e.g., Live Music, Festivals & Fairs, Christmas Events). You can select multiple types. These tags help families discover your event through filtering and appear as badges on event cards.
 
 **Accessibility Information** is mandatory but flexible. For each question, select Yes, No, Unknown, or Not Relevant. The platform values transparency—if you don't know whether your venue has an elevator, select "Unknown" rather than skipping the question. Hover over the tooltip icons (ℹ️) next to each field to understand what information is being requested and why it matters.
 
@@ -83,6 +85,8 @@ The **"My Images"** tab stores all images you've uploaded. When creating a new e
 **Write a clear description.** Explain what attendees will do, what to bring, and any requirements (registration, age limits, etc.). Use the formatting toolbar to add headings and bullet lists for readability.
 
 **Provide complete location details.** Include the full address if possible. This helps attendees plan their route and assess accessibility before arriving.
+
+**Select relevant event types.** Choose tags that accurately describe your event. Families use these to filter Browse Events, so selecting appropriate types helps the right audience find your activity.
 
 **Check your email.** You'll receive notifications about your event status. If an admin requests clarification, respond promptly to get your event published faster.
 
