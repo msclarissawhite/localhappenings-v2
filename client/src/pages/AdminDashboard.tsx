@@ -388,6 +388,13 @@ export default function AdminDashboard() {
                     <TrendingUp className="w-4 h-4 mr-2" />
                     Download All Events
                   </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => window.location.href = '/admin/claim-assignment'}
+                  >
+                    <Users className="w-4 h-4 mr-2" />
+                    Claim Assignment
+                  </Button>
                   {selectedEvents.size > 0 && (
                     <Button
                       variant="default"

@@ -1099,3 +1099,6 @@
 
 ## Bug Fixes - Admin Dashboard
 - [x] Fix "No pending edit found for this event" error in admin dashboard (improved cache invalidation)
+
+## Admin Dashboard UX Improvements
+- [x] Add "Claim Assignment" button to admin dashboard navigation
