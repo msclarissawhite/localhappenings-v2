@@ -408,12 +408,21 @@ export default function EventDetail() {
                       : format(new Date(event.startDate), "EEEE, MMMM d, yyyy")}
                   </p>
                   {event.endDate && event.endDate !== event.startDate && (() => {
-                    const days = Math.ceil((new Date(event.endDate).getTime() - new Date(event.startDate).getTime()) / (1000 * 60 * 60 * 24)) + 1;
-                    return (
-                      <p className="text-sm text-muted-foreground">
-                        {days}-day event
-                      </p>
-                    );
+                    const start = new Date(event.startDate);
+                    const end = new Date(event.endDate);
+                    // Only show multi-day if events span different calendar days (ignoring time)
+                    const startDay = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+                    const endDay = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+                    const daysDiff = Math.round((endDay.getTime() - startDay.getTime()) / (1000 * 60 * 60 * 24));
+                    
+                    if (daysDiff > 0) {
+                      return (
+                        <p className="text-sm text-muted-foreground">
+                          {daysDiff + 1}-day event
+                        </p>
+                      );
+                    }
+                    return null;
                   })()}
                   {event.timeOfDay && (
                     <p className="text-sm text-muted-foreground capitalize">

@@ -849,8 +849,17 @@ export default function BrowseEvents() {
                             : format(new Date(event.startDate), "MMM d, yyyy")}
                           {event.timeOfDay && ` • ${event.timeOfDay.charAt(0).toUpperCase() + event.timeOfDay.slice(1).replace("-", " ")}`}
                           {event.endDate && event.endDate !== event.startDate && (() => {
-                            const days = Math.ceil((new Date(event.endDate).getTime() - new Date(event.startDate).getTime()) / (1000 * 60 * 60 * 24)) + 1;
-                            return ` • ${days}-day event`;
+                            const start = new Date(event.startDate);
+                            const end = new Date(event.endDate);
+                            // Only show multi-day if events span different calendar days (ignoring time)
+                            const startDay = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+                            const endDay = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+                            const daysDiff = Math.round((endDay.getTime() - startDay.getTime()) / (1000 * 60 * 60 * 24));
+                            
+                            if (daysDiff > 0) {
+                              return ` • ${daysDiff + 1}-day event`;
+                            }
+                            return '';
                           })()}
                         </span>
                       </div>

@@ -1483,3 +1483,8 @@
 
 ## SQL Query Bug Fix
 - [x] Fix eventFeedback query missing avgRating alias in SELECT statement
+
+
+## Event Duration Display Bug
+- [x] Fix duration calculation showing days instead of hours for short events
+- [x] Investigate event detail page duration logic (fixed to compare calendar days, not timestamps)
