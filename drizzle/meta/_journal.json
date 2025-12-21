@@ -120,6 +120,20 @@
       "when": 1766298763524,
       "tag": "0016_lowly_martin_li",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "5",
+      "when": 1766319765044,
+      "tag": "0017_free_boom_boom",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "5",
+      "when": 1766320433260,
+      "tag": "0018_known_prodigy",
+      "breakpoints": true
     }
   ]
 }

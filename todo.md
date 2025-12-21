@@ -1209,17 +1209,35 @@
 - [ ] Build collection preview functionality
 - [x] Test collections management interface
 
-## Tag-Based Event Categories Expansion
-- [ ] Update eventTypes table with category field (core, family, cultural, seasonal)
-- [ ] Seed all event types from design brief into database
+## Tag-Based Event Categories Expansion (IN PROGRESS)
+- [x] Seed all event types from design brief into database
+- [x] Add category field to eventTypes table schema (audience-based: family-kids, arts-culture, community-social, recreation-sports, markets-festivals, seasonal)
+- [x] Seed 32 event types across 6 audience-based categories
 - [ ] Update event submission form to show categorized event types
-- [ ] Add event type management in admin dashboard
+- [ ] Update Browse Events filters to show categorized types
+- [ ] Create Event Type Management admin interface for easy tag additions
 - [ ] Test event type selection and filtering
 
-## Calendar View for Browse Events
+## Collection Landing Pages (IN PROGRESS)
+- [ ] Create public collection page route (/collections/[slug])
+- [ ] Add collection filter criteria (province, event types, date ranges)
+- [ ] Build collection landing page UI with SEO meta tags
+- [ ] Implement event filtering based on collection criteria
+- [ ] Test collection pages with sample data
+
+## Calendar View for Browse Events (Moved to Feature Requests)
 - [ ] Create calendar component with monthly view
 - [ ] Integrate calendar with event filtering
 - [ ] Add toggle between list view and calendar view
 - [ ] Show event count badges on calendar dates
 - [ ] Implement date click to filter events
 - [ ] Test calendar navigation and event display
+
+## Collection Filter Criteria Enhancement (IN PROGRESS)
+- [x] Add filter criteria fields to collections schema (eventTypeIds, provinces, dateRange)
+- [x] Update collections router to save/load filter criteria
+- [ ] Add event type tag multi-select to Collections Management UI
+- [ ] Add province/location filter selection
+- [ ] Add optional date range for seasonal collections
+- [ ] Display filter criteria preview in collection list
+- [ ] Test collection setup with multiple filter combinations

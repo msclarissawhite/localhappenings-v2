@@ -64,6 +64,11 @@ export const collectionsRouter = router({
         description: z.string().optional(),
         imageUrl: z.string().optional(),
         sortOrder: z.number().default(0),
+        eventTypeIds: z.array(z.number()).optional(),
+        provinces: z.array(z.string()).optional(),
+        municipalities: z.array(z.string()).optional(),
+        startDate: z.string().optional(),
+        endDate: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -90,6 +95,11 @@ export const collectionsRouter = router({
         description: input.description || null,
         imageUrl: input.imageUrl || null,
         sortOrder: input.sortOrder,
+        eventTypeIds: input.eventTypeIds || null,
+        provinces: input.provinces || null,
+        municipalities: input.municipalities || null,
+        startDate: input.startDate || null,
+        endDate: input.endDate || null,
         isActive: 0, // Inactive by default
       });
 
@@ -109,6 +119,11 @@ export const collectionsRouter = router({
         imageUrl: z.string().optional(),
         sortOrder: z.number().optional(),
         isActive: z.boolean().optional(),
+        eventTypeIds: z.array(z.number()).optional(),
+        provinces: z.array(z.string()).optional(),
+        municipalities: z.array(z.string()).optional(),
+        startDate: z.string().optional(),
+        endDate: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -138,6 +153,11 @@ export const collectionsRouter = router({
       if (input.imageUrl !== undefined) updateData.imageUrl = input.imageUrl;
       if (input.sortOrder !== undefined) updateData.sortOrder = input.sortOrder;
       if (input.isActive !== undefined) updateData.isActive = input.isActive ? 1 : 0;
+      if (input.eventTypeIds !== undefined) updateData.eventTypeIds = input.eventTypeIds;
+      if (input.provinces !== undefined) updateData.provinces = input.provinces;
+      if (input.municipalities !== undefined) updateData.municipalities = input.municipalities;
+      if (input.startDate !== undefined) updateData.startDate = input.startDate;
+      if (input.endDate !== undefined) updateData.endDate = input.endDate;
 
       await db
         .update(collections)

@@ -1,4 +1,4 @@
-import { int, json, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { date, int, json, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -123,7 +123,7 @@ export type InsertEvent = typeof events.$inferInsert;
 export const eventTypes = mysqlTable("eventTypes", {
   id: int("id").autoincrement().primaryKey(),
   name: varchar("name", { length: 100 }).notNull().unique(),
-  category: mysqlEnum("category", ["core", "family", "cultural", "seasonal"]).default("core").notNull(),
+  category: mysqlEnum("category", ["family-kids", "arts-culture", "community-social", "recreation-sports", "markets-festivals", "seasonal"]).default("community-social").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
@@ -148,6 +148,12 @@ export const collections = mysqlTable("collections", {
   slug: varchar("slug", { length: 255 }).notNull().unique(),
   description: text("description"),
   imageUrl: text("imageUrl"),
+  // Filter criteria stored as JSON
+  eventTypeIds: json("eventTypeIds").$type<number[]>(), // Array of event type IDs
+  provinces: json("provinces").$type<string[]>(), // Array of province codes
+  municipalities: json("municipalities").$type<string[]>(), // Array of municipality names
+  startDate: date("startDate"), // Optional start date for seasonal collections
+  endDate: date("endDate"), // Optional end date for seasonal collections
   isActive: int("isActive").default(1).notNull(),
   sortOrder: int("sortOrder").default(0).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
