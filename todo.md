@@ -62,6 +62,12 @@
 - [ ] Write vitest tests for filtering logic
 - [ ] Test accessibility features and mobile responsiveness
 
+## Comprehensive Vitest Tests for Critical Flows
+- [x] Create event submission tests (server/event-submission.test.ts)
+- [x] Create filtering tests (server/event-filtering.test.ts)
+- [x] Create admin approval tests (server/admin-approval.test.ts)
+- [x] Run all tests and verify coverage
+
 ## Final Delivery
 - [x] Create project checkpoint
 - [x] Deliver website to user
