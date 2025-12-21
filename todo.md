@@ -1412,3 +1412,6 @@
 - [x] Implement fallback logic to show closest upcoming events
 - [x] Add carousel navigation controls (prev/next/dots)
 - [ ] Test manual curation and automatic fallback
+
+## Documentation Update
+- [x] Add featured events carousel section to USER_MANUAL.md

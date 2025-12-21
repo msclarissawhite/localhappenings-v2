@@ -1,6 +1,6 @@
 # Local Happenings - User Manual & Testing Guide
 
-**Version:** 3.4  
+**Version:** 3.5  
 **Last Updated:** December 21, 2025  
 **Author:** Manus AI
 
@@ -563,6 +563,57 @@ Each published collection gets its own landing page at `/collections/your-slug` 
 - Consider geographic specificity when expanding beyond Nova Scotia
 - Publish collections 2-4 weeks before the relevant season/event period
 - Unpublish outdated collections to keep navigation clean
+
+### Featured Events Carousel
+
+The **Featured Events** carousel on the homepage showcases hand-picked events to visitors. You can manually curate which events appear, or let the system automatically display the closest upcoming events.
+
+#### How It Works
+
+The carousel operates in two modes:
+
+1. **Manual Curation** (when you've selected events): Displays your hand-picked events in the order you specify
+2. **Automatic Fallback** (when no events are selected): Shows the 5 closest upcoming published events
+
+This ensures your homepage always has compelling content, even if you haven't had time to update the featured selection.
+
+#### Managing Featured Events
+
+1. Navigate to **Admin Dashboard → Featured Events tab**
+2. Use the search bar to find events by name
+3. Click on an event from search results to add it to the carousel
+4. Reorder events using the up/down arrow buttons
+5. Remove events by clicking the X button
+
+**Best Practices:**
+
+- **Feature 3-5 events** for optimal carousel performance
+- **Choose events with high-quality images** for better visual impact (events without images show placeholders)
+- **Update regularly** - Remove past events and add new ones to keep content fresh
+- **Highlight variety** - Mix event types, dates, and locations to appeal to different audiences
+- **Time-sensitive promotion** - Feature events that are happening soon or need a visibility boost
+
+#### Carousel Behavior
+
+- **Auto-advance**: Slides change automatically every 5 seconds
+- **Manual navigation**: Users can click prev/next arrows or dot indicators
+- **Responsive design**: Shows 1 event on mobile, 2 on tablets, 3 on desktop
+- **Click to view**: Each event card links to the full event details page
+
+#### When to Use Manual Curation vs. Automatic
+
+**Use manual curation when:**
+- You want to promote specific events (sponsors, partners, community priorities)
+- You have a mix of event types to showcase
+- You're running seasonal campaigns or themed promotions
+- You want to highlight events that might not be "closest" but are important
+
+**Let automatic fallback handle it when:**
+- You're short on time and trust the system to show relevant upcoming events
+- You have a steady stream of new events being published
+- You want to ensure the homepage always shows fresh, timely content
+
+**Tip**: Even with manual curation, the system will automatically hide past events from the carousel, so you don't need to manually remove them after they've occurred.
 
 ### Organizer Feedback Analytics
 
