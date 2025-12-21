@@ -1102,3 +1102,6 @@
 
 ## Admin Dashboard UX Improvements
 - [x] Add "Claim Assignment" button to admin dashboard navigation
+
+## Claim Assignment Page Improvements
+- [x] Add search and filter functionality to Claim Assignment page

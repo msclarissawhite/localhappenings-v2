@@ -6,12 +6,14 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
-import { Copy, Mail, Check } from "lucide-react";
+import { Copy, Mail, Check, Search } from "lucide-react";
 
 export function AdminClaimAssignment() {
   const [organizerEmail, setOrganizerEmail] = useState("");
   const [selectedEventIds, setSelectedEventIds] = useState<number[]>([]);
   const [claimUrl, setClaimUrl] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterMunicipality, setFilterMunicipality] = useState<string>("all");
 
   // Get all unclaimed published events
   const { data: unclaimedEvents, isLoading } = trpc.claim.getUnclaimedEvents.useQuery();
@@ -53,7 +55,22 @@ export function AdminClaimAssignment() {
   };
 
   // Events are already filtered on the backend
-  const eventsToAssign = unclaimedEvents || [];
+  const allEvents = unclaimedEvents || [];
+  
+  // Get unique municipalities for filter
+  const municipalities = Array.from(new Set(allEvents.map(e => e.municipality))).sort();
+  
+  // Apply search and filter
+  const eventsToAssign = allEvents.filter(event => {
+    const matchesSearch = searchQuery === "" || 
+      event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.municipality.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.venue?.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesMunicipality = filterMunicipality === "all" || event.municipality === filterMunicipality;
+    
+    return matchesSearch && matchesMunicipality;
+  });
 
   return (
     <div className="container max-w-4xl py-8">
@@ -78,7 +95,32 @@ export function AdminClaimAssignment() {
           </div>
 
           <div>
-            <Label>Select Events to Assign ({selectedEventIds.length} selected)</Label>
+            <Label>Search and Filter Events</Label>
+            <div className="flex gap-2 mt-2 mb-4">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search by name, venue, or municipality..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-9"
+                />
+              </div>
+              <select
+                value={filterMunicipality}
+                onChange={(e) => setFilterMunicipality(e.target.value)}
+                className="px-3 py-2 border border-input bg-background rounded-md text-sm"
+              >
+                <option value="all">All Municipalities</option>
+                {municipalities.map(m => (
+                  <option key={m} value={m}>{m}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <Label>Select Events to Assign ({selectedEventIds.length} selected, {eventsToAssign.length} shown)</Label>
             <div className="mt-2 max-h-96 overflow-y-auto border rounded-md p-4 space-y-2">
               {isLoading && <p className="text-sm text-muted-foreground">Loading events...</p>}
               
