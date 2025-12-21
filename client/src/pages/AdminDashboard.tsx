@@ -131,7 +131,9 @@ export default function AdminDashboard() {
   const approvePendingEditMutation = trpc.events.approvePendingEdit.useMutation({
     onSuccess: () => {
       toast.success("Edit approved and published");
+      // Invalidate both the general list and the specific pending edits query
       utils.events.list.invalidate();
+      refetchPendingEdits();
     },
     onError: (error) => {
       toast.error(error.message || "Failed to approve edit");
@@ -141,7 +143,9 @@ export default function AdminDashboard() {
   const rejectPendingEditMutation = trpc.events.rejectPendingEdit.useMutation({
     onSuccess: () => {
       toast.success("Edit rejected");
+      // Invalidate both the general list and the specific pending edits query
       utils.events.list.invalidate();
+      refetchPendingEdits();
     },
     onError: (error) => {
       toast.error(error.message || "Failed to reject edit");

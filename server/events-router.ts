@@ -112,6 +112,9 @@ const eventFiltersSchema = z.object({
   eventTypeIds: z.array(z.number()).optional(),
   sortBy: z.enum(["soonest", "latest", "name-az", "name-za"]).optional(),
   showArchived: z.boolean().optional(),
+  hasUnreviewedEdit: z.boolean().optional(),
+  status: z.enum(["pending", "published", "rejected", "needs-clarification", "closed"]).optional(),
+  limit: z.number().optional(),
   offset: z.number().optional(),
 });
 
