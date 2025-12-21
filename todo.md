@@ -1524,3 +1524,8 @@
 ## Event Duration Display Improvement
 - [x] Fix events under 24 hours showing as multi-day when crossing midnight
 - [x] Show time range instead of "2-day event" for short events (now checks actual hours not calendar days)
+
+
+## Event Price Display Bug
+- [x] Fix fixed-price events showing as range ($10-$10)
+- [x] Show single price when costMin equals costMax

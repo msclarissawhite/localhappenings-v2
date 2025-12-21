@@ -495,7 +495,7 @@ export default function EventDetail() {
                   <p className="text-lg font-medium text-accent">FREE</p>
                 ) : (
                   <>
-                    {event.costMin !== null && event.costMax !== null ? (
+                    {event.costMin !== null && event.costMax !== null && event.costMin !== event.costMax ? (
                       <p className="text-lg font-medium">
                         ${(event.costMin / 100).toFixed(2)} - ${(event.costMax / 100).toFixed(2)}
                       </p>
