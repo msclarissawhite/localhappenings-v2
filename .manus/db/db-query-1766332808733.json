@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO homepageBanners (title, description, bgGradient, textColor, icon, eventTypeIds, activeMonths, sortOrder, isActive, createdAt, updatedAt) VALUES ('Festive Holidays', 'Celebrate the season with holiday events, markets, and festive activities across Nova Scotia', 'from-red-500 to-green-600', 'text-white', 'gift', NULL, '[12]', 0, 1, NOW(), NOW());",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute INSERT INTO homepageBanners (title, description, bgGradient, textColor, icon, eventTypeIds, activeMonths, sortOrder, isActive, createdAt, updatedAt) VALUES ('Festive Holidays', 'Celebrate the season with holiday events, markets, and festive activities across Nova Scotia', 'from-red-500 to-green-600', 'text-white', 'gift', NULL, '[12]', 0, 1, NOW(), NOW());",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 68
+}
