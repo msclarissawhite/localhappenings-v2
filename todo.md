@@ -1622,3 +1622,11 @@
 - [x] Add "distance" to sortBy enum in events.list tRPC procedure
 - [x] Add geolocation fields to tRPC schema validation
 - [x] Test Near Me filter after fix (ready for user testing)
+
+
+## Fix PlacesAutocomplete Venue/Address Separation
+- [x] Move PlacesAutocomplete from venue field to address field
+- [x] Make venue field a regular text input for manual entry
+- [x] Ensure autocomplete provides full address with street number
+- [x] Update SubmitEvent, AdminEditEvent, and EditEvent forms
+- [ ] Test autocomplete with address search

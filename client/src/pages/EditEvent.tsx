@@ -286,19 +286,30 @@ export default function EditEvent() {
               />
             </div>
 
+            <div>
+              <Label htmlFor="venue">Venue Name</Label>
+              <Input
+                id="venue"
+                value={formData.venue}
+                onChange={(e) => setFormData({ ...formData, venue: e.target.value })}
+                placeholder="e.g., Neptune Theatre, Central Library"
+              />
+            </div>
+
             <PlacesAutocomplete
-              label="Venue Name"
-              placeholder="Search for a venue or location..."
-              value={formData.venue}
-              onChange={(value) => setFormData({ ...formData, venue: value })}
+              label="Full Address"
+              placeholder="Search for an address..."
+              value={formData.address}
+              onChange={(value) => setFormData({ ...formData, address: value })}
               onPlaceSelected={(details: PlaceDetails) => {
-                // Auto-fill venue name
+                // Auto-fill address and location details
                 setFormData(prev => ({
                   ...prev,
-                  venue: details.venue,
-                  address: details.address || prev.address,
+                  address: details.address,
                   province: details.province || prev.province,
                   municipality: details.municipality || prev.municipality,
+                  latitude: details.lat || prev.latitude,
+                  longitude: details.lng || prev.longitude,
                 }));
                 
                 // Update cities list if province changed
@@ -310,19 +321,9 @@ export default function EditEvent() {
                   }
                 }
                 
-                toast.success("Location details auto-filled!");
+                toast.success("Address and location details auto-filled!");
               }}
             />
-
-            <div>
-              <Label htmlFor="address">Full Address</Label>
-              <Input
-                id="address"
-                value={formData.address}
-                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                placeholder="Auto-filled from venue selection above"
-              />
-            </div>
           </div>
         </Card>
 

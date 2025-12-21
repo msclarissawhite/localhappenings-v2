@@ -1103,19 +1103,23 @@ export default function SubmitEvent() {
                 <Input id="neighborhoodCommunity" {...register("neighborhoodCommunity")} placeholder="e.g., North End" />
               </div>
 
+              <div>
+                <Label htmlFor="venue">Venue Name</Label>
+                <Input 
+                  id="venue" 
+                  {...register("venue")} 
+                  placeholder="e.g., Neptune Theatre, Central Library"
+                />
+              </div>
+
               <PlacesAutocomplete
-                label="Venue Name"
-                placeholder="Search for a venue or location..."
-                value={watch("venue") || ""}
-                onChange={(value) => setValue("venue", value)}
+                label="Full Address"
+                placeholder="Search for an address..."
+                value={watch("address") || ""}
+                onChange={(value) => setValue("address", value)}
                 onPlaceSelected={(details: PlaceDetails) => {
-                  // Auto-fill venue name
-                  setValue("venue", details.venue);
-                  
                   // Auto-fill address
-                  if (details.address) {
-                    setValue("address", details.address);
-                  }
+                  setValue("address", details.address);
                   
                   // Auto-fill province
                   if (details.province) {
@@ -1134,18 +1138,15 @@ export default function SubmitEvent() {
                     setValue("municipality", details.municipality);
                   }
                   
-                  toast.success("Location details auto-filled!");
+                  // Auto-fill coordinates for Near Me feature
+                  if (details.lat && details.lng) {
+                    setValue("latitude", details.lat.toString());
+                    setValue("longitude", details.lng.toString());
+                  }
+                  
+                  toast.success("Address and location details auto-filled!");
                 }}
               />
-
-              <div>
-                <Label htmlFor="address">Full Address</Label>
-                <Input 
-                  id="address" 
-                  {...register("address")} 
-                  placeholder="Auto-filled from venue selection above"
-                />
-              </div>
             </div>
           </Card>
 
