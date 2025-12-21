@@ -180,6 +180,20 @@ export default function AdminEditEvent() {
     }
   }, [event]);
 
+  // Sync cities list when province changes
+  useEffect(() => {
+    if (formData.province) {
+      setSelectedProvince(formData.province);
+      const provinceCode = CANADIAN_PROVINCES.find(p => p.name === formData.province)?.code;
+      if (provinceCode) {
+        setCities(CANADIAN_CITIES[provinceCode] || []);
+      }
+    } else {
+      setSelectedProvince("");
+      setCities([]);
+    }
+  }, [formData.province]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -393,10 +407,10 @@ export default function AdminEditEvent() {
               <Select
                 value={formData.municipality}
                 onValueChange={(value) => setFormData({ ...formData, municipality: value })}
-                disabled={!selectedProvince}
+                disabled={!formData.province}
               >
                 <SelectTrigger className={validationErrors.includes('municipality') ? 'border-red-500' : ''}>
-                  <SelectValue placeholder={selectedProvince ? "Select municipality" : "Select province first"} />
+                  <SelectValue placeholder={formData.province ? "Select municipality" : "Select province first"} />
                 </SelectTrigger>
                 <SelectContent>
                   {cities.map((municipality) => (

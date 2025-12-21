@@ -1553,3 +1553,9 @@
 - [x] Fix form losing unsaved changes when switching windows/tabs
 - [x] Investigate useEffect dependencies causing form reset (event refetch was resetting form)
 - [x] Preserve user input when component re-renders (using formInitialized ref)
+
+
+## Municipality Field Bug
+- [x] Fix municipality field being disabled/greyed out (now checks formData.province)
+- [x] Ensure municipality value displays when form loads
+- [x] Fix cities list population based on province (added separate useEffect for sync)
