@@ -1,0 +1,170 @@
+{
+  "query": "SELECT id, name, category FROM eventTypes ORDER BY category, name;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT id, name, category FROM eventTypes ORDER BY category, name;",
+  "rows": [
+    {
+      "id": "30008",
+      "name": "Face Painting",
+      "category": "family-kids"
+    },
+    {
+      "id": "30006",
+      "name": "Kids Crafts",
+      "category": "family-kids"
+    },
+    {
+      "id": "30005",
+      "name": "Petting Zoos / Farms",
+      "category": "family-kids"
+    },
+    {
+      "id": "30007",
+      "name": "Puppet Shows",
+      "category": "family-kids"
+    },
+    {
+      "id": "30001",
+      "name": "Seeing Santa",
+      "category": "family-kids"
+    },
+    {
+      "id": "30003",
+      "name": "Skating",
+      "category": "family-kids"
+    },
+    {
+      "id": "30002",
+      "name": "Storytime / Library Events",
+      "category": "family-kids"
+    },
+    {
+      "id": "30004",
+      "name": "Swimming",
+      "category": "family-kids"
+    },
+    {
+      "id": "30013",
+      "name": "Art Exhibition",
+      "category": "arts-culture"
+    },
+    {
+      "id": "30012",
+      "name": "Concert",
+      "category": "arts-culture"
+    },
+    {
+      "id": "30014",
+      "name": "Indigenous Events",
+      "category": "arts-culture"
+    },
+    {
+      "id": "30009",
+      "name": "Live Music",
+      "category": "arts-culture"
+    },
+    {
+      "id": "30015",
+      "name": "Multicultural Festivals",
+      "category": "arts-culture"
+    },
+    {
+      "id": "30011",
+      "name": "Opera",
+      "category": "arts-culture"
+    },
+    {
+      "id": "30010",
+      "name": "Theatre & Performances",
+      "category": "arts-culture"
+    },
+    {
+      "id": "30016",
+      "name": "Community Meetings",
+      "category": "community-social"
+    },
+    {
+      "id": "30017",
+      "name": "Fundraisers & Charity Events",
+      "category": "community-social"
+    },
+    {
+      "id": "30018",
+      "name": "Language Meetups",
+      "category": "community-social"
+    },
+    {
+      "id": "30020",
+      "name": "Pride Events",
+      "category": "community-social"
+    },
+    {
+      "id": "30019",
+      "name": "Religious / Faith-Based Events",
+      "category": "community-social"
+    },
+    {
+      "id": "30021",
+      "name": "Workshops & Classes",
+      "category": "community-social"
+    },
+    {
+      "id": "30023",
+      "name": "Outdoor Adventure",
+      "category": "recreation-sports"
+    },
+    {
+      "id": "30022",
+      "name": "Sports & Recreation",
+      "category": "recreation-sports"
+    },
+    {
+      "id": "30025",
+      "name": "Craft Shows & Markets",
+      "category": "markets-festivals"
+    },
+    {
+      "id": "30024",
+      "name": "Festivals & Fairs",
+      "category": "markets-festivals"
+    },
+    {
+      "id": "30026",
+      "name": "Food & Drink",
+      "category": "markets-festivals"
+    },
+    {
+      "id": "30029",
+      "name": "Canada Day Events",
+      "category": "seasonal"
+    },
+    {
+      "id": "30030",
+      "name": "Easter Events",
+      "category": "seasonal"
+    },
+    {
+      "id": "30027",
+      "name": "Festive Holidays",
+      "category": "seasonal"
+    },
+    {
+      "id": "30028",
+      "name": "Halloween Events",
+      "category": "seasonal"
+    },
+    {
+      "id": "30031",
+      "name": "Summer Activities",
+      "category": "seasonal"
+    },
+    {
+      "id": "30032",
+      "name": "Winter Activities",
+      "category": "seasonal"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tcategory\n30008\tFace Painting\tfamily-kids\n30006\tKids Crafts\tfamily-kids\n30005\tPetting Zoos / Farms\tfamily-kids\n30007\tPuppet Shows\tfamily-kids\n30001\tSeeing Santa\tfamily-kids\n30003\tSkating\tfamily-kids\n30002\tStorytime / Library Events\tfamily-kids\n30004\tSwimming\tfamily-kids\n30013\tArt Exhibition\tarts-culture\n30012\tConcert\tarts-culture\n30014\tIndigenous Events\tarts-culture\n30009\tLive Music\tarts-culture\n30015\tMulticultural Festivals\tarts-culture\n30011\tOpera\tarts-culture\n30010\tTheatre & Performances\tarts-culture\n30016\tCommunity Meetings\tcommunity-social\n30017\tFundraisers & Charity Events\tcommunity-social\n30018\tLanguage Meetups\tcommunity-social\n30020\tPride Events\tcommunity-social\n30019\tReligious / Faith-Based Events\tcommunity-social\n30021\tWorkshops & Classes\tcommunity-social\n30023\tOutdoor Adventure\trecreation-sports\n30022\tSports & Recreation\trecreation-sports\n30025\tCraft Shows & Markets\tmarkets-festivals\n30024\tFestivals & Fairs\tmarkets-festivals\n30026\tFood & Drink\tmarkets-festivals\n30029\tCanada Day Events\tseasonal\n30030\tEaster Events\tseasonal\n30027\tFestive Holidays\tseasonal\n30028\tHalloween Events\tseasonal\n30031\tSummer Activities\tseasonal\n30032\tWinter Activities\tseasonal\n",
+  "stderr": "",
+  "execution_time_ms": 54
+}

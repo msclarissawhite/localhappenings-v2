@@ -1,0 +1,40 @@
+{
+  "query": "SELECT id, name, organizerEmail, status FROM events WHERE organizerEmail IS NULL OR organizerEmail = '' ORDER BY id DESC LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT id, name, organizerEmail, status FROM events WHERE organizerEmail IS NULL OR organizerEmail = '' ORDER BY id DESC LIMIT 5;",
+  "rows": [
+    {
+      "id": "420006",
+      "name": "Family Movie Night",
+      "organizerEmail": "NULL",
+      "status": "published"
+    },
+    {
+      "id": "420005",
+      "name": "Toddler Playgroup",
+      "organizerEmail": "NULL",
+      "status": "published"
+    },
+    {
+      "id": "390001",
+      "name": "Test Event - Family Storytime at Library",
+      "organizerEmail": "NULL",
+      "status": "published"
+    },
+    {
+      "id": "360001",
+      "name": "Test Event - Family Storytime",
+      "organizerEmail": "NULL",
+      "status": "published"
+    },
+    {
+      "id": "300008",
+      "name": "Test Event with Unknown Values",
+      "organizerEmail": "NULL",
+      "status": "published"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\torganizerEmail\tstatus\n420006\tFamily Movie Night\tNULL\tpublished\n420005\tToddler Playgroup\tNULL\tpublished\n390001\tTest Event - Family Storytime at Library\tNULL\tpublished\n360001\tTest Event - Family Storytime\tNULL\tpublished\n300008\tTest Event with Unknown Values\tNULL\tpublished\n",
+  "stderr": "",
+  "execution_time_ms": 55
+}

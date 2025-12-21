@@ -1,0 +1,14 @@
+{
+  "query": "SELECT id, name FROM events WHERE name = 'Test Event - Family Storytime' ORDER BY id DESC LIMIT 1;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT id, name FROM events WHERE name = 'Test Event - Family Storytime' ORDER BY id DESC LIMIT 1;",
+  "rows": [
+    {
+      "id": "360001",
+      "name": "Test Event - Family Storytime"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\n360001\tTest Event - Family Storytime\n",
+  "stderr": "",
+  "execution_time_ms": 172
+}

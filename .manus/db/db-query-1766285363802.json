@@ -1,0 +1,14 @@
+{
+  "query": "SELECT token, eventIds FROM event_claim_tokens WHERE token = 'ff9fc530005eac6a70bcefb30ed65fb4996b5e645d6b35d016108be674dff816';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT token, eventIds FROM event_claim_tokens WHERE token = 'ff9fc530005eac6a70bcefb30ed65fb4996b5e645d6b35d016108be674dff816';",
+  "rows": [
+    {
+      "token": "ff9fc530005eac6a70bcefb30ed65fb4996b5e645d6b35d016108be674dff816",
+      "eventIds": "[13]"
+    }
+  ],
+  "messages": [],
+  "stdout": "token\teventIds\nff9fc530005eac6a70bcefb30ed65fb4996b5e645d6b35d016108be674dff816\t[13]\n",
+  "stderr": "",
+  "execution_time_ms": 55
+}

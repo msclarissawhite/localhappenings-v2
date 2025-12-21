@@ -3,10 +3,12 @@ import express from "express";
 import { createServer } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
+import cookieParser from "cookie-parser";
 import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
+import { handleStripeWebhook } from "../stripe-webhook";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -30,9 +32,40 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 async function startServer() {
   const app = express();
   const server = createServer(app);
+  
+  // Stripe webhook MUST be registered BEFORE express.json() middleware
+  // to preserve raw body for signature verification
+  app.post(
+    "/api/stripe/webhook",
+    express.raw({ type: "application/json" }),
+    handleStripeWebhook
+  );
+  
+  // Stripe customer portal redirect (for managing recurring donations)
+  app.get("/api/donations/portal", async (req, res) => {
+    const customerId = req.query.customerId as string;
+    if (!customerId) {
+      return res.status(400).send("Missing customerId parameter");
+    }
+    
+    try {
+      const { stripe } = await import("./stripe");
+      const session = await stripe.billingPortal.sessions.create({
+        customer: customerId,
+        return_url: `${req.headers.origin || process.env.VITE_APP_URL}/donate/thank-you`,
+      });
+      res.redirect(session.url);
+    } catch (error) {
+      console.error("[Stripe] Failed to create portal session:", error);
+      res.status(500).send("Failed to create portal session");
+    }
+  });
+  
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
+  // Configure cookie parser for session handling
+  app.use(cookieParser());
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
   // tRPC API
