@@ -401,3 +401,29 @@ export const eventTemplates = mysqlTable("eventTemplates", {
 
 export type EventTemplate = typeof eventTemplates.$inferSelect;
 export type InsertEventTemplate = typeof eventTemplates.$inferInsert;
+
+/**
+ * Event Feedback - Post-event attendee feedback for listing accuracy
+ * Helps identify reliable organizers and improve data quality
+ */
+export const eventFeedback = mysqlTable("eventFeedback", {
+  id: int("id").autoincrement().primaryKey(),
+  eventId: int("eventId").notNull(), // References events.id
+  
+  // Feedback responses
+  attended: int("attended").notNull(), // Did they actually attend? (0=no, 1=yes)
+  accuracyRating: int("accuracyRating"), // 1-5 scale, null if didn't attend
+  helpfulDetails: json("helpfulDetails"), // Array of helpful categories
+  inaccurateDetails: json("inaccurateDetails"), // Array of inaccurate categories
+  comments: text("comments"), // Optional free-text feedback
+  
+  // Metadata
+  submittedAt: timestamp("submittedAt").defaultNow().notNull(),
+  
+  // ClickUp sync tracking
+  syncedToClickUp: int("syncedToClickUp").default(0).notNull(), // 0=not synced, 1=synced
+  clickUpSyncedAt: timestamp("clickUpSyncedAt"),
+});
+
+export type EventFeedback = typeof eventFeedback.$inferSelect;
+export type InsertEventFeedback = typeof eventFeedback.$inferInsert;

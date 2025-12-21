@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { FeedbackForm } from "@/components/FeedbackForm";
 
 // Bookmark Button Component
 function BookmarkButton({ eventId }: { eventId: number }) {
@@ -793,6 +794,11 @@ export default function EventDetail() {
               <h2 className="text-xl font-semibold mb-3">Additional Information</h2>
               <p className="text-foreground leading-relaxed whitespace-pre-wrap">{event.notes}</p>
             </Card>
+          )}
+
+          {/* Post-Event Feedback - Show after event ends */}
+          {new Date(event.endDate || event.startDate) < new Date() && (
+            <FeedbackForm eventId={event.id} eventName={event.name} />
           )}
         </div>
       </div>
