@@ -328,7 +328,7 @@ export const feedbackRouter = router({
       .leftJoin(sql`events e`, sql`e.id = ${eventFeedback.eventId}`)
       .groupBy(eventFeedback.eventId, sql`e.name`)
       .having(sql`COUNT(*) >= 3`) // At least 3 feedback submissions
-      .orderBy(sql`avgRating DESC`)
+      .orderBy(sql`AVG(CASE WHEN ${eventFeedback.attended} = 1 AND ${eventFeedback.accuracyRating} IS NOT NULL THEN ${eventFeedback.accuracyRating} ELSE NULL END) DESC`)
       .limit(10);
 
     // Recent feedback (last 30 days)

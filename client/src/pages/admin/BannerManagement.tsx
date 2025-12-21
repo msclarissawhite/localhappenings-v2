@@ -52,10 +52,14 @@ const GRADIENT_PRESETS = [
   { name: "New Year (Purple to Blue)", value: "from-purple-600 to-blue-500", textColor: "text-white" },
   { name: "Halloween (Orange to Purple)", value: "from-orange-500 to-purple-600", textColor: "text-white" },
   { name: "Easter (Pink to Purple)", value: "from-pink-400 to-purple-500", textColor: "text-white" },
-  { name: "Summer (Yellow to Orange)", value: "from-yellow-400 to-orange-500", textColor: "text-white" },
+  { name: "Summer (Yellow to Orange)", value: "from-yellow-400 to-orange-500", textColor: "text-gray-900" },
   { name: "Winter (Blue to Cyan)", value: "from-blue-400 to-cyan-500", textColor: "text-white" },
   { name: "Fall (Amber to Red)", value: "from-amber-500 to-red-600", textColor: "text-white" },
-  { name: "Canada Day (Red to White)", value: "from-red-600 to-white", textColor: "text-red-700" },
+  { name: "Canada Day (Red to White)", value: "from-red-600 via-red-500 to-red-50", textColor: "text-white" },
+  { name: "Spring (Green to Teal)", value: "from-green-500 to-teal-500", textColor: "text-white" },
+  { name: "Sunset (Rose to Orange)", value: "from-rose-500 to-orange-400", textColor: "text-white" },
+  { name: "Ocean (Indigo to Cyan)", value: "from-indigo-600 to-cyan-400", textColor: "text-white" },
+  { name: "Forest (Emerald to Lime)", value: "from-emerald-600 to-lime-500", textColor: "text-white" },
 ];
 
 const ICON_OPTIONS = [

@@ -1473,3 +1473,13 @@
 ## Banner Update Bug
 - [x] Fix banner update error when endDate is empty string
 - [x] Handle empty date strings in banner router update mutation
+
+
+## Banner Gradient Enhancements
+- [x] Add 4 new gradient presets for custom banners (Spring, Sunset, Ocean, Forest)
+- [x] Fix Canada Day gradient contrast issue (now red-to-red-50 with via-red-500)
+- [x] Update user manual with banner management features (v3.7)
+
+
+## SQL Query Bug Fix
+- [x] Fix eventFeedback query missing avgRating alias in SELECT statement

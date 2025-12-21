@@ -1,6 +1,6 @@
 # Local Happenings - User Manual & Testing Guide
 
-**Version:** 3.6  
+**Version:** 3.7  
 **Last Updated:** December 21, 2025  
 **Author:** Manus AI
 
@@ -491,16 +491,29 @@ The **Banners** tab in the admin dashboard allows you to create and manage seaso
 3. Fill in the banner details:
    - **Title**: Short, catchy name (e.g., "Festive Holidays")
    - **Description**: Brief description that appears on the banner
-   - **Background Gradient**: Choose from preset color combinations
-   - **Icon**: Select an icon that matches the theme
+   - **Background Gradient**: Choose from 12 preset color combinations:
+     - **Festive (Red to Green)**: Classic holiday colors with white text
+     - **New Year (Purple to Blue)**: Vibrant celebration gradient with white text
+     - **Halloween (Orange to Purple)**: Spooky seasonal colors with white text
+     - **Easter (Pink to Purple)**: Soft spring pastels with white text
+     - **Summer (Yellow to Orange)**: Bright warm tones with dark text for contrast
+     - **Winter (Blue to Cyan)**: Cool icy colors with white text
+     - **Fall (Amber to Red)**: Autumn warmth with white text
+     - **Canada Day (Red to Red-50)**: Patriotic gradient with white text
+     - **Spring (Green to Teal)**: Fresh nature-inspired colors with white text
+     - **Sunset (Rose to Orange)**: Warm evening hues with white text
+     - **Ocean (Indigo to Cyan)**: Deep water tones with white text
+     - **Forest (Emerald to Lime)**: Lush green gradient with white text
+   - **Icon**: Select an icon that matches the theme (Snowflake, Sparkles, Sun, Leaf, Heart, Star, Gift, Music, Camera, Calendar)
    - **Event Types to Filter**: Select which event types to show when users click the banner
    - **Start/End Date** (optional): Set specific date ranges for the banner
    - **Active Months** (optional): Auto-activate during specific months (e.g., December for Christmas)
-   - **Sort Order**: Lower numbers appear first if multiple banners are active
+   - **Sort Order**: Lower numbers appear first if multiple banners are active (can be changed via drag-and-drop)
    - **Active**: Toggle to show/hide the banner on the homepage
 
 #### Managing Existing Banners
 
+- **Drag to Reorder**: Click and hold the grip icon (⋮⋮) on the left side of any banner card, then drag up or down to change the display order. The new order is saved automatically.
 - **Edit**: Click the edit icon to modify banner details
 - **Toggle Active**: Click the eye icon to show/hide the banner without deleting it
 - **Delete**: Remove the banner permanently
@@ -508,7 +521,9 @@ The **Banners** tab in the admin dashboard allows you to create and manage seaso
 
 #### Banner Display Logic
 
-Only one banner displays at a time on the homepage (the one with the lowest sort order among active banners). Banners can be automatically activated/deactivated based on:
+Multiple banners can display simultaneously on the homepage in a responsive grid layout. The display order is controlled by the sort order field (lower numbers appear first). You can easily reorder banners by dragging and dropping them in the management interface.
+
+Banners can be automatically activated/deactivated based on:
 - Date ranges (startDate/endDate)
 - Active months (e.g., show only in December)
 - Manual active/inactive toggle
