@@ -1200,3 +1200,26 @@
 - [x] Create backend procedure for basic analytics stats
 - [x] Add Analytics tab to admin dashboard with key metrics
 - [x] Test analytics display
+
+## Seasonal Collections Management
+- [x] Seed database with expanded event type categories (Core, Family, Cultural)
+- [x] Create Collections admin tab for managing curated landing pages
+- [x] Add collection creation form (name, slug, description, filters, SEO settings)
+- [x] Implement collection activation/deactivation toggle
+- [ ] Build collection preview functionality
+- [x] Test collections management interface
+
+## Tag-Based Event Categories Expansion
+- [ ] Update eventTypes table with category field (core, family, cultural, seasonal)
+- [ ] Seed all event types from design brief into database
+- [ ] Update event submission form to show categorized event types
+- [ ] Add event type management in admin dashboard
+- [ ] Test event type selection and filtering
+
+## Calendar View for Browse Events
+- [ ] Create calendar component with monthly view
+- [ ] Integrate calendar with event filtering
+- [ ] Add toggle between list view and calendar view
+- [ ] Show event count badges on calendar dates
+- [ ] Implement date click to filter events
+- [ ] Test calendar navigation and event display

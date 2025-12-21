@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { Calendar, MapPin, CheckCircle, XCircle, AlertCircle, ShieldCheck, Users, DollarSign, TrendingUp, Repeat, MessageSquare, Download } from "lucide-react";
+import { Calendar, MapPin, CheckCircle, XCircle, AlertCircle, ShieldCheck, Users, DollarSign, TrendingUp, Repeat, MessageSquare, Download, Layers } from "lucide-react";
 import type { Event } from "@shared/types";
 import { EventEditDialog } from "@/components/EventEditDialog";
 import { DuplicateWarning } from "@/components/DuplicateWarning";
@@ -26,6 +26,7 @@ import { BulkUpload } from "@/components/BulkUpload";
 import { BatchEditModal } from "@/components/BatchEditModal";
 import FeedbackModeration from "@/pages/admin/FeedbackModeration";
 import { FeedbackAnalytics } from "@/pages/admin/FeedbackAnalytics";
+import { CollectionsManagement } from "@/pages/admin/CollectionsManagement";
 
 export default function AdminDashboard() {
   const { user, isAuthenticated } = useAuth();
@@ -36,7 +37,7 @@ export default function AdminDashboard() {
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [reviewAction, setReviewAction] = useState<"published" | "rejected" | "needs-clarification">("published");
   const [selectedEvents, setSelectedEvents] = useState<Set<number>>(new Set());
-  const [activeTab, setActiveTab] = useState<"events" | "pending-edits" | "closed-events" | "organizers" | "feature-requests" | "donations" | "feedback" | "analytics">("events");
+  const [activeTab, setActiveTab] = useState<"events" | "pending-edits" | "closed-events" | "organizers" | "feature-requests" | "donations" | "feedback" | "analytics" | "collections">("events");
   const [showBulkUpload, setShowBulkUpload] = useState(false);
   const [showBatchEdit, setShowBatchEdit] = useState(false);
 
@@ -375,6 +376,14 @@ export default function AdminDashboard() {
           >
             <TrendingUp className="w-4 h-4 mr-2" />
             Analytics
+          </Button>
+          <Button
+            variant={activeTab === "collections" ? "default" : "ghost"}
+            onClick={() => setActiveTab("collections")}
+            className="rounded-b-none"
+          >
+            <Layers className="w-4 h-4 mr-2" />
+            Collections
           </Button>
         </div>
 
@@ -1093,6 +1102,10 @@ export default function AdminDashboard() {
 
         {activeTab === "analytics" && (
           <FeedbackAnalytics />
+        )}
+
+        {activeTab === "collections" && (
+          <CollectionsManagement />
         )}
 
         {activeTab === "closed-events" && (
