@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -35,6 +35,22 @@ export default function BrowseEvents() {
     offset: 0,
   });
   const [showFilters, setShowFilters] = useState(false);
+  
+  // Handle URL parameters for tag filtering
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tagId = params.get('tagId');
+    if (tagId) {
+      const tagIdNum = parseInt(tagId, 10);
+      if (!isNaN(tagIdNum)) {
+        setFilters(prev => ({ ...prev, eventTypeIds: [tagIdNum] }));
+        setShowFilters(true); // Open advanced filters to show the selection
+      }
+    }
+  }, []);
+  
+  // Record tag clicks mutation
+  const recordTagClick = trpc.events.recordTagClick.useMutation();
 
   const { data: eventsData, isLoading } = trpc.events.list.useQuery(filters);
   const allEvents = eventsData?.events || [];
@@ -66,6 +82,13 @@ export default function BrowseEvents() {
   const updateFilter = (key: keyof EventFilters, value: any) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
     setDisplayedCount(EVENTS_PER_PAGE); // Reset to initial count
+    
+    // Record tag clicks for analytics when eventTypeIds filter changes
+    if (key === 'eventTypeIds' && Array.isArray(value)) {
+      value.forEach((tagId: number) => {
+        recordTagClick.mutate({ eventTypeId: tagId });
+      });
+    }
   };
 
   const toggleFilter = (key: keyof EventFilters) => {

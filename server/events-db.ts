@@ -541,3 +541,70 @@ export async function getEventEditHistory(eventId: number) {
 
   return history;
 }
+
+/**
+ * Record a tag click for analytics
+ */
+export async function recordTagClick(eventTypeId: number, sessionId?: string) {
+  const db = await getDb();
+  if (!db) return;
+
+  const { eventTypeClicks } = await import("../drizzle/schema");
+  
+  await db.insert(eventTypeClicks).values({
+    eventTypeId,
+    sessionId: sessionId || null,
+  });
+}
+
+/**
+ * Get tag click analytics - returns event types with their click counts
+ */
+export async function getTagAnalytics() {
+  const db = await getDb();
+  if (!db) return [];
+
+  const { eventTypeClicks, eventTypes } = await import("../drizzle/schema");
+  const { sql } = await import("drizzle-orm");
+  
+  // Get click counts grouped by event type
+  const results = await db
+    .select({
+      eventTypeId: eventTypeClicks.eventTypeId,
+      eventTypeName: eventTypes.name,
+      category: eventTypes.category,
+      clickCount: sql<number>`COUNT(${eventTypeClicks.id})`.as('clickCount'),
+    })
+    .from(eventTypeClicks)
+    .leftJoin(eventTypes, eq(eventTypeClicks.eventTypeId, eventTypes.id))
+    .groupBy(eventTypeClicks.eventTypeId, eventTypes.name, eventTypes.category)
+    .orderBy(desc(sql`COUNT(${eventTypeClicks.id})`));
+
+  return results;
+}
+
+/**
+ * Get popular tags (top N most-clicked event types)
+ */
+export async function getPopularTags(limit: number = 8) {
+  const db = await getDb();
+  if (!db) return [];
+
+  const { eventTypeClicks, eventTypes } = await import("../drizzle/schema");
+  const { sql } = await import("drizzle-orm");
+  
+  const results = await db
+    .select({
+      id: eventTypes.id,
+      name: eventTypes.name,
+      category: eventTypes.category,
+      clickCount: sql<number>`COUNT(${eventTypeClicks.id})`.as('clickCount'),
+    })
+    .from(eventTypes)
+    .leftJoin(eventTypeClicks, eq(eventTypes.id, eventTypeClicks.eventTypeId))
+    .groupBy(eventTypes.id, eventTypes.name, eventTypes.category)
+    .orderBy(desc(sql`COUNT(${eventTypeClicks.id})`))
+    .limit(limit);
+
+  return results;
+}

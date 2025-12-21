@@ -1,9 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Link } from "wouter";
-import { Calendar, Heart, MapPin, Search, Shield, Users } from "lucide-react";
+import { Calendar, Heart, MapPin, Search, Shield, Users, TrendingUp } from "lucide-react";
+import { trpc } from "@/lib/trpc";
+import { Badge } from "@/components/ui/badge";
+import { useLocation } from "wouter";
 
 export default function Home() {
+  const [, navigate] = useLocation();
+  const { data: popularTags = [] } = trpc.events.getPopularTags.useQuery({ limit: 8 });
+  
+  const handleTagClick = (tagId: number) => {
+    // Navigate to Browse Events with the tag filter applied
+    navigate(`/browse?tagId=${tagId}`);
+  };
+  
   return (
     <div>
       {/* Hero Section */}
@@ -33,6 +44,40 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Popular Tags Section */}
+      {popularTags.length > 0 && (
+        <section className="py-12 bg-muted/30">
+          <div className="container">
+            <div className="max-w-4xl mx-auto">
+              <div className="flex items-center justify-center gap-2 mb-6">
+                <TrendingUp className="w-5 h-5 text-primary" />
+                <h2 className="text-2xl md:text-3xl font-bold text-center">
+                  Popular Event Types
+                </h2>
+              </div>
+              <p className="text-center text-muted-foreground mb-6">
+                Discover what's trending in your community
+              </p>
+              <div className="flex flex-wrap gap-3 justify-center">
+                {popularTags.map((tag) => (
+                  <Badge
+                    key={tag.id}
+                    variant="outline"
+                    className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors text-base px-4 py-2"
+                    onClick={() => handleTagClick(tag.id)}
+                  >
+                    {tag.name}
+                    {tag.clickCount > 0 && (
+                      <span className="ml-2 text-xs opacity-70">({tag.clickCount})</span>
+                    )}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Features Section */}
       <section className="py-16 md:py-20">

@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE IF NOT EXISTS `eventTypeClicks` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `eventTypeId` int NOT NULL,\n  `clickedAt` timestamp NOT NULL DEFAULT (now()),\n  `sessionId` varchar(64),\n  CONSTRAINT `eventTypeClicks_id` PRIMARY KEY(`id`)\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute CREATE TABLE IF NOT EXISTS `eventTypeClicks` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `eventTypeId` int NOT NULL,\n  `clickedAt` timestamp NOT NULL DEFAULT (now()),\n  `sessionId` varchar(64),\n  CONSTRAINT `eventTypeClicks_id` PRIMARY KEY(`id`)\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 227
+}

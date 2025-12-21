@@ -927,5 +927,31 @@ export const eventsRouter = router({
 
       return { success: true, updatedCount: input.eventIds.length };
     }),
+
+  /**
+   * Record a tag click for analytics
+   */
+  recordTagClick: publicProcedure
+    .input(z.object({ eventTypeId: z.number(), sessionId: z.string().optional() }))
+    .mutation(async ({ input }) => {
+      await eventsDb.recordTagClick(input.eventTypeId, input.sessionId);
+      return { success: true };
+    }),
+
+  /**
+   * Get tag analytics (admin only)
+   */
+  getTagAnalytics: adminProcedure.query(async () => {
+    return await eventsDb.getTagAnalytics();
+  }),
+
+  /**
+   * Get popular tags for homepage
+   */
+  getPopularTags: publicProcedure
+    .input(z.object({ limit: z.number().optional().default(8) }))
+    .query(async ({ input }) => {
+      return await eventsDb.getPopularTags(input.limit);
+    }),
 });
 

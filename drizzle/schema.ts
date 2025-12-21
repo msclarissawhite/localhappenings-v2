@@ -491,3 +491,18 @@ export const feedbackTemplates = mysqlTable("feedbackTemplates", {
 
 export type FeedbackTemplate = typeof feedbackTemplates.$inferSelect;
 export type InsertFeedbackTemplate = typeof feedbackTemplates.$inferInsert;
+
+/**
+ * Event Type Clicks - Analytics tracking for tag filter usage
+ * Tracks when users click/filter by event types to understand interest patterns
+ */
+export const eventTypeClicks = mysqlTable("eventTypeClicks", {
+  id: int("id").autoincrement().primaryKey(),
+  eventTypeId: int("eventTypeId").notNull(), // References eventTypes.id
+  clickedAt: timestamp("clickedAt").defaultNow().notNull(),
+  // Optional: track user session or IP for more detailed analytics
+  sessionId: varchar("sessionId", { length: 64 }),
+});
+
+export type EventTypeClick = typeof eventTypeClicks.$inferSelect;
+export type InsertEventTypeClick = typeof eventTypeClicks.$inferInsert;

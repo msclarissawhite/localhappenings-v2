@@ -134,6 +134,13 @@
       "when": 1766320433260,
       "tag": "0018_known_prodigy",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "5",
+      "when": 1766322981737,
+      "tag": "0019_tiny_korvac",
+      "breakpoints": true
     }
   ]
 }

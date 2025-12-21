@@ -9,6 +9,10 @@ export default function Analytics() {
   const { data: analytics, isLoading } = trpc.events.analytics.useQuery(undefined, {
     enabled: isAuthenticated && user?.role === "admin",
   });
+  
+  const { data: tagAnalytics = [] } = trpc.events.getTagAnalytics.useQuery(undefined, {
+    enabled: isAuthenticated && user?.role === "admin",
+  });
 
   if (!isAuthenticated || user?.role !== "admin") {
     return (
@@ -145,6 +149,45 @@ export default function Analytics() {
             </ResponsiveContainer>
           ) : (
             <p className="text-sm text-muted-foreground">No data available</p>
+          )}
+        </Card>
+
+        {/* Tag Analytics */}
+        <Card className="p-6 mt-6">
+          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <TrendingUp className="w-5 h-5" />
+            Tag Click Analytics
+          </h3>
+          <p className="text-sm text-muted-foreground mb-4">
+            Track which event type tags users are most interested in based on filter usage
+          </p>
+          {tagAnalytics.length > 0 ? (
+            <div className="space-y-3">
+              {tagAnalytics.map((tag, index) => (
+                <div key={tag.eventTypeId} className="flex items-center gap-4">
+                  <span className="text-sm font-medium text-muted-foreground w-8">#{index + 1}</span>
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-medium">{tag.eventTypeName}</span>
+                      <span className="text-sm text-muted-foreground">{tag.clickCount} clicks</span>
+                    </div>
+                    <div className="w-full bg-muted rounded-full h-2">
+                      <div
+                        className="bg-primary h-2 rounded-full transition-all"
+                        style={{
+                          width: `${Math.min((Number(tag.clickCount) / Number(tagAnalytics[0]?.clickCount || 1)) * 100, 100)}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <span className="text-xs text-muted-foreground capitalize">
+                    {tag.category?.replace('-', ' ')}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground">No tag click data yet. Tags will appear here once users start filtering events.</p>
           )}
         </Card>
 

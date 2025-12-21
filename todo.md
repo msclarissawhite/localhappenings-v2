@@ -1246,3 +1246,14 @@
 - [ ] Add optional date range for seasonal collections
 - [ ] Display filter criteria preview in collection list
 - [ ] Test collection setup with multiple filter combinations
+
+## Tag Analytics & Popular Tags (IN PROGRESS)
+- [x] Create eventTypeClicks table to track tag filter usage
+- [x] Add backend procedure to record tag clicks when users filter by event types
+- [x] Create admin analytics query to get tag click counts
+- [x] Build Tag Analytics section in admin Analytics dashboard
+- [x] Display tag click counts with visual charts/bars
+- [x] Create Popular Tags section on homepage
+- [x] Query top 5-8 most-clicked tags for homepage display
+- [x] Style Popular Tags as clickable badges that filter Browse Events
+- [x] Test tag click tracking and analytics display
