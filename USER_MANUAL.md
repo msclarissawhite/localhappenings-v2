@@ -1,6 +1,6 @@
 # Local Happenings - User Manual & Testing Guide
 
-**Version:** 3.3  
+**Version:** 3.4  
 **Last Updated:** December 21, 2025  
 **Author:** Manus AI
 
@@ -110,6 +110,26 @@ Users can select multiple event types simultaneously to find events matching any
 The **Sort By** dropdown allows users to order results by Soonest, Latest, Name (A-Z), or Name (Z-A).
 
 Each event card displays the event image (if uploaded), event name, date, location, cost (with "FREE" highlighted in accent color), and relevant badges such as Family-Friendly, age suitability, and Indoor/Outdoor indicators. Clicking any event card navigates to the detailed event page.
+
+### Accessibility Settings
+
+The platform includes user-controlled accessibility settings accessible from the **Settings** button in the navigation header (gear icon). These settings apply across the entire site and persist across sessions using browser localStorage.
+
+**Font Size Control**: Users can choose from three text size options to match their reading preferences:
+
+- **Comfortable (17px)**: Recommended for most users, provides a balanced reading experience
+- **Large (19px)**: Easier to read for extended periods, ideal for users who prefer larger text
+- **Extra Large (21px)**: Maximum readability for users with visual impairments or reading difficulties
+
+Changes apply immediately without requiring a page reload. The selected font size affects all text across the platform including navigation, headings, body text, buttons, and form labels. The setting is saved in browser localStorage and persists across sessions and page refreshes.
+
+**Future Accessibility Options** (Coming Soon):
+
+- **Contrast Theme**: Choose between standard, high contrast, or dark mode themes for improved visibility
+- **Motion & Animations**: Reduce or disable animations for users sensitive to motion or who prefer a calmer browsing experience
+- **Screen Reader Optimizations**: Enhanced descriptions and navigation for screen reader users
+
+To access settings, click the **Settings** button in the navigation header (visible on both desktop and mobile). The settings panel opens as a modal dialog with organized sections for each accessibility category. Select your preferences and click **Done** to close the panel. Your settings are saved automatically.
 
 ### Submitting Events
 

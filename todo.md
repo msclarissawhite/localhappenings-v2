@@ -1286,3 +1286,22 @@
 - [x] Add minimum touch target sizes (44px)
 - [ ] User testing with browser zoom (150%, 200%) - requires manual testing
 - [ ] User testing across different screen sizes - requires manual testing
+
+## User Settings Panel & Accessibility Controls (IN PROGRESS)
+- [x] Create UserSettingsContext for managing user preferences
+- [x] Implement localStorage persistence for settings
+- [x] Add CSS classes for font size options (Comfortable 17px, Large 19px, Extra Large 21px)
+- [x] Apply font size dynamically to html element
+- [x] Create SettingsPanel component with modal dialog
+- [x] Add Font Size section with radio buttons for selection
+- [x] Create placeholder sections for future accessibility options (Contrast themes, Motion preferences, Screen reader optimizations)
+- [x] Add Settings button to navigation header
+- [x] Integrate UserSettingsProvider in App.tsx
+- [x] Add SettingsPanel to Header component
+- [x] Test font size changes persist across page refreshes
+- [x] Test font size changes apply immediately without page reload
+- [ ] Verify settings panel is keyboard accessible
+- [ ] Test settings panel on mobile devices
+- [x] Update User Manual with accessibility settings section
+- [x] Update Feature Roadmap with completed and future accessibility features
+- [x] Check all documentation for updates needed

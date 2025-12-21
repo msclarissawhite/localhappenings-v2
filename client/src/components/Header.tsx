@@ -3,14 +3,16 @@ import { Button } from "./ui/button";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { useOrganizer } from "@/contexts/OrganizerContext";
 import { useUserAuth } from "@/hooks/useUserAuth";
-import { Calendar, Menu, X, User, Bookmark, LogIn } from "lucide-react";
+import { Calendar, Menu, X, User, Bookmark, LogIn, Settings } from "lucide-react";
 import { useState } from "react";
+import { SettingsPanel } from "./SettingsPanel";
 
 export default function Header() {
   const { user, isAuthenticated } = useAuth();
   const { user: regularUser, isAuthenticated: isUserAuthenticated, logout: userLogout, getLoginUrl } = useUserAuth();
   const { isLoggedIn: isOrganizerLoggedIn } = useOrganizer();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [settingsPanelOpen, setSettingsPanelOpen] = useState(false);
 
   return (
     <header className="bg-card border-b border-border sticky top-0 z-50 shadow-sm">
@@ -67,7 +69,19 @@ export default function Header() {
                 Sign In
               </a>
             )}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setSettingsPanelOpen(true)}
+              className="flex items-center gap-1"
+              aria-label="Accessibility Settings"
+            >
+              <Settings className="w-4 h-4" />
+              <span className="hidden lg:inline">Settings</span>
+            </Button>
           </nav>
+
+          <SettingsPanel open={settingsPanelOpen} onOpenChange={setSettingsPanelOpen} />
 
           {/* Mobile Menu Button */}
           <button
@@ -126,6 +140,16 @@ export default function Header() {
                   Sign In
                 </a>
               )}
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setSettingsPanelOpen(true);
+                }}
+                className="text-foreground hover:text-primary font-medium transition-colors py-2 flex items-center gap-1"
+              >
+                <Settings className="w-4 h-4" />
+                Settings
+              </button>
             </div>
           </nav>
         )}

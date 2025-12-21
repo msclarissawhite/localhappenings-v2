@@ -20,11 +20,19 @@ This document contains features that have been identified but not yet implemente
 - [ ] Replace cities list with municipalities in canadian-locations.ts
 - [ ] Test all forms and displays after refactoring
 
-### Accessibility Testing & Tooltips
+### Accessibility Settings & Enhancements
+- [x] User-controlled font size settings (Comfortable/Large/Extra Large)
+- [x] Settings panel with localStorage persistence
+- [x] Responsive font scaling (16px mobile, 17px desktop base)
+- [x] Typography accessibility audit and improvements
+- [ ] Contrast theme options (Standard/High Contrast/Dark Mode)
+- [ ] Motion & animation preferences (Reduce/Disable animations)
+- [ ] Screen reader optimizations (Enhanced descriptions and navigation)
 - [ ] Create tooltip content for all 40+ accessibility fields explaining "why this matters"
 - [ ] Add tooltip component to submission form
 - [ ] Test tooltip display and accessibility
-- [ ] Test accessibility features and mobile responsiveness across devices
+- [ ] User testing with browser zoom (150%, 200%)
+- [ ] User testing across different screen sizes and devices
 
 ## Medium Priority - Organizer Features
 
@@ -94,6 +102,9 @@ This document contains features that have been identified but not yet implemente
 - [x] Seasonal banner promotions
 - [x] Multi-tag filtering in Browse Events
 - [x] Tag display on event cards and detail pages
+- [x] User accessibility settings panel with font size controls
+- [x] Typography accessibility improvements (WCAG 2.1 Level AA compliant)
+- [x] Comprehensive accessibility audit documentation
 - [x] Organizer dashboard with magic link authentication
 - [x] Event edit and re-approval workflow
 - [x] Bulk recurring events with preview
