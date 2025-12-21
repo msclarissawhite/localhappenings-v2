@@ -1118,3 +1118,12 @@
 - [x] Add success/error toast notifications
 - [x] Add "Save and Close" button
 - [x] Add change history log for tracking admin edits
+
+## Comprehensive System Review & Documentation Update
+- [ ] Extract and organize future features list from todo.md
+- [ ] Audit codebase for TypeScript errors and warnings
+- [ ] Identify and fix minor issues and cleanup opportunities
+- [ ] Update USER_MANUAL.md with all current features
+- [ ] Create ORGANIZER_QUICKSTART.md (concise, essential steps)
+- [ ] Create ORGANIZER_COMPREHENSIVE_GUIDE.md (detailed reference)
+- [ ] Update ORGANIZER_EVENT_FIELDS_GUIDE.md with latest fields

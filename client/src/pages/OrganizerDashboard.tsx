@@ -30,8 +30,8 @@ function SavedEventsContent({ organizerId }: { organizerId: number }) {
     },
   });
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
+  const formatDate = (dateString: string | Date) => {
+    const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
     return date.toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
@@ -111,7 +111,7 @@ function SavedEventsContent({ organizerId }: { organizerId: number }) {
                       </div>
                       <div className="flex items-center gap-2 text-muted-foreground">
                         <Clock className="w-4 h-4" />
-                        <span>{formatTime(event.startTime)}</span>
+                        <span>{formatTime(event.startDate ? new Date(event.startDate).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) : null)}</span>
                       </div>
                       <div className="flex items-center gap-2 text-muted-foreground">
                         <MapPin className="w-4 h-4" />
@@ -134,7 +134,7 @@ function SavedEventsContent({ organizerId }: { organizerId: number }) {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => navigate(`/event/${event.eventId}`)}
+                      onClick={() => navigate(`/event/${event.id}`)}
                     >
                       <Eye className="w-4 h-4 mr-1" />
                       View
@@ -142,7 +142,7 @@ function SavedEventsContent({ organizerId }: { organizerId: number }) {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => unsaveMutation.mutate({ eventId: event.eventId })}
+                      onClick={() => unsaveMutation.mutate({ eventId: event.id })}
                       disabled={unsaveMutation.isPending}
                     >
                       <Trash2 className="w-4 h-4 mr-1" />
@@ -173,7 +173,7 @@ function SavedEventsContent({ organizerId }: { organizerId: number }) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => unsaveMutation.mutate({ eventId: event.eventId })}
+                    onClick={() => unsaveMutation.mutate({ eventId: event.id })}
                     disabled={unsaveMutation.isPending}
                   >
                     <Trash2 className="w-4 h-4" />
@@ -191,7 +191,7 @@ function SavedEventsContent({ organizerId }: { organizerId: number }) {
 export default function OrganizerDashboard() {
   const [, navigate] = useLocation();
   const [organizer, setOrganizer] = useState<Organizer | null>(null);
-  const [activeTab, setActiveTab] = useState<"events" | "locations" | "saved" | "images">("events");
+  const [activeTab, setActiveTab] = useState<"events" | "locations" | "saved" | "images" | "templates">("events");
 
   useEffect(() => {
     // Check if organizer is logged in
@@ -209,7 +209,7 @@ export default function OrganizerDashboard() {
     }
   }, [navigate]);
 
-  const { data: events, isLoading } = trpc.organizer.getMyEvents.useQuery(
+  const { data: events, isLoading, refetch } = trpc.organizer.getMyEvents.useQuery(
     { organizerId: organizer?.id || 0 },
     { enabled: !!organizer }
   );
@@ -267,8 +267,8 @@ export default function OrganizerDashboard() {
     return <Badge variant={config.variant}>{config.label}</Badge>;
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
+  const formatDate = (dateString: string | Date) => {
+    const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
     return date.toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",

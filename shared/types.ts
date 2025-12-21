@@ -112,6 +112,7 @@ export interface EventFilters {
   isOutdoor?: boolean;
   
   // Accessibility filters
+  strollerAccessible?: boolean;
   changeTablesPresent?: boolean;
   changeTableLocations?: string; // Filter by specific location type
   nursingFriendly?: boolean;

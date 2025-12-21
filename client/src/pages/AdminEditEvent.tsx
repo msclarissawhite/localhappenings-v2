@@ -123,7 +123,7 @@ export default function AdminEditEvent() {
         isIndoor: event.isIndoor || false,
         isOutdoor: event.isOutdoor || false,
         accessibility: (() => {
-          let parsed = {};
+          let parsed: any = {};
           if (typeof event.accessibility === 'string' && event.accessibility) {
             try {
               parsed = JSON.parse(event.accessibility);
@@ -557,8 +557,7 @@ export default function AdminEditEvent() {
         <AccessibilityFields
           accessibility={formData.accessibility}
           updateAccessibility={(category, field, value) => {
-            setFormData(prev => ({
-              ...prev,
+           setFormData((prev: any) => ({              ...prev,
               accessibility: {
                 ...prev.accessibility,
                 [category]: {
