@@ -106,6 +106,13 @@
       "when": 1766292826911,
       "tag": "0014_cultured_mister_fear",
       "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "5",
+      "when": 1766297844418,
+      "tag": "0015_friendly_puppet_master",
+      "breakpoints": true
     }
   ]
 }

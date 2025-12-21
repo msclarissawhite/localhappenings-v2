@@ -428,6 +428,10 @@ export const eventFeedback = mysqlTable("eventFeedback", {
   // ClickUp sync tracking
   syncedToClickUp: int("syncedToClickUp").default(0).notNull(), // 0=not synced, 1=synced
   clickUpSyncedAt: timestamp("clickUpSyncedAt"),
+  
+  // Spam detection
+  isSpam: int("isSpam").default(0).notNull(), // 0=not spam, 1=flagged as spam
+  spamReason: text("spamReason"), // Reason for spam flag (duplicate, rapid_submission, identical_text)
 });
 
 export type EventFeedback = typeof eventFeedback.$inferSelect;

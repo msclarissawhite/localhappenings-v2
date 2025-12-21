@@ -22,6 +22,7 @@ export default function FeedbackModeration() {
   const [endDate, setEndDate] = useState<string>("");
   const [minRating, setMinRating] = useState<string>("");
   const [maxRating, setMaxRating] = useState<string>("");
+  const [showSpamOnly, setShowSpamOnly] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
 
   const utils = trpc.useUtils();
@@ -31,8 +32,9 @@ export default function FeedbackModeration() {
     eventId: eventIdFilter ? parseInt(eventIdFilter) : undefined,
     startDate: startDate || undefined,
     endDate: endDate || undefined,
-    minRating: minRating ? parseInt(minRating) : undefined,
-    maxRating: maxRating ? parseInt(maxRating) : undefined,
+      minRating: minRating ? parseInt(minRating) : undefined,
+      maxRating: maxRating ? parseInt(maxRating) : undefined,
+      showSpamOnly: showSpamOnly,
   };
 
   const { data: feedbackList, isLoading } = trpc.feedback.listAll.useQuery(filters);
@@ -248,7 +250,18 @@ export default function FeedbackModeration() {
             </div>
 
             <div>
-              <Label htmlFor="maxRating">Max Rating</Label>
+              <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="showSpamOnly"
+                checked={showSpamOnly}
+                onChange={(e) => setShowSpamOnly(e.target.checked)}
+                className="h-4 w-4 rounded border-gray-300"
+              />
+              <Label htmlFor="showSpamOnly">Show Spam Only</Label>
+            </div>
+
+            <Label htmlFor="maxRating">Max Rating</Label>
               <Select value={maxRating || "any"} onValueChange={(val) => setMaxRating(val === "any" ? "" : val)}>
                 <SelectTrigger id="maxRating">
                   <SelectValue placeholder="Any" />
@@ -282,25 +295,35 @@ export default function FeedbackModeration() {
             </div>
 
             <div className="space-y-4">
-              {feedbackList.map((feedback: any) => (
-                <Card key={feedback.id} className="p-4">
+            {feedbackList?.map((fb) => {
+            const isSpam = fb.isSpam === 1;
+            return (
+                 <Card key={fb.id} className={`p-4 ${isSpam ? 'border-2 border-red-500 bg-red-50' : ''}`}>
                   <div className="flex items-start gap-4">
                     <Checkbox
-                      checked={selectedIds.includes(feedback.id)}
-                      onCheckedChange={() => handleSelectOne(feedback.id)}
+                      checked={selectedIds.includes(fb.id)}
+                      onCheckedChange={() => handleSelectOne(fb.id)}
                     />
 
                     <div className="flex-1 space-y-2">
                       <div className="flex items-start justify-between">
+                {isSpam && (
+                  <div className="mb-2 flex items-center gap-2 text-red-600">
+                    <span className="text-sm font-semibold">⚠️ FLAGGED AS SPAM</span>
+                    {fb.spamReason && (
+                      <span className="text-xs">({fb.spamReason.replace(/_/g, ' ')})</span>
+                    )}
+                  </div>
+                )}
                         <div>
                           <h4 className="font-semibold">
-                            {feedback.eventName || `Event #${feedback.eventId}`}
+                            {fb.eventName || `Event #${fb.eventId}`}
                           </h4>
                           <p className="text-sm text-muted-foreground">
-                            Organizer: {feedback.organizerName || "Unknown"} •{" "}
+                            Organizer: {fb.organizerName || "Unknown"} •{" "}
                             Event Date:{" "}
-                            {feedback.eventDate
-                              ? new Date(feedback.eventDate).toLocaleDateString()
+                            {fb.eventDate
+                              ? new Date(fb.eventDate).toLocaleDateString()
                               : "N/A"}
                           </p>
                         </div>
@@ -314,7 +337,7 @@ export default function FeedbackModeration() {
                                 "Delete this feedback? This cannot be undone."
                               )
                             ) {
-                              deleteMutation.mutate({ feedbackId: feedback.id });
+                              deleteMutation.mutate({ feedbackId: fb.id });
                             }
                           }}
                           disabled={deleteMutation.isPending}
@@ -327,62 +350,63 @@ export default function FeedbackModeration() {
                         <div>
                           <span className="text-muted-foreground">Attended:</span>{" "}
                           <span className="font-medium">
-                            {feedback.attended === 1 ? "Yes" : "No"}
+                            {fb.attended === 1 ? "Yes" : "No"}
                           </span>
                         </div>
                         <div>
                           <span className="text-muted-foreground">Rating:</span>{" "}
                           <span className="font-medium">
-                            {feedback.accuracyRating
-                              ? `${feedback.accuracyRating}/5 ⭐`
+                            {fb.accuracyRating
+                              ? `${fb.accuracyRating}/5 ⭐`
                               : "N/A"}
                           </span>
                         </div>
                         <div className="col-span-2">
                           <span className="text-muted-foreground">Submitted:</span>{" "}
                           <span className="font-medium">
-                            {new Date(feedback.submittedAt).toLocaleString()}
+                            {new Date(fb.submittedAt).toLocaleString()}
                           </span>
                         </div>
                       </div>
 
-                      {feedback.comments && (
+                      {fb.comments && (
                         <div className="bg-muted p-3 rounded-md">
                           <div className="flex items-start gap-2">
                             <MessageSquare className="h-4 w-4 mt-0.5 text-muted-foreground" />
-                            <p className="text-sm">{feedback.comments}</p>
+                            <p className="text-sm">{fb.comments}</p>
                           </div>
                         </div>
                       )}
 
-                      {(feedback.helpfulDetails || feedback.inaccurateDetails) && (
+                      {(fb.helpfulDetails || fb.inaccurateDetails) && (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                          {feedback.helpfulDetails && (
+                          {fb.helpfulDetails && (
                             <div>
                               <span className="font-medium text-green-600">
                                 Helpful:
                               </span>{" "}
-                              {typeof feedback.helpfulDetails === "string"
-                                ? feedback.helpfulDetails
-                                : JSON.stringify(feedback.helpfulDetails)}
+                              {typeof fb.helpfulDetails === "string"
+                                ? fb.helpfulDetails
+                                : JSON.stringify(fb.helpfulDetails)}
                             </div>
                           )}
-                          {feedback.inaccurateDetails && (
+                          {fb.inaccurateDetails && (
                             <div>
                               <span className="font-medium text-red-600">
                                 Inaccurate:
                               </span>{" "}
-                              {typeof feedback.inaccurateDetails === "string"
-                                ? feedback.inaccurateDetails
-                                : JSON.stringify(feedback.inaccurateDetails)}
+                              {typeof fb.inaccurateDetails === "string"
+                                ? fb.inaccurateDetails
+                                : JSON.stringify(fb.inaccurateDetails)}
                             </div>
                           )}
                         </div>
                       )}
                     </div>
                   </div>
-                </Card>
-              ))}
+            </Card>
+          );
+          })}
             </div>
           </>
         ) : (

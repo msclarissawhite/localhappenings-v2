@@ -1167,3 +1167,13 @@
 - [x] Implement CSV export functionality
 - [x] Add Feedback Moderation tab to admin dashboard
 - [x] Test feedback moderation with sample data
+
+## Automated Spam Detection for Feedback
+- [x] Add isSpam and spamReason fields to eventFeedback schema
+- [x] Push database migration for spam detection fields
+- [x] Create spam detection helper function (check duplicates, rapid submissions, identical text)
+- [x] Integrate spam detection into feedback submission endpoint
+- [x] Auto-flag suspicious feedback instead of blocking submission
+- [x] Update admin Feedback Moderation interface to highlight spam
+- [x] Add spam filter toggle in admin interface
+- [x] Test spam detection with various scenarios (duplicates, rapid submissions, identical text)

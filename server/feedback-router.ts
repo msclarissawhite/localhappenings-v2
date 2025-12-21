@@ -2,7 +2,8 @@ import { z } from "zod";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { getDb } from "./db";
 import { eventFeedback } from "../drizzle/schema";
-import { eq, and, sql } from "drizzle-orm";
+import { eq, and, gte, desc, sql } from "drizzle-orm";
+import { detectSpam } from "./spam-detection";
 import { syncFeedbackToClickUp } from "./clickup-feedback-sync";
 
 export const feedbackRouter = router({
@@ -24,12 +25,17 @@ export const feedbackRouter = router({
       const db = await getDb();
       if (!db) throw new Error("Database not available");
       
-      // Insert feedback
+      // Run spam detection
+      const spamCheck = await detectSpam(input.eventId, input.comments);
+      
+      // Insert feedback with spam flag
       const [feedback] = await db.insert(eventFeedback).values({
         eventId: input.eventId,
         attended: input.attended ? 1 : 0,
         accuracyRating: input.accuracyRating,
         helpfulDetails: input.helpfulDetails ? JSON.stringify(input.helpfulDetails) : null,
+        isSpam: spamCheck.isSpam ? 1 : 0,
+        spamReason: spamCheck.reason || null,
         inaccurateDetails: input.inaccurateDetails ? JSON.stringify(input.inaccurateDetails) : null,
         comments: input.comments,
         syncedToClickUp: 0,
@@ -180,6 +186,7 @@ export const feedbackRouter = router({
         endDate: z.string().optional(),
         minRating: z.number().min(1).max(5).optional(),
         maxRating: z.number().min(1).max(5).optional(),
+        showSpamOnly: z.boolean().optional(),
       }).optional()
     )
     .query(async ({ ctx, input }) => {
@@ -202,13 +209,18 @@ export const feedbackRouter = router({
           f.helpfulDetails,
           f.inaccurateDetails,
           f.comments,
-          f.submittedAt
+          f.submittedAt,
+          f.isSpam,
+          f.spamReason
         FROM eventFeedback f
         LEFT JOIN events e ON f.eventId = e.id
         WHERE 1=1
       `;
 
       const conditions = [];
+      if (input?.showSpamOnly) {
+        conditions.push(sql`f.isSpam = 1`);
+      }
       if (input?.eventId) {
         conditions.push(sql`f.eventId = ${input.eventId}`);
       }
@@ -290,6 +302,7 @@ export const feedbackRouter = router({
         eventId: z.number().optional(),
         startDate: z.string().optional(),
         endDate: z.string().optional(),
+        showSpamOnly: z.boolean().optional(),
       }).optional()
     )
     .query(async ({ ctx, input }) => {
@@ -312,13 +325,18 @@ export const feedbackRouter = router({
           f.helpfulDetails,
           f.inaccurateDetails,
           f.comments,
-          f.submittedAt
+          f.submittedAt,
+          f.isSpam,
+          f.spamReason
         FROM eventFeedback f
         LEFT JOIN events e ON f.eventId = e.id
         WHERE 1=1
       `;
 
       const conditions = [];
+      if (input?.showSpamOnly) {
+        conditions.push(sql`f.isSpam = 1`);
+      }
       if (input?.eventId) {
         conditions.push(sql`f.eventId = ${input.eventId}`);
       }
