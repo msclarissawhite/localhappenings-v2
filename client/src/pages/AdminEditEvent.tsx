@@ -98,6 +98,7 @@ export default function AdminEditEvent() {
   });
   const [selectedProvince, setSelectedProvince] = useState<string>("");
   const [cities, setCities] = useState<string[]>([]);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
   useEffect(() => {
     if (event) {
@@ -171,6 +172,27 @@ export default function AdminEditEvent() {
     
     if (!id) return;
     
+    // Validate required fields
+    const errors: string[] = [];
+    if (!formData.name?.trim()) errors.push('name');
+    if (!formData.description?.trim()) errors.push('description');
+    if (!formData.province?.trim()) errors.push('province');
+    if (!formData.municipality?.trim()) errors.push('municipality');
+    if (!formData.startDate) errors.push('startDate');
+    
+    if (errors.length > 0) {
+      setValidationErrors(errors);
+      toast.error('Missing Required Fields', {
+        description: 'Please fill in all required fields highlighted in red.',
+      });
+      // Scroll to first error
+      const firstErrorElement = document.querySelector(`[data-error="${errors[0]}"]`);
+      firstErrorElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    
+    setValidationErrors([]);
+    
     // Transform form data to correct types
     const transformedData = {
       ...formData,
@@ -242,17 +264,21 @@ export default function AdminEditEvent() {
           <h2 className="text-xl font-semibold mb-4">Basic Information</h2>
           
           <div className="space-y-4">
-            <div>
+            <div data-error="name">
               <Label htmlFor="name">Event Name *</Label>
               <Input
                 id="name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 required
+                className={validationErrors.includes('name') ? 'border-red-500 focus-visible:ring-red-500' : ''}
               />
+              {validationErrors.includes('name') && (
+                <p className="text-sm text-red-500 mt-1">Event name is required</p>
+              )}
             </div>
 
-            <div>
+            <div data-error="description">
               <Label htmlFor="description">Description *</Label>
               <Textarea
                 id="description"
@@ -260,20 +286,28 @@ export default function AdminEditEvent() {
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 rows={6}
                 required
+                className={validationErrors.includes('description') ? 'border-red-500 focus-visible:ring-red-500' : ''}
               />
+              {validationErrors.includes('description') && (
+                <p className="text-sm text-red-500 mt-1">Description is required</p>
+              )}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="startDate">Start Date & Time *</Label>
-                <Input
+            <div data-error="startDate">
+              <Label htmlFor="startDate">Start Date & Time *</Label>
+              <Input
                   id="startDate"
                   type="datetime-local"
                   value={formData.startDate}
-                  onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                  required
-                />
-              </div>
+                onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                required
+                className={validationErrors.includes('startDate') ? 'border-red-500 focus-visible:ring-red-500' : ''}
+              />
+              {validationErrors.includes('startDate') && (
+                <p className="text-sm text-red-500 mt-1">Start date is required</p>
+              )}
+            </div>
 
               <div>
                 <Label htmlFor="endDate">End Date & Time</Label>
@@ -311,7 +345,7 @@ export default function AdminEditEvent() {
           <h2 className="text-xl font-semibold mb-4">Location</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
+            <div data-error="province">
               <Label>Province/Territory *</Label>
               <Select
                 value={formData.province}
@@ -324,7 +358,7 @@ export default function AdminEditEvent() {
                   }
                 }}
               >
-                <SelectTrigger>
+                <SelectTrigger className={validationErrors.includes('province') ? 'border-red-500' : ''}>
                   <SelectValue placeholder="Select province/territory" />
                 </SelectTrigger>
                 <SelectContent>
@@ -335,16 +369,19 @@ export default function AdminEditEvent() {
                   ))}
                 </SelectContent>
               </Select>
+              {validationErrors.includes('province') && (
+                <p className="text-sm text-red-500 mt-1">Province is required</p>
+              )}
             </div>
 
-            <div>
+            <div data-error="municipality">
               <Label>City/Town *</Label>
               <Select
                 value={formData.municipality}
                 onValueChange={(value) => setFormData({ ...formData, municipality: value })}
                 disabled={!selectedProvince}
               >
-                <SelectTrigger>
+                <SelectTrigger className={validationErrors.includes('municipality') ? 'border-red-500' : ''}>
                   <SelectValue placeholder={selectedProvince ? "Select municipality" : "Select province first"} />
                 </SelectTrigger>
                 <SelectContent>
@@ -355,6 +392,9 @@ export default function AdminEditEvent() {
                   ))}
                 </SelectContent>
               </Select>
+              {validationErrors.includes('municipality') && (
+                <p className="text-sm text-red-500 mt-1">City is required</p>
+              )}
             </div>
           </div>
 

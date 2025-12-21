@@ -1510,3 +1510,8 @@
 - [x] Fix municipality field not loading properly in admin edit
 - [x] Ensure municipality dropdown populates based on selected province
 - [x] Fix validation to allow municipality in partial updates
+
+## Admin Edit Form Validation
+- [x] Add visual indicators for missing required fields (red borders and error messages)
+- [x] Highlight empty required fields before submission
+- [x] Auto-scroll to first missing field
