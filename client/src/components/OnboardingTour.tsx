@@ -33,7 +33,7 @@ export function OnboardingTour() {
         handleComplete();
       }
     }}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl">Welcome to Local Happenings!</DialogTitle>
           <DialogDescription className="text-base">
