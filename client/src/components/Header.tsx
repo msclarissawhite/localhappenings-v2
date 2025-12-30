@@ -21,7 +21,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 text-xl font-bold text-primary hover:text-primary/80 transition-colors">
-            <Calendar className="w-6 h-6" />
+            <img src="/logo.png" alt="Local Happenings" className="w-8 h-8" />
             <span>Local Happenings</span>
           </Link>
 
