@@ -1,37 +1,7 @@
-import { useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Heart } from "lucide-react";
 
 export default function Donate() {
-  useEffect(() => {
-    // Load Buy Me a Coffee button script
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = 'https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js';
-    script.setAttribute('data-name', 'bmc-button');
-    script.setAttribute('data-slug', 'localhappenings');
-    script.setAttribute('data-color', '#0c4f33');
-    script.setAttribute('data-emoji', '☕');
-    script.setAttribute('data-font', 'Inter');
-    script.setAttribute('data-text', 'Buy me a coffee');
-    script.setAttribute('data-outline-color', '#ffffff');
-    script.setAttribute('data-font-color', '#ffffff');
-    script.setAttribute('data-coffee-color', '#FFDD00');
-    script.async = true;
-
-    const container = document.getElementById('bmc-button-container');
-    if (container) {
-      container.appendChild(script);
-    }
-
-    return () => {
-      // Cleanup script on unmount
-      if (container && script.parentNode === container) {
-        container.removeChild(script);
-      }
-    };
-  }, []);
-
   return (
     <div className="min-h-screen bg-background">
       <div className="container max-w-4xl py-12">
@@ -48,11 +18,18 @@ export default function Donate() {
         <Card className="p-12 text-center mb-8">
           <div className="mb-6">
             <h2 className="text-2xl font-semibold mb-3">Make a Donation</h2>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground mb-6">
               Click the button below to support Local Happenings through Buy Me a Coffee. You'll receive an automatic receipt and thank you email.
             </p>
           </div>
-          <div id="bmc-button-container" className="flex justify-center"></div>
+          <div className="flex justify-center">
+            <a href="https://www.buymeacoffee.com/localhappenings" target="_blank" rel="noopener noreferrer">
+              <img 
+                src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=localhappenings&button_colour=0c4f33&font_colour=ffffff&font_family=Inter&outline_colour=ffffff&coffee_colour=FFDD00" 
+                alt="Buy me a coffee"
+              />
+            </a>
+          </div>
         </Card>
 
         {/* Transparency & How Funds Are Used */}
