@@ -1673,3 +1673,7 @@
 
 ## Admin Organizers Tab Error Fix
 - [x] Fix NULLS LAST syntax error in organizer analytics query
+
+## Favicon and Event Seeding
+- [x] Regenerate favicon from calendar-star logo
+- [x] Seed Tap & Timber New Year's Eve event
