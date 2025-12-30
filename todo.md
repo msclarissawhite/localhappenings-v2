@@ -1664,3 +1664,6 @@
 ## Zapier Webhook Fix
 - [x] Create simple REST endpoint for Buy Me a Coffee webhook (bypass tRPC)
 - [ ] Test with Zapier POST request
+
+## Admin Dashboard UI Fix
+- [x] Make admin tabs wrap into multiple rows instead of horizontal scroll

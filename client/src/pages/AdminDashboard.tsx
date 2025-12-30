@@ -309,7 +309,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex gap-2 mb-6 border-b">
+        <div className="flex flex-wrap gap-2 mb-6 border-b pb-2">
           <Button
             variant={activeTab === "events" ? "default" : "ghost"}
             onClick={() => setActiveTab("events")}
