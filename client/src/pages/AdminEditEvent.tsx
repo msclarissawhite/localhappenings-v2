@@ -659,9 +659,27 @@ export default function AdminEditEvent() {
         </Card>
 
         <Card className="p-6">
-          <h2 className="text-xl font-semibold mb-4">Environment</h2>
+          <h2 className="text-xl font-semibold mb-4">Environment & Timing</h2>
           
-          <div className="space-y-3">
+          <div className="space-y-4">
+            <div>
+              <Label>Time of Day *</Label>
+              <Select
+                value={formData.timeOfDay}
+                onValueChange={(value) => setFormData({ ...formData, timeOfDay: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select time of day" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="morning">Morning</SelectItem>
+                  <SelectItem value="afternoon">Afternoon</SelectItem>
+                  <SelectItem value="evening">Evening</SelectItem>
+                  <SelectItem value="all-day">All Day</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="isIndoor"

@@ -1677,3 +1677,7 @@
 ## Favicon and Event Seeding
 - [x] Regenerate favicon from calendar-star logo
 - [x] Seed Tap & Timber New Year's Eve event
+
+## Event Edit Error Fix
+- [x] Add timeOfDay field to admin edit form
+- [x] Update Tap & Timber event with evening timeOfDay
