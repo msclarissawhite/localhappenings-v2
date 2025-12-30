@@ -14,15 +14,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { useUserAuth } from "@/hooks/useUserAuth";
 import { useLocation } from "wouter";
 import { toast } from "sonner";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
 import { FeedbackForm } from "@/components/FeedbackForm";
 import { EventTypeTags } from "@/components/EventTypeTags";
 
@@ -36,8 +28,7 @@ function BookmarkButton({ eventId }: { eventId: number }) {
   const user = organizerAuth.user || userAuth.user;
   const isAuthenticated = organizerAuth.isAuthenticated || userAuth.isAuthenticated;
   
-  const [showDialog, setShowDialog] = useState(false);
-  const [reminderPref, setReminderPref] = useState<"none" | "24h" | "48h" | "both">("24h");
+  // Email reminders temporarily disabled - always save with "none" preference
   const utils = trpc.useUtils();
 
   const { data: isSaved } = trpc.savedEvents.isSaved.useQuery(
@@ -49,8 +40,7 @@ function BookmarkButton({ eventId }: { eventId: number }) {
     onSuccess: () => {
       utils.savedEvents.isSaved.invalidate({ eventId });
       utils.savedEvents.list.invalidate();
-      setShowDialog(false);
-      toast.success("Event saved! You'll receive email reminders based on your preference.");
+      toast.success("Event saved to your list!");
     },
   });
 
@@ -64,7 +54,7 @@ function BookmarkButton({ eventId }: { eventId: number }) {
 
   const handleClick = () => {
     if (!isAuthenticated) {
-      toast.error("Please sign in to save events and receive reminders");
+      toast.error("Please sign in to save events");
       window.location.href = userAuth.getLoginUrl();
       return;
     }
@@ -72,12 +62,9 @@ function BookmarkButton({ eventId }: { eventId: number }) {
     if (isSaved) {
       unsaveMutation.mutate({ eventId });
     } else {
-      setShowDialog(true);
+      // Save with no email reminders
+      saveMutation.mutate({ eventId, reminderPreference: "none" });
     }
-  };
-
-  const handleSave = () => {
-    saveMutation.mutate({ eventId, reminderPreference: reminderPref });
   };
 
   return (
@@ -102,54 +89,7 @@ function BookmarkButton({ eventId }: { eventId: number }) {
         )}
       </Button>
 
-      <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Save Event & Set Reminder</DialogTitle>
-            <DialogDescription>
-              Choose when you'd like to receive email reminders for this event.
-            </DialogDescription>
-          </DialogHeader>
 
-          <div className="space-y-4 py-4">
-            <RadioGroup value={reminderPref} onValueChange={(v) => setReminderPref(v as typeof reminderPref)}>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="24h" id="24h" />
-                <Label htmlFor="24h" className="font-normal cursor-pointer">
-                  24 hours before the event
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="48h" id="48h" />
-                <Label htmlFor="48h" className="font-normal cursor-pointer">
-                  48 hours (2 days) before the event
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="both" id="both" />
-                <Label htmlFor="both" className="font-normal cursor-pointer">
-                  Both 24 and 48 hours before
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="none" id="none" />
-                <Label htmlFor="none" className="font-normal cursor-pointer">
-                  No reminders (just save the event)
-                </Label>
-              </div>
-            </RadioGroup>
-          </div>
-
-          <div className="flex justify-end gap-2">
-            <Button variant="outline" onClick={() => setShowDialog(false)}>
-              Cancel
-            </Button>
-            <Button onClick={handleSave} disabled={saveMutation.isPending}>
-              Save Event
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </>
   );
 }

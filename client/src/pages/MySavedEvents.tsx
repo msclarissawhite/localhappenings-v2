@@ -121,7 +121,7 @@ export default function MySavedEvents() {
             <Bookmark className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
             <h2 className="text-2xl font-semibold mb-2">No saved events yet</h2>
             <p className="text-muted-foreground mb-6">
-              Browse events and click the bookmark icon to save them here. You'll receive email reminders before events start!
+              Browse events and click the bookmark icon to save them here for easy access.
             </p>
             <Button asChild>
               <Link href="/browse">Browse Events</Link>
@@ -181,15 +181,7 @@ export default function MySavedEvents() {
                         )}
                       </div>
 
-                      <div className="mt-3 text-sm">
-                        <span className="text-muted-foreground">Reminder: </span>
-                        <span className="font-medium">
-                          {event.reminderPreference === "none" && "No reminders"}
-                          {event.reminderPreference === "24h" && "24 hours before"}
-                          {event.reminderPreference === "48h" && "48 hours before"}
-                          {event.reminderPreference === "both" && "24 and 48 hours before"}
-                        </span>
-                      </div>
+
                     </div>
 
                     <Button
