@@ -59,7 +59,7 @@ export async function getOrganizerFeedbackStats(dateRange?: { startDate?: Date; 
       )
     )
     .groupBy(events.organizerName, events.organizerEmail)
-    .orderBy(sql`avgAccuracy DESC NULLS LAST, totalFeedback DESC`);
+    .orderBy(sql`CASE WHEN avgAccuracy IS NULL THEN 1 ELSE 0 END, avgAccuracy DESC, totalFeedback DESC`);
 
   return stats.map((stat) => ({
     organizerName: stat.organizerName || "Unknown",

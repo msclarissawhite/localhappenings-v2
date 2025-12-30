@@ -1667,3 +1667,9 @@
 
 ## Admin Dashboard UI Fix
 - [x] Make admin tabs wrap into multiple rows instead of horizontal scroll
+
+## Favicon Update
+- [ ] Replace favicon with calendar-star logo icon
+
+## Admin Organizers Tab Error Fix
+- [x] Fix NULLS LAST syntax error in organizer analytics query
