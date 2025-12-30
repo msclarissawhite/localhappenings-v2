@@ -105,4 +105,42 @@ export const donationsRouter = router({
         url: session.url,
       };
     }),
+
+  /**
+   * Webhook endpoint for Buy Me a Coffee donations via Zapier
+   * Receives donation data and adds to donor wall
+   */
+  buyMeCoffeeWebhook: publicProcedure
+    .input(
+      z.object({
+        donorName: z.string().optional(),
+        donorEmail: z.string().email().optional(),
+        amount: z.number().positive(), // In dollars (not cents)
+        message: z.string().max(200).optional(),
+        isAnonymous: z.boolean().default(false),
+        showAmount: z.boolean().default(true),
+        transactionId: z.string().optional(), // Buy Me a Coffee transaction ID
+      })
+    )
+    .mutation(async ({ input }) => {
+      // Convert amount from dollars to cents for consistency with Stripe donations
+      const amountInCents = Math.round(input.amount * 100);
+
+      // Create donation record
+      const donation = await donationsDb.createDonation({
+        amount: amountInCents,
+        donorName: input.isAnonymous ? null : (input.donorName || null),
+        donorEmail: input.donorEmail || "anonymous@localhappenings.ca",
+        message: input.message || null,
+        isAnonymous: input.isAnonymous ? 1 : 0,
+        showAmount: input.showAmount ? 1 : 0,
+        isRecurring: 0, // Buy Me a Coffee doesn't support recurring through webhook
+        stripePaymentIntentId: input.transactionId || null, // Store BMC transaction ID in this field
+      });
+
+      return {
+        success: true,
+        donationId: donation.id,
+      };
+    }),
 });

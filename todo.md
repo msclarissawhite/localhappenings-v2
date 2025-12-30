@@ -1652,3 +1652,11 @@
 - [x] Add missing fields to form initialization (shortDuration, dropIn, canReenter, timeOfDay, lat/lng)
 - [x] Add missing Boolean conversions to update payload
 - [ ] Test editing event without losing tags
+
+## Buy Me a Coffee Integration
+- [x] Add Buy Me a Coffee widget script to index.html
+- [x] Update /donate page with Buy Me a Coffee button
+- [x] Hide existing donation form (keep backend infrastructure)
+- [x] Create webhook endpoint to receive donation data from Zapier
+- [ ] Test webhook endpoint with sample data
+- [ ] Document webhook URL and expected payload format
