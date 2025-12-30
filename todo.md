@@ -1681,3 +1681,9 @@
 ## Event Edit Error Fix
 - [x] Add timeOfDay field to admin edit form
 - [x] Update Tap & Timber event with evening timeOfDay
+
+## Favicon Replacement (User Request)
+- [x] Copy user's calendar-with-star icon to /client/public/logo.png
+- [x] Generate favicon.ico from new icon
+- [x] Generate all PNG favicon sizes (16x16, 32x32, 192x192, 512x512)
+- [x] Verify favicon displays correctly in browser
