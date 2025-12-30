@@ -1660,3 +1660,7 @@
 - [x] Create webhook endpoint to receive donation data from Zapier
 - [ ] Test webhook endpoint with sample data
 - [ ] Document webhook URL and expected payload format
+
+## Zapier Webhook Fix
+- [x] Create simple REST endpoint for Buy Me a Coffee webhook (bypass tRPC)
+- [ ] Test with Zapier POST request

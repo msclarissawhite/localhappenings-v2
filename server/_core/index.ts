@@ -66,6 +66,42 @@ async function startServer() {
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   // Configure cookie parser for session handling
   app.use(cookieParser());
+  
+  // Buy Me a Coffee webhook endpoint (simple REST endpoint for Zapier)
+  app.post("/api/webhooks/buymeacoffee", async (req, res) => {
+    try {
+      const { donorName, donorEmail, amount, message, isAnonymous, showAmount, transactionId } = req.body;
+      
+      // Validate required fields
+      if (!amount || typeof amount !== 'number') {
+        return res.status(400).json({ error: "Missing or invalid 'amount' field" });
+      }
+      
+      // Import donations database functions
+      const donationsDb = await import("../donations-db");
+      
+      // Convert amount from dollars to cents
+      const amountInCents = Math.round(amount * 100);
+      
+      // Create donation record
+      const donation = await donationsDb.createDonation({
+        amount: amountInCents,
+        donorName: isAnonymous ? null : (donorName || null),
+        donorEmail: donorEmail || "anonymous@localhappenings.ca",
+        message: message || null,
+        isAnonymous: isAnonymous ? 1 : 0,
+        showAmount: showAmount !== false ? 1 : 0, // Default to showing amount
+        isRecurring: 0,
+        stripePaymentIntentId: transactionId || null,
+      });
+      
+      res.json({ success: true, donationId: donation.id });
+    } catch (error) {
+      console.error("[Buy Me a Coffee Webhook] Error:", error);
+      res.status(500).json({ error: "Failed to process donation" });
+    }
+  });
+  
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
   // tRPC API
