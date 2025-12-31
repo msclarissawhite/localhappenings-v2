@@ -1,0 +1,85 @@
+{
+  "query": "SELECT id, name, category FROM eventTypes WHERE category = 'seasonal' ORDER BY name",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT id, name, category FROM eventTypes WHERE category = 'seasonal' ORDER BY name",
+  "rows": [
+    {
+      "id": "90024",
+      "name": "Back to School",
+      "category": "seasonal"
+    },
+    {
+      "id": "90020",
+      "name": "Canada Day",
+      "category": "seasonal"
+    },
+    {
+      "id": "90025",
+      "name": "Christmas",
+      "category": "seasonal"
+    },
+    {
+      "id": "90019",
+      "name": "Easter",
+      "category": "seasonal"
+    },
+    {
+      "id": "90015",
+      "name": "Fall Events",
+      "category": "seasonal"
+    },
+    {
+      "id": "30027",
+      "name": "Festive Holidays",
+      "category": "seasonal"
+    },
+    {
+      "id": "90018",
+      "name": "Halloween",
+      "category": "seasonal"
+    },
+    {
+      "id": "90016",
+      "name": "Holiday Events",
+      "category": "seasonal"
+    },
+    {
+      "id": "90026",
+      "name": "New Year",
+      "category": "seasonal"
+    },
+    {
+      "id": "90013",
+      "name": "Spring Events",
+      "category": "seasonal"
+    },
+    {
+      "id": "90023",
+      "name": "St. Patrick's Day",
+      "category": "seasonal"
+    },
+    {
+      "id": "90014",
+      "name": "Summer Events",
+      "category": "seasonal"
+    },
+    {
+      "id": "90021",
+      "name": "Thanksgiving",
+      "category": "seasonal"
+    },
+    {
+      "id": "90022",
+      "name": "Valentine's Day",
+      "category": "seasonal"
+    },
+    {
+      "id": "90012",
+      "name": "Winter Events",
+      "category": "seasonal"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tcategory\n90024\tBack to School\tseasonal\n90020\tCanada Day\tseasonal\n90025\tChristmas\tseasonal\n90019\tEaster\tseasonal\n90015\tFall Events\tseasonal\n30027\tFestive Holidays\tseasonal\n90018\tHalloween\tseasonal\n90016\tHoliday Events\tseasonal\n90026\tNew Year\tseasonal\n90013\tSpring Events\tseasonal\n90023\tSt. Patrick's Day\tseasonal\n90014\tSummer Events\tseasonal\n90021\tThanksgiving\tseasonal\n90022\tValentine's Day\tseasonal\n90012\tWinter Events\tseasonal\n",
+  "stderr": "",
+  "execution_time_ms": 53
+}

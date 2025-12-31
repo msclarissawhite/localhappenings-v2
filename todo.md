@@ -1742,3 +1742,9 @@
 - [x] Add adults field to getEvents select statement
 - [x] Test filter combinations (adults only, adults + adults only, adults excluding adults only)
 - [x] Verify filter behavior with other age group combinations
+
+## Seasonal Category Cleanup (User Request)
+- [x] Delete duplicate seasonal types: Canada Day Events, Easter Events, Halloween Events, Summer Activities, Winter Activities
+- [x] Split Christmas/New Year into separate Christmas and New Year entries
+- [x] Verify only these 4 have "Events" suffix: Winter Events, Spring Events, Summer Events, Fall Events
+- [x] Test seasonal filters after cleanup

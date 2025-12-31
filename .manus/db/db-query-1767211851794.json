@@ -1,0 +1,9 @@
+{
+  "query": "DELETE FROM eventTypes WHERE id IN (30029, 30030, 30028, 30031, 30032)",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute DELETE FROM eventTypes WHERE id IN (30029, 30030, 30028, 30031, 30032)",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 69
+}

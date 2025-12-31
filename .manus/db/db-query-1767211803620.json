@@ -1,0 +1,65 @@
+{
+  "query": "SELECT id, name, category FROM eventTypes WHERE name IN ('Games/Gaming', 'Cinema', 'Arts & Crafts', 'Socials & Clubs', 'Yoga', 'Fitness', 'Meditation', 'Wellness Workshops', 'Indoor', 'Outdoor', 'Mixed Indoor/Outdoor') ORDER BY category, name",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT id, name, category FROM eventTypes WHERE name IN ('Games/Gaming', 'Cinema', 'Arts & Crafts', 'Socials & Clubs', 'Yoga', 'Fitness', 'Meditation', 'Wellness Workshops', 'Indoor', 'Outdoor', 'Mixed Indoor/Outdoor') ORDER BY category, name",
+  "rows": [
+    {
+      "id": "90003",
+      "name": "Arts & Crafts",
+      "category": "arts-culture"
+    },
+    {
+      "id": "90002",
+      "name": "Cinema",
+      "category": "arts-culture"
+    },
+    {
+      "id": "90004",
+      "name": "Socials & Clubs",
+      "category": "community-social"
+    },
+    {
+      "id": "90001",
+      "name": "Games/Gaming",
+      "category": "recreation-sports"
+    },
+    {
+      "id": "90006",
+      "name": "Fitness",
+      "category": "health-wellness"
+    },
+    {
+      "id": "90007",
+      "name": "Meditation",
+      "category": "health-wellness"
+    },
+    {
+      "id": "90008",
+      "name": "Wellness Workshops",
+      "category": "health-wellness"
+    },
+    {
+      "id": "90005",
+      "name": "Yoga",
+      "category": "health-wellness"
+    },
+    {
+      "id": "90009",
+      "name": "Indoor",
+      "category": "environment"
+    },
+    {
+      "id": "90011",
+      "name": "Mixed Indoor/Outdoor",
+      "category": "environment"
+    },
+    {
+      "id": "90010",
+      "name": "Outdoor",
+      "category": "environment"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tcategory\n90003\tArts & Crafts\tarts-culture\n90002\tCinema\tarts-culture\n90004\tSocials & Clubs\tcommunity-social\n90001\tGames/Gaming\trecreation-sports\n90006\tFitness\thealth-wellness\n90007\tMeditation\thealth-wellness\n90008\tWellness Workshops\thealth-wellness\n90005\tYoga\thealth-wellness\n90009\tIndoor\tenvironment\n90011\tMixed Indoor/Outdoor\tenvironment\n90010\tOutdoor\tenvironment\n",
+  "stderr": "",
+  "execution_time_ms": 59
+}
