@@ -644,7 +644,7 @@ export default function AdminEditEvent() {
                 onCheckedChange={(checked) => setFormData({ ...formData, adults: checked })}
               />
               <Label htmlFor="adults" className="font-normal cursor-pointer">
-                Adults (18+)
+                Adults
               </Label>
             </div>
 

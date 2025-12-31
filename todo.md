@@ -1724,3 +1724,11 @@
 - [x] Update EventDetail display with adults badge
 - [x] Update BrowseEvents filters with adults checkbox
 - [x] Test all forms and displays
+
+## Adults Label Update (User Request)
+- [x] Change "Adults (18+)" to "Adults" in SubmitEvent form
+- [x] Change "Adults (18+)" to "Adults" in AdminEditEvent form
+- [x] Change "Adults (18+)" to "Adults" in EditEvent form (already just "Adults")
+- [x] Change "Adults (18+)" to "Adults" in BrowseEvents filters (already just "Adults")
+- [x] Change "Adults (18+)" to "Adults" in EventDetail display (already just "Adults")
+- [x] Test all changes

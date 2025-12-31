@@ -1316,7 +1316,7 @@ export default function SubmitEvent() {
                   onCheckedChange={(checked) => setValue("adults", !!checked)}
                 />
                 <Label htmlFor="adults" className="cursor-pointer">
-                  Adults (18+)
+                  Adults
                 </Label>
               </div>
               <div className="flex items-center gap-2">
