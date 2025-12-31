@@ -211,6 +211,13 @@
       "when": 1767212784780,
       "tag": "0029_pretty_archangel",
       "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "5",
+      "when": 1767214174580,
+      "tag": "0030_silent_stature",
+      "breakpoints": true
     }
   ]
 }

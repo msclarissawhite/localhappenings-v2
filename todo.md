@@ -1790,3 +1790,12 @@
 - [x] Updated CSV guide to use JSON accessibility field instead of individual columns
 - [x] Added publicContact fields, eventTypeIds, and adults field to guide
 - [x] Removed outdated startTime/endTime references
+
+
+## Event Type ID Reference & Saved Locations - COMPLETE ✓
+- [x] Query all event type IDs from database (49 types across 7 categories)
+- [x] Create event type ID reference table in CSV guide (collapsible sections by category)
+- [x] Check saved locations schema for included fields
+- [x] Verify saved locations includes accessibility and all persistent fields
+- [x] Added latitude/longitude to savedLocations for geocoded coordinates
+- [x] Confirmed saved locations correctly saves: name, address, province, municipality, neighborhood, venue, accessibility JSON, isIndoor/isOutdoor/isMixed, lat/long

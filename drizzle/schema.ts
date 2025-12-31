@@ -270,6 +270,8 @@ export const savedLocations = mysqlTable("savedLocations", {
   neighborhoodCommunity: varchar("neighborhoodCommunity", { length: 150 }),
   venue: text("venue"),
   address: text("address"),
+  latitude: decimal("latitude", { precision: 10, scale: 7 }), // Geocoded latitude (-90 to 90)
+  longitude: decimal("longitude", { precision: 10, scale: 7 }), // Geocoded longitude (-180 to 180)
   
   // Accessibility info (stored as JSON, same structure as events)
   accessibility: text("accessibility").notNull(),

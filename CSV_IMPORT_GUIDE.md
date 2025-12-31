@@ -214,7 +214,109 @@ Provide separate public contact information if different from organizer account:
 
 | Field | Format | Example | Notes |
 |-------|--------|---------|-------|
-| `eventTypeIds` | Comma-separated IDs | "90005,90006,90007" | Event type tag IDs (e.g., Yoga=90005, Fitness=90006). See admin dashboard for full list of 49 event types across 7 categories. |
+| `eventTypeIds` | Comma-separated IDs | "90005,90006,90007" | Event type tag IDs (e.g., Yoga=90005, Fitness=90006). See reference table below for complete list. |
+
+**Event Type ID Reference Table:**
+
+<details>
+<summary><strong>Family & Kids (8 types)</strong></summary>
+
+| ID | Name |
+|-----|------|
+| 30008 | Face Painting |
+| 30006 | Kids Crafts |
+| 30005 | Petting Zoos / Farms |
+| 30007 | Puppet Shows |
+| 30001 | Seeing Santa |
+| 30003 | Skating |
+| 30002 | Storytime / Library Events |
+| 30004 | Swimming |
+</details>
+
+<details>
+<summary><strong>Arts & Culture (9 types)</strong></summary>
+
+| ID | Name |
+|-----|------|
+| 30013 | Art Exhibition |
+| 90003 | Arts & Crafts |
+| 90002 | Cinema |
+| 30012 | Concert |
+| 30014 | Indigenous Events |
+| 30009 | Live Music |
+| 30015 | Multicultural Festivals |
+| 30011 | Opera |
+| 30010 | Theatre & Performances |
+</details>
+
+<details>
+<summary><strong>Community & Social (7 types)</strong></summary>
+
+| ID | Name |
+|-----|------|
+| 30016 | Community Meetings |
+| 30017 | Fundraisers & Charity Events |
+| 30018 | Language Meetups |
+| 30020 | Pride Events |
+| 30019 | Religious / Faith-Based Events |
+| 90004 | Socials & Clubs |
+| 30021 | Workshops & Classes |
+</details>
+
+<details>
+<summary><strong>Recreation & Sports (3 types)</strong></summary>
+
+| ID | Name |
+|-----|------|
+| 90001 | Games/Gaming |
+| 30023 | Outdoor Adventure |
+| 30022 | Sports & Recreation |
+</details>
+
+<details>
+<summary><strong>Health & Wellness (4 types)</strong></summary>
+
+| ID | Name |
+|-----|------|
+| 90006 | Fitness |
+| 90007 | Meditation |
+| 90008 | Wellness Workshops |
+| 90005 | Yoga |
+</details>
+
+<details>
+<summary><strong>Markets & Festivals (3 types)</strong></summary>
+
+| ID | Name |
+|-----|------|
+| 30025 | Craft Shows & Markets |
+| 30024 | Festivals & Fairs |
+| 90024 | Food & Drink |
+</details>
+
+<details>
+<summary><strong>Seasonal (15 types)</strong></summary>
+
+| ID | Name |
+|-----|------|
+| 90020 | Back to School |
+| 90025 | Canada Day |
+| 90019 | Christmas |
+| 90015 | Easter |
+| 30027 | Fall Events |
+| 90018 | Festive Holidays |
+| 90016 | Halloween |
+| 90026 | Holiday Events |
+| 90013 | New Year |
+| 90023 | Spring Events |
+| 90014 | St. Patrick's Day |
+| 90012 | Summer Events |
+| 90021 | Thanksgiving |
+| 90022 | Valentine's Day |
+| 90012 | Winter Events |
+</details>
+
+**Example:** For a yoga and meditation workshop, use `eventTypeIds` value: `90005,90007`
 
 #### Additional Fields
 
