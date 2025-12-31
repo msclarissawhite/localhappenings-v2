@@ -125,8 +125,24 @@ function ShareButtons({ eventName, eventId }: { eventName: string; eventId: numb
     );
   };
 
+  const shareToWhatsApp = () => {
+    window.open(
+      `https://wa.me/?text=${encodeURIComponent(`${eventName} - ${eventUrl}`)}`,
+      "_blank",
+      "width=600,height=400"
+    );
+  };
+
+  const shareToLinkedIn = () => {
+    window.open(
+      `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(eventUrl)}`,
+      "_blank",
+      "width=600,height=400"
+    );
+  };
+
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2">
       <Button
         variant="outline"
         size="sm"
@@ -162,6 +178,24 @@ function ShareButtons({ eventName, eventId }: { eventName: string; eventId: numb
       >
         <Share2 className="w-4 h-4" />
         Twitter
+      </Button>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={shareToWhatsApp}
+        className="gap-2"
+      >
+        <Share2 className="w-4 h-4" />
+        WhatsApp
+      </Button>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={shareToLinkedIn}
+        className="gap-2"
+      >
+        <Share2 className="w-4 h-4" />
+        LinkedIn
       </Button>
     </div>
   );
