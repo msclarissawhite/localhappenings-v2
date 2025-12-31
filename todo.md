@@ -1897,3 +1897,16 @@
 - [x] Identified column shift issue in user's CSV (extra "0" in organizerName column)
 - [x] Created corrected CSV (FIXED-V3) with proper column alignment
 - [x] Added missing field conversions (adults, isMixed) to BulkUpload parser
+
+## Tandy Leather Event Name Updates & Bulk Edit Feature (Dec 31 2025)
+- [x] Update Tandy Leather event names: replace "with 707 Halifax" with "with Tandy Leather (Dartmouth)"
+- [ ] Design bulk edit feature for admin dashboard
+- [ ] Implement bulk edit UI with checkbox selection
+- [ ] Add bulk edit actions (update fields, delete, export)
+- [ ] Test bulk edit functionality
+
+- [x] Enhanced BatchEditModal with name find/replace functionality
+- [x] Added location fields (province, municipality, neighborhood) to bulk edit
+- [x] Added status change capability to bulk edit
+- [x] Added organizer website field to bulk edit
+- [x] Updated backend batchUpdate mutation to support all new fields

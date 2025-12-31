@@ -1,0 +1,35 @@
+{
+  "query": "SELECT id, name, organizerName \nFROM events \nWHERE organizerName LIKE '%Tandy%'\nLIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT id, name, organizerName \nFROM events \nWHERE organizerName LIKE '%Tandy%'\nLIMIT 5;",
+  "rows": [
+    {
+      "id": "600001",
+      "name": "Introduction to Chisels and Stitching with Tandy Leather (Dartmouth)",
+      "organizerName": "Tandy Leather Halifax - 707"
+    },
+    {
+      "id": "600002",
+      "name": "Introduction to Angelus Leather Paints with Tandy Leather (Dartmouth)",
+      "organizerName": "Tandy Leather Halifax - 707"
+    },
+    {
+      "id": "600003",
+      "name": "Learning Lacing: Lacing Basics with Tandy Leather (Dartmouth)",
+      "organizerName": "Tandy Leather Halifax - 707"
+    },
+    {
+      "id": "600004",
+      "name": "Traveler's Journal with Tandy Leather (Dartmouth)",
+      "organizerName": "Tandy Leather Halifax - 707"
+    },
+    {
+      "id": "600005",
+      "name": "Tool Sharpening Demo with Tandy Leather (Dartmouth)",
+      "organizerName": "Tandy Leather Halifax - 707"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\torganizerName\n600001\tIntroduction to Chisels and Stitching with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\n600002\tIntroduction to Angelus Leather Paints with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\n600003\tLearning Lacing: Lacing Basics with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\n600004\tTraveler's Journal with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\n600005\tTool Sharpening Demo with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\n",
+  "stderr": "",
+  "execution_time_ms": 51
+}

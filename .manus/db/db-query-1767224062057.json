@@ -1,0 +1,100 @@
+{
+  "query": "SELECT id, name, organizerName, status \nFROM events \nWHERE name LIKE '%Tandy%' OR organizerName LIKE '%Tandy%'\nLIMIT 20;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT id, name, organizerName, status \nFROM events \nWHERE name LIKE '%Tandy%' OR organizerName LIKE '%Tandy%'\nLIMIT 20;",
+  "rows": [
+    {
+      "id": "600001",
+      "name": "Introduction to Chisels and Stitching with Tandy Leather (Dartmouth)",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published"
+    },
+    {
+      "id": "600002",
+      "name": "Introduction to Angelus Leather Paints with Tandy Leather (Dartmouth)",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published"
+    },
+    {
+      "id": "600003",
+      "name": "Learning Lacing: Lacing Basics with Tandy Leather (Dartmouth)",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published"
+    },
+    {
+      "id": "600004",
+      "name": "Traveler's Journal with Tandy Leather (Dartmouth)",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published"
+    },
+    {
+      "id": "600005",
+      "name": "Tool Sharpening Demo with Tandy Leather (Dartmouth)",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published"
+    },
+    {
+      "id": "600006",
+      "name": "Basic Belt Class with Tandy Leather (Dartmouth)",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published"
+    },
+    {
+      "id": "600007",
+      "name": "Antiquing 101 with Tandy Leather (Dartmouth)",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published"
+    },
+    {
+      "id": "600008",
+      "name": "Introduction to Stitching Leather with Tandy Leather (Dartmouth)",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published"
+    },
+    {
+      "id": "600009",
+      "name": "Basic Sheridan Carving with Tandy Leather (Dartmouth)",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published"
+    },
+    {
+      "id": "600010",
+      "name": "Fundamental Leather Crafting: Hand Skiving Leather with Tandy Leather (Dartmouth)",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published"
+    },
+    {
+      "id": "600011",
+      "name": "Intro to Dyes and Finishes with Tandy Leather (Dartmouth)",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published"
+    },
+    {
+      "id": "600012",
+      "name": "No-Sew Blood Knot Dog Leash with Tandy Leather (Dartmouth)",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published"
+    },
+    {
+      "id": "600013",
+      "name": "702 - Dream Catcher (Canada) with Tandy Leather (Dartmouth)",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published"
+    },
+    {
+      "id": "600014",
+      "name": "Plant Holder Kit with Tandy Leather (Dartmouth)",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published"
+    },
+    {
+      "id": "600015",
+      "name": "44386 Flora Wallet with Tandy Leather (Dartmouth)",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\torganizerName\tstatus\n600001\tIntroduction to Chisels and Stitching with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tpublished\n600002\tIntroduction to Angelus Leather Paints with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tpublished\n600003\tLearning Lacing: Lacing Basics with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tpublished\n600004\tTraveler's Journal with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tpublished\n600005\tTool Sharpening Demo with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tpublished\n600006\tBasic Belt Class with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tpublished\n600007\tAntiquing 101 with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tpublished\n600008\tIntroduction to Stitching Leather with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tpublished\n600009\tBasic Sheridan Carving with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tpublished\n600010\tFundamental Leather Crafting: Hand Skiving Leather with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tpublished\n600011\tIntro to Dyes and Finishes with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tpublished\n600012\tNo-Sew Blood Knot Dog Leash with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tpublished\n600013\t702 - Dream Catcher (Canada) with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tpublished\n600014\tPlant Holder Kit with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tpublished\n600015\t44386 Flora Wallet with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tpublished\n",
+  "stderr": "",
+  "execution_time_ms": 54
+}

@@ -36,13 +36,16 @@ export function BatchEditModal({
   onSuccess,
 }: BatchEditModalProps) {
   const [fieldsToUpdate, setFieldsToUpdate] = useState<{
+    nameFind?: boolean;
     venue?: boolean;
+    province?: boolean;
+    municipality?: boolean;
+    neighborhoodCommunity?: boolean;
     organizerName?: boolean;
     organizerEmail?: boolean;
     organizerPhone?: boolean;
-    wheelchairAccessible?: boolean;
-    accessibleParking?: boolean;
-    accessibleWashrooms?: boolean;
+    organizerWebsite?: boolean;
+    status?: boolean;
   }>({});
 
   const { register, handleSubmit, watch, setValue } = useForm();
@@ -63,13 +66,19 @@ export function BatchEditModal({
     // Build updates object with only selected fields
     const updates: any = {};
     
+    if (fieldsToUpdate.nameFind) {
+      updates.nameFind = data.nameFind;
+      updates.nameReplace = data.nameReplace;
+    }
     if (fieldsToUpdate.venue) updates.venue = data.venue;
+    if (fieldsToUpdate.province) updates.province = data.province;
+    if (fieldsToUpdate.municipality) updates.municipality = data.municipality;
+    if (fieldsToUpdate.neighborhoodCommunity) updates.neighborhoodCommunity = data.neighborhoodCommunity;
     if (fieldsToUpdate.organizerName) updates.organizerName = data.organizerName;
     if (fieldsToUpdate.organizerEmail) updates.organizerEmail = data.organizerEmail;
     if (fieldsToUpdate.organizerPhone) updates.organizerPhone = data.organizerPhone;
-    if (fieldsToUpdate.wheelchairAccessible) updates.wheelchairAccessible = data.wheelchairAccessible;
-    if (fieldsToUpdate.accessibleParking) updates.accessibleParking = data.accessibleParking;
-    if (fieldsToUpdate.accessibleWashrooms) updates.accessibleWashrooms = data.accessibleWashrooms;
+    if (fieldsToUpdate.organizerWebsite) updates.organizerWebsite = data.organizerWebsite;
+    if (fieldsToUpdate.status) updates.status = data.status;
 
     if (Object.keys(updates).length === 0) {
       toast.error("Please select at least one field to update");
@@ -94,6 +103,100 @@ export function BatchEditModal({
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* Name Find & Replace */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-sm">Event Name</h3>
+            <div className="flex items-start gap-3">
+              <Checkbox
+                id="nameFind"
+                checked={fieldsToUpdate.nameFind || false}
+                onCheckedChange={(checked) =>
+                  setFieldsToUpdate({ ...fieldsToUpdate, nameFind: checked as boolean })
+                }
+                className="mt-2"
+              />
+              <div className="flex-1 space-y-2">
+                <Label htmlFor="nameFindInput">Find & Replace in Name</Label>
+                <Input
+                  id="nameFindInput"
+                  {...register("nameFind")}
+                  disabled={!fieldsToUpdate.nameFind}
+                  placeholder="Text to find (e.g., 'with 707 Halifax')"
+                />
+                <Input
+                  {...register("nameReplace")}
+                  disabled={!fieldsToUpdate.nameFind}
+                  placeholder="Replace with (e.g., 'with Tandy Leather (Dartmouth)')"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Location */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-sm">Location</h3>
+            
+            <div className="flex items-start gap-3">
+              <Checkbox
+                id="province"
+                checked={fieldsToUpdate.province || false}
+                onCheckedChange={(checked) =>
+                  setFieldsToUpdate({ ...fieldsToUpdate, province: checked as boolean })
+                }
+                className="mt-2"
+              />
+              <div className="flex-1">
+                <Label htmlFor="provinceInput">Province</Label>
+                <Input
+                  id="provinceInput"
+                  {...register("province")}
+                  disabled={!fieldsToUpdate.province}
+                  placeholder="Enter province"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <Checkbox
+                id="municipality"
+                checked={fieldsToUpdate.municipality || false}
+                onCheckedChange={(checked) =>
+                  setFieldsToUpdate({ ...fieldsToUpdate, municipality: checked as boolean })
+                }
+                className="mt-2"
+              />
+              <div className="flex-1">
+                <Label htmlFor="municipalityInput">Municipality</Label>
+                <Input
+                  id="municipalityInput"
+                  {...register("municipality")}
+                  disabled={!fieldsToUpdate.municipality}
+                  placeholder="Enter municipality"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <Checkbox
+                id="neighborhoodCommunity"
+                checked={fieldsToUpdate.neighborhoodCommunity || false}
+                onCheckedChange={(checked) =>
+                  setFieldsToUpdate({ ...fieldsToUpdate, neighborhoodCommunity: checked as boolean })
+                }
+                className="mt-2"
+              />
+              <div className="flex-1">
+                <Label htmlFor="neighborhoodCommunityInput">Neighborhood/Community</Label>
+                <Input
+                  id="neighborhoodCommunityInput"
+                  {...register("neighborhoodCommunity")}
+                  disabled={!fieldsToUpdate.neighborhoodCommunity}
+                  placeholder="Enter neighborhood/community"
+                />
+              </div>
+            </div>
+          </div>
+
           {/* Venue */}
           <div className="flex items-start gap-3">
             <Checkbox
@@ -180,89 +283,57 @@ export function BatchEditModal({
                 />
               </div>
             </div>
+
+            <div className="flex items-start gap-3">
+              <Checkbox
+                id="organizerWebsite"
+                checked={fieldsToUpdate.organizerWebsite || false}
+                onCheckedChange={(checked) =>
+                  setFieldsToUpdate({ ...fieldsToUpdate, organizerWebsite: checked as boolean })
+                }
+                className="mt-2"
+              />
+              <div className="flex-1">
+                <Label htmlFor="organizerWebsiteInput">Organizer Website</Label>
+                <Input
+                  id="organizerWebsiteInput"
+                  type="url"
+                  {...register("organizerWebsite")}
+                  disabled={!fieldsToUpdate.organizerWebsite}
+                  placeholder="Enter organizer website"
+                />
+              </div>
+            </div>
           </div>
 
-          {/* Accessibility Features */}
+          {/* Status */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-sm">Accessibility Features</h3>
+            <h3 className="font-semibold text-sm">Event Status</h3>
             
             <div className="flex items-start gap-3">
               <Checkbox
-                id="wheelchairAccessible"
-                checked={fieldsToUpdate.wheelchairAccessible || false}
+                id="status"
+                checked={fieldsToUpdate.status || false}
                 onCheckedChange={(checked) =>
-                  setFieldsToUpdate({ ...fieldsToUpdate, wheelchairAccessible: checked as boolean })
+                  setFieldsToUpdate({ ...fieldsToUpdate, status: checked as boolean })
                 }
                 className="mt-2"
               />
               <div className="flex-1">
-                <Label htmlFor="wheelchairAccessibleInput">Wheelchair Accessible</Label>
+                <Label htmlFor="statusInput">Status</Label>
                 <Select
-                  disabled={!fieldsToUpdate.wheelchairAccessible}
-                  onValueChange={(value) => setValue("wheelchairAccessible", value)}
+                  disabled={!fieldsToUpdate.status}
+                  onValueChange={(value) => setValue("status", value)}
                 >
-                  <SelectTrigger id="wheelchairAccessibleInput">
-                    <SelectValue placeholder="Select value" />
+                  <SelectTrigger id="statusInput">
+                    <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="yes">Yes</SelectItem>
-                    <SelectItem value="no">No</SelectItem>
-                    <SelectItem value="partial">Partial</SelectItem>
-                    <SelectItem value="unknown">Unknown</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <Checkbox
-                id="accessibleParking"
-                checked={fieldsToUpdate.accessibleParking || false}
-                onCheckedChange={(checked) =>
-                  setFieldsToUpdate({ ...fieldsToUpdate, accessibleParking: checked as boolean })
-                }
-                className="mt-2"
-              />
-              <div className="flex-1">
-                <Label htmlFor="accessibleParkingInput">Accessible Parking</Label>
-                <Select
-                  disabled={!fieldsToUpdate.accessibleParking}
-                  onValueChange={(value) => setValue("accessibleParking", value)}
-                >
-                  <SelectTrigger id="accessibleParkingInput">
-                    <SelectValue placeholder="Select value" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="yes">Yes</SelectItem>
-                    <SelectItem value="no">No</SelectItem>
-                    <SelectItem value="unknown">Unknown</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <Checkbox
-                id="accessibleWashrooms"
-                checked={fieldsToUpdate.accessibleWashrooms || false}
-                onCheckedChange={(checked) =>
-                  setFieldsToUpdate({ ...fieldsToUpdate, accessibleWashrooms: checked as boolean })
-                }
-                className="mt-2"
-              />
-              <div className="flex-1">
-                <Label htmlFor="accessibleWashroomsInput">Accessible Washrooms</Label>
-                <Select
-                  disabled={!fieldsToUpdate.accessibleWashrooms}
-                  onValueChange={(value) => setValue("accessibleWashrooms", value)}
-                >
-                  <SelectTrigger id="accessibleWashroomsInput">
-                    <SelectValue placeholder="Select value" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="yes">Yes</SelectItem>
-                    <SelectItem value="no">No</SelectItem>
-                    <SelectItem value="unknown">Unknown</SelectItem>
+                    <SelectItem value="pending">Pending</SelectItem>
+                    <SelectItem value="published">Published</SelectItem>
+                    <SelectItem value="rejected">Rejected</SelectItem>
+                    <SelectItem value="needs-clarification">Needs Clarification</SelectItem>
+                    <SelectItem value="closed">Closed</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

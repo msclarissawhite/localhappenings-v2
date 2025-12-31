@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE events \nSET name = REPLACE(name, 'with 707 Halifax', 'with Tandy Leather (Dartmouth)')\nWHERE name LIKE '%with 707 Halifax%' \nAND organizerName = 'Tandy Leather Halifax - 707';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute UPDATE events \nSET name = REPLACE(name, 'with 707 Halifax', 'with Tandy Leather (Dartmouth)')\nWHERE name LIKE '%with 707 Halifax%' \nAND organizerName = 'Tandy Leather Halifax - 707';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 127
+}

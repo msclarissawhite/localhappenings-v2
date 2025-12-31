@@ -13,7 +13,7 @@ import * as organizerDb from "./organizer-db";
 import { findPotentialDuplicates } from "./duplicate-detection";
 import { getDb } from "./db";
 import { events } from "../drizzle/schema";
-import { inArray } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 
 // Validation schemas
 const accessibilitySchema = z.object({
@@ -915,13 +915,17 @@ export const eventsRouter = router({
       z.object({
         eventIds: z.array(z.number()),
         updates: z.object({
+          nameFind: z.string().optional(),
+          nameReplace: z.string().optional(),
           venue: z.string().optional(),
+          province: z.string().optional(),
+          municipality: z.string().optional(),
+          neighborhoodCommunity: z.string().optional(),
           organizerName: z.string().optional(),
           organizerEmail: z.string().email().optional(),
           organizerPhone: z.string().optional(),
-          wheelchairAccessible: z.enum(["yes", "no", "partial", "unknown"]).optional(),
-          accessibleParking: z.enum(["yes", "no", "unknown"]).optional(),
-          accessibleWashrooms: z.enum(["yes", "no", "unknown"]).optional(),
+          organizerWebsite: z.string().url().optional(),
+          status: z.enum(["pending", "published", "rejected", "needs-clarification", "closed"]).optional(),
         }),
       })
     )
@@ -929,23 +933,55 @@ export const eventsRouter = router({
       const db = await getDb();
       if (!db) throw new Error("Database not available");
 
-      // Build update object
+      let updatedCount = 0;
+
+      // Handle name find & replace separately
+      if (input.updates.nameFind && input.updates.nameReplace) {
+        const eventsToUpdate = await db
+          .select({ id: events.id, name: events.name })
+          .from(events)
+          .where(inArray(events.id, input.eventIds));
+
+        for (const event of eventsToUpdate) {
+          const newName = event.name.replace(
+            new RegExp(input.updates.nameFind, 'g'),
+            input.updates.nameReplace
+          );
+          if (newName !== event.name) {
+            await db
+              .update(events)
+              .set({ name: newName })
+              .where(eq(events.id, event.id));
+            updatedCount++;
+          }
+        }
+      }
+
+      // Build update object for other fields
       const updateData: any = {};
       if (input.updates.venue !== undefined) updateData.venue = input.updates.venue;
+      if (input.updates.province !== undefined) updateData.province = input.updates.province;
+      if (input.updates.municipality !== undefined) updateData.municipality = input.updates.municipality;
+      if (input.updates.neighborhoodCommunity !== undefined) updateData.neighborhoodCommunity = input.updates.neighborhoodCommunity;
       if (input.updates.organizerName !== undefined) updateData.organizerName = input.updates.organizerName;
       if (input.updates.organizerEmail !== undefined) updateData.organizerEmail = input.updates.organizerEmail;
       if (input.updates.organizerPhone !== undefined) updateData.organizerPhone = input.updates.organizerPhone;
-      if (input.updates.wheelchairAccessible !== undefined) updateData.wheelchairAccessible = input.updates.wheelchairAccessible;
-      if (input.updates.accessibleParking !== undefined) updateData.accessibleParking = input.updates.accessibleParking;
-      if (input.updates.accessibleWashrooms !== undefined) updateData.accessibleWashrooms = input.updates.accessibleWashrooms;
+      if (input.updates.organizerWebsite !== undefined) updateData.organizerWebsite = input.updates.organizerWebsite;
+      if (input.updates.status !== undefined) updateData.status = input.updates.status;
 
-      // Update all events
-      await db
-        .update(events)
-        .set(updateData)
-        .where(inArray(events.id, input.eventIds));
+      // Update all events with standard fields
+      if (Object.keys(updateData).length > 0) {
+        await db
+          .update(events)
+          .set(updateData)
+          .where(inArray(events.id, input.eventIds));
+        // If we updated standard fields and haven't counted name updates, count all events
+        if (updatedCount === 0) {
+          updatedCount = input.eventIds.length;
+        }
+      }
 
-      return { success: true, updatedCount: input.eventIds.length };
+      return { success: true, updatedCount };
     }),
 
   /**
