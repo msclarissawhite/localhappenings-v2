@@ -19,6 +19,7 @@ import { claimRouter } from "./claim-router";
 import { collectionsRouter } from "./collections-router";
 import { bannerRouter } from "./banner-router";
 import { homepageFeaturedRouter } from "./homepage-featured-router";
+import { contactTemplatesRouter } from "./contact-templates-router";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -51,6 +52,7 @@ export const appRouter = router({
   collections: collectionsRouter,
   banner: bannerRouter,
   homepageFeatured: homepageFeaturedRouter,
+  contactTemplates: contactTemplatesRouter,
 });
 
 export type AppRouter = typeof appRouter;

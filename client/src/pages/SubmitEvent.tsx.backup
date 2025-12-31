@@ -981,185 +981,6 @@ export default function SubmitEvent() {
             />
           </Card>
 
-          {/* Location */}
-          <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Location</h2>
-            <div className="space-y-4">
-              {/* Saved Locations Quick Select */}
-              {organizer && savedLocations && savedLocations.length > 0 && (
-                <div className="bg-muted/50 p-4 rounded-lg border-2 border-dashed border-muted-foreground/20">
-                  <Label htmlFor="savedLocation">Quick Fill from Saved Location</Label>
-                  <Select
-                    value={selectedLocationId?.toString() || "none"}
-                    onValueChange={(value) => {
-                      if (!value || value === "none") {
-                        setSelectedLocationId(null);
-                        return;
-                      }
-                      
-                      const locationId = parseInt(value);
-                      setSelectedLocationId(locationId);
-                      
-                      const location = savedLocations.find((loc: any) => loc.id === locationId);
-                      if (location) {
-                        // Auto-fill all location fields
-                        setValue("province", location.province);
-                        setValue("municipality", location.municipality);
-                        setValue("neighborhoodCommunity", location.neighborhoodCommunity || "");
-                        setValue("venue", location.venue || "");
-                        setValue("address", location.address || "");
-                        setValue("isIndoor", location.isIndoor === 1);
-                        setValue("isOutdoor", location.isOutdoor === 1);
-                        setValue("isMixed", location.isMixed === 1);
-                        
-                        // Update province/city state for dropdowns
-                        setSelectedProvince(location.province);
-                        const provinceCode = CANADIAN_PROVINCES.find(p => p.name === location.province)?.code || "";
-                        setAvailableCities(CANADIAN_CITIES[provinceCode] || []);
-                        
-                        // Parse and set accessibility
-                        try {
-                          const parsedAccessibility = typeof location.accessibility === "string"
-                            ? JSON.parse(location.accessibility)
-                            : location.accessibility;
-                          setAccessibility(parsedAccessibility);
-                          
-                          // Also set form values for accessibility
-                          Object.entries(parsedAccessibility).forEach(([category, fields]: [string, any]) => {
-                            if (fields && typeof fields === 'object') {
-                              Object.entries(fields).forEach(([field, value]) => {
-                                setValue(`accessibility.${category}.${field}` as any, value);
-                              });
-                            }
-                          });
-                        } catch (e) {
-                          console.error("Failed to parse accessibility", e);
-                        }
-                        
-                        toast.success(`Location details filled from "${location.name}"`);
-                      }
-                    }}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a saved location..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="none">None (enter manually)</SelectItem>
-                      {savedLocations.map((location: any) => (
-                        <SelectItem key={location.id} value={location.id.toString()}>
-                          {location.name} - {location.municipality}, {location.province}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Select a saved location to automatically fill in the location details below. You can still edit them after.
-                  </p>
-                </div>
-              )}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="province">Province/Territory *</Label>
-                  <Select
-                    value={selectedProvince}
-                    onValueChange={(value) => {
-                      setSelectedProvince(value);
-                      const provinceCode = CANADIAN_PROVINCES.find(p => p.name === value)?.code || "";
-                      setAvailableCities(CANADIAN_CITIES[provinceCode] || []);
-                      setValue("province", value);
-                      setValue("municipality", ""); // Reset municipality when province changes
-                    }}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select province/territory" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {CANADIAN_PROVINCES.map((province) => (
-                        <SelectItem key={province.code} value={province.name}>
-                          {province.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {errors.province && (
-                    <p className="text-sm text-destructive mt-1">{errors.province.message}</p>
-                  )}
-                </div>
-
-                <div>
-                  <Label htmlFor="municipality">Municipality *</Label>
-                  <Select
-                    value={watch("municipality") || ""}
-                    onValueChange={(value) => setValue("municipality", value)}
-                    disabled={!selectedProvince}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder={selectedProvince ? "Select municipality" : "Select province first"} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {availableCities.map((municipality) => (
-                        <SelectItem key={municipality} value={municipality}>
-                          {municipality}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {errors.municipality && <p className="text-sm text-destructive mt-1">{errors.municipality.message}</p>}
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="neighborhoodCommunity">Neighborhood</Label>
-                <Input id="neighborhoodCommunity" {...register("neighborhoodCommunity")} placeholder="e.g., North End" />
-              </div>
-
-              <div>
-                <Label htmlFor="venue">Venue Name</Label>
-                <Input 
-                  id="venue" 
-                  {...register("venue")} 
-                  placeholder="e.g., Neptune Theatre, Central Library"
-                />
-              </div>
-
-              <PlacesAutocomplete
-                label="Full Address"
-                placeholder="Search for an address..."
-                value={watch("address") || ""}
-                onChange={(value) => setValue("address", value)}
-                onPlaceSelected={(details: PlaceDetails) => {
-                  // Auto-fill address
-                  setValue("address", details.address);
-                  
-                  // Auto-fill province
-                  if (details.province) {
-                    setValue("province", details.province);
-                    setSelectedProvince(details.province);
-                    
-                    // Update available cities for the province
-                    const provinceCode = CANADIAN_PROVINCES.find(p => p.name === details.province)?.code;
-                    if (provinceCode) {
-                      setAvailableCities(CANADIAN_CITIES[provinceCode] || []);
-                    }
-                  }
-                  
-                  // Auto-fill municipality
-                  if (details.municipality) {
-                    setValue("municipality", details.municipality);
-                  }
-                  
-                  // Auto-fill coordinates for Near Me feature
-                  if (details.lat && details.lng) {
-                    setValue("latitude", details.lat.toString());
-                    setValue("longitude", details.lng.toString());
-                  }
-                  
-                  toast.success("Address and location details auto-filled!");
-                }}
-              />
-            </div>
-          </Card>
-
           {/* Cost */}
           <Card className="p-6">
             <h2 className="text-xl font-semibold mb-4">Cost</h2>
@@ -1348,6 +1169,184 @@ export default function SubmitEvent() {
             </div>
           </Card>
 
+          {/* Location */}
+          <Card className="p-6">
+            <h2 className="text-xl font-semibold mb-4">Location</h2>
+            <div className="space-y-4">
+              {/* Saved Locations Quick Select */}
+              {organizer && savedLocations && savedLocations.length > 0 && (
+                <div className="bg-muted/50 p-4 rounded-lg border-2 border-dashed border-muted-foreground/20">
+                  <Label htmlFor="savedLocation">Quick Fill from Saved Location</Label>
+                  <Select
+                    value={selectedLocationId?.toString() || "none"}
+                    onValueChange={(value) => {
+                      if (!value || value === "none") {
+                        setSelectedLocationId(null);
+                        return;
+                      }
+                      
+                      const locationId = parseInt(value);
+                      setSelectedLocationId(locationId);
+                      
+                      const location = savedLocations.find((loc: any) => loc.id === locationId);
+                      if (location) {
+                        // Auto-fill all location fields
+                        setValue("province", location.province);
+                        setValue("municipality", location.municipality);
+                        setValue("neighborhoodCommunity", location.neighborhoodCommunity || "");
+                        setValue("venue", location.venue || "");
+                        setValue("address", location.address || "");
+                        setValue("isIndoor", location.isIndoor === 1);
+                        setValue("isOutdoor", location.isOutdoor === 1);
+                        setValue("isMixed", location.isMixed === 1);
+                        
+                        // Update province/city state for dropdowns
+                        setSelectedProvince(location.province);
+                        const provinceCode = CANADIAN_PROVINCES.find(p => p.name === location.province)?.code || "";
+                        setAvailableCities(CANADIAN_CITIES[provinceCode] || []);
+                        
+                        // Parse and set accessibility
+                        try {
+                          const parsedAccessibility = typeof location.accessibility === "string"
+                            ? JSON.parse(location.accessibility)
+                            : location.accessibility;
+                          setAccessibility(parsedAccessibility);
+                          
+                          // Also set form values for accessibility
+                          Object.entries(parsedAccessibility).forEach(([category, fields]: [string, any]) => {
+                            if (fields && typeof fields === 'object') {
+                              Object.entries(fields).forEach(([field, value]) => {
+                                setValue(`accessibility.${category}.${field}` as any, value);
+                              });
+                            }
+                          });
+                        } catch (e) {
+                          console.error("Failed to parse accessibility", e);
+                        }
+                        
+                        toast.success(`Location details filled from "${location.name}"`);
+                      }
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a saved location..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">None (enter manually)</SelectItem>
+                      {savedLocations.map((location: any) => (
+                        <SelectItem key={location.id} value={location.id.toString()}>
+                          {location.name} - {location.municipality}, {location.province}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    Select a saved location to automatically fill in both the location details and accessibility information below. You can still edit them after.
+                  </p>
+                </div>
+              )}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="province">Province/Territory *</Label>
+                  <Select
+                    value={selectedProvince}
+                    onValueChange={(value) => {
+                      setSelectedProvince(value);
+                      const provinceCode = CANADIAN_PROVINCES.find(p => p.name === value)?.code || "";
+                      setAvailableCities(CANADIAN_CITIES[provinceCode] || []);
+                      setValue("province", value);
+                      setValue("municipality", ""); // Reset municipality when province changes
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select province/territory" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {CANADIAN_PROVINCES.map((province) => (
+                        <SelectItem key={province.code} value={province.name}>
+                          {province.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {errors.province && (
+                    <p className="text-sm text-destructive mt-1">{errors.province.message}</p>
+                  )}
+                </div>
+
+                <div>
+                  <Label htmlFor="municipality">Municipality *</Label>
+                  <Select
+                    value={watch("municipality") || ""}
+                    onValueChange={(value) => setValue("municipality", value)}
+                    disabled={!selectedProvince}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder={selectedProvince ? "Select municipality" : "Select province first"} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {availableCities.map((municipality) => (
+                        <SelectItem key={municipality} value={municipality}>
+                          {municipality}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {errors.municipality && <p className="text-sm text-destructive mt-1">{errors.municipality.message}</p>}
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="neighborhoodCommunity">Neighborhood</Label>
+                <Input id="neighborhoodCommunity" {...register("neighborhoodCommunity")} placeholder="e.g., North End" />
+              </div>
+
+              <div>
+                <Label htmlFor="venue">Venue Name</Label>
+                <Input 
+                  id="venue" 
+                  {...register("venue")} 
+                  placeholder="e.g., Neptune Theatre, Central Library"
+                />
+              </div>
+
+              <PlacesAutocomplete
+                label="Full Address"
+                placeholder="Search for an address..."
+                value={watch("address") || ""}
+                onChange={(value) => setValue("address", value)}
+                onPlaceSelected={(details: PlaceDetails) => {
+                  // Auto-fill address
+                  setValue("address", details.address);
+                  
+                  // Auto-fill province
+                  if (details.province) {
+                    setValue("province", details.province);
+                    setSelectedProvince(details.province);
+                    
+                    // Update available cities for the province
+                    const provinceCode = CANADIAN_PROVINCES.find(p => p.name === details.province)?.code;
+                    if (provinceCode) {
+                      setAvailableCities(CANADIAN_CITIES[provinceCode] || []);
+                    }
+                  }
+                  
+                  // Auto-fill municipality
+                  if (details.municipality) {
+                    setValue("municipality", details.municipality);
+                  }
+                  
+                  // Auto-fill coordinates for Near Me feature
+                  if (details.lat && details.lng) {
+                    setValue("latitude", details.lat.toString());
+                    setValue("longitude", details.lng.toString());
+                  }
+                  
+                  toast.success("Address and location details auto-filled!");
+                }}
+              />
+            </div>
+          </Card>
           {/* Environment */}
           <Card className="p-6">
             <h2 className="text-xl font-semibold mb-4">Environment</h2>

@@ -558,3 +558,35 @@ export const eventTypeClicks = mysqlTable("eventTypeClicks", {
 
 export type EventTypeClick = typeof eventTypeClicks.$inferSelect;
 export type InsertEventTypeClick = typeof eventTypeClicks.$inferInsert;
+
+
+/**
+ * Contact info templates for organizers
+ * Allows organizers to save and reuse different contact information for different event types
+ * (e.g., different contact person for kids events vs adult workshops)
+ */
+export const contactInfoTemplates = mysqlTable("contactInfoTemplates", {
+  id: int("id").autoincrement().primaryKey(),
+  organizerId: int("organizerId").notNull(),
+  
+  // Template name/label
+  name: varchar("name", { length: 255 }).notNull(), // e.g., "Kids Events Contact", "Workshop Coordinator"
+  
+  // Contact details
+  contactName: varchar("contactName", { length: 255 }).notNull(),
+  contactEmail: varchar("contactEmail", { length: 320 }),
+  contactPhone: varchar("contactPhone", { length: 50 }),
+  contactWebsite: text("contactWebsite"),
+  
+  // Whether this contact info should be displayed publicly by default
+  displayPublicly: int("displayPublicly").default(1).notNull(),
+  
+  // Default template flag - only one template per organizer can be default
+  isDefault: int("isDefault").default(0).notNull(),
+  
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type ContactInfoTemplate = typeof contactInfoTemplates.$inferSelect;
+export type InsertContactInfoTemplate = typeof contactInfoTemplates.$inferInsert;

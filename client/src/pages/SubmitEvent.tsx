@@ -726,7 +726,10 @@ export default function SubmitEvent() {
         <form onSubmit={handleSubmit(onSubmit as any)} className="space-y-8">
           {/* Basic Information */}
           <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Basic Information</h2>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground font-semibold text-sm">1</div>
+              <h2 className="text-xl font-semibold">Basic Information</h2>
+            </div>
             <div className="space-y-4">
               <div>
                 <Label htmlFor="name">Event Name *</Label>
@@ -973,7 +976,10 @@ export default function SubmitEvent() {
 
           {/* Event Types */}
           <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Event Types</h2>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground font-semibold text-sm">2</div>
+              <h2 className="text-xl font-semibold">Event Types</h2>
+            </div>
             <EventTypeSelector
               eventTypes={eventTypes}
               selectedIds={selectedEventTypeIds}
@@ -983,7 +989,10 @@ export default function SubmitEvent() {
 
           {/* Cost */}
           <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Cost</h2>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground font-semibold text-sm">3</div>
+              <h2 className="text-xl font-semibold">Cost & Pricing</h2>
+            </div>
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <Checkbox
@@ -1081,7 +1090,10 @@ export default function SubmitEvent() {
 
           {/* Age Suitability */}
           <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Who is this event for?</h2>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground font-semibold text-sm">4</div>
+              <h2 className="text-xl font-semibold">Who is this event for?</h2>
+            </div>
             <p className="text-sm text-muted-foreground mb-4">
               Select all age groups that would enjoy this event.
             </p>
@@ -1171,7 +1183,10 @@ export default function SubmitEvent() {
 
           {/* Location */}
           <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Location</h2>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground font-semibold text-sm">5</div>
+              <h2 className="text-xl font-semibold">Location</h2>
+            </div>
             <div className="space-y-4">
               {/* Saved Locations Quick Select */}
               {organizer && savedLocations && savedLocations.length > 0 && (
@@ -1349,7 +1364,10 @@ export default function SubmitEvent() {
           </Card>
           {/* Environment */}
           <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Environment</h2>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground font-semibold text-sm">6</div>
+              <h2 className="text-xl font-semibold">Environment</h2>
+            </div>
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <Checkbox
@@ -1387,10 +1405,13 @@ export default function SubmitEvent() {
           {/* Accessibility Section */}
           <Card className="p-6 border-2 border-primary/20">
             <div className="bg-primary/5 border-l-4 border-primary p-4 rounded-r-lg mb-6">
-              <h2 className="text-xl font-semibold mb-2 flex items-center gap-2">
-                <Info className="w-5 h-5 text-primary" />
-                Accessibility Information * — Why This Matters
-              </h2>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground font-semibold text-sm">7</div>
+                <h2 className="text-xl font-semibold flex items-center gap-2">
+                  <Info className="w-5 h-5 text-primary" />
+                  Accessibility Information * — Why This Matters
+                </h2>
+              </div>
               <p className="text-sm text-muted-foreground mb-2">
                 Detailed accessibility information helps families make informed decisions about attending your event. Parents of children with disabilities, sensory sensitivities, or specific needs often rely on this information to know whether they can participate safely and comfortably.
               </p>
@@ -1890,7 +1911,10 @@ This transparency helps build trust with your community, even if not every detai
 
           {/* Organizer Details */}
           <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Organizer Details *</h2>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground font-semibold text-sm">8</div>
+              <h2 className="text-xl font-semibold">Organizer Details *</h2>
+            </div>
             <p className="text-sm text-muted-foreground mb-4">
               Your contact information for admin communication and account management. At least one contact method (email or phone) is required.
             </p>
@@ -1927,7 +1951,10 @@ This transparency helps build trust with your community, even if not every detai
 
           {/* Public Display Contact */}
           <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Public Display Contact (Optional)</h2>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground font-semibold text-sm">9</div>
+              <h2 className="text-xl font-semibold">Public Display Contact (Optional)</h2>
+            </div>
             <p className="text-sm text-muted-foreground mb-4">
               If you want attendees to contact a different person or inbox for event questions, provide those details here. Otherwise, your organizer details will be displayed.
             </p>
@@ -2001,7 +2028,10 @@ This transparency helps build trust with your community, even if not every detai
 
           {/* Additional Notes */}
           <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Additional Notes</h2>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground font-semibold text-sm">10</div>
+              <h2 className="text-xl font-semibold">Additional Notes</h2>
+            </div>
             <Textarea
               {...register("notes")}
               rows={3}

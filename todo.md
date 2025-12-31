@@ -1806,3 +1806,26 @@
 - [x] Group sections logically: Event Details → Location → Accessibility → Organizer Info
 - [x] Update saved location helper text to mention both location AND accessibility auto-fill
 - [x] Verify form flow makes sense for organizers
+
+
+## Submit Form UX Enhancements & Contact Templates
+- [x] Add visual section dividers with numbered steps (Step 1, 2, 3, etc.)
+- [x] Create progress indicator component showing current section
+- [ ] Implement scroll-based progress tracking for mobile users
+- [x] Create contact_info_templates database table
+- [x] Build backend CRUD API for contact templates
+- [ ] Add contact template selector to submit form
+- [ ] Build contact template management UI in organizer dashboard
+- [ ] Test form progression and template functionality
+
+
+## Form Reorganization & UX Improvements - COMPLETED
+- [x] Reorganized submit form sections for better logical flow
+- [x] Event Details (basic info, cost, age groups) at top
+- [x] Venue-Based Info (location, environment, accessibility) grouped together
+- [x] Organizer Info at bottom
+- [x] Updated saved location helper text to mention both location AND accessibility auto-fill
+- [x] Added visual numbered steps (1-10) to all form sections
+- [x] Created contact info templates database schema
+- [x] Built backend CRUD API for contact templates
+- [x] Created FormProgressIndicator component (ready for integration)
