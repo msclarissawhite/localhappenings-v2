@@ -1799,3 +1799,10 @@
 - [x] Verify saved locations includes accessibility and all persistent fields
 - [x] Added latitude/longitude to savedLocations for geocoded coordinates
 - [x] Confirmed saved locations correctly saves: name, address, province, municipality, neighborhood, venue, accessibility JSON, isIndoor/isOutdoor/isMixed, lat/long
+
+
+## Submit Form Visual Reorganization
+- [x] Move Location section down to just above Accessibility section
+- [x] Group sections logically: Event Details → Location → Accessibility → Organizer Info
+- [x] Update saved location helper text to mention both location AND accessibility auto-fill
+- [x] Verify form flow makes sense for organizers
