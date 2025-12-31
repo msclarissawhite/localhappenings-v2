@@ -698,7 +698,10 @@ export const eventsRouter = router({
             venue: z.string().optional(),
             address: z.string().optional(),
             startDate: z.string(), // ISO date string
+            startTime: z.string().optional(), // HH:MM format
             endDate: z.string().optional(),
+            endTime: z.string().optional(), // HH:MM format
+            duration: z.string().optional(), // e.g., "2 hours", "3 days"
             timeOfDay: z.enum(["morning", "afternoon", "evening", "all-day"]).optional(),
             isRecurring: z.boolean(),
             recurrenceType: z.enum(["one-time", "weekly", "monthly", "seasonal"]).optional(),
@@ -713,10 +716,12 @@ export const eventsRouter = router({
             youngChildren: z.boolean(),
             kids: z.boolean(),
             teens: z.boolean(),
+            adults: z.boolean(),
             adultsOnly: z.boolean(),
             seniors: z.boolean(),
             isIndoor: z.boolean(),
             isOutdoor: z.boolean(),
+            isMixed: z.boolean(),
             shortDuration: z.boolean(),
             dropIn: z.boolean(),
             canReenter: z.boolean(),
@@ -727,7 +732,11 @@ export const eventsRouter = router({
             organizerPhone: z.string().optional(),
             organizerWebsite: z.string().optional(),
             displayOrganizerInfo: z.boolean(),
+            publicContactName: z.string().optional(),
+            publicContactEmail: z.string().optional(),
+            publicContactPhone: z.string().optional(),
             notes: z.string().optional(),
+            eventTypeIds: z.string().optional(), // Comma-separated IDs
             imageUrl: z.string().optional(),
             imageData: z.string().optional(), // Base64 image from ZIP
             imageFileName: z.string().optional(), // Original filename from ZIP

@@ -1846,3 +1846,17 @@
 - [x] Add duration field to CSV template
 - [x] Update CSV parsing logic to handle new time fields
 - [x] Update CSV generation/download to include time fields
+
+## CSV Template & Bulk Upload Alignment (Current Priority)
+- [x] Add startTime field to bulk upload schema
+- [x] Add endTime field to bulk upload schema  
+- [x] Add duration field to bulk upload schema
+- [x] Add adults field to bulk upload schema (separate from adultsOnly)
+- [x] Add isMixed field to bulk upload schema
+- [x] Add publicContactName field to bulk upload schema
+- [x] Add publicContactEmail field to bulk upload schema
+- [x] Add publicContactPhone field to bulk upload schema
+- [x] Add eventTypeIds field to bulk upload schema
+- [x] Update CSV example to remove old accessibility columns (changeTable, nursingRoom, etc.)
+- [x] Update CSV example to match template fields exactly
+- [x] Test bulk upload with updated CSV
