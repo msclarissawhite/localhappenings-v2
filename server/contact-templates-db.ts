@@ -41,7 +41,16 @@ export async function createContactTemplate(data: {
   }
 
   const [result] = await db.insert(contactInfoTemplates).values(data);
-  return result;
+  
+  // Fetch and return the created template
+  const [created] = await db
+    .select()
+    .from(contactInfoTemplates)
+    .where(eq(contactInfoTemplates.id, result.insertId))
+    .limit(1);
+  
+  if (!created) throw new Error("Failed to retrieve created template");
+  return created;
 }
 
 /**
@@ -91,6 +100,16 @@ export async function updateContactTemplate(
     .update(contactInfoTemplates)
     .set(data)
     .where(eq(contactInfoTemplates.id, id));
+  
+  // Fetch and return the updated template
+  const [updated] = await db
+    .select()
+    .from(contactInfoTemplates)
+    .where(eq(contactInfoTemplates.id, id))
+    .limit(1);
+  
+  if (!updated) throw new Error("Failed to retrieve updated template");
+  return updated;
 }
 
 /**

@@ -24,6 +24,7 @@ import OrganizerDashboard from "./pages/OrganizerDashboard";
 import EditEvent from "./pages/EditEvent";
 import NewSavedLocation from "./pages/NewSavedLocation";
 import EditSavedLocation from "./pages/EditSavedLocation";
+import { ContactTemplates } from "./pages/ContactTemplates";
 import MySavedEvents from "./pages/MySavedEvents";
 import FeatureRequests from "./pages/FeatureRequests";
 import UserLogin from "./pages/UserLogin";
@@ -62,6 +63,7 @@ function Router() {
       <Route path="/organizer/edit/:id" component={EditEvent} />
       <Route path="/organizer/locations/new" component={NewSavedLocation} />
       <Route path="/organizer/locations/edit/:id" component={EditSavedLocation} />
+      <Route path="/organizer/contact-templates" component={ContactTemplates} />
       <Route path="/my-saved-events" component={MySavedEvents} />
       <Route path="/feature-requests" component={FeatureRequests} />
       <Route path="/user/login" component={UserLogin} />

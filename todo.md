@@ -1829,3 +1829,20 @@
 - [x] Created contact info templates database schema
 - [x] Built backend CRUD API for contact templates
 - [x] Created FormProgressIndicator component (ready for integration)
+
+## Contact Template UI Implementation
+- [x] Add contact template dropdown selector to Organizer Details section in SubmitEvent
+- [x] Implement auto-fill functionality when template is selected
+- [x] Add "Save as template" checkbox at bottom of Organizer Details section
+- [x] Handle template saving on form submission
+- [x] Create contact template management page in organizer dashboard
+- [x] Add create/edit/delete functionality for templates
+- [x] Add set default template option
+- [x] Test template selection and auto-fill flow
+
+## Event Upload CSV Enhancements
+- [x] Add startTime field to CSV template
+- [x] Add endTime field to CSV template
+- [x] Add duration field to CSV template
+- [x] Update CSV parsing logic to handle new time fields
+- [x] Update CSV generation/download to include time fields

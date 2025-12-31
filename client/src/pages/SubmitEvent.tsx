@@ -121,6 +121,9 @@ export default function SubmitEvent() {
   const [templateName, setTemplateName] = useState("");
   const [templateDescription, setTemplateDescription] = useState("");
   const [selectedEventTypeIds, setSelectedEventTypeIds] = useState<number[]>([]);
+  const [selectedContactTemplateId, setSelectedContactTemplateId] = useState<number | null>(null);
+  const [saveAsTemplate, setSaveAsTemplate] = useState(false);
+  const [newTemplateName, setNewTemplateName] = useState("");
   const searchParams = useSearch();
   const urlParams = new URLSearchParams(searchParams);
 
@@ -144,6 +147,12 @@ export default function SubmitEvent() {
 
   // Load default location for organizer
   const { data: defaultLocation } = trpc.savedLocations.getDefault.useQuery(
+    { organizerId: organizer?.id || 0 },
+    { enabled: !!organizer }
+  );
+
+  // Load contact templates for organizer
+  const { data: contactTemplates } = trpc.contactTemplates.list.useQuery(
     { organizerId: organizer?.id || 0 },
     { enabled: !!organizer }
   );
@@ -410,8 +419,33 @@ export default function SubmitEvent() {
     });
   };
 
-  const submitMutation = trpc.events.submit.useMutation({
+  const createContactTemplateMutation = trpc.contactTemplates.create.useMutation({
     onSuccess: () => {
+      toast.success("Contact template saved!");
+      setSaveAsTemplate(false);
+      setNewTemplateName("");
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to save contact template");
+    },
+  });
+
+  const submitMutation = trpc.events.submit.useMutation({
+    onSuccess: (data, variables) => {
+      // Save contact template if requested
+      if (saveAsTemplate && newTemplateName && organizer) {
+        createContactTemplateMutation.mutate({
+          organizerId: organizer.id,
+          name: newTemplateName,
+          contactName: variables.organizerName || "",
+          contactEmail: variables.organizerEmail || "",
+          contactPhone: variables.organizerPhone || "",
+          contactWebsite: variables.organizerWebsite || "",
+          displayPublicly: false,
+          isDefault: false,
+        });
+      }
+      
       toast.success("Event submitted successfully! It will be reviewed by our team.");
       navigate("/browse");
     },
@@ -1919,6 +1953,45 @@ This transparency helps build trust with your community, even if not every detai
               Your contact information for admin communication and account management. At least one contact method (email or phone) is required.
             </p>
             <div className="space-y-4">
+              {/* Contact Template Selector */}
+              {organizer && contactTemplates && contactTemplates.length > 0 && (
+                <div className="bg-muted/50 p-4 rounded-lg border-2 border-dashed border-muted-foreground/20">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Save className="w-4 h-4 text-primary" />
+                    <Label htmlFor="contactTemplate" className="font-medium">Load Saved Contact Info</Label>
+                  </div>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    Select a saved contact template to automatically fill in your organizer details below. You can still edit them after.
+                  </p>
+                  <Select
+                    value={selectedContactTemplateId?.toString() || ""}
+                    onValueChange={(value) => {
+                      const templateId = value ? parseInt(value) : null;
+                      setSelectedContactTemplateId(templateId);
+                      if (templateId) {
+                        const template = contactTemplates.find(t => t.id === templateId);
+                        if (template) {
+                          setValue("organizerName", template.contactName || "");
+                          setValue("organizerEmail", template.contactEmail || "");
+                          setValue("organizerPhone", template.contactPhone || "");
+                          setValue("organizerWebsite", template.contactWebsite || "");
+                        }
+                      }
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Choose a saved contact template..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {contactTemplates.map((template) => (
+                        <SelectItem key={template.id} value={template.id.toString()}>
+                          {template.name} {template.isDefault ? "(Default)" : ""}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
               <div>
                 <Label htmlFor="organizerName">Organization/Contact Name *</Label>
                 <Input id="organizerName" {...register("organizerName")} />
@@ -1946,6 +2019,41 @@ This transparency helps build trust with your community, even if not every detai
                 <Label htmlFor="organizerWebsite">Website (Optional)</Label>
                 <Input id="organizerWebsite" type="url" {...register("organizerWebsite")} placeholder="https://" />
               </div>
+
+              {/* Save as Template */}
+              {organizer && (
+                <div className="pt-4 border-t">
+                  <div className="flex items-start gap-3">
+                    <Checkbox
+                      id="saveAsTemplate"
+                      checked={saveAsTemplate}
+                      onCheckedChange={(checked) => setSaveAsTemplate(!!checked)}
+                    />
+                    <div className="flex-1">
+                      <Label htmlFor="saveAsTemplate" className="font-medium cursor-pointer">
+                        Save this contact information as a template
+                      </Label>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Reuse these contact details for future event submissions
+                      </p>
+                    </div>
+                  </div>
+                  {saveAsTemplate && (
+                    <div className="mt-3 ml-7">
+                      <Label htmlFor="templateName">Template Name *</Label>
+                      <Input
+                        id="templateName"
+                        value={newTemplateName}
+                        onChange={(e) => setNewTemplateName(e.target.value)}
+                        placeholder="e.g., Main Organization, Summer Camp Contact, etc."
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Give this template a name so you can easily find it later
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </Card>
 

@@ -55,7 +55,7 @@ export const contactTemplatesRouter = router({
     .mutation(async ({ ctx, input }) => {
       const { updateContactTemplate } = await import("./contact-templates-db");
       
-      await updateContactTemplate(input.id, ctx.user.id, {
+      const updated = await updateContactTemplate(input.id, ctx.user.id, {
         name: input.name,
         contactName: input.contactName,
         contactEmail: input.contactEmail || null,
@@ -65,7 +65,7 @@ export const contactTemplatesRouter = router({
         isDefault: input.isDefault ? 1 : 0,
       });
 
-      return { success: true };
+      return updated;
     }),
 
   // Delete a contact template

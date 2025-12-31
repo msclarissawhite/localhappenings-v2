@@ -191,7 +191,7 @@ function SavedEventsContent({ organizerId }: { organizerId: number }) {
 export default function OrganizerDashboard() {
   const [, navigate] = useLocation();
   const [organizer, setOrganizer] = useState<Organizer | null>(null);
-  const [activeTab, setActiveTab] = useState<"events" | "locations" | "saved" | "images" | "templates">("events");
+  const [activeTab, setActiveTab] = useState<"events" | "locations" | "contacts" | "saved" | "images" | "templates">("events");
 
   useEffect(() => {
     // Check if organizer is logged in
@@ -319,6 +319,14 @@ export default function OrganizerDashboard() {
           >
             <MapPinned className="w-4 h-4 mr-2" />
             Saved Locations
+          </Button>
+          <Button
+            variant={activeTab === "contacts" ? "default" : "ghost"}
+            onClick={() => setActiveTab("contacts")}
+            className="rounded-b-none"
+          >
+            <Save className="w-4 h-4 mr-2" />
+            Contact Templates
           </Button>
           <Button
             variant={activeTab === "saved" ? "default" : "ghost"}
@@ -483,6 +491,20 @@ export default function OrganizerDashboard() {
 
         {activeTab === "images" && <MyImages />}
         {activeTab === "templates" && <EventTemplates />}
+
+        {activeTab === "contacts" && (
+          <div>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-semibold">Contact Templates</h2>
+              <Button onClick={() => navigate("/organizer/contact-templates")}>
+                Manage Templates
+              </Button>
+            </div>
+            <p className="text-muted-foreground">
+              Save and reuse contact information for event submissions. Visit the management page to create, edit, and organize your templates.
+            </p>
+          </div>
+        )}
 
         {activeTab === "locations" && (
           <>
