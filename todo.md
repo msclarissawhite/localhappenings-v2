@@ -1694,3 +1694,33 @@
 - [x] Add WhatsApp sharing button
 - [x] Add LinkedIn sharing button
 - [x] Test all social sharing buttons on event detail pages
+
+## Age Categorization & Event Type Expansion (User Request)
+- [ ] Add separate "Adult" age range (distinct from "Adults Only")
+- [ ] Add "Games/Gaming" to Recreation & Sports category
+- [ ] Add relevant tags to Health & Wellness subcategory
+- [ ] Add "Cinema" to Arts & Culture
+- [ ] Add "Arts & Crafts" to Arts & Culture
+- [ ] Add "Socials & Clubs" to Community & Social
+- [ ] Expand Seasonal category with additional options
+- [ ] Add "Mixed" option to Environment (indoor/outdoor)
+- [ ] Review and suggest additional event type options
+- [ ] Update database schema with new values
+- [ ] Update submission form with new options
+- [ ] Update event display components
+- [ ] Test all changes end-to-end
+
+## Age Categorization & Event Type Expansion (User Request)
+- [x] Review current age ranges and event types schema
+- [x] Add 'adults' field to events table (separate from 'adultsOnly')
+- [x] Expand event type categories to include 'health-wellness' and 'environment'
+- [x] Add new event types: Games/Gaming, Cinema, Arts & Crafts, Socials & Clubs
+- [x] Add Health & Wellness types: Yoga, Fitness, Meditation, Wellness Workshops
+- [x] Add Environment types: Indoor, Outdoor, Mixed Indoor/Outdoor
+- [x] Add seasonal event types (13 new types)
+- [x] Update SubmitEvent form with adults checkbox
+- [x] Update AdminEditEvent form with adults checkbox
+- [x] Update EditEvent form with adults field
+- [x] Update EventDetail display with adults badge
+- [x] Update BrowseEvents filters with adults checkbox
+- [x] Test all forms and displays

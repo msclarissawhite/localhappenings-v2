@@ -88,6 +88,7 @@ export default function AdminEditEvent() {
     youngChildren: false,
     kids: false,
     teens: false,
+    adults: false,
     adultsOnly: false,
     seniors: false,
     isIndoor: false,
@@ -137,6 +138,7 @@ export default function AdminEditEvent() {
         youngChildren: event.youngChildren || false,
         kids: event.kids || false,
         teens: event.teens || false,
+        adults: event.adults || false,
         adultsOnly: event.adultsOnly || false,
         seniors: event.seniors || false,
         isIndoor: event.isIndoor || false,
@@ -235,6 +237,7 @@ export default function AdminEditEvent() {
       costMin: formData.costMin ? parseFloat(formData.costMin) : undefined,
       costMax: formData.costMax ? parseFloat(formData.costMax) : undefined,
       costType: formData.costType || undefined,
+      adults: Boolean(formData.adults),
       adultsOnly: Boolean(formData.adultsOnly),
       isIndoor: Boolean(formData.isIndoor),
       isOutdoor: Boolean(formData.isOutdoor),
@@ -636,12 +639,23 @@ export default function AdminEditEvent() {
 
             <div className="flex items-center space-x-2">
               <Checkbox
+                id="adults"
+                checked={formData.adults}
+                onCheckedChange={(checked) => setFormData({ ...formData, adults: checked })}
+              />
+              <Label htmlFor="adults" className="font-normal cursor-pointer">
+                Adults (18+)
+              </Label>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <Checkbox
                 id="adultsOnly"
                 checked={formData.adultsOnly}
                 onCheckedChange={(checked) => setFormData({ ...formData, adultsOnly: checked })}
               />
               <Label htmlFor="adultsOnly" className="font-normal cursor-pointer">
-                Adults Only (18+)
+                Adults Only (no children allowed)
               </Label>
             </div>
 

@@ -343,6 +343,7 @@ export default function EventDetail() {
             {!!event.youngChildren && <Badge variant="outline" className="text-base px-3 py-1">Ages 0-5</Badge>}
             {!!event.kids && <Badge variant="outline" className="text-base px-3 py-1">Ages 6-12</Badge>}
             {!!event.teens && <Badge variant="outline" className="text-base px-3 py-1">Teens</Badge>}
+            {!!event.adults && <Badge variant="outline" className="text-base px-3 py-1">Adults</Badge>}
             {!!event.adultsOnly && <Badge variant="outline" className="text-base px-3 py-1">Adults Only</Badge>}
             {!!event.seniors && <Badge variant="outline" className="text-base px-3 py-1">Seniors</Badge>}
           </div>

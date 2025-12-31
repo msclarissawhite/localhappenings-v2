@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO eventTypes (name, category) VALUES \n('Winter Events', 'seasonal'),\n('Spring Events', 'seasonal'),\n('Summer Events', 'seasonal'),\n('Fall Events', 'seasonal'),\n('Holiday Events', 'seasonal'),\n('Christmas/New Year', 'seasonal'),\n('Halloween', 'seasonal'),\n('Easter', 'seasonal'),\n('Canada Day', 'seasonal'),\n('Thanksgiving', 'seasonal'),\n('Valentine\\'s Day', 'seasonal'),\n('St. Patrick\\'s Day', 'seasonal'),\n('Back to School', 'seasonal')\nON DUPLICATE KEY UPDATE category=VALUES(category);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute INSERT INTO eventTypes (name, category) VALUES \n('Winter Events', 'seasonal'),\n('Spring Events', 'seasonal'),\n('Summer Events', 'seasonal'),\n('Fall Events', 'seasonal'),\n('Holiday Events', 'seasonal'),\n('Christmas/New Year', 'seasonal'),\n('Halloween', 'seasonal'),\n('Easter', 'seasonal'),\n('Canada Day', 'seasonal'),\n('Thanksgiving', 'seasonal'),\n('Valentine\\'s Day', 'seasonal'),\n('St. Patrick\\'s Day', 'seasonal'),\n('Back to School', 'seasonal')\nON DUPLICATE KEY UPDATE category=VALUES(category);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 63
+}

@@ -68,7 +68,8 @@ export const events = mysqlTable("events", {
   youngChildren: int("youngChildren").default(0).notNull(), // 0-5
   kids: int("kids").default(0).notNull(), // 6-12
   teens: int("teens").default(0).notNull(),
-  adultsOnly: int("adultsOnly").default(0).notNull(),
+  adults: int("adults").default(0).notNull(), // General adult audience (18+)
+  adultsOnly: int("adultsOnly").default(0).notNull(), // Adults only (no children allowed)
   seniors: int("seniors").default(0).notNull(),
   
   // Basic Attributes
@@ -125,7 +126,7 @@ export type InsertEvent = typeof events.$inferInsert;
 export const eventTypes = mysqlTable("eventTypes", {
   id: int("id").autoincrement().primaryKey(),
   name: varchar("name", { length: 100 }).notNull().unique(),
-  category: mysqlEnum("category", ["family-kids", "arts-culture", "community-social", "recreation-sports", "markets-festivals", "seasonal"]).default("community-social").notNull(),
+  category: mysqlEnum("category", ["family-kids", "arts-culture", "community-social", "recreation-sports", "health-wellness", "markets-festivals", "seasonal", "environment"]).default("community-social").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 

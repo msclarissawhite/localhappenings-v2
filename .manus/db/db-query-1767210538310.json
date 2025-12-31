@@ -1,0 +1,9 @@
+{
+  "query": "ALTER TABLE eventTypes MODIFY COLUMN category ENUM('family-kids', 'arts-culture', 'community-social', 'recreation-sports', 'health-wellness', 'markets-festivals', 'seasonal', 'environment') NOT NULL DEFAULT 'community-social';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute ALTER TABLE eventTypes MODIFY COLUMN category ENUM('family-kids', 'arts-culture', 'community-social', 'recreation-sports', 'health-wellness', 'markets-festivals', 'seasonal', 'environment') NOT NULL DEFAULT 'community-social';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 516
+}

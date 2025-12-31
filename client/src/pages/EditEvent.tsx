@@ -81,6 +81,7 @@ export default function EditEvent() {
         youngChildren: event.youngChildren || false,
         kids: event.kids || false,
         teens: event.teens || false,
+        adults: event.adults || false,
         adultsOnly: event.adultsOnly || false,
         seniors: event.seniors || false,
         isIndoor: event.isIndoor || false,

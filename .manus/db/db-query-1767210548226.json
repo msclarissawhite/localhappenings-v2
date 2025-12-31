@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO eventTypes (name, category) VALUES \n('Games/Gaming', 'recreation-sports'),\n('Cinema', 'arts-culture'),\n('Arts & Crafts', 'arts-culture'),\n('Socials & Clubs', 'community-social'),\n('Yoga', 'health-wellness'),\n('Fitness', 'health-wellness'),\n('Meditation', 'health-wellness'),\n('Wellness Workshops', 'health-wellness'),\n('Indoor', 'environment'),\n('Outdoor', 'environment'),\n('Mixed Indoor/Outdoor', 'environment')\nON DUPLICATE KEY UPDATE category=VALUES(category);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute INSERT INTO eventTypes (name, category) VALUES \n('Games/Gaming', 'recreation-sports'),\n('Cinema', 'arts-culture'),\n('Arts & Crafts', 'arts-culture'),\n('Socials & Clubs', 'community-social'),\n('Yoga', 'health-wellness'),\n('Fitness', 'health-wellness'),\n('Meditation', 'health-wellness'),\n('Wellness Workshops', 'health-wellness'),\n('Indoor', 'environment'),\n('Outdoor', 'environment'),\n('Mixed Indoor/Outdoor', 'environment')\nON DUPLICATE KEY UPDATE category=VALUES(category);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 68
+}

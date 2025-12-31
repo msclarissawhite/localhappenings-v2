@@ -1,0 +1,2 @@
+ALTER TABLE `eventTypes` MODIFY COLUMN `category` enum('family-kids','arts-culture','community-social','recreation-sports','health-wellness','markets-festivals','seasonal','environment') NOT NULL DEFAULT 'community-social';--> statement-breakpoint
+ALTER TABLE `events` ADD `adults` int DEFAULT 0 NOT NULL;

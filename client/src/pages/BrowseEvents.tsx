@@ -586,6 +586,16 @@ export default function BrowseEvents() {
                     </div>
                     <div className="flex items-center gap-2">
                       <Checkbox
+                        id="adults"
+                        checked={filters.adults || false}
+                        onCheckedChange={() => toggleFilter("adults")}
+                      />
+                      <Label htmlFor="adults" className="cursor-pointer">
+                        Adults
+                      </Label>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Checkbox
                         id="adultsOnly"
                         checked={filters.adultsOnly || false}
                         onCheckedChange={() => toggleFilter("adultsOnly")}

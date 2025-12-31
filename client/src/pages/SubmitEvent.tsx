@@ -71,6 +71,7 @@ const submitEventSchema = z.object({
   youngChildren: z.boolean(),
   kids: z.boolean(),
   teens: z.boolean(),
+  adults: z.boolean(),
   adultsOnly: z.boolean(),
   seniors: z.boolean(),
   isIndoor: z.boolean(),
@@ -167,6 +168,7 @@ export default function SubmitEvent() {
       youngChildren: false,
       kids: false,
       teens: false,
+      adults: false,
       adultsOnly: false,
       seniors: false,
       isIndoor: false,
@@ -214,6 +216,7 @@ export default function SubmitEvent() {
       if (data.youngChildren !== undefined) setValue("youngChildren", data.youngChildren);
       if (data.kids !== undefined) setValue("kids", data.kids);
       if (data.teens !== undefined) setValue("teens", data.teens);
+      if (data.adults !== undefined) setValue("adults", data.adults);
       if (data.adultsOnly !== undefined) setValue("adultsOnly", data.adultsOnly);
       if (data.seniors !== undefined) setValue("seniors", data.seniors);
       
@@ -274,6 +277,7 @@ export default function SubmitEvent() {
         setValue("youngChildren", event.youngChildren === 1);
         setValue("kids", event.kids === 1);
         setValue("teens", event.teens === 1);
+        setValue("adults", event.adults === 1);
         setValue("adultsOnly", event.adultsOnly === 1);
         setValue("seniors", event.seniors === 1);
         
@@ -1307,12 +1311,22 @@ export default function SubmitEvent() {
               </div>
               <div className="flex items-center gap-2">
                 <Checkbox
+                  id="adults"
+                  {...register("adults")}
+                  onCheckedChange={(checked) => setValue("adults", !!checked)}
+                />
+                <Label htmlFor="adults" className="cursor-pointer">
+                  Adults (18+)
+                </Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Checkbox
                   id="adultsOnly"
                   {...register("adultsOnly")}
                   onCheckedChange={(checked) => setValue("adultsOnly", !!checked)}
                 />
                 <Label htmlFor="adultsOnly" className="cursor-pointer">
-                  Adults Only
+                  Adults Only (no children allowed)
                 </Label>
               </div>
               <div className="flex items-center gap-2">
