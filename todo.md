@@ -1860,3 +1860,11 @@
 - [x] Update CSV example to remove old accessibility columns (changeTable, nursingRoom, etc.)
 - [x] Update CSV example to match template fields exactly
 - [x] Test bulk upload with updated CSV
+
+## CSV Import Guide Update
+- [x] Update CSV_IMPORT_GUIDE.md with all new fields
+- [x] Add AI-friendly formatting examples for custom GPT
+- [x] Document startTime, endTime, duration fields
+- [x] Document adults, isMixed fields
+- [x] Document publicContact fields
+- [x] Document eventTypeIds field

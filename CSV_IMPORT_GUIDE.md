@@ -1,6 +1,6 @@
 # CSV Bulk Import Guide for Local Happenings
 
-**Version 1.0** | **Last Updated:** December 20, 2024
+**Version 2.0** | **Last Updated:** December 31, 2025
 
 This guide explains how to use the CSV bulk import feature to add multiple events to Local Happenings at once. This feature is available only to administrators and is useful for importing seasonal events, recurring activities, or migrating data from other systems.
 
@@ -42,16 +42,17 @@ Use the provided template file `event_upload_template.csv` located in the projec
 **Column Headers (in order):**
 
 ```
-name,description,province,municipality,neighborhoodCommunity,venue,address,startDate,endDate,timeOfDay,isRecurring,recurrenceType,isFree,costMin,costMax,costType,kidsFree,freeCompanion,allAges,familyFriendly,youngChildren,kids,teens,adults,adultsOnly,seniors,isIndoor,isOutdoor,isMixed,shortDuration,dropIn,canReenter,organizerName,organizerType,organizerEmail,organizerPhone,organizerWebsite,displayOrganizerInfo,publicContactName,publicContactEmail,publicContactPhone,notes,imageUrl,eventTypeIds,accessibility
+name,description,province,municipality,neighborhoodCommunity,venue,address,startDate,startTime,endDate,endTime,duration,timeOfDay,isRecurring,recurrenceType,isFree,costMin,costMax,costType,kidsFree,freeCompanion,allAges,familyFriendly,youngChildren,kids,teens,adults,adultsOnly,seniors,isIndoor,isOutdoor,isMixed,shortDuration,dropIn,canReenter,organizerName,organizerType,organizerEmail,organizerPhone,organizerWebsite,displayOrganizerInfo,publicContactName,publicContactEmail,publicContactPhone,notes,imageUrl,eventTypeIds,accessibility
 ```
 
-**Key Changes from Previous Version:**
-- Removed `startTime` and `endTime` (not currently supported in submission form)
-- Removed individual accessibility columns (now consolidated into single `accessibility` JSON field)
-- Added `adults` field for general adult audience
-- Added `publicContactName`, `publicContactEmail`, `publicContactPhone` for separate public contact info
-- Added `eventTypeIds` for event type tags (comma-separated IDs)
-- Added `accessibility` for JSON-formatted accessibility data
+**Key Changes in Version 2.0:**
+- **Added** `startTime` and `endTime` fields for precise event timing (HH:MM format)
+- **Added** `duration` field for human-readable duration text (e.g., "2 hours", "3 days")
+- **Added** `adults` field for general adult audience (separate from adultsOnly)
+- **Added** `isMixed` field for events that are both indoor and outdoor
+- **Added** `publicContactName`, `publicContactEmail`, `publicContactPhone` for separate public contact info
+- **Added** `eventTypeIds` for event type tags (comma-separated IDs)
+- Individual accessibility columns consolidated into single `accessibility` JSON field
 
 ### Field Specifications
 
@@ -77,7 +78,10 @@ name,description,province,municipality,neighborhoodCommunity,venue,address,start
 | Field | Format | Example | Notes |
 |-------|--------|---------|-------|
 | `startDate` | YYYY-MM-DD | "2025-01-15" | **Required** |
+| `startTime` | HH:MM | "10:00" | 24-hour format. Optional but recommended for precise timing |
 | `endDate` | YYYY-MM-DD | "2025-01-17" | **For multi-day events** (e.g., 3-day festival). Leave blank for single-day events. |
+| `endTime` | HH:MM | "15:00" | 24-hour format. Optional |
+| `duration` | Text | "5 hours", "3 days", "90 minutes" | Human-readable duration. Optional |
 | `timeOfDay` | Text | "morning", "afternoon", "evening", "all-day" | Optional |
 
 **Multi-Day Event Example:**
@@ -124,10 +128,15 @@ name,description,province,municipality,neighborhoodCommunity,venue,address,start
 |-------|--------|---------|-------|
 | `isIndoor` | 0 or 1 | 1 | Event is indoors |
 | `isOutdoor` | 0 or 1 | 0 | Event is outdoors |
-| `isMixed` | 0 or 1 | 0 | Event is mixed indoor/outdoor |
+| `isMixed` | 0 or 1 | 0 | **NEW:** Event is both indoor AND outdoor (e.g., festival with indoor and outdoor areas) |
 | `shortDuration` | 0 or 1 | 1 | Under 2 hours |
 | `dropIn` | 0 or 1 | 1 | Drop-in allowed |
 | `canReenter` | 0 or 1 | 0 | Can re-enter |
+
+**Environment Logic:**
+- For **indoor-only** events: `isIndoor=1, isOutdoor=0, isMixed=0`
+- For **outdoor-only** events: `isIndoor=0, isOutdoor=1, isMixed=0`
+- For **mixed** events (both indoor and outdoor spaces): `isIndoor=1, isOutdoor=1, isMixed=1`
 
 #### Accessibility Field (JSON Format)
 
@@ -202,19 +211,30 @@ The `accessibility` field stores all accessibility information as a JSON object 
 
 #### Public Contact Information (Optional)
 
-Provide separate public contact information if different from organizer account:
+**NEW in Version 2.0:** Provide separate public contact information if different from organizer account. This is useful when the organizer wants to display a different contact person or department for public inquiries.
 
 | Field | Format | Example | Notes |
 |-------|--------|---------|-------|
-| `publicContactName` | Text | "Jane Smith" | Public-facing contact name |
-| `publicContactEmail` | Email | "events@example.com" | Public contact email |
-| `publicContactPhone` | Text | "(902) 555-0199" | Public contact phone |
+| `publicContactName` | Text | "Jane Smith" or "Events Team" | **NEW:** Public-facing contact name (can be person or department) |
+| `publicContactEmail` | Email | "events@example.com" | **NEW:** Public contact email (displayed on event page) |
+| `publicContactPhone` | Text | "(902) 555-0199" | **NEW:** Public contact phone (displayed on event page) |
+
+**Use Case Example:**
+- **Organizer Info** (private): John Doe, john@company.com, (902) 555-1000
+- **Public Contact Info** (displayed): Events Team, events@company.com, (902) 555-2000
+- This allows the organizer to keep their personal contact private while providing a public-facing contact method.
 
 #### Event Types (Tags)
 
 | Field | Format | Example | Notes |
 |-------|--------|---------|-------|
-| `eventTypeIds` | Comma-separated IDs | "90005,90006,90007" | Event type tag IDs (e.g., Yoga=90005, Fitness=90006). See reference table below for complete list. |
+| `eventTypeIds` | Comma-separated IDs | "30001,30002,30003" or "90005,90006" | **NEW:** Event type tag IDs. Use commas to separate multiple tags (no spaces). See reference table below for complete list. |
+
+**Formatting Rules:**
+- Use comma-separated IDs with **no spaces**: `"30001,30002,30003"` ✅
+- Do NOT use spaces: `"30001, 30002, 30003"` ❌
+- Can assign multiple tags to one event (e.g., a yoga class for kids could be `"90005,30006"` = Yoga + Kids Crafts)
+- Leave blank if no specific event type applies
 
 **Event Type ID Reference Table:**
 
@@ -546,3 +566,168 @@ If you encounter issues with CSV imports:
 ---
 
 **Last Updated:** December 20, 2024 | **Author:** Manus AI
+
+---
+
+## For AI Assistants & Custom GPTs
+
+This section provides structured guidance for AI assistants helping organizers format CSV data for Local Happenings bulk import.
+
+### Quick Reference: Field Requirements
+
+**ALWAYS REQUIRED:**
+- `name` - Event name (text)
+- `description` - Full description (text)
+- `province` - Must match exact spelling from Canadian provinces list
+- `municipality` - City/town name (text)
+- `startDate` - YYYY-MM-DD format
+- `organizerName` - Organizer name (text)
+- `organizerEmail` OR `organizerPhone` - At least one required
+
+**RECOMMENDED (improves discoverability):**
+- `startTime` - HH:MM 24-hour format (e.g., "14:00" for 2 PM)
+- `endTime` - HH:MM 24-hour format
+- `duration` - Human-readable text (e.g., "2 hours", "3 days")
+- `eventTypeIds` - Comma-separated IDs matching event categories
+- `accessibility` - JSON string with accessibility details
+
+**OPTIONAL:**
+- All other fields can be left blank
+
+### AI Formatting Rules
+
+When helping users convert unstructured event data to CSV format:
+
+1. **Date Conversion:**
+   - Convert "January 15, 2025" → `2025-01-15`
+   - Convert "Jan 15" → `2025-01-15` (infer current/next year)
+   - Convert "15/01/2025" → `2025-01-15`
+
+2. **Time Conversion:**
+   - Convert "2 PM" → `14:00`
+   - Convert "10:30 AM" → `10:30`
+   - Convert "noon" → `12:00`
+   - If only start time given, leave endTime blank
+
+3. **Duration Parsing:**
+   - Extract from phrases like "2-hour workshop" → `2 hours`
+   - Multi-day events: calculate from dates (e.g., Jan 15-17 → `3 days`)
+   - Use natural language: "90 minutes", "half day", "all weekend"
+
+4. **Cost Conversion:**
+   - Convert "$20" → `2000` (cents)
+   - Convert "$15-$25" → `costMin=1500, costMax=2500, costType=range`
+   - "Free" → `isFree=1, costMin=, costMax=`
+   - "Donation" → `isFree=0, costType=donation`
+   - "Pay what you can" → `isFree=0, costType=pay-what-you-can`
+
+5. **Boolean Fields (0 or 1):**
+   - "Yes", "true", "available" → `1`
+   - "No", "false", "not available" → `0`
+   - If unclear → leave blank
+
+6. **Age Groups:**
+   - "All ages" → `allAges=1`
+   - "Family-friendly" → `familyFriendly=1`
+   - "Toddlers" or "0-5" → `youngChildren=1`
+   - "Kids" or "6-12" → `kids=1`
+   - "Teens" or "13-17" → `teens=1`
+   - "Adults" or "18+" → `adults=1`
+   - "Adults only" or "19+" → `adultsOnly=1`
+   - "Seniors" or "55+" → `seniors=1`
+
+7. **Environment:**
+   - "Indoor" → `isIndoor=1, isOutdoor=0, isMixed=0`
+   - "Outdoor" → `isIndoor=0, isOutdoor=1, isMixed=0`
+   - "Indoor and outdoor" → `isIndoor=1, isOutdoor=1, isMixed=1`
+
+8. **Event Type IDs:**
+   - Map keywords to IDs from reference table
+   - "Yoga class" → `90005`
+   - "Kids crafts workshop" → `30006,30021` (Kids Crafts + Workshops)
+   - "Live music concert" → `30009,30012` (Live Music + Concert)
+
+9. **Accessibility JSON:**
+   - If user provides accessibility details, format as JSON string
+   - Use double quotes for JSON keys and values
+   - Escape quotes in CSV: `"{""wheelchairAccessible"":""yes""}"`
+   - If no details provided, leave blank
+
+### Example Conversions
+
+**User Input:**
+```
+Winter Carnival on January 15th at Halifax Common. 
+10am to 3pm. Free event with activities for all ages.
+Contact: events@halifax.ca
+```
+
+**AI Output (CSV row):**
+```csv
+Winter Carnival,"Free winter carnival with activities for all ages",Nova Scotia,Halifax,,Halifax Common,"Halifax Common, Halifax, NS",2025-01-15,10:00,,15:00,5 hours,morning,0,one-time,1,,,,,0,0,1,1,1,1,0,1,0,0,0,1,0,1,1,Halifax Recreation,municipality,events@halifax.ca,,,1,,,,"",,,""
+```
+
+**User Input:**
+```
+Yoga class every Wednesday, 6-7:30pm at Community Center.
+$15 per class. Adults only. Wheelchair accessible.
+```
+
+**AI Output (CSV row):**
+```csv
+Weekly Yoga Class,"Join us for a relaxing yoga session every Wednesday evening",Nova Scotia,Halifax,,Community Center,"Community Center, Halifax, NS",2025-01-08,18:00,2025-12-31,19:30,90 minutes,evening,1,weekly,0,1500,1500,fixed,0,0,0,0,0,0,0,1,1,0,1,0,0,0,1,Community Wellness,nonprofit,info@communitywellness.ca,(902) 555-0100,,1,,,,"",90005,"{""wheelchairAccessible"":""yes""}"
+```
+
+### Common Pitfalls to Avoid
+
+❌ **DON'T:**
+- Use spaces in comma-separated lists: `"30001, 30002"` 
+- Put dollar signs in cost fields: `"$20"`
+- Use 12-hour time without AM/PM conversion: `"2:00"` (ambiguous)
+- Leave required fields blank (name, description, province, municipality, startDate, organizerName, contact)
+
+✅ **DO:**
+- Use no spaces in comma-separated lists: `"30001,30002"`
+- Convert to cents: `2000`
+- Use 24-hour format: `"14:00"`
+- Fill all required fields, even if you need to infer information
+
+### Validation Checklist
+
+Before outputting CSV, verify:
+
+- [ ] All required fields are filled
+- [ ] Dates are YYYY-MM-DD format
+- [ ] Times are HH:MM 24-hour format
+- [ ] Costs are in cents (numbers only, no symbols)
+- [ ] Boolean fields are 0 or 1 (not yes/no or true/false)
+- [ ] Province matches exact spelling from Canadian provinces list
+- [ ] Event type IDs are valid numbers from reference table
+- [ ] No trailing commas or extra columns
+- [ ] Accessibility JSON is properly escaped if used
+
+### Output Format
+
+When generating CSV for users:
+
+1. **Include header row** with all 47 column names
+2. **Quote all text fields** to handle commas and special characters
+3. **Leave optional fields blank** (empty between commas) if no data
+4. **Provide explanation** of what you filled in and any assumptions made
+5. **Suggest improvements** if user can provide more details
+
+---
+
+## Version History
+
+**Version 2.0** (December 31, 2025)
+- Added `startTime`, `endTime`, `duration` fields
+- Added `adults` field (separate from adultsOnly)
+- Added `isMixed` field for mixed indoor/outdoor events
+- Added `publicContactName`, `publicContactEmail`, `publicContactPhone` fields
+- Added `eventTypeIds` field for event type tagging
+- Added AI assistant guidance section
+
+**Version 1.0** (December 20, 2024)
+- Initial release with core CSV import functionality
+- Consolidated accessibility fields into JSON format
