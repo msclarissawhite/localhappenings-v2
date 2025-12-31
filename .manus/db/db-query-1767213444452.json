@@ -1,0 +1,30 @@
+{
+  "query": "SELECT id, name, category FROM eventTypes WHERE category = 'health-wellness' ORDER BY name",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT id, name, category FROM eventTypes WHERE category = 'health-wellness' ORDER BY name",
+  "rows": [
+    {
+      "id": "90006",
+      "name": "Fitness",
+      "category": "health-wellness"
+    },
+    {
+      "id": "90007",
+      "name": "Meditation",
+      "category": "health-wellness"
+    },
+    {
+      "id": "90008",
+      "name": "Wellness Workshops",
+      "category": "health-wellness"
+    },
+    {
+      "id": "90005",
+      "name": "Yoga",
+      "category": "health-wellness"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tcategory\n90006\tFitness\thealth-wellness\n90007\tMeditation\thealth-wellness\n90008\tWellness Workshops\thealth-wellness\n90005\tYoga\thealth-wellness\n",
+  "stderr": "",
+  "execution_time_ms": 55
+}

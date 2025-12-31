@@ -77,7 +77,7 @@ Administrators have full access to all features. They can view the pending event
 
 The Browse Events page provides comprehensive filtering options to help users find relevant activities. At the top of the page, a **text search bar** allows users to search across event names, descriptions, venues, and organizer names for quick discovery.
 
-Users can apply **quick toggles** for common filters including Today, Free, Family-Friendly, Young Children (0-5), Indoor, Outdoor, and Show Archived. These toggles provide instant filtering without opening the advanced filters panel.
+Users can apply **quick toggles** for common filters including Today, Free, Family-Friendly, Young Children (0-5), Indoor, Outdoor, Mixed Indoor/Outdoor, and Show Archived. These toggles provide instant filtering without opening the advanced filters panel.
 
 For more specific searches, the **Advanced Filters** panel organizes options into multiple categories:
 
@@ -89,14 +89,15 @@ For more specific searches, the **Advanced Filters** panel organizes options int
 
 **Cost filters** provide options for Free events, specific price ranges, Donation-based, Pay-what-you-can, Sliding scale, Kids free, and Free companion/support worker tickets.
 
-**Event type filters** are organized into six audience-based categories with 32 specific event types:
+**Event type filters** are organized into seven audience-based categories with 49 specific event types:
 
 - **Family & Kids**: Face Painting, Kids Crafts, Petting Zoos/Farms, Puppet Shows, Seeing Santa, Skating, Storytime/Library Events, Swimming
-- **Arts & Culture**: Art Exhibition, Concert, Indigenous Events, Live Music, Multicultural Festivals, Opera, Theatre & Performances
-- **Community & Social**: Community Meetings, Fundraisers & Charity Events, Language Meetups, Pride Events, Religious/Faith-Based Events, Workshops & Classes
-- **Recreation & Sports**: Outdoor Adventure, Sports & Recreation
+- **Arts & Culture**: Art Exhibition, Arts & Crafts, Cinema, Concert, Indigenous Events, Live Music, Multicultural Festivals, Opera, Theatre & Performances
+- **Community & Social**: Community Meetings, Fundraisers & Charity Events, Language Meetups, Pride Events, Religious/Faith-Based Events, Socials & Clubs, Workshops & Classes
+- **Recreation & Sports**: Games/Gaming, Outdoor Adventure, Sports & Recreation
 - **Markets & Festivals**: Craft Shows & Markets, Festivals & Fairs, Food & Drink
-- **Seasonal**: Canada Day Events, Festive Holidays, Easter Events, Halloween Events, Summer Activities, Winter Activities
+- **Health & Wellness**: Fitness, Meditation, Wellness Workshops, Yoga
+- **Seasonal**: Back to School, Canada Day, Christmas, Easter, Fall Events, Festive Holidays, Halloween, Holiday Events, New Year, Spring Events, St. Patrick's Day, Summer Events, Thanksgiving, Valentine's Day, Winter Events
 
 Users can select multiple event types simultaneously to find events matching any of the selected categories. The Advanced Filters button displays a count of active filters for easy reference.
 
@@ -109,7 +110,7 @@ Users can select multiple event types simultaneously to find events matching any
 
 The **Sort By** dropdown allows users to order results by Soonest, Latest, Name (A-Z), or Name (Z-A).
 
-Each event card displays the event image (if uploaded), event name, date, location, cost (with "FREE" highlighted in accent color), and relevant badges such as Family-Friendly, age suitability, and Indoor/Outdoor indicators. Clicking any event card navigates to the detailed event page.
+Each event card displays the event image (if uploaded), event name, date, location, cost (with "FREE" highlighted in accent color), and relevant badges such as Family-Friendly, age suitability, and Indoor/Outdoor/Mixed indicators. Clicking any event card navigates to the detailed event page.
 
 ### Accessibility Settings
 
@@ -143,7 +144,7 @@ The event submission form is organized into seven sections to make the process c
 
 **Age Suitability** checkboxes allow organizers to indicate if the event is suitable for Family-Friendly, Young Children (0-5), Kids (6-12), Teens, Adults Only, Seniors, or All Ages. Multiple options can be selected.
 
-**Environment** checkboxes indicate whether the event is Indoor, Outdoor, or both.
+**Environment** checkboxes indicate whether the event is Indoor, Outdoor, or Mixed Indoor/Outdoor. Select all that apply to accurately describe your event venue.
 
 **Accessibility Information** is the most detailed section and is mandatory. However, "Unknown" or "Not Relevant" are always acceptable answers for any field. The section is divided into five categories with radio button options (Yes, No, Unknown, Not Relevant):
 
@@ -185,7 +186,7 @@ The **My Events** tab displays all events you have submitted, organized by statu
 
 The **Saved Locations** tab allows you to save frequently used venues with complete location and accessibility details. This eliminates the need to re-enter the same information for every event at the same venue.
 
-**Adding a Saved Location**: Click the **Add Location** button to open the saved location form. Fill in the location name (e.g., "Halifax Central Library"), province, municipality, neighborhood (optional), venue name (optional), address (optional), environment (Indoor/Outdoor checkboxes), and accessibility settings. The accessibility section includes all the same fields as the event submission form, allowing you to save venue-specific accessibility information. Click **Save Location** to add it to your saved locations.
+**Adding a Saved Location**: Click the **Add Location** button to open the saved location form. Fill in the location name (e.g., "Halifax Central Library"), province, municipality, neighborhood (optional), venue name (optional), address (optional), environment (Indoor/Outdoor/Mixed Indoor-Outdoor checkboxes), and accessibility settings. The accessibility section includes all the same fields as the event submission form, allowing you to save venue-specific accessibility information. Click **Save Location** to add it to your saved locations.
 
 **Setting a Default Location**: Each saved location card displays a **Set as Default** button. Click this button to mark a location as your default venue. When you create a new event, the default location will be automatically selected in the "Quick Fill from Saved Location" dropdown, and all location and accessibility fields will be pre-filled. Only one location can be set as default at a time. The default location is indicated with a green **Default Location** badge.
 
@@ -197,7 +198,7 @@ When you navigate to the **Submit Event** page while logged in as an organizer, 
 
 **Auto-Fill with Default Location**: If you have set a default location, it will be automatically selected when the form loads, and all location and accessibility fields will be pre-filled with the saved details. You can still edit any field before submitting.
 
-**Select a Different Saved Location**: Click the dropdown to select any of your saved locations. When you select a location, the following fields are automatically filled: province, municipality, neighborhood, venue name, address, Indoor/Outdoor checkboxes, and all accessibility settings from the saved location. You can edit any of these fields after auto-fill if needed for a specific event.
+**Select a Different Saved Location**: Click the dropdown to select any of your saved locations. When you select a location, the following fields are automatically filled: province, municipality, neighborhood, venue name, address, Indoor/Outdoor/Mixed Indoor-Outdoor checkboxes, and all accessibility settings from the saved location. You can edit any of these fields after auto-fill if needed for a specific event.
 
 **Manual Entry**: If you select "None (enter manually)" from the dropdown, all location fields will be cleared and you can enter location details from scratch.
 
@@ -263,7 +264,7 @@ Event detail pages are organized into scannable sections for easy information re
 
 **What It Is** displays the full event description in readable paragraphs.
 
-**When & Where** shows the date and time formatted as "Day, Month Date, Year" for single-day events or "Month Day - Month Day, Year" for multi-day events. For multi-day events, a duration indicator displays (e.g., "3-day event") to help families plan accordingly. The time of day is shown if specified, with "(each day)" appended for multi-day events. The section also displays the venue name and address if provided, the location hierarchy (neighborhood, city, province), whether the event is Indoor, Outdoor, or both, and an **"Open in Google Maps"** button that opens the event location directly in Google Maps for navigation.
+**When & Where** shows the date and time formatted as "Day, Month Date, Year" for single-day events or "Month Day - Month Day, Year" for multi-day events. For multi-day events, a duration indicator displays (e.g., "3-day event") to help families plan accordingly. The time of day is shown if specified, with "(each day)" appended for multi-day events. The section also displays the venue name and address if provided, the location hierarchy (neighborhood, city, province), whether the event is Indoor, Outdoor, or Mixed Indoor/Outdoor, and an **"Open in Google Maps"** button that opens the event location directly in Google Maps for navigation.
 
 **Cost** clearly displays "FREE" for free events or shows the price range for paid events. Cost type (Donation-based, Pay-what-you-can, Sliding scale) is displayed when applicable. Additional cost information such as "Kids attend free" or "Free companion/support worker ticket" is displayed with checkmark icons.
 
@@ -350,7 +351,7 @@ Before publishing your site, complete the following tests to ensure all features
 
 2. **Browse Events - Text Search**: Navigate to Browse Events and test the search bar by entering event names, venue names, or keywords. Verify that results filter correctly.
 
-3. **Browse Events - Quick Toggles**: Test each quick toggle (Today, Free, Family-Friendly, Young Children, Indoor, Outdoor, Show Archived) and verify that events filter correctly. Confirm that the "Show Archived" toggle displays past events.
+3. **Browse Events - Quick Toggles**: Test each quick toggle (Today, Free, Family-Friendly, Young Children, Indoor, Outdoor, Mixed Indoor/Outdoor, Show Archived) and verify that events filter correctly. Confirm that the "Show Archived" toggle displays past events.
 
 4. **Browse Events - Advanced Filters**: Open the advanced filters panel and test location dropdowns (province, city), date filters (today, tomorrow, custom range), age group checkboxes, cost filters, event type filters, and all four accessibility filter sections. Verify that filters combine correctly.
 
@@ -757,7 +758,7 @@ The platform uses the following main tables:
 
 **users**: Stores user accounts with fields for id (primary key), openId (Manus OAuth identifier), name, email, loginMethod, role (user or admin), createdAt, updatedAt, and lastSignedIn.
 
-**events**: Stores all event data with fields for id (primary key), name, description, startDate (required), endDate (optional, for multi-day events), timeOfDay, province, city, neighborhood, venue, address, isIndoor, isOutdoor, isFree, minCost, maxCost, costType, kidsFree, freeCompanion, familyFriendly, youngChildren, kids, teens, adultsOnly, seniors, allAges, accessibility (JSON field containing all 40+ accessibility fields), organizerName, organizerEmail, organizerPhone, organizerWebsite, displayOrganizerInfo (boolean), additionalNotes, imageUrl (recommended size: 1200x630px, aspect ratio 1.91:1), status (pending, published, rejected, needs-clarification), submittedBy (user id), createdAt, and updatedAt. For multi-day events, endDate should be set to the last day of the event, and the platform will automatically calculate and display the duration.
+**events**: Stores all event data with fields for id (primary key), name, description, startDate (required), endDate (optional, for multi-day events), timeOfDay, province, city, neighborhood, venue, address, isIndoor, isOutdoor, isMixed, isFree, minCost, maxCost, costType, kidsFree, freeCompanion, familyFriendly, youngChildren, kids, teens, adultsOnly, seniors, allAges, accessibility (JSON field containing all 40+ accessibility fields), organizerName, organizerEmail, organizerPhone, organizerWebsite, displayOrganizerInfo (boolean), additionalNotes, imageUrl (recommended size: 1200x630px, aspect ratio 1.91:1), status (pending, published, rejected, needs-clarification), submittedBy (user id), createdAt, and updatedAt. For multi-day events, endDate should be set to the last day of the event, and the platform will automatically calculate and display the duration.
 
 The accessibility field is stored as JSON and contains five nested objects: caregiverInfant, mobilityPhysical, sensoryNeurodivergent, cognitiveComm, and socialEmotional. Each object contains multiple fields with values of "yes", "no", "unknown", or "not-relevant".
 

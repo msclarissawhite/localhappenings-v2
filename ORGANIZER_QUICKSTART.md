@@ -30,9 +30,9 @@ The submission form has seven sections. Required fields are marked with an aster
 
 **Age Suitability** lets you select all age groups that apply: Family-Friendly, Young Children (0-5), Kids (6-12), Teens, Adults Only, Seniors, or All Ages.
 
-**Environment** indicates whether your event is Indoor, Outdoor, or both.
+**Environment** indicates whether your event is Indoor, Outdoor, or Mixed Indoor/Outdoor. Select all that apply to accurately describe your venue.
 
-**Event Types** lets you select categories that describe your event (e.g., Live Music, Festivals & Fairs, Festive Holidays). You can select multiple types. These tags help families discover your event through filtering and appear as badges on event cards.
+**Event Types** lets you select categories that describe your event from seven categories: Family & Kids, Arts & Culture, Community & Social, Recreation & Sports, Markets & Festivals, Health & Wellness, and Seasonal. Examples include Live Music, Festivals & Fairs, Yoga, Cinema, Games/Gaming, and seasonal events. You can select multiple types. These tags help families discover your event through filtering and appear as badges on event cards.
 
 **Accessibility Information** is mandatory but flexible. For each question, select Yes, No, Unknown, or Not Relevant. The platform values transparency—if you don't know whether your venue has an elevator, select "Unknown" rather than skipping the question. Hover over the tooltip icons (ℹ️) next to each field to understand what information is being requested and why it matters.
 

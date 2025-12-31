@@ -382,6 +382,13 @@ export default function BrowseEvents() {
             Outdoor
           </Button>
           <Button
+            variant={filters.isMixed ? "default" : "outline"}
+            size="sm"
+            onClick={() => toggleFilter("isMixed")}
+          >
+            Mixed Indoor/Outdoor
+          </Button>
+          <Button
             variant={filters.showArchived ? "default" : "outline"}
             size="sm"
             onClick={() => toggleFilter("showArchived")}
@@ -1055,6 +1062,7 @@ export default function BrowseEvents() {
                       )}
                       {!!event.isIndoor && <Badge variant="outline">Indoor</Badge>}
                       {!!event.isOutdoor && <Badge variant="outline">Outdoor</Badge>}
+                      {!!event.isMixed && <Badge variant="outline">Mixed Indoor/Outdoor</Badge>}
                     </div>
 
                     {/* Trust Signals & Accessibility */}

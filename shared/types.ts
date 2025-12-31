@@ -112,6 +112,7 @@ export interface EventFilters {
   // Attributes
   isIndoor?: boolean;
   isOutdoor?: boolean;
+  isMixed?: boolean;
   
   // Accessibility filters
   strollerAccessible?: boolean;

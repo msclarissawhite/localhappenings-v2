@@ -42,7 +42,7 @@ Use the provided template file `event_upload_template.csv` located in the projec
 **Column Headers (in order):**
 
 ```
-name,description,province,municipality,neighborhoodCommunity,venue,address,startDate,startTime,endDate,endTime,timeOfDay,isRecurring,recurrenceType,isFree,costMin,costMax,costType,kidsFree,freeCompanion,allAges,familyFriendly,youngChildren,kids,teens,adultsOnly,seniors,isIndoor,isOutdoor,shortDuration,dropIn,canReenter,changeTable,changeTableLocations,nursingRoom,strollerAccessible,strollerParking,familyWashroom,wheelchairAccessible,accessibleParking,parkingDistance,elevatorLift,accessibleWashrooms,washroomAvailability,seatingAvailable,terrain,noiseLevel,lighting,quietSpace,scentFree,visualSchedules,clearSignage,aslInterpreter,multilingualSupport,sensoryFriendly,serviceAnimalsWelcome,crowdingLevel,flexibleParticipation,organizerName,organizerType,organizerEmail,organizerPhone,organizerWebsite,displayOrganizerInfo,notes,imageUrl,imageFileName
+name,description,province,municipality,neighborhoodCommunity,venue,address,startDate,startTime,endDate,endTime,timeOfDay,isRecurring,recurrenceType,isFree,costMin,costMax,costType,kidsFree,freeCompanion,allAges,familyFriendly,youngChildren,kids,teens,adultsOnly,seniors,isIndoor,isOutdoor,isMixed,shortDuration,dropIn,canReenter,changeTable,changeTableLocations,nursingRoom,strollerAccessible,strollerParking,familyWashroom,wheelchairAccessible,accessibleParking,parkingDistance,elevatorLift,accessibleWashrooms,washroomAvailability,seatingAvailable,terrain,noiseLevel,lighting,quietSpace,scentFree,visualSchedules,clearSignage,aslInterpreter,multilingualSupport,sensoryFriendly,serviceAnimalsWelcome,crowdingLevel,flexibleParticipation,organizerName,organizerType,organizerEmail,organizerPhone,organizerWebsite,displayOrganizerInfo,notes,imageUrl,imageFileName
 ```
 
 **New Column:** `imageFileName` - For ZIP uploads only. References the image file name inside the ZIP archive.
@@ -115,13 +115,14 @@ name,description,province,municipality,neighborhoodCommunity,venue,address,start
 
 #### Environment (0 = no, 1 = yes)
 
-| Field | Format | Example |
-|-------|--------|---------|
-| `isIndoor` | 0 or 1 | 1 |
-| `isOutdoor` | 0 or 1 | 0 |
-| `shortDuration` | 0 or 1 | 1 |
-| `dropIn` | 0 or 1 | 1 |
-| `canReenter` | 0 or 1 | 0 |
+| Field | Format | Example | Notes |
+|-------|--------|---------|-------|
+| `isIndoor` | 0 or 1 | 1 | Event is indoors |
+| `isOutdoor` | 0 or 1 | 0 | Event is outdoors |
+| `isMixed` | 0 or 1 | 0 | Event is mixed indoor/outdoor |
+| `shortDuration` | 0 or 1 | 1 | Under 2 hours |
+| `dropIn` | 0 or 1 | 1 | Drop-in allowed |
+| `canReenter` | 0 or 1 | 0 | Can re-enter |
 
 #### Accessibility Fields
 
@@ -161,6 +162,8 @@ Most accessibility fields use the following format:
 |-------|--------|---------|-------|
 | `notes` | Text | "Bring your own skates..." | Additional information |
 | `imageUrl` | URL | "https://example.com/image.jpg" | **Recommended size: 1200×630px (1.91:1 ratio)** for optimal display |
+
+**Note on Event Types:** Event types (tags like "Yoga", "Cinema", "Games/Gaming", etc.) are not included in CSV imports. After importing events, administrators can add event type tags through the admin dashboard's event editing interface. The platform offers 49 event types across seven categories: Family & Kids, Arts & Culture, Community & Social, Recreation & Sports, Markets & Festivals, Health & Wellness, and Seasonal.
 
 ---
 

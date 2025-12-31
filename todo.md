@@ -1770,3 +1770,14 @@
 - [x] Added "Mixed Indoor/Outdoor" checkbox to Environment form section
 - [x] Updated all form handlers to include isMixed
 - [x] Tested all event types display correctly in submit form
+
+## Documentation Updates for New Event Types - COMPLETE ✓
+- [x] Update BrowseEvents filters to include Health & Wellness category
+- [x] Update BrowseEvents Environment filter to include Mixed Indoor/Outdoor
+- [x] Update USER_MANUAL.md with Health & Wellness category (49 types, 7 categories)
+- [x] Update USER_MANUAL.md with Mixed Indoor/Outdoor option
+- [x] Update organizer quickstart guide with new event types
+- [x] Update comprehensive organizer guide with new categories
+- [x] Update CSV import guide with isMixed field and Health & Wellness types
+- [x] Verified all filters working in browser
+- [x] Verified Health & Wellness category displays with Fitness, Meditation, Wellness Workshops, Yoga
