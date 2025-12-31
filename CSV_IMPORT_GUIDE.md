@@ -343,7 +343,8 @@ The `accessibility` field stores all accessibility information as a JSON object 
 | Field | Format | Example | Notes |
 |-------|--------|---------|-------|
 | `notes` | Text | "Bring your own skates..." | Additional information |
-| `imageUrl` | URL | "https://example.com/image.jpg" | **Recommended size: 1200×630px (1.91:1 ratio)** for optimal display |
+| `imageUrl` | URL | "https://example.com/image.jpg" | **Recommended size: 1200×630px (1.91:1 ratio)** for optimal display. Use this for events with images already hosted online. |
+| `imageFileName` | Text | "winter-carnival.jpg" | **For ZIP uploads only.** Filename of image included in ZIP archive. Leave blank if using `imageUrl` or if event has no image. |
 
 **Note:** The platform offers 49 event types across seven categories: Family & Kids, Arts & Culture, Community & Social, Recreation & Sports, Markets & Festivals, Health & Wellness, and Seasonal. Event types can be included in CSV imports using the `eventTypeIds` field with comma-separated type IDs, or added later through the admin dashboard.
 
@@ -565,7 +566,7 @@ If you encounter issues with CSV imports:
 
 ---
 
-**Last Updated:** December 20, 2024 | **Author:** Manus AI
+**Last Updated:** December 31, 2025 | **Version:** 2.0
 
 ---
 
@@ -710,7 +711,7 @@ Before outputting CSV, verify:
 
 When generating CSV for users:
 
-1. **Include header row** with all 47 column names
+1. **Include header row** with all 48 column names
 2. **Quote all text fields** to handle commas and special characters
 3. **Leave optional fields blank** (empty between commas) if no data
 4. **Provide explanation** of what you filled in and any assumptions made

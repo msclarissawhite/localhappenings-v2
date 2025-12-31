@@ -1868,3 +1868,8 @@
 - [x] Document adults, isMixed fields
 - [x] Document publicContact fields
 - [x] Document eventTypeIds field
+
+## CSV Guide Review
+- [x] Check for duplicate sections in CSV_IMPORT_GUIDE.md
+- [x] Verify all sections are complete and properly formatted
+- [x] Update "Last Updated" date in Support section
