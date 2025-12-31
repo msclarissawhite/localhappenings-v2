@@ -1888,3 +1888,12 @@
 - [x] Debug why parser reports missing required fields
 - [x] Fix header parsing with quoted column names
 - [x] Test with user's FIXED-V2 CSV file
+
+## CSV Upload Validation Fixes (Dec 31 2025)
+- [ ] Check which fields are missing from user's CSV (adults, isMixed, organizerType)
+- [ ] Add default values in BulkUpload parser for missing optional fields
+- [ ] Test CSV upload with FIXED-V2 file to verify validation passes
+
+- [x] Identified column shift issue in user's CSV (extra "0" in organizerName column)
+- [x] Created corrected CSV (FIXED-V3) with proper column alignment
+- [x] Added missing field conversions (adults, isMixed) to BulkUpload parser
