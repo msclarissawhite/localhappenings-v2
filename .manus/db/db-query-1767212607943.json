@@ -1,0 +1,25 @@
+{
+  "query": "SELECT id, name, category FROM eventTypes WHERE category = 'environment'",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT id, name, category FROM eventTypes WHERE category = 'environment'",
+  "rows": [
+    {
+      "id": "90009",
+      "name": "Indoor",
+      "category": "environment"
+    },
+    {
+      "id": "90010",
+      "name": "Outdoor",
+      "category": "environment"
+    },
+    {
+      "id": "90011",
+      "name": "Mixed Indoor/Outdoor",
+      "category": "environment"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tcategory\n90009\tIndoor\tenvironment\n90010\tOutdoor\tenvironment\n90011\tMixed Indoor/Outdoor\tenvironment\n",
+  "stderr": "",
+  "execution_time_ms": 58
+}

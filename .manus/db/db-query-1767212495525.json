@@ -1,0 +1,140 @@
+{
+  "query": "SELECT id, name, category FROM eventTypes WHERE category IN ('health-wellness', 'environment', 'recreation-sports', 'arts-culture', 'community-social') ORDER BY category, name",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT id, name, category FROM eventTypes WHERE category IN ('health-wellness', 'environment', 'recreation-sports', 'arts-culture', 'community-social') ORDER BY category, name",
+  "rows": [
+    {
+      "id": "30013",
+      "name": "Art Exhibition",
+      "category": "arts-culture"
+    },
+    {
+      "id": "90003",
+      "name": "Arts & Crafts",
+      "category": "arts-culture"
+    },
+    {
+      "id": "90002",
+      "name": "Cinema",
+      "category": "arts-culture"
+    },
+    {
+      "id": "30012",
+      "name": "Concert",
+      "category": "arts-culture"
+    },
+    {
+      "id": "30014",
+      "name": "Indigenous Events",
+      "category": "arts-culture"
+    },
+    {
+      "id": "30009",
+      "name": "Live Music",
+      "category": "arts-culture"
+    },
+    {
+      "id": "30015",
+      "name": "Multicultural Festivals",
+      "category": "arts-culture"
+    },
+    {
+      "id": "30011",
+      "name": "Opera",
+      "category": "arts-culture"
+    },
+    {
+      "id": "30010",
+      "name": "Theatre & Performances",
+      "category": "arts-culture"
+    },
+    {
+      "id": "30016",
+      "name": "Community Meetings",
+      "category": "community-social"
+    },
+    {
+      "id": "30017",
+      "name": "Fundraisers & Charity Events",
+      "category": "community-social"
+    },
+    {
+      "id": "30018",
+      "name": "Language Meetups",
+      "category": "community-social"
+    },
+    {
+      "id": "30020",
+      "name": "Pride Events",
+      "category": "community-social"
+    },
+    {
+      "id": "30019",
+      "name": "Religious / Faith-Based Events",
+      "category": "community-social"
+    },
+    {
+      "id": "90004",
+      "name": "Socials & Clubs",
+      "category": "community-social"
+    },
+    {
+      "id": "30021",
+      "name": "Workshops & Classes",
+      "category": "community-social"
+    },
+    {
+      "id": "90001",
+      "name": "Games/Gaming",
+      "category": "recreation-sports"
+    },
+    {
+      "id": "30023",
+      "name": "Outdoor Adventure",
+      "category": "recreation-sports"
+    },
+    {
+      "id": "30022",
+      "name": "Sports & Recreation",
+      "category": "recreation-sports"
+    },
+    {
+      "id": "90006",
+      "name": "Fitness",
+      "category": "health-wellness"
+    },
+    {
+      "id": "90007",
+      "name": "Meditation",
+      "category": "health-wellness"
+    },
+    {
+      "id": "90008",
+      "name": "Wellness Workshops",
+      "category": "health-wellness"
+    },
+    {
+      "id": "90005",
+      "name": "Yoga",
+      "category": "health-wellness"
+    },
+    {
+      "id": "90009",
+      "name": "Indoor",
+      "category": "environment"
+    },
+    {
+      "id": "90011",
+      "name": "Mixed Indoor/Outdoor",
+      "category": "environment"
+    },
+    {
+      "id": "90010",
+      "name": "Outdoor",
+      "category": "environment"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tcategory\n30013\tArt Exhibition\tarts-culture\n90003\tArts & Crafts\tarts-culture\n90002\tCinema\tarts-culture\n30012\tConcert\tarts-culture\n30014\tIndigenous Events\tarts-culture\n30009\tLive Music\tarts-culture\n30015\tMulticultural Festivals\tarts-culture\n30011\tOpera\tarts-culture\n30010\tTheatre & Performances\tarts-culture\n30016\tCommunity Meetings\tcommunity-social\n30017\tFundraisers & Charity Events\tcommunity-social\n30018\tLanguage Meetups\tcommunity-social\n30020\tPride Events\tcommunity-social\n30019\tReligious / Faith-Based Events\tcommunity-social\n90004\tSocials & Clubs\tcommunity-social\n30021\tWorkshops & Classes\tcommunity-social\n90001\tGames/Gaming\trecreation-sports\n30023\tOutdoor Adventure\trecreation-sports\n30022\tSports & Recreation\trecreation-sports\n90006\tFitness\thealth-wellness\n90007\tMeditation\thealth-wellness\n90008\tWellness Workshops\thealth-wellness\n90005\tYoga\thealth-wellness\n90009\tIndoor\tenvironment\n90011\tMixed Indoor/Outdoor\tenvironment\n90010\tOutdoor\tenvironment\n",
+  "stderr": "",
+  "execution_time_ms": 57
+}

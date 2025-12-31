@@ -75,6 +75,7 @@ export const events = mysqlTable("events", {
   // Basic Attributes
   isIndoor: int("isIndoor").default(0).notNull(),
   isOutdoor: int("isOutdoor").default(0).notNull(),
+  isMixed: int("isMixed").default(0).notNull(), // Mixed Indoor/Outdoor
   shortDuration: int("shortDuration").default(0).notNull(), // under 2 hours
   dropIn: int("dropIn").default(0).notNull(),
   canReenter: int("canReenter").default(0).notNull(),
@@ -276,6 +277,7 @@ export const savedLocations = mysqlTable("savedLocations", {
   // Indoor/Outdoor defaults
   isIndoor: int("isIndoor").default(0).notNull(),
   isOutdoor: int("isOutdoor").default(0).notNull(),
+  isMixed: int("isMixed").default(0).notNull(), // Mixed Indoor/Outdoor
   
   // Default location flag - only one location per organizer can be default
   isDefault: int("isDefault").default(0).notNull(),

@@ -6,7 +6,7 @@ import { Card } from '@/components/ui/card';
 interface EventType {
   id: number;
   name: string;
-  category: 'family-kids' | 'arts-culture' | 'community-social' | 'recreation-sports' | 'markets-festivals' | 'seasonal';
+  category: 'family-kids' | 'arts-culture' | 'community-social' | 'recreation-sports' | 'markets-festivals' | 'seasonal' | 'health-wellness';
   createdAt: Date;
 }
 
@@ -23,6 +23,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   'recreation-sports': 'Recreation & Sports',
   'markets-festivals': 'Markets & Festivals',
   'seasonal': 'Seasonal',
+  'health-wellness': 'Health & Wellness',
 };
 
 export function EventTypeSelector({ eventTypes, selectedIds, onChange }: EventTypeSelectorProps) {
@@ -49,7 +50,7 @@ export function EventTypeSelector({ eventTypes, selectedIds, onChange }: EventTy
     onChange(newSelected);
   };
 
-  const categoryOrder = ['family-kids', 'arts-culture', 'community-social', 'recreation-sports', 'markets-festivals', 'seasonal'];
+  const categoryOrder = ['family-kids', 'arts-culture', 'community-social', 'recreation-sports', 'markets-festivals', 'seasonal', 'health-wellness'];
 
   return (
     <div className="space-y-4">

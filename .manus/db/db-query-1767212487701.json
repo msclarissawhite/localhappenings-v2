@@ -1,0 +1,322 @@
+{
+  "query": "SELECT * FROM eventTypes ORDER BY category, name",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT * FROM eventTypes ORDER BY category, name",
+  "rows": [
+    {
+      "id": "30008",
+      "name": "Face Painting",
+      "category": "family-kids",
+      "createdAt": "2025-12-21 12:23:24"
+    },
+    {
+      "id": "30006",
+      "name": "Kids Crafts",
+      "category": "family-kids",
+      "createdAt": "2025-12-21 12:23:24"
+    },
+    {
+      "id": "30005",
+      "name": "Petting Zoos / Farms",
+      "category": "family-kids",
+      "createdAt": "2025-12-21 12:23:24"
+    },
+    {
+      "id": "30007",
+      "name": "Puppet Shows",
+      "category": "family-kids",
+      "createdAt": "2025-12-21 12:23:24"
+    },
+    {
+      "id": "30001",
+      "name": "Seeing Santa",
+      "category": "family-kids",
+      "createdAt": "2025-12-21 12:23:24"
+    },
+    {
+      "id": "30003",
+      "name": "Skating",
+      "category": "family-kids",
+      "createdAt": "2025-12-21 12:23:24"
+    },
+    {
+      "id": "30002",
+      "name": "Storytime / Library Events",
+      "category": "family-kids",
+      "createdAt": "2025-12-21 12:23:24"
+    },
+    {
+      "id": "30004",
+      "name": "Swimming",
+      "category": "family-kids",
+      "createdAt": "2025-12-21 12:23:24"
+    },
+    {
+      "id": "30013",
+      "name": "Art Exhibition",
+      "category": "arts-culture",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "90003",
+      "name": "Arts & Crafts",
+      "category": "arts-culture",
+      "createdAt": "2025-12-31 19:49:08"
+    },
+    {
+      "id": "90002",
+      "name": "Cinema",
+      "category": "arts-culture",
+      "createdAt": "2025-12-31 19:49:08"
+    },
+    {
+      "id": "30012",
+      "name": "Concert",
+      "category": "arts-culture",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "30014",
+      "name": "Indigenous Events",
+      "category": "arts-culture",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "30009",
+      "name": "Live Music",
+      "category": "arts-culture",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "30015",
+      "name": "Multicultural Festivals",
+      "category": "arts-culture",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "30011",
+      "name": "Opera",
+      "category": "arts-culture",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "30010",
+      "name": "Theatre & Performances",
+      "category": "arts-culture",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "30016",
+      "name": "Community Meetings",
+      "category": "community-social",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "30017",
+      "name": "Fundraisers & Charity Events",
+      "category": "community-social",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "30018",
+      "name": "Language Meetups",
+      "category": "community-social",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "30020",
+      "name": "Pride Events",
+      "category": "community-social",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "30019",
+      "name": "Religious / Faith-Based Events",
+      "category": "community-social",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "90004",
+      "name": "Socials & Clubs",
+      "category": "community-social",
+      "createdAt": "2025-12-31 19:49:08"
+    },
+    {
+      "id": "30021",
+      "name": "Workshops & Classes",
+      "category": "community-social",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "90001",
+      "name": "Games/Gaming",
+      "category": "recreation-sports",
+      "createdAt": "2025-12-31 19:49:08"
+    },
+    {
+      "id": "30023",
+      "name": "Outdoor Adventure",
+      "category": "recreation-sports",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "30022",
+      "name": "Sports & Recreation",
+      "category": "recreation-sports",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "90006",
+      "name": "Fitness",
+      "category": "health-wellness",
+      "createdAt": "2025-12-31 19:49:08"
+    },
+    {
+      "id": "90007",
+      "name": "Meditation",
+      "category": "health-wellness",
+      "createdAt": "2025-12-31 19:49:08"
+    },
+    {
+      "id": "90008",
+      "name": "Wellness Workshops",
+      "category": "health-wellness",
+      "createdAt": "2025-12-31 19:49:08"
+    },
+    {
+      "id": "90005",
+      "name": "Yoga",
+      "category": "health-wellness",
+      "createdAt": "2025-12-31 19:49:08"
+    },
+    {
+      "id": "30025",
+      "name": "Craft Shows & Markets",
+      "category": "markets-festivals",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "30024",
+      "name": "Festivals & Fairs",
+      "category": "markets-festivals",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "30026",
+      "name": "Food & Drink",
+      "category": "markets-festivals",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "90024",
+      "name": "Back to School",
+      "category": "seasonal",
+      "createdAt": "2025-12-31 19:49:46"
+    },
+    {
+      "id": "90020",
+      "name": "Canada Day",
+      "category": "seasonal",
+      "createdAt": "2025-12-31 19:49:46"
+    },
+    {
+      "id": "90025",
+      "name": "Christmas",
+      "category": "seasonal",
+      "createdAt": "2025-12-31 20:10:56"
+    },
+    {
+      "id": "90019",
+      "name": "Easter",
+      "category": "seasonal",
+      "createdAt": "2025-12-31 19:49:46"
+    },
+    {
+      "id": "90015",
+      "name": "Fall Events",
+      "category": "seasonal",
+      "createdAt": "2025-12-31 19:49:46"
+    },
+    {
+      "id": "30027",
+      "name": "Festive Holidays",
+      "category": "seasonal",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "90018",
+      "name": "Halloween",
+      "category": "seasonal",
+      "createdAt": "2025-12-31 19:49:46"
+    },
+    {
+      "id": "90016",
+      "name": "Holiday Events",
+      "category": "seasonal",
+      "createdAt": "2025-12-31 19:49:46"
+    },
+    {
+      "id": "90026",
+      "name": "New Year",
+      "category": "seasonal",
+      "createdAt": "2025-12-31 20:10:56"
+    },
+    {
+      "id": "90013",
+      "name": "Spring Events",
+      "category": "seasonal",
+      "createdAt": "2025-12-31 19:49:46"
+    },
+    {
+      "id": "90023",
+      "name": "St. Patrick's Day",
+      "category": "seasonal",
+      "createdAt": "2025-12-31 19:49:46"
+    },
+    {
+      "id": "90014",
+      "name": "Summer Events",
+      "category": "seasonal",
+      "createdAt": "2025-12-31 19:49:46"
+    },
+    {
+      "id": "90021",
+      "name": "Thanksgiving",
+      "category": "seasonal",
+      "createdAt": "2025-12-31 19:49:46"
+    },
+    {
+      "id": "90022",
+      "name": "Valentine's Day",
+      "category": "seasonal",
+      "createdAt": "2025-12-31 19:49:46"
+    },
+    {
+      "id": "90012",
+      "name": "Winter Events",
+      "category": "seasonal",
+      "createdAt": "2025-12-31 19:49:46"
+    },
+    {
+      "id": "90009",
+      "name": "Indoor",
+      "category": "environment",
+      "createdAt": "2025-12-31 19:49:08"
+    },
+    {
+      "id": "90011",
+      "name": "Mixed Indoor/Outdoor",
+      "category": "environment",
+      "createdAt": "2025-12-31 19:49:08"
+    },
+    {
+      "id": "90010",
+      "name": "Outdoor",
+      "category": "environment",
+      "createdAt": "2025-12-31 19:49:08"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tcategory\tcreatedAt\n30008\tFace Painting\tfamily-kids\t2025-12-21 12:23:24\n30006\tKids Crafts\tfamily-kids\t2025-12-21 12:23:24\n30005\tPetting Zoos / Farms\tfamily-kids\t2025-12-21 12:23:24\n30007\tPuppet Shows\tfamily-kids\t2025-12-21 12:23:24\n30001\tSeeing Santa\tfamily-kids\t2025-12-21 12:23:24\n30003\tSkating\tfamily-kids\t2025-12-21 12:23:24\n30002\tStorytime / Library Events\tfamily-kids\t2025-12-21 12:23:24\n30004\tSwimming\tfamily-kids\t2025-12-21 12:23:24\n30013\tArt Exhibition\tarts-culture\t2025-12-21 12:23:33\n90003\tArts & Crafts\tarts-culture\t2025-12-31 19:49:08\n90002\tCinema\tarts-culture\t2025-12-31 19:49:08\n30012\tConcert\tarts-culture\t2025-12-21 12:23:33\n30014\tIndigenous Events\tarts-culture\t2025-12-21 12:23:33\n30009\tLive Music\tarts-culture\t2025-12-21 12:23:33\n30015\tMulticultural Festivals\tarts-culture\t2025-12-21 12:23:33\n30011\tOpera\tarts-culture\t2025-12-21 12:23:33\n30010\tTheatre & Performances\tarts-culture\t2025-12-21 12:23:33\n30016\tCommunity Meetings\tcommunity-social\t2025-12-21 12:23:33\n30017\tFundraisers & Charity Events\tcommunity-social\t2025-12-21 12:23:33\n30018\tLanguage Meetups\tcommunity-social\t2025-12-21 12:23:33\n30020\tPride Events\tcommunity-social\t2025-12-21 12:23:33\n30019\tReligious / Faith-Based Events\tcommunity-social\t2025-12-21 12:23:33\n90004\tSocials & Clubs\tcommunity-social\t2025-12-31 19:49:08\n30021\tWorkshops & Classes\tcommunity-social\t2025-12-21 12:23:33\n90001\tGames/Gaming\trecreation-sports\t2025-12-31 19:49:08\n30023\tOutdoor Adventure\trecreation-sports\t2025-12-21 12:23:33\n30022\tSports & Recreation\trecreation-sports\t2025-12-21 12:23:33\n90006\tFitness\thealth-wellness\t2025-12-31 19:49:08\n90007\tMeditation\thealth-wellness\t2025-12-31 19:49:08\n90008\tWellness Workshops\thealth-wellness\t2025-12-31 19:49:08\n90005\tYoga\thealth-wellness\t2025-12-31 19:49:08\n30025\tCraft Shows & Markets\tmarkets-festivals\t2025-12-21 12:23:33\n30024\tFestivals & Fairs\tmarkets-festivals\t2025-12-21 12:23:33\n30026\tFood & Drink\tmarkets-festivals\t2025-12-21 12:23:33\n90024\tBack to School\tseasonal\t2025-12-31 19:49:46\n90020\tCanada Day\tseasonal\t2025-12-31 19:49:46\n90025\tChristmas\tseasonal\t2025-12-31 20:10:56\n90019\tEaster\tseasonal\t2025-12-31 19:49:46\n90015\tFall Events\tseasonal\t2025-12-31 19:49:46\n30027\tFestive Holidays\tseasonal\t2025-12-21 12:23:33\n90018\tHalloween\tseasonal\t2025-12-31 19:49:46\n90016\tHoliday Events\tseasonal\t2025-12-31 19:49:46\n90026\tNew Year\tseasonal\t2025-12-31 20:10:56\n90013\tSpring Events\tseasonal\t2025-12-31 19:49:46\n90023\tSt. Patrick's Day\tseasonal\t2025-12-31 19:49:46\n90014\tSummer Events\tseasonal\t2025-12-31 19:49:46\n90021\tThanksgiving\tseasonal\t2025-12-31 19:49:46\n90022\tValentine's Day\tseasonal\t2025-12-31 19:49:46\n90012\tWinter Events\tseasonal\t2025-12-31 19:49:46\n90009\tIndoor\tenvironment\t2025-12-31 19:49:08\n90011\tMixed Indoor/Outdoor\tenvironment\t2025-12-31 19:49:08\n90010\tOutdoor\tenvironment\t2025-12-31 19:49:08\n",
+  "stderr": "",
+  "execution_time_ms": 106
+}

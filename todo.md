@@ -1748,3 +1748,25 @@
 - [x] Split Christmas/New Year into separate Christmas and New Year entries
 - [x] Verify only these 4 have "Events" suffix: Winter Events, Spring Events, Summer Events, Fall Events
 - [x] Test seasonal filters after cleanup
+
+## Environment Category Duplication Issue
+- [ ] Review environment event types (Indoor, Outdoor, Mixed Indoor/Outdoor) in database
+- [ ] Confirm if these should be event type tags or remain as form checkboxes (isIndoor/isOutdoor)
+- [ ] Remove duplicate "Environment" category from event types if it conflicts with existing form section
+- [ ] Update EventTypeSelector to not show Environment category if keeping form checkboxes
+- [ ] Test to ensure no confusion between event type tags and environment form fields
+
+## Add Mixed Indoor/Outdoor Option
+- [ ] Add "Mixed Indoor/Outdoor" checkbox to Environment form section
+- [ ] Update schema to include isMixed boolean field
+- [ ] Update all form handlers to include isMixed
+- [ ] Test Environment section with all three options (Indoor, Outdoor, Mixed)
+
+## Event Types Fix - COMPLETED
+- [x] Verified Health & Wellness category displays correctly (Yoga, Fitness, Meditation, Wellness Workshops)
+- [x] Removed duplicate Environment event type category from database
+- [x] Removed Environment from EventTypeSelector component
+- [x] Added isMixed field to events and savedLocations schema
+- [x] Added "Mixed Indoor/Outdoor" checkbox to Environment form section
+- [x] Updated all form handlers to include isMixed
+- [x] Tested all event types display correctly in submit form

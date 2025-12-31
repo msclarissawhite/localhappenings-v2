@@ -1,0 +1,9 @@
+{
+  "query": "ALTER TABLE savedLocations ADD COLUMN isMixed INT NOT NULL DEFAULT 0 AFTER isOutdoor",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute ALTER TABLE savedLocations ADD COLUMN isMixed INT NOT NULL DEFAULT 0 AFTER isOutdoor",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 433
+}

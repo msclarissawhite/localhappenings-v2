@@ -76,6 +76,7 @@ const submitEventSchema = z.object({
   seniors: z.boolean(),
   isIndoor: z.boolean(),
   isOutdoor: z.boolean(),
+  isMixed: z.boolean(),
   organizerName: z.string().min(1, "Organizer name is required"),
   organizerEmail: z.string().email("Invalid email").optional().or(z.literal("")),
   organizerPhone: z.string().optional(),
@@ -173,6 +174,7 @@ export default function SubmitEvent() {
       seniors: false,
       isIndoor: false,
       isOutdoor: false,
+      isMixed: false,
       isRecurring: false,
       recurrenceInterval: 1,
       displayOrganizerInfo: false,
@@ -223,6 +225,7 @@ export default function SubmitEvent() {
       // Environment
       if (data.isIndoor !== undefined) setValue("isIndoor", data.isIndoor);
       if (data.isOutdoor !== undefined) setValue("isOutdoor", data.isOutdoor);
+      if (data.isMixed !== undefined) setValue("isMixed", data.isMixed);
       
       // Organizer info
       if (data.organizerName) setValue("organizerName", data.organizerName);
@@ -284,6 +287,7 @@ export default function SubmitEvent() {
         // Environment
         setValue("isIndoor", event.isIndoor === 1);
         setValue("isOutdoor", event.isOutdoor === 1);
+        setValue("isMixed", event.isMixed === 1);
         
         // Accessibility
         if (event.accessibility) {
@@ -342,6 +346,7 @@ export default function SubmitEvent() {
       }
       setValue("isIndoor", defaultLocation.isIndoor === 1);
       setValue("isOutdoor", defaultLocation.isOutdoor === 1);
+      setValue("isMixed", defaultLocation.isMixed === 1);
       
       // Auto-fill accessibility fields
       if (defaultLocation.accessibility) {
@@ -1005,6 +1010,7 @@ export default function SubmitEvent() {
                         setValue("address", location.address || "");
                         setValue("isIndoor", location.isIndoor === 1);
                         setValue("isOutdoor", location.isOutdoor === 1);
+                        setValue("isMixed", location.isMixed === 1);
                         
                         // Update province/city state for dropdowns
                         setSelectedProvince(location.province);
@@ -1364,6 +1370,16 @@ export default function SubmitEvent() {
                 />
                 <Label htmlFor="isOutdoor" className="cursor-pointer">
                   Outdoor
+                </Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Checkbox
+                  id="isMixed"
+                  {...register("isMixed")}
+                  onCheckedChange={(checked) => setValue("isMixed", !!checked)}
+                />
+                <Label htmlFor="isMixed" className="cursor-pointer">
+                  Mixed Indoor/Outdoor
                 </Label>
               </div>
             </div>
