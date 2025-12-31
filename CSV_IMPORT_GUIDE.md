@@ -42,10 +42,16 @@ Use the provided template file `event_upload_template.csv` located in the projec
 **Column Headers (in order):**
 
 ```
-name,description,province,municipality,neighborhoodCommunity,venue,address,startDate,startTime,endDate,endTime,timeOfDay,isRecurring,recurrenceType,isFree,costMin,costMax,costType,kidsFree,freeCompanion,allAges,familyFriendly,youngChildren,kids,teens,adultsOnly,seniors,isIndoor,isOutdoor,isMixed,shortDuration,dropIn,canReenter,changeTable,changeTableLocations,nursingRoom,strollerAccessible,strollerParking,familyWashroom,wheelchairAccessible,accessibleParking,parkingDistance,elevatorLift,accessibleWashrooms,washroomAvailability,seatingAvailable,terrain,noiseLevel,lighting,quietSpace,scentFree,visualSchedules,clearSignage,aslInterpreter,multilingualSupport,sensoryFriendly,serviceAnimalsWelcome,crowdingLevel,flexibleParticipation,organizerName,organizerType,organizerEmail,organizerPhone,organizerWebsite,displayOrganizerInfo,notes,imageUrl,imageFileName
+name,description,province,municipality,neighborhoodCommunity,venue,address,startDate,endDate,timeOfDay,isRecurring,recurrenceType,isFree,costMin,costMax,costType,kidsFree,freeCompanion,allAges,familyFriendly,youngChildren,kids,teens,adults,adultsOnly,seniors,isIndoor,isOutdoor,isMixed,shortDuration,dropIn,canReenter,organizerName,organizerType,organizerEmail,organizerPhone,organizerWebsite,displayOrganizerInfo,publicContactName,publicContactEmail,publicContactPhone,notes,imageUrl,eventTypeIds,accessibility
 ```
 
-**New Column:** `imageFileName` - For ZIP uploads only. References the image file name inside the ZIP archive.
+**Key Changes from Previous Version:**
+- Removed `startTime` and `endTime` (not currently supported in submission form)
+- Removed individual accessibility columns (now consolidated into single `accessibility` JSON field)
+- Added `adults` field for general adult audience
+- Added `publicContactName`, `publicContactEmail`, `publicContactPhone` for separate public contact info
+- Added `eventTypeIds` for event type tags (comma-separated IDs)
+- Added `accessibility` for JSON-formatted accessibility data
 
 ### Field Specifications
 
@@ -71,9 +77,7 @@ name,description,province,municipality,neighborhoodCommunity,venue,address,start
 | Field | Format | Example | Notes |
 |-------|--------|---------|-------|
 | `startDate` | YYYY-MM-DD | "2025-01-15" | **Required** |
-| `startTime` | HH:MM | "10:00" | Optional (24-hour format) |
 | `endDate` | YYYY-MM-DD | "2025-01-17" | **For multi-day events** (e.g., 3-day festival). Leave blank for single-day events. |
-| `endTime` | HH:MM | "15:00" | Optional (24-hour format) |
 | `timeOfDay` | Text | "morning", "afternoon", "evening", "all-day" | Optional |
 
 **Multi-Day Event Example:**
@@ -103,15 +107,16 @@ name,description,province,municipality,neighborhoodCommunity,venue,address,start
 
 #### Age Groups (0 = no, 1 = yes)
 
-| Field | Format | Example |
-|-------|--------|---------|
-| `allAges` | 0 or 1 | 1 |
-| `familyFriendly` | 0 or 1 | 1 |
-| `youngChildren` | 0 or 1 | 1 |
-| `kids` | 0 or 1 | 1 |
-| `teens` | 0 or 1 | 0 |
-| `adultsOnly` | 0 or 1 | 0 |
-| `seniors` | 0 or 1 | 0 |
+| Field | Format | Example | Notes |
+|-------|--------|---------|-------|
+| `allAges` | 0 or 1 | 1 | Suitable for all ages |
+| `familyFriendly` | 0 or 1 | 1 | Family-friendly event |
+| `youngChildren` | 0 or 1 | 1 | Ages 0-5 |
+| `kids` | 0 or 1 | 1 | Ages 6-12 |
+| `teens` | 0 or 1 | 0 | Ages 13-17 |
+| `adults` | 0 or 1 | 1 | General adult audience (18+) |
+| `adultsOnly` | 0 or 1 | 0 | Adults only (no children) |
+| `seniors` | 0 or 1 | 0 | Senior-focused event |
 
 #### Environment (0 = no, 1 = yes)
 
@@ -124,26 +129,65 @@ name,description,province,municipality,neighborhoodCommunity,venue,address,start
 | `dropIn` | 0 or 1 | 1 | Drop-in allowed |
 | `canReenter` | 0 or 1 | 0 | Can re-enter |
 
-#### Accessibility Fields
+#### Accessibility Field (JSON Format)
 
-Most accessibility fields use the following format:
+The `accessibility` field stores all accessibility information as a JSON object with five categories:
 
-| Value | Meaning |
-|-------|---------|
-| `yes` | Feature is available |
-| `no` | Feature is not available |
-| `unknown` | Not confirmed yet |
-| `not-relevant` | Doesn't apply to this event |
+**Format:** JSON string containing nested objects for each category
 
-**Special Accessibility Fields:**
+**Categories:**
+1. `caregiver` - Diaper changing, nursing rooms, stroller access, family washrooms
+2. `mobility` - Wheelchair access, parking, terrain, elevators, washrooms
+3. `sensory` - Noise levels, lighting, quiet spaces, sensory-friendly features
+4. `cognitive` - Clear signage, visual schedules, flexible participation
+5. `social` - Service animals, multilingual support, ASL interpreters
 
-- `changeTableLocations`: "mens", "womens", "gender-neutral", "family", "multiple", "unknown", "not-relevant"
-- `washroomAvailability`: Comma-separated list (e.g., "mens,womens,family,wheelchair-accessible")
-- `parkingDistance`: "short", "moderate", "long", "unknown", "not-relevant"
-- `terrain`: "flat", "gravel", "hills", "paved", "unpaved", "mixed", "unknown", "not-relevant"
-- `noiseLevel`: "quiet", "moderate", "loud", "unknown", "not-relevant"
-- `lighting`: "natural", "bright", "dim", "adjustable", "unknown", "not-relevant"
-- `crowdingLevel`: "low", "moderate", "high", "unknown", "not-relevant"
+**Value Options:** Most fields use: `yes`, `no`, `unknown`, `not-relevant`
+
+**Example JSON:**
+```json
+{
+  "caregiver": {
+    "changeTable": "yes",
+    "changeTableLocations": "family",
+    "nursingRoom": "yes",
+    "strollerAccessible": "yes",
+    "strollerParking": "yes",
+    "familyWashroom": "yes"
+  },
+  "mobility": {
+    "wheelchairAccessible": "yes",
+    "accessibleParking": "yes",
+    "parkingDistance": "short",
+    "elevatorLift": "yes",
+    "accessibleWashrooms": "yes",
+    "washroomAvailability": ["mens", "womens", "family", "wheelchair-accessible"],
+    "seatingAvailable": "yes",
+    "terrainInfo": "flat",
+    "busStopDistance": "short"
+  },
+  "sensory": {
+    "noiseLevel": "moderate",
+    "lighting": "natural",
+    "quietSpace": "yes",
+    "scentFree": "no",
+    "sensoryFriendly": "yes",
+    "crowdLevel": "moderate"
+  },
+  "cognitive": {
+    "visualSchedules": "yes",
+    "clearSignage": "yes",
+    "flexibleParticipation": "yes"
+  },
+  "social": {
+    "aslInterpreter": "no",
+    "multilingualSupport": "no",
+    "serviceAnimalsWelcome": "yes"
+  }
+}
+```
+
+**For CSV Import:** Provide the entire JSON object as a single escaped string in the `accessibility` column. If unsure, leave blank and add accessibility information through the admin dashboard after import.
 
 #### Organizer Information
 
@@ -156,6 +200,22 @@ Most accessibility fields use the following format:
 | `organizerWebsite` | URL | "https://www.halifax.ca" | Optional |
 | `displayOrganizerInfo` | 0 or 1 | 1 | Show contact info publicly |
 
+#### Public Contact Information (Optional)
+
+Provide separate public contact information if different from organizer account:
+
+| Field | Format | Example | Notes |
+|-------|--------|---------|-------|
+| `publicContactName` | Text | "Jane Smith" | Public-facing contact name |
+| `publicContactEmail` | Email | "events@example.com" | Public contact email |
+| `publicContactPhone` | Text | "(902) 555-0199" | Public contact phone |
+
+#### Event Types (Tags)
+
+| Field | Format | Example | Notes |
+|-------|--------|---------|-------|
+| `eventTypeIds` | Comma-separated IDs | "90005,90006,90007" | Event type tag IDs (e.g., Yoga=90005, Fitness=90006). See admin dashboard for full list of 49 event types across 7 categories. |
+
 #### Additional Fields
 
 | Field | Format | Example | Notes |
@@ -163,7 +223,7 @@ Most accessibility fields use the following format:
 | `notes` | Text | "Bring your own skates..." | Additional information |
 | `imageUrl` | URL | "https://example.com/image.jpg" | **Recommended size: 1200×630px (1.91:1 ratio)** for optimal display |
 
-**Note on Event Types:** Event types (tags like "Yoga", "Cinema", "Games/Gaming", etc.) are not included in CSV imports. After importing events, administrators can add event type tags through the admin dashboard's event editing interface. The platform offers 49 event types across seven categories: Family & Kids, Arts & Culture, Community & Social, Recreation & Sports, Markets & Festivals, Health & Wellness, and Seasonal.
+**Note:** The platform offers 49 event types across seven categories: Family & Kids, Arts & Culture, Community & Social, Recreation & Sports, Markets & Festivals, Health & Wellness, and Seasonal. Event types can be included in CSV imports using the `eventTypeIds` field with comma-separated type IDs, or added later through the admin dashboard.
 
 ---
 

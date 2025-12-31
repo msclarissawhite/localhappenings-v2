@@ -1781,3 +1781,12 @@
 - [x] Update CSV import guide with isMixed field and Health & Wellness types
 - [x] Verified all filters working in browser
 - [x] Verified Health & Wellness category displays with Fitness, Meditation, Wellness Workshops, Yoga
+
+
+## CSV Template Update - COMPLETE ✓
+- [x] Update event_upload_template.csv to include isMixed column
+- [x] Verify all current submission fields are in CSV template (44 columns total)
+- [x] Verify CSV import guide documents all fields correctly
+- [x] Updated CSV guide to use JSON accessibility field instead of individual columns
+- [x] Added publicContact fields, eventTypeIds, and adults field to guide
+- [x] Removed outdated startTime/endTime references
