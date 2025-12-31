@@ -1883,3 +1883,8 @@
 - [x] Check backend CSV parser implementation
 - [x] Test JSON escaping with actual parser
 - [x] Create CSV with proper JSON escaping for upload
+
+## CSV Uploader Missing Fields Bug
+- [x] Debug why parser reports missing required fields
+- [x] Fix header parsing with quoted column names
+- [x] Test with user's FIXED-V2 CSV file

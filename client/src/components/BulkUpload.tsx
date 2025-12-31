@@ -120,7 +120,7 @@ export function BulkUpload({ onComplete }: { onComplete: () => void }) {
       return;
     }
 
-    const headers = lines[0].split(",").map(h => h.trim());
+    const headers = parseCSVLine(lines[0]);
     const events: ParsedEvent[] = [];
     const errors: string[] = [];
 
