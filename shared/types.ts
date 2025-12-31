@@ -104,7 +104,9 @@ export interface EventFilters {
   youngChildren?: boolean;
   kids?: boolean;
   teens?: boolean;
+  adults?: boolean;
   adultsOnly?: boolean;
+  excludeAdultsOnly?: boolean; // When adults is true, exclude adultsOnly events
   seniors?: boolean;
   
   // Attributes

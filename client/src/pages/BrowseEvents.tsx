@@ -594,6 +594,18 @@ export default function BrowseEvents() {
                         Adults
                       </Label>
                     </div>
+                    {filters.adults && (
+                      <div className="flex items-center gap-2 pl-6">
+                        <Checkbox
+                          id="excludeAdultsOnly"
+                          checked={filters.excludeAdultsOnly || false}
+                          onCheckedChange={() => toggleFilter("excludeAdultsOnly")}
+                        />
+                        <Label htmlFor="excludeAdultsOnly" className="cursor-pointer text-sm text-muted-foreground">
+                          Exclude adults-only events
+                        </Label>
+                      </div>
+                    )}
                     <div className="flex items-center gap-2">
                       <Checkbox
                         id="adultsOnly"

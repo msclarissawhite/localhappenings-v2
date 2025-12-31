@@ -87,7 +87,16 @@ export async function getEvents(filters: EventFilters = {}) {
   if (filters.teens) {
     conditions.push(eq(events.teens, 1));
   }
-  if (filters.adultsOnly) {
+  if (filters.adults) {
+    // When adults filter is active, include both adults and adultsOnly events
+    // unless excludeAdultsOnly is true
+    if (filters.excludeAdultsOnly) {
+      conditions.push(eq(events.adults, 1));
+    } else {
+      conditions.push(or(eq(events.adults, 1), eq(events.adultsOnly, 1)));
+    }
+  } else if (filters.adultsOnly) {
+    // If only adultsOnly is checked (without adults), just filter for adultsOnly
     conditions.push(eq(events.adultsOnly, 1));
   }
   if (filters.seniors) {
@@ -717,6 +726,7 @@ export async function getNearbyEvents(
       youngChildren: events.youngChildren,
       kids: events.kids,
       teens: events.teens,
+      adults: events.adults,
       adultsOnly: events.adultsOnly,
       seniors: events.seniors,
       isIndoor: events.isIndoor,

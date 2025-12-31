@@ -1732,3 +1732,13 @@
 - [x] Change "Adults (18+)" to "Adults" in BrowseEvents filters (already just "Adults")
 - [x] Change "Adults (18+)" to "Adults" in EventDetail display (already just "Adults")
 - [x] Test all changes
+
+## Smart Adults Filter Enhancement (User Request)
+- [x] Update BrowseEvents filter logic to include both adults and adultsOnly when adults is checked
+- [x] Add "Exclude Adults Only" toggle checkbox in filter UI
+- [x] Update filter state management to handle excludeAdultsOnly flag
+- [x] Update backend query to respect excludeAdultsOnly flag
+- [x] Add adults and excludeAdultsOnly to EventFilters type
+- [x] Add adults field to getEvents select statement
+- [x] Test filter combinations (adults only, adults + adults only, adults excluding adults only)
+- [x] Verify filter behavior with other age group combinations
