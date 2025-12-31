@@ -233,6 +233,34 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleExportSelected = async () => {
+    if (selectedEvents.size === 0) {
+      toast.error("Please select at least one event to export");
+      return;
+    }
+
+    try {
+      const result = await utils.client.events.exportByIds.query({
+        eventIds: Array.from(selectedEvents),
+      });
+      
+      // Create blob and download
+      const blob = new Blob([result.csv], { type: "text/csv" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `local-happenings-selected-events-${new Date().toISOString().split("T")[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      
+      toast.success(`Exported ${result.count} selected event${result.count !== 1 ? 's' : ''} to CSV`);
+    } catch (error) {
+      toast.error("Failed to export selected events");
+    }
+  };
+
   const toggleEventSelection = (eventId: number) => {
     const newSelection = new Set(selectedEvents);
     if (newSelection.has(eventId)) {
@@ -437,6 +465,15 @@ export default function AdminDashboard() {
                     <TrendingUp className="w-4 h-4 mr-2" />
                     Download All Events
                   </Button>
+                  {selectedEvents.size > 0 && (
+                    <Button
+                      variant="outline"
+                      onClick={handleExportSelected}
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Download Selected ({selectedEvents.size})
+                    </Button>
+                  )}
                   <Button
                     variant="outline"
                     onClick={() => window.location.href = '/admin/claim-assignment'}

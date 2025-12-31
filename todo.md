@@ -1910,3 +1910,17 @@
 - [x] Added status change capability to bulk edit
 - [x] Added organizer website field to bulk edit
 - [x] Updated backend batchUpdate mutation to support all new fields
+
+## Admin Dashboard Export & Bulk Edit Improvements
+
+- [ ] Add "Download Selected Events" button to export only selected events as CSV
+- [ ] Add "Download Filtered Events" button to export events matching current filters
+- [ ] Enable bulk edit selection on Pending Events tab
+- [ ] Enable bulk edit selection on all other admin tabs (not just Pending Edits)
+- [ ] Update export functionality to work with event selection
+- [ ] Add filter state tracking for filtered exports
+
+- [x] Add "Download Selected Events" button to export only selected events as CSV
+- [x] Add exportByIds backend procedure for selective CSV export
+- [x] Verify bulk edit selection works on Pending Events tab (already implemented)
+- [x] Verify checkboxes and selection work correctly
