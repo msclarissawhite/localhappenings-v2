@@ -1988,3 +1988,9 @@
 - [x] Add "Bulk Republish" button to move multiple closed events back to published status
 - [x] Add confirmation dialog for bulk republish action
 - [x] Test bulk republish with multiple closed events
+
+## User Manual Update
+- [x] Review USER_MANUAL.md for missing features
+- [x] Add bulk republish documentation
+- [x] Add Published Events tab enhancements (search, bulk actions, filtered export)
+- [x] Verify all recent features are documented

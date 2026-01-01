@@ -1,7 +1,7 @@
 # Local Happenings - User Manual & Testing Guide
 
-**Version:** 3.7  
-**Last Updated:** December 21, 2025  
+**Version:** 3.8  
+**Last Updated:** December 31, 2025  
 **Author:** Manus AI
 
 ---
@@ -280,7 +280,11 @@ A **Back to Events** button at the top of the page allows easy navigation back t
 
 ### Admin Dashboard
 
-The admin dashboard is accessible only to users with the admin role. It displays all events with a status of "pending" in reverse chronological order (newest first).
+The admin dashboard is accessible only to users with the admin role. It includes multiple tabs for managing different event states: **Pending Events**, **Published Events**, **Closed Events**, **Manage Organizers**, **Feature Requests**, **Donations**, and **Featured Events**.
+
+#### Pending Events Tab
+
+The Pending Events tab displays all events with a status of "pending" in reverse chronological order (newest first).
 
 **Bulk Actions Toolbar**: At the top of the Events tab, a toolbar provides quick access to bulk operations. The **Bulk Upload CSV** button allows admins to import multiple events at once (see CSV Import section below). The **Download All Events** button exports all pending events to a CSV file for offline review or backup purposes. When events are selected via checkboxes, a **Batch Edit (N)** button appears, allowing admins to update common fields across multiple events simultaneously.
 
@@ -307,6 +311,40 @@ When there are no pending events, the dashboard displays a friendly message: "Al
 **Download All Events** exports all events in the database to a CSV file for backup or analysis purposes. Click the "Download All Events" button in the admin dashboard to download a CSV file containing all event data including accessibility information, organizer details, and status. This file uses the same format as the bulk upload template.
 
 **Bulk Delete** allows admins to delete multiple events simultaneously. Select events using the checkboxes next to each event card, click the "Delete Selected" button, and confirm the deletion in the dialog that appears. This feature is useful for removing outdated events, clearing test data, or managing seasonal cleanup.
+
+#### Published Events Tab
+
+The Published Events tab displays all events with "published" status that are currently visible to the public. This tab includes powerful filtering, sorting, and bulk management tools.
+
+**Search and Filters**: A search bar at the top allows filtering events by name, organizer, or location. Additional filters include event type (dropdown showing all available event types) and date range (all events, next 7 days, next 30 days, next 90 days). These filters work together to help admins quickly find specific events.
+
+**Sorting Options**: Events can be sorted by date (ascending or descending), location (alphabetically by municipality), or organizer name (alphabetically). The sort order persists as you filter and search.
+
+**Bulk Actions**: Select multiple events using checkboxes to perform bulk operations:
+- **Bulk Close**: Moves selected events to "closed" status, removing them from public view while keeping them in the database. Useful for events that have ended or been cancelled.
+- **Bulk Unpublish**: Moves selected events back to "pending" status for re-review. Useful if events need updates or re-approval.
+- **Download Filtered CSV**: Exports only the currently filtered and sorted events to CSV format, respecting all active filters and search queries. This allows targeted data exports for specific event types, date ranges, or locations.
+
+All bulk actions include confirmation dialogs showing the number of events affected. After bulk operations, success notifications appear and the event list refreshes automatically.
+
+**Individual Event Actions**: Each event card displays the event name, date, location, organizer, and status. Action buttons include:
+- **View Details**: Opens the event detail page in a new tab
+- **Edit**: Opens the admin edit dialog to modify event details
+- **Close Event**: Moves the event to "closed" status
+- **Unpublish**: Moves the event back to "pending" status
+
+#### Closed Events Tab
+
+The Closed Events tab displays all events that have been closed by admins or organizers. Closed events are not visible to the public but remain in the database for record-keeping.
+
+**Event Information**: Each closed event card shows the event name, date, location, organizer name, and the date it was closed.
+
+**Individual Actions**: Each event has action buttons:
+- **View Details**: Opens the event detail page in a new tab (admins can still view closed events)
+- **View Feedback**: Opens the feedback page for that event
+- **Reopen Event**: Moves the event back to "published" status, making it visible to the public again
+
+**Bulk Republish**: Select multiple closed events using checkboxes, then click the **Bulk Republish** button to move them all back to "published" status in one action. This is particularly useful for recurring events that need to be reopened, such as weekly activities or seasonal events. A confirmation dialog shows the number of events that will be republished. After bulk republishing, success notifications appear and both the closed and published event lists refresh automatically.
 
 ### Analytics Dashboard
 
