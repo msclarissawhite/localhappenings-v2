@@ -1,6 +1,6 @@
 # Reference IDs for CSV Import
 
-**Version 1.0** | **Last Updated:** January 1, 2026
+**Version 1.1** | **Last Updated:** January 1, 2026
 
 This document provides quick reference tables for IDs used in CSV bulk imports. Use these IDs when populating the `eventTypeIds` and `seriesId` fields in your CSV files.
 
@@ -37,16 +37,27 @@ Event types are organized into seven categories. You can assign multiple event t
 | 30011 | Opera |
 | 30010 | Theatre & Performances |
 
-### Community & Social (7 types)
+### Community & Social (18 types)
 
 | ID | Name |
 |-----|------|
+| 120003 | Board Game Nights |
+| 120004 | Book Clubs |
+| 120005 | Coffee Meetups |
 | 30016 | Community Meetings |
+| 120011 | Craft Circles |
 | 30017 | Fundraisers & Charity Events |
+| 120008 | Karaoke |
 | 30018 | Language Meetups |
+| 120006 | Networking Events |
+| 120009 | Open Mic Nights |
+| 120010 | Potlucks |
 | 30020 | Pride Events |
+| 120002 | Pub Trivia |
 | 30019 | Religious / Faith-Based Events |
 | 90004 | Socials & Clubs |
+| 120007 | Speed Dating |
+| 120001 | Trivia |
 | 30021 | Workshops & Classes |
 
 ### Recreation & Sports (3 types)

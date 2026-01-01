@@ -2083,3 +2083,8 @@
 - [ ] Debug 500 error when querying published events
 - [ ] Fix database query issue causing events list to fail
 - [ ] Verify published events load correctly in admin dashboard
+
+
+## Documentation Update - Community & Social Event Types (Jan 2026)
+- [x] Query database for all community-social category event types
+- [x] Update REFERENCE_IDS.md with complete list of community-social event type IDs
