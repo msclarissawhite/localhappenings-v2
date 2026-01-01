@@ -2166,5 +2166,6 @@
 - [x] Add quick actions (bulk verification, admin notes, flag for review)
 - [x] Create email template library UI (save, edit, delete, copy to clipboard)
 - [x] Add organizer analytics section (top organizers, new this month, by type, by province)
-- [x] Write vitest tests for organizer management procedures (8/11 passing - 3 failures due to pending schema migration)
+- [x] Write vitest tests for organizer management procedures (11/11 passing ✅)
+- [x] Fix missing database columns (organizerType, website)
 - [ ] Test all features end-to-end in browser
