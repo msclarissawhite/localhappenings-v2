@@ -1939,3 +1939,25 @@
 - [x] Enable "Batch Edit" button when events are selected
 - [x] Enable "Download Selected" button when events are selected
 - [x] Ensure selection state is independent from other tabs
+
+## Published Events Tab Enhancements
+- [ ] Fix Batch Edit button not appearing when events are selected
+- [ ] Add sorting options (by date, location, organizer)
+- [ ] Add filtering by event type
+- [ ] Add filtering by date range
+- [ ] Add "Select All" button
+- [ ] Add "Deselect All" button
+- [ ] Add status change functionality (close/unpublish events)
+
+## Published Events Tab Enhancements - COMPLETED
+- [x] Verify Batch Edit button appears when events are selected
+- [x] Add sorting options (Date Asc/Desc, Location, Organizer)
+- [x] Add event type filtering dropdown
+- [x] Add date range filtering dropdown (All, Upcoming, Past, This Week, This Month, Next Month)
+- [x] Add "Select All" button for bulk selection
+- [x] Add "Deselect All" button to clear selections
+- [x] Add "Close Event" button to each published event card
+- [x] Add "Unpublish" button to each published event card
+- [x] Implement confirmation dialogs for status changes
+- [x] Update refetch logic to refresh all affected event lists
+- [x] Test all filtering, sorting, and selection features

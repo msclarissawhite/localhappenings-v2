@@ -6,6 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -76,6 +83,11 @@ export default function AdminDashboard() {
 
   const [expandedOrganizer, setExpandedOrganizer] = useState<string | null>(null);
   const [dateFilter, setDateFilter] = useState<"all" | "30days" | "6months" | "1year">("all");
+  
+  // Published Events filtering and sorting
+  const [publishedSortBy, setPublishedSortBy] = useState<"date-asc" | "date-desc" | "location" | "organizer">("date-desc");
+  const [publishedEventTypeFilter, setPublishedEventTypeFilter] = useState<string>("all");
+  const [publishedDateFilter, setPublishedDateFilter] = useState<string>("all");
   
   // Calculate date range based on filter
   const getDateRange = () => {
@@ -190,6 +202,8 @@ export default function AdminDashboard() {
       setSelectedEvent(null);
       setReviewNotes("");
       refetch();
+      refetchPublishedEvents();
+      refetchClosedEvents();
     },
     onError: (error) => {
       toast.error(error.message || "Failed to update event status");
@@ -1212,7 +1226,7 @@ export default function AdminDashboard() {
         {activeTab === "published-events" && (
           <>
             {/* Import/Export Toolbar */}
-            <div className="flex items-center gap-4 mb-4 p-4 bg-muted/30 rounded-lg">
+            <div className="flex items-center gap-4 mb-4 p-4 bg-muted/30 rounded-lg flex-wrap">
               <Button
                 variant="outline"
                 onClick={() => setShowBulkUpload(true)}
@@ -1244,6 +1258,79 @@ export default function AdminDashboard() {
                   Batch Edit ({selectedEvents.size})
                 </Button>
               )}
+              <div className="ml-auto flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    if (publishedEvents && 'events' in publishedEvents) {
+                      setSelectedEvents(new Set(publishedEvents.events.map(e => e.id)));
+                    }
+                  }}
+                >
+                  Select All
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setSelectedEvents(new Set())}
+                  disabled={selectedEvents.size === 0}
+                >
+                  Deselect All
+                </Button>
+              </div>
+            </div>
+
+            {/* Sorting and Filtering Controls */}
+            <div className="flex items-center gap-4 mb-4 p-4 bg-muted/20 rounded-lg flex-wrap">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium">Sort by:</span>
+                <Select value={publishedSortBy} onValueChange={(value: any) => setPublishedSortBy(value)}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="date-asc">Date (Oldest First)</SelectItem>
+                    <SelectItem value="date-desc">Date (Newest First)</SelectItem>
+                    <SelectItem value="location">Location (A-Z)</SelectItem>
+                    <SelectItem value="organizer">Organizer (A-Z)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium">Event Type:</span>
+                <Select value={publishedEventTypeFilter} onValueChange={setPublishedEventTypeFilter}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Types</SelectItem>
+                    <SelectItem value="arts">Arts & Culture</SelectItem>
+                    <SelectItem value="sports">Sports & Recreation</SelectItem>
+                    <SelectItem value="education">Education & Learning</SelectItem>
+                    <SelectItem value="community">Community & Social</SelectItem>
+                    <SelectItem value="health">Health & Wellness</SelectItem>
+                    <SelectItem value="business">Business & Professional</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium">Date Range:</span>
+                <Select value={publishedDateFilter} onValueChange={setPublishedDateFilter}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Dates</SelectItem>
+                    <SelectItem value="upcoming">Upcoming Only</SelectItem>
+                    <SelectItem value="past">Past Events</SelectItem>
+                    <SelectItem value="this-week">This Week</SelectItem>
+                    <SelectItem value="this-month">This Month</SelectItem>
+                    <SelectItem value="next-month">Next Month</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             {publishedEventsLoading ? (
@@ -1252,7 +1339,68 @@ export default function AdminDashboard() {
               </div>
             ) : publishedEvents && 'events' in publishedEvents && publishedEvents.events.length > 0 ? (
               <div className="space-y-4">
-                {publishedEvents.events.map((event) => (
+                {(() => {
+                  let filteredEvents = [...publishedEvents.events];
+                  
+                  // Apply event type filter
+                  if (publishedEventTypeFilter !== "all") {
+                    filteredEvents = filteredEvents.filter(event => 
+                      event.eventType?.toLowerCase() === publishedEventTypeFilter.toLowerCase()
+                    );
+                  }
+                  
+                  // Apply date range filter
+                  const now = new Date();
+                  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                  
+                  if (publishedDateFilter === "upcoming") {
+                    filteredEvents = filteredEvents.filter(event => new Date(event.startDate) >= today);
+                  } else if (publishedDateFilter === "past") {
+                    filteredEvents = filteredEvents.filter(event => new Date(event.startDate) < today);
+                  } else if (publishedDateFilter === "this-week") {
+                    const weekEnd = new Date(today);
+                    weekEnd.setDate(weekEnd.getDate() + 7);
+                    filteredEvents = filteredEvents.filter(event => {
+                      const eventDate = new Date(event.startDate);
+                      return eventDate >= today && eventDate < weekEnd;
+                    });
+                  } else if (publishedDateFilter === "this-month") {
+                    const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+                    filteredEvents = filteredEvents.filter(event => {
+                      const eventDate = new Date(event.startDate);
+                      return eventDate >= today && eventDate <= monthEnd;
+                    });
+                  } else if (publishedDateFilter === "next-month") {
+                    const nextMonthStart = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+                    const nextMonthEnd = new Date(now.getFullYear(), now.getMonth() + 2, 0);
+                    filteredEvents = filteredEvents.filter(event => {
+                      const eventDate = new Date(event.startDate);
+                      return eventDate >= nextMonthStart && eventDate <= nextMonthEnd;
+                    });
+                  }
+                  
+                  // Apply sorting
+                  if (publishedSortBy === "date-asc") {
+                    filteredEvents.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+                  } else if (publishedSortBy === "date-desc") {
+                    filteredEvents.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
+                  } else if (publishedSortBy === "location") {
+                    filteredEvents.sort((a, b) => (a.municipality || "").localeCompare(b.municipality || ""));
+                  } else if (publishedSortBy === "organizer") {
+                    filteredEvents.sort((a, b) => (a.organizerName || "").localeCompare(b.organizerName || ""));
+                  }
+                  
+                  if (filteredEvents.length === 0) {
+                    return (
+                      <Card className="p-12 text-center">
+                        <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                        <h3 className="text-lg font-semibold mb-2">No events match your filters</h3>
+                        <p className="text-muted-foreground">Try adjusting your filter criteria.</p>
+                      </Card>
+                    );
+                  }
+                  
+                  return filteredEvents.map((event) => (
                   <Card key={event.id} className="p-6">
                     <div className="flex items-start gap-4">
                       <Checkbox
@@ -1304,10 +1452,41 @@ export default function AdminDashboard() {
                         >
                           Edit Event
                         </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => {
+                            if (confirm("Are you sure you want to close this event?")) {
+                              updateStatusMutation.mutate({
+                                eventId: event.id,
+                                status: "closed",
+                                reviewNotes: "Closed from Published Events tab"
+                              });
+                            }
+                          }}
+                        >
+                          Close Event
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => {
+                            if (confirm("Are you sure you want to unpublish this event? This will move it back to pending.")) {
+                              updateStatusMutation.mutate({
+                                eventId: event.id,
+                                status: "pending",
+                                reviewNotes: "Unpublished from Published Events tab"
+                              });
+                            }
+                          }}
+                        >
+                          Unpublish
+                        </Button>
                       </div>
                     </div>
                   </Card>
-                ))}
+                  ));
+                })()}
               </div>
             ) : (
               <Card className="p-12 text-center">
