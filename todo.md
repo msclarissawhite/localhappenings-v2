@@ -2114,29 +2114,33 @@
 - [x] Add "Event Type Migration" tab to admin dashboard
 - [x] Implement bulk reassignment mutation
 - [x] Test migration tool with existing events (5 of 7 tests passing)
-- [ ] Create checkpoint for user testing
+- [x] Create checkpoint for user testing
 
-### Phase 2: EventTypeSelector Component
-- [ ] Define subcategory mappings (shared/event-type-subcategories.ts)
-- [ ] Add backend query for grouped event types
-- [ ] Create EventTypeSelector component with collapsible UI
-- [ ] Add search/filter functionality
-- [ ] Implement multi-select with chips
-- [ ] Integrate into SubmitEvent form
-- [ ] Integrate into EditEvent form
-- [ ] Integrate into AdminEditEvent form
-- [ ] Integrate into BatchEditModal
-- [ ] Update BrowseEvents filters with new structure
+#### Phase 2: EventTypeSelector Component
+- [x] Define subcategory mappings (shared/event-type-subcategories.ts)
+- [x] Add backend query for grouped event types
+- [x] Create EventTypeSelector component with collapsible categories
+- [x] Add search functionality
+- [x] Integrate into SubmitEvent form
+- [x] Integrate into EditEvent form
+- [x] Integrate into AdminEditEvent form
+- [x] Integrate into BrowseEvents filters
+- [x] Test component across all pages Update BrowseEvents filters with new structure
 
 ### Phase 3: Popular Types Feature
-- [ ] Create eventTypeUsage tracking table
-- [ ] Add backend mutation to track type usage
-- [ ] Create query to get popular types by category
-- [ ] Update EventTypeSelector to show popular types
-- [ ] Add analytics to admin dashboard
-- [ ] Test popular types display
+- [x] Create query to get popular types by category (uses existing eventToEventTypes junction table)
+- [x] Add tRPC router for popular types
+- [x] Update EventTypeSelector to show popular types at top of each category
+- [x] Add "Popular" badge to popular types
+- [x] Test popular types display
 
 ### Documentation
 - [ ] Update REFERENCE_IDS.md with all new types
 - [ ] Update CSV_IMPORT_GUIDE.md with new types
 - [ ] Update USER_MANUAL.md with new features
+
+### Phase 1.5: Add Confirmation Modal to Migration Tool
+- [x] Create confirmation dialog component showing migration summary
+- [x] Display: deprecated type being removed, new types being added, number of events affected
+- [x] Add "Confirm" and "Cancel" buttons
+- [x] Update EventTypeMigration component to use confirmation modal

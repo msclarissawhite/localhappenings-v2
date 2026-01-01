@@ -376,8 +376,7 @@ export default function AdminEditEvent() {
         <Card className="p-6">
           <h2 className="text-xl font-semibold mb-4">Event Types</h2>
           <EventTypeSelector
-            eventTypes={eventTypes}
-            selectedIds={formData.eventTypeIds}
+            selectedTypeIds={formData.eventTypeIds}
             onChange={(ids) => setFormData({ ...formData, eventTypeIds: ids })}
           />
         </Card>

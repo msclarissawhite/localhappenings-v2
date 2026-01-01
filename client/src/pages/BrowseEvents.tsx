@@ -551,8 +551,7 @@ export default function BrowseEvents() {
                 <div>
                   <h3 className="font-semibold mb-3">Event Types</h3>
                   <EventTypeSelector
-                    eventTypes={eventTypes}
-                    selectedIds={filters.eventTypeIds || []}
+                    selectedTypeIds={filters.eventTypeIds || []}
                     onChange={(ids) => updateFilter('eventTypeIds', ids.length > 0 ? ids : undefined)}
                   />
                 </div>

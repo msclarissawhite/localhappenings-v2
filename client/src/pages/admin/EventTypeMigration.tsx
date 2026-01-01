@@ -11,6 +11,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Loader2, AlertTriangle, CheckCircle2, Info } from "lucide-react";
 import { toast } from "sonner";
 
@@ -18,6 +26,15 @@ export function EventTypeMigration() {
   const [selectedEvents, setSelectedEvents] = useState<Record<number, number[]>>({});
   const [selectedReplacements, setSelectedReplacements] = useState<Record<number, number[]>>({});
   const [migrating, setMigrating] = useState<number | null>(null);
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [pendingMigration, setPendingMigration] = useState<{
+    deprecatedTypeId: number;
+    deprecatedTypeName: string;
+    eventIds: number[];
+    eventNames: string[];
+    newTypeIds: number[];
+    newTypeNames: string[];
+  } | null>(null);
 
   // Fetch data
   const { data: suggestions, isLoading: loadingSuggestions } = trpc.eventTypeMigration.getMigrationSuggestions.useQuery();
@@ -98,12 +115,48 @@ export function EventTypeMigration() {
       return;
     }
 
-    setMigrating(deprecatedTypeId);
-    migrateMutation.mutate({
-      eventIds,
+    // Find the deprecated type info
+    const deprecatedGroup = eventsByType?.find(g => g.deprecatedType.id === deprecatedTypeId);
+    if (!deprecatedGroup) return;
+
+    // Get event names for selected events
+    const selectedEventDetails = deprecatedGroup.events.filter(e => eventIds.includes(e.id));
+    const eventNames = selectedEventDetails.map(e => e.name);
+
+    // Get new type names
+    const suggestion = suggestions?.find(s => s.deprecatedType.id === deprecatedTypeId);
+    const newTypeNames = suggestion?.suggestedReplacements
+      .filter(r => newTypeIds.includes(r.id))
+      .map(r => r.name) || [];
+
+    // Set pending migration and show confirmation dialog
+    setPendingMigration({
       deprecatedTypeId,
+      deprecatedTypeName: deprecatedGroup.deprecatedType.name,
+      eventIds,
+      eventNames,
       newTypeIds,
+      newTypeNames,
     });
+    setConfirmDialogOpen(true);
+  };
+
+  const handleConfirmMigration = () => {
+    if (!pendingMigration) return;
+
+    setMigrating(pendingMigration.deprecatedTypeId);
+    migrateMutation.mutate({
+      eventIds: pendingMigration.eventIds,
+      deprecatedTypeId: pendingMigration.deprecatedTypeId,
+      newTypeIds: pendingMigration.newTypeIds,
+    });
+    setConfirmDialogOpen(false);
+    setPendingMigration(null);
+  };
+
+  const handleCancelMigration = () => {
+    setConfirmDialogOpen(false);
+    setPendingMigration(null);
   };
 
   if (loadingSuggestions || loadingEvents || loadingCounts) {
@@ -145,6 +198,7 @@ export function EventTypeMigration() {
   }
 
   return (
+    <>
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold tracking-tight">Event Type Migration</h2>
@@ -276,5 +330,97 @@ export function EventTypeMigration() {
         );
       })}
     </div>
+
+    {/* Confirmation Dialog */}
+    <Dialog open={confirmDialogOpen} onOpenChange={setConfirmDialogOpen}>
+      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Confirm Event Type Migration</DialogTitle>
+          <DialogDescription>
+            Please review the changes before confirming. This action will update the selected events.
+          </DialogDescription>
+        </DialogHeader>
+
+        {pendingMigration && (
+          <div className="space-y-6 py-4">
+            {/* Summary Stats */}
+            <div className="grid grid-cols-3 gap-4">
+              <div className="text-center p-4 bg-muted rounded-lg">
+                <div className="text-2xl font-bold">{pendingMigration.eventIds.length}</div>
+                <div className="text-sm text-muted-foreground">Events Affected</div>
+              </div>
+              <div className="text-center p-4 bg-muted rounded-lg">
+                <div className="text-2xl font-bold">1</div>
+                <div className="text-sm text-muted-foreground">Type Removed</div>
+              </div>
+              <div className="text-center p-4 bg-muted rounded-lg">
+                <div className="text-2xl font-bold">{pendingMigration.newTypeIds.length}</div>
+                <div className="text-sm text-muted-foreground">Types Added</div>
+              </div>
+            </div>
+
+            {/* Deprecated Type Being Removed */}
+            <div>
+              <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                <AlertTriangle className="h-4 w-4 text-orange-500" />
+                Type Being Removed
+              </h4>
+              <Badge variant="secondary" className="text-sm">
+                {pendingMigration.deprecatedTypeName}
+              </Badge>
+            </div>
+
+            {/* New Types Being Added */}
+            <div>
+              <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-green-500" />
+                New Types Being Added
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {pendingMigration.newTypeNames.map((name, idx) => (
+                  <Badge key={idx} variant="default" className="text-sm">
+                    {name}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+
+            {/* Affected Events */}
+            <div>
+              <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                <Info className="h-4 w-4 text-blue-500" />
+                Affected Events ({pendingMigration.eventNames.length})
+              </h4>
+              <div className="max-h-48 overflow-y-auto border rounded-md p-3 space-y-1">
+                {pendingMigration.eventNames.map((name, idx) => (
+                  <div key={idx} className="text-sm text-muted-foreground">
+                    • {name}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Warning */}
+            <Alert>
+              <AlertTriangle className="h-4 w-4" />
+              <AlertTitle>Important</AlertTitle>
+              <AlertDescription>
+                This action will permanently remove "{pendingMigration.deprecatedTypeName}" from all selected events and add the new types. This cannot be undone.
+              </AlertDescription>
+            </Alert>
+          </div>
+        )}
+
+        <DialogFooter>
+          <Button variant="outline" onClick={handleCancelMigration}>
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmMigration}>
+            Confirm Migration
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+    </>
   );
 }
