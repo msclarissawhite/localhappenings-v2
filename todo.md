@@ -2028,10 +2028,21 @@
 - [x] Build series creation UI in organizer dashboard
 - [x] Add series selection dropdown to event submission form
 - [ ] Add series selection to event edit forms (admin and organizer)
-- [ ] Create series detail page showing all events in the series
+- [x] Create series detail page showing all events in the series
 - [ ] Add series badge/link to event cards
 - [ ] Add series badge/link to event detail pages
 - [ ] Update CSV import to support series assignment
-- [ ] Write vitest tests for series functionality
+- [x] Write vitest tests for series functionality
 - [ ] Update USER_MANUAL.md with series feature
 - [ ] Update ORGANIZER_QUICKSTART_GUIDE.md with series instructions
+
+## Series Feature Enhancements
+- [x] Add series badge to event cards in browse page
+- [x] Add series badge to event detail page
+- [x] Add series selection to organizer edit form
+- [ ] Add series selection to admin edit form
+- [x] Create Browse Series page (/series)
+- [x] Add Browse Series link to navigation
+- [x] Update backend to return series info with events
+- [x] Test all series enhancements
+- [x] Save checkpoint with enhancements

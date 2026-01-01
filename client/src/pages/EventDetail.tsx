@@ -320,6 +320,16 @@ export default function EventDetail() {
             </div>
           </div>
           
+          {/* Series Badge */}
+          {(event as any).seriesName && (event as any).seriesSlug && (
+            <Link href={`/series/${(event as any).seriesSlug}`}>
+              <Badge variant="default" className="bg-purple-600 hover:bg-purple-700 text-base px-3 py-1 mb-4 inline-flex items-center gap-2 cursor-pointer">
+                <Calendar className="w-4 h-4" />
+                Part of Series: {(event as any).seriesName}
+              </Badge>
+            </Link>
+          )}
+
           {/* Event Type Tags */}
           {(event as any).eventTypes && (event as any).eventTypes.length > 0 && (
             <div className="mb-4">

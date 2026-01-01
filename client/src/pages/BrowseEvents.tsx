@@ -1043,6 +1043,16 @@ export default function BrowseEvents() {
                       )}
                     </div>
 
+                    {/* Series Badge */}
+                    {event.seriesName && event.seriesSlug && (
+                      <div className="mb-3">
+                        <Badge variant="default" className="bg-purple-600 hover:bg-purple-700">
+                          <Calendar className="w-3 h-3 mr-1" />
+                          Part of: {event.seriesName}
+                        </Badge>
+                      </div>
+                    )}
+
                     {/* Event Type Tags */}
                     {event.eventTypes && event.eventTypes.length > 0 && (
                       <div className="mb-3">

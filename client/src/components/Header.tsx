@@ -30,6 +30,9 @@ export default function Header() {
             <Link href="/browse" className="text-foreground hover:text-primary font-medium transition-colors flex items-center">
               Browse Events
             </Link>
+            <Link href="/series" className="text-foreground hover:text-primary font-medium transition-colors flex items-center">
+              Event Series
+            </Link>
             <Link href="/submit" className="text-foreground hover:text-primary font-medium transition-colors flex items-center">
               Submit Event
             </Link>
@@ -101,6 +104,9 @@ export default function Header() {
             <div className="flex flex-col gap-3">
               <Link href="/browse" className="text-foreground hover:text-primary font-medium transition-colors py-2" onClick={() => setMobileMenuOpen(false)}>
                 Browse Events
+              </Link>
+              <Link href="/series" className="text-foreground hover:text-primary font-medium transition-colors py-2" onClick={() => setMobileMenuOpen(false)}>
+                Event Series
               </Link>
               <Link href="/submit" className="text-foreground hover:text-primary font-medium transition-colors py-2" onClick={() => setMobileMenuOpen(false)}>
                 Submit Event

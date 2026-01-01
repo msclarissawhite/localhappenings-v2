@@ -33,6 +33,7 @@ export default function EditEvent() {
   );
   
   const { data: eventTypes = [] } = trpc.events.getEventTypes.useQuery();
+  const { data: seriesList } = trpc.series.list.useQuery();
 
   const updateMutation = trpc.organizer.updateEvent.useMutation({
     onSuccess: (result) => {
@@ -92,6 +93,7 @@ export default function EditEvent() {
         organizerPhone: event.organizerPhone || "",
         notes: event.notes || "",
         eventTypeIds: (event as any).eventTypes?.map((t: any) => t.id) || [],
+        seriesId: (event as any).seriesId || null,
       });
       
       if (event.province) {
@@ -224,6 +226,37 @@ export default function EditEvent() {
             onChange={(ids) => setFormData({ ...formData, eventTypeIds: ids })}
           />
         </Card>
+
+        {seriesList && seriesList.length > 0 && (
+          <Card className="p-6">
+            <h2 className="text-xl font-semibold mb-4">Event Series (Optional)</h2>
+            <p className="text-sm text-muted-foreground mb-4">
+              Link this event to a series to help users find all related events together.
+            </p>
+            <Select
+              value={formData.seriesId?.toString() || "none"}
+              onValueChange={(value) => {
+                if (value === "none") {
+                  setFormData({ ...formData, seriesId: null });
+                } else {
+                  setFormData({ ...formData, seriesId: parseInt(value) });
+                }
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="No series selected" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">No series (standalone event)</SelectItem>
+                {seriesList.map((series: any) => (
+                  <SelectItem key={series.id} value={series.id.toString()}>
+                    {series.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </Card>
+        )}
 
         <Card className="p-6">
           <h2 className="text-xl font-semibold mb-4">Location</h2>

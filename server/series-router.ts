@@ -238,4 +238,51 @@ export const seriesRouter = router({
       await seriesDb.linkEventToSeries(input.eventId, input.seriesId);
       return { success: true };
     }),
+
+  /**
+   * Get all series (public) with event counts
+   */
+  listAll: publicProcedure.query(async () => {
+    const db = await getDb();
+    if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+
+    const { eventSeries, events } = await import("../drizzle/schema");
+    const { eq } = await import("drizzle-orm");
+
+    const allSeries = await db
+      .select({
+        id: eventSeries.id,
+        name: eventSeries.name,
+        slug: eventSeries.slug,
+        description: eventSeries.description,
+        imageUrl: eventSeries.imageUrl,
+        isActive: eventSeries.isActive,
+        createdAt: eventSeries.createdAt,
+      })
+      .from(eventSeries)
+      .orderBy(eventSeries.isActive, eventSeries.createdAt);
+
+    // Get event counts for each series
+    const seriesWithCounts = await Promise.all(
+      allSeries.map(async (series) => {
+        const seriesEvents = await db
+          .select()
+          .from(events)
+          .where(eq(events.seriesId, series.id));
+
+        const now = new Date();
+        const upcomingCount = seriesEvents.filter(
+          (e) => new Date(e.startDate) >= now
+        ).length;
+
+        return {
+          ...series,
+          eventCount: seriesEvents.length,
+          upcomingCount,
+        };
+      })
+    );
+
+    return seriesWithCounts;
+  }),
 });

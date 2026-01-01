@@ -36,6 +36,7 @@ import DonorWall from "./pages/DonorWall";
 import DonateThankYou from "./pages/DonateThankYou";
 import CollectionPage from "./pages/CollectionPage";
 import SeriesDetail from "./pages/SeriesDetail";
+import BrowseSeries from "./pages/BrowseSeries";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -75,6 +76,7 @@ function Router() {
       <Route path="/donor-wall" component={DonorWall} />
       <Route path="/donate/thank-you" component={DonateThankYou} />
       <Route path="/collections/:slug" component={CollectionPage} />
+      <Route path="/series" component={BrowseSeries} />
       <Route path="/series/:slug" component={SeriesDetail} />
       <Route path={"/404"} component={NotFound} />          <Route component={NotFound} />
         </Switch>
