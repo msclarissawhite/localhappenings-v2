@@ -9,13 +9,15 @@ export async function notifySubmitterStatusChange(
   eventName: string,
   submitterEmail: string | null,
   submitterPhone: string | null,
-  status: "published" | "rejected" | "needs-clarification",
+  status: "published" | "rejected" | "needs-clarification" | "closed" | "pending",
   reviewNotes?: string
 ) {
   const statusMessages = {
     published: "✅ Event Approved",
     rejected: "❌ Event Rejected",
     "needs-clarification": "⚠️ Event Needs Clarification",
+    closed: "🔒 Event Closed",
+    pending: "⏳ Event Moved to Pending",
   };
 
   const statusTitle = statusMessages[status];

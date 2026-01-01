@@ -442,7 +442,7 @@ export const eventsRouter = router({
     .input(
       z.object({
         eventId: z.number(),
-        status: z.enum(["published", "rejected", "needs-clarification"]),
+        status: z.enum(["published", "rejected", "needs-clarification", "closed", "pending"]),
         reviewNotes: z.string().optional(),
       })
     )
@@ -486,7 +486,10 @@ export const eventsRouter = router({
         // Update ClickUp task status if task ID exists
         if (event.clickupTaskId) {
           try {
-            await updateEventStatusInClickUp(event.clickupTaskId, input.status);
+            // Only sync to ClickUp for review statuses, not for closed/pending
+            if (input.status !== "closed" && input.status !== "pending") {
+              await updateEventStatusInClickUp(event.clickupTaskId, input.status);
+            }
             
             // Add review notes as a comment if provided
             if (input.reviewNotes) {
@@ -494,6 +497,8 @@ export const eventsRouter = router({
                 published: "✅ Approved",
                 rejected: "❌ Rejected",
                 "needs-clarification": "⚠️ Needs Clarification",
+                closed: "🔒 Closed",
+                pending: "⏳ Moved to Pending",
               };
               
               const commentText = `**${statusLabels[input.status]}**\n\n${input.reviewNotes}`;

@@ -12,7 +12,7 @@ interface EmailNotificationParams {
   organizerName: string | null;
   eventName: string;
   eventId: number;
-  status: "published" | "rejected" | "needs-clarification";
+  status: "published" | "rejected" | "needs-clarification" | "closed" | "pending";
   reviewNotes?: string;
 }
 
@@ -31,6 +31,14 @@ export async function notifyOrganizerStatusChange(params: EmailNotificationParam
     "needs-clarification": {
       subject: "More Information Needed for Your Event",
       message: `We need a bit more information about your event "${eventName}" before we can approve it.`,
+    },
+    closed: {
+      subject: "Event Closed",
+      message: `Your event "${eventName}" has been closed.`,
+    },
+    pending: {
+      subject: "Event Status Update",
+      message: `Your event "${eventName}" has been moved back to pending status.`,
     },
   };
 

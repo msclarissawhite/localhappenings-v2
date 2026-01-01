@@ -457,7 +457,7 @@ export async function getPendingEvents() {
  */
 export async function updateEventStatus(
   eventId: number,
-  status: "published" | "rejected" | "needs-clarification",
+  status: "published" | "rejected" | "needs-clarification" | "closed" | "pending",
   reviewedBy: number,
   reviewNotes?: string
 ) {

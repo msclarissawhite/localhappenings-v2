@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -88,6 +89,7 @@ export default function AdminDashboard() {
   const [publishedSortBy, setPublishedSortBy] = useState<"date-asc" | "date-desc" | "location" | "organizer">("date-desc");
   const [publishedEventTypeFilter, setPublishedEventTypeFilter] = useState<string>("all");
   const [publishedDateFilter, setPublishedDateFilter] = useState<string>("all");
+  const [publishedSearchQuery, setPublishedSearchQuery] = useState<string>("");
   
   // Calculate date range based on filter
   const getDateRange = () => {
@@ -255,6 +257,102 @@ export default function AdminDashboard() {
       toast.success(`Exported ${result.count} events to CSV`);
     } catch (error) {
       toast.error("Failed to export events");
+    }
+  };
+
+  const handleExportFiltered = async () => {
+    try {
+      // Get the filtered events from the published events list
+      if (!publishedEvents || !('events' in publishedEvents)) {
+        toast.error("No events to export");
+        return;
+      }
+
+      let filteredEvents = [...publishedEvents.events];
+      
+      // Apply search filter
+      if (publishedSearchQuery.trim()) {
+        const query = publishedSearchQuery.toLowerCase();
+        filteredEvents = filteredEvents.filter(event =>
+          event.name?.toLowerCase().includes(query) ||
+          event.organizerName?.toLowerCase().includes(query) ||
+          event.municipality?.toLowerCase().includes(query) ||
+          event.province?.toLowerCase().includes(query)
+        );
+      }
+      
+      // Apply event type filter
+      if (publishedEventTypeFilter !== "all") {
+        filteredEvents = filteredEvents.filter(event => 
+          event.eventType?.toLowerCase() === publishedEventTypeFilter.toLowerCase()
+        );
+      }
+      
+      // Apply date range filter
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      
+      if (publishedDateFilter === "upcoming") {
+        filteredEvents = filteredEvents.filter(event => new Date(event.startDate) >= today);
+      } else if (publishedDateFilter === "past") {
+        filteredEvents = filteredEvents.filter(event => new Date(event.startDate) < today);
+      } else if (publishedDateFilter === "this-week") {
+        const weekEnd = new Date(today);
+        weekEnd.setDate(weekEnd.getDate() + 7);
+        filteredEvents = filteredEvents.filter(event => {
+          const eventDate = new Date(event.startDate);
+          return eventDate >= today && eventDate < weekEnd;
+        });
+      } else if (publishedDateFilter === "this-month") {
+        const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+        filteredEvents = filteredEvents.filter(event => {
+          const eventDate = new Date(event.startDate);
+          return eventDate >= today && eventDate <= monthEnd;
+        });
+      } else if (publishedDateFilter === "next-month") {
+        const nextMonthStart = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+        const nextMonthEnd = new Date(now.getFullYear(), now.getMonth() + 2, 0);
+        filteredEvents = filteredEvents.filter(event => {
+          const eventDate = new Date(event.startDate);
+          return eventDate >= nextMonthStart && eventDate <= nextMonthEnd;
+        });
+      }
+      
+      // Apply sorting
+      if (publishedSortBy === "date-asc") {
+        filteredEvents.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+      } else if (publishedSortBy === "date-desc") {
+        filteredEvents.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
+      } else if (publishedSortBy === "location") {
+        filteredEvents.sort((a, b) => (a.municipality || "").localeCompare(b.municipality || ""));
+      } else if (publishedSortBy === "organizer") {
+        filteredEvents.sort((a, b) => (a.organizerName || "").localeCompare(b.organizerName || ""));
+      }
+
+      if (filteredEvents.length === 0) {
+        toast.error("No events match your current filters");
+        return;
+      }
+
+      // Export the filtered event IDs
+      const result = await utils.client.events.exportByIds.query({
+        eventIds: filteredEvents.map(e => e.id),
+      });
+      
+      // Create blob and download
+      const blob = new Blob([result.csv], { type: "text/csv" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `local-happenings-filtered-events-${new Date().toISOString().split("T")[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      
+      toast.success(`Exported ${filteredEvents.length} filtered event(s) to CSV`);
+    } catch (error) {
+      toast.error("Failed to export filtered events");
     }
   };
 
@@ -1236,10 +1334,10 @@ export default function AdminDashboard() {
               </Button>
               <Button
                 variant="outline"
-                onClick={handleExportAll}
+                onClick={handleExportFiltered}
               >
                 <TrendingUp className="w-4 h-4 mr-2" />
-                Download All Events
+                Download Filtered Events
               </Button>
               {selectedEvents.size > 0 && (
                 <Button
@@ -1251,12 +1349,62 @@ export default function AdminDashboard() {
                 </Button>
               )}
               {selectedEvents.size > 0 && (
-                <Button
-                  variant="default"
-                  onClick={() => setShowBatchEdit(true)}
+                <>
+                  <Button
+                    variant="default"
+                    onClick={() => setShowBatchEdit(true)}
+                  >
+                    Batch Edit ({selectedEvents.size})
+                  </Button>
+                  <Button
+                  variant="outline"
+                  onClick={() => {
+                    if (confirm(`Are you sure you want to close ${selectedEvents.size} selected event(s)?`)) {
+                      const eventIds = Array.from(selectedEvents);
+                      Promise.all(
+                        eventIds.map(eventId =>
+                          updateStatusMutation.mutateAsync({
+                            eventId,
+                            status: "closed",
+                            reviewNotes: "Bulk closed from Published Events tab"
+                          })
+                        )
+                      ).then(() => {
+                        toast.success(`Successfully closed ${eventIds.length} event(s)`);
+                        setSelectedEvents(new Set());
+                      }).catch((error) => {
+                        toast.error("Failed to close some events");
+                      });
+                    }
+                  }}
                 >
-                  Batch Edit ({selectedEvents.size})
+                  Bulk Close ({selectedEvents.size})
                 </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    if (confirm(`Are you sure you want to unpublish ${selectedEvents.size} selected event(s)? They will move back to pending.`)) {
+                      const eventIds = Array.from(selectedEvents);
+                      Promise.all(
+                        eventIds.map(eventId =>
+                          updateStatusMutation.mutateAsync({
+                            eventId,
+                            status: "pending",
+                            reviewNotes: "Bulk unpublished from Published Events tab"
+                          })
+                        )
+                      ).then(() => {
+                        toast.success(`Successfully unpublished ${eventIds.length} event(s)`);
+                        setSelectedEvents(new Set());
+                      }).catch((error) => {
+                        toast.error("Failed to unpublish some events");
+                      });
+                    }
+                  }}
+                >
+                  Bulk Unpublish ({selectedEvents.size})
+                </Button>
+                </>
               )}
               <div className="ml-auto flex gap-2">
                 <Button
@@ -1279,6 +1427,17 @@ export default function AdminDashboard() {
                   Deselect All
                 </Button>
               </div>
+            </div>
+
+            {/* Search Bar */}
+            <div className="mb-4">
+              <Input
+                type="text"
+                placeholder="Search by event name, organizer, or location..."
+                value={publishedSearchQuery}
+                onChange={(e) => setPublishedSearchQuery(e.target.value)}
+                className="max-w-md"
+              />
             </div>
 
             {/* Sorting and Filtering Controls */}
@@ -1341,6 +1500,17 @@ export default function AdminDashboard() {
               <div className="space-y-4">
                 {(() => {
                   let filteredEvents = [...publishedEvents.events];
+                  
+                  // Apply search filter
+                  if (publishedSearchQuery.trim()) {
+                    const query = publishedSearchQuery.toLowerCase();
+                    filteredEvents = filteredEvents.filter(event =>
+                      event.name?.toLowerCase().includes(query) ||
+                      event.organizerName?.toLowerCase().includes(query) ||
+                      event.municipality?.toLowerCase().includes(query) ||
+                      event.province?.toLowerCase().includes(query)
+                    );
+                  }
                   
                   // Apply event type filter
                   if (publishedEventTypeFilter !== "all") {

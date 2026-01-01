@@ -1961,3 +1961,23 @@
 - [x] Implement confirmation dialogs for status changes
 - [x] Update refetch logic to refresh all affected event lists
 - [x] Test all filtering, sorting, and selection features
+
+## Published Events - Additional Features
+- [ ] Add search bar to filter events by name, organizer, or location
+- [ ] Implement search logic that works with existing filters
+- [ ] Add "Bulk Close" button to close multiple selected events at once
+- [ ] Add "Bulk Unpublish" button to unpublish multiple selected events at once
+- [ ] Add confirmation dialog for bulk status changes
+- [ ] Modify CSV download to respect current filters and sorting
+- [ ] Test search with various queries
+- [ ] Test bulk status changes with multiple events
+- [ ] Test filtered CSV export with different filter combinations
+
+## Published Events - Features Completed
+- [x] Add search bar to filter events by name, organizer, or location
+- [x] Implement search logic that works with existing filters
+- [x] Add "Bulk Close" button to close multiple selected events at once
+- [x] Add "Bulk Unpublish" button to unpublish multiple selected events at once
+- [x] Add confirmation dialog for bulk status changes
+- [x] Modify CSV download to respect current filters and sorting
+- [x] Update backend to support closed and pending statuses

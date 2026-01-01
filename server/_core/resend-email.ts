@@ -28,7 +28,7 @@ interface EventStatusEmailParams {
   name: string | null;
   eventName: string;
   eventId: number;
-  status: "published" | "rejected" | "needs-clarification";
+  status: "published" | "rejected" | "needs-clarification" | "closed" | "pending";
   reviewNotes?: string;
 }
 
@@ -136,6 +136,18 @@ export async function sendEventStatusEmail(params: EventStatusEmailParams): Prom
       heading: "Additional Information Required",
       message: `We need a bit more information about your event "<strong>${eventName}</strong>" before we can approve it.`,
       color: "#b45309",
+    },
+    closed: {
+      subject: "Event Closed",
+      heading: "Event Status Update",
+      message: `Your event "<strong>${eventName}</strong>" has been closed.`,
+      color: "#6b7280",
+    },
+    pending: {
+      subject: "Event Status Update",
+      heading: "Event Moved to Pending",
+      message: `Your event "<strong>${eventName}</strong>" has been moved back to pending status.`,
+      color: "#3b82f6",
     },
   };
 
