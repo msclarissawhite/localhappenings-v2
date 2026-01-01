@@ -2065,3 +2065,21 @@
 - [x] Update backend batchUpdate procedure to support event types
 - [x] Update backend batchUpdate procedure to support accessibility features
 - [x] Test batch editing event types and accessibility
+
+
+## Batch Edit Enhancements - Cost, Age Groups, and Images (Jan 2026)
+- [x] Add cost/pricing fields to batch edit modal UI
+- [x] Add age group checkboxes to batch edit modal UI
+- [x] Add image upload/selection to batch edit modal UI
+- [x] Update backend batchUpdate to support cost fields
+- [x] Update backend batchUpdate to support age group fields
+- [x] Update backend batchUpdate to support image updates
+- [x] Test bulk editing cost/pricing across multiple events
+- [x] Test bulk editing age groups across multiple events
+- [x] Test bulk image assignment across multiple events
+
+
+## Critical Bug Fix - Published Events Not Loading (Jan 2026)
+- [ ] Debug 500 error when querying published events
+- [ ] Fix database query issue causing events list to fail
+- [ ] Verify published events load correctly in admin dashboard

@@ -50,10 +50,16 @@ export function BatchEditModal({
     endTime?: boolean;
     eventTypes?: boolean;
     accessibility?: boolean;
+    cost?: boolean;
+    ageGroups?: boolean;
+    image?: boolean;
   }>({});
 
   const [selectedEventTypes, setSelectedEventTypes] = useState<number[]>([]);
   const [selectedAccessibility, setSelectedAccessibility] = useState<string[]>([]);
+  const [selectedAgeGroups, setSelectedAgeGroups] = useState<string[]>([]);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const { register, handleSubmit, watch, setValue } = useForm();
 
@@ -90,6 +96,19 @@ export function BatchEditModal({
     if (fieldsToUpdate.endTime) updates.endTime = data.endTime;
     if (fieldsToUpdate.eventTypes) updates.eventTypeIds = selectedEventTypes;
     if (fieldsToUpdate.accessibility) updates.accessibility = selectedAccessibility;
+    if (fieldsToUpdate.cost) {
+      updates.isFree = data.isFree === 'true';
+      updates.costType = data.costType;
+      updates.costMin = data.costMin ? parseFloat(data.costMin) : undefined;
+      updates.costMax = data.costMax ? parseFloat(data.costMax) : undefined;
+      updates.fixedPrice = data.fixedPrice ? parseFloat(data.fixedPrice) : undefined;
+      updates.kidsFree = data.kidsFree === 'true';
+    }
+    if (fieldsToUpdate.ageGroups) updates.ageGroups = selectedAgeGroups;
+    if (fieldsToUpdate.image && imagePreview) {
+      // Send base64 image data
+      updates.imageData = imagePreview;
+    }
 
     if (Object.keys(updates).length === 0) {
       toast.error("Please select at least one field to update");
@@ -509,6 +528,222 @@ export function BatchEditModal({
                       </label>
                     </div>
                   ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Cost & Pricing */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-sm">Cost & Pricing</h3>
+            <div className="flex items-start gap-3">
+              <Checkbox
+                id="cost"
+                checked={fieldsToUpdate.cost || false}
+                onCheckedChange={(checked) =>
+                  setFieldsToUpdate({ ...fieldsToUpdate, cost: checked as boolean })
+                }
+                className="mt-2"
+              />
+              <div className="flex-1 space-y-3">
+                <Label>Update Cost Information (replaces existing)</Label>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      id="isFreeYes"
+                      value="true"
+                      {...register("isFree")}
+                      disabled={!fieldsToUpdate.cost}
+                    />
+                    <label htmlFor="isFreeYes" className="text-sm">Free Event</label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      id="isFreeNo"
+                      value="false"
+                      {...register("isFree")}
+                      disabled={!fieldsToUpdate.cost}
+                    />
+                    <label htmlFor="isFreeNo" className="text-sm">Paid Event</label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="costTypeInput">Cost Type</Label>
+                  <Select
+                    disabled={!fieldsToUpdate.cost}
+                    onValueChange={(value) => setValue("costType", value)}
+                  >
+                    <SelectTrigger id="costTypeInput">
+                      <SelectValue placeholder="Select cost type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="fixed">Fixed Price</SelectItem>
+                      <SelectItem value="range">Price Range</SelectItem>
+                      <SelectItem value="donation">Donation-Based</SelectItem>
+                      <SelectItem value="pay-what-you-can">Pay What You Can</SelectItem>
+                      <SelectItem value="sliding-scale">Sliding Scale</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <Label htmlFor="fixedPriceInput">Fixed Price ($)</Label>
+                    <Input
+                      id="fixedPriceInput"
+                      type="number"
+                      step="0.01"
+                      {...register("fixedPrice")}
+                      disabled={!fieldsToUpdate.cost}
+                      placeholder="10.00"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="kidsFreeInput">Kids Free?</Label>
+                    <Select
+                      disabled={!fieldsToUpdate.cost}
+                      onValueChange={(value) => setValue("kidsFree", value)}
+                    >
+                      <SelectTrigger id="kidsFreeInput">
+                        <SelectValue placeholder="Select" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="true">Yes</SelectItem>
+                        <SelectItem value="false">No</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <Label htmlFor="costMinInput">Min Price ($)</Label>
+                    <Input
+                      id="costMinInput"
+                      type="number"
+                      step="0.01"
+                      {...register("costMin")}
+                      disabled={!fieldsToUpdate.cost}
+                      placeholder="5.00"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="costMaxInput">Max Price ($)</Label>
+                    <Input
+                      id="costMaxInput"
+                      type="number"
+                      step="0.01"
+                      {...register("costMax")}
+                      disabled={!fieldsToUpdate.cost}
+                      placeholder="20.00"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Age Groups */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-sm">Age Groups</h3>
+            <div className="flex items-start gap-3">
+              <Checkbox
+                id="ageGroups"
+                checked={fieldsToUpdate.ageGroups || false}
+                onCheckedChange={(checked) =>
+                  setFieldsToUpdate({ ...fieldsToUpdate, ageGroups: checked as boolean })
+                }
+                className="mt-2"
+              />
+              <div className="flex-1">
+                <Label>Select Age Groups (replaces existing)</Label>
+                <div className="mt-2 p-3 border rounded-md space-y-2">
+                  <p className="text-xs text-muted-foreground mb-2">
+                    Select the age groups to apply to all selected events. This will replace their current age group settings.
+                  </p>
+                  {[
+                    { id: 'allAges', label: 'All Ages' },
+                    { id: 'familyFriendly', label: 'Family-Friendly' },
+                    { id: 'youngChildren', label: 'Young Children (0-5)' },
+                    { id: 'kids', label: 'Kids (6-12)' },
+                    { id: 'teens', label: 'Teens (13-17)' },
+                    { id: 'adults', label: 'Adults' },
+                    { id: 'adultsOnly', label: 'Adults Only (19+)' },
+                    { id: 'seniors', label: 'Seniors (55+)' }
+                  ].map(ageGroup => (
+                    <div key={ageGroup.id} className="flex items-center gap-2">
+                      <Checkbox
+                        id={`ageGroup-${ageGroup.id}`}
+                        checked={selectedAgeGroups.includes(ageGroup.id)}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setSelectedAgeGroups([...selectedAgeGroups, ageGroup.id]);
+                          } else {
+                            setSelectedAgeGroups(selectedAgeGroups.filter(id => id !== ageGroup.id));
+                          }
+                        }}
+                        disabled={!fieldsToUpdate.ageGroups}
+                      />
+                      <label htmlFor={`ageGroup-${ageGroup.id}`} className="text-sm cursor-pointer">
+                        {ageGroup.label}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Event Image */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-sm">Event Image</h3>
+            <div className="flex items-start gap-3">
+              <Checkbox
+                id="image"
+                checked={fieldsToUpdate.image || false}
+                onCheckedChange={(checked) => {
+                  setFieldsToUpdate({ ...fieldsToUpdate, image: checked as boolean });
+                  if (!checked) {
+                    setImageFile(null);
+                    setImagePreview(null);
+                  }
+                }}
+                className="mt-2"
+              />
+              <div className="flex-1">
+                <Label>Upload Image (applies to all selected events)</Label>
+                <div className="mt-2 space-y-2">
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    disabled={!fieldsToUpdate.image}
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        setImageFile(file);
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                          setImagePreview(reader.result as string);
+                        };
+                        reader.readAsDataURL(file);
+                      }
+                    }}
+                  />
+                  {imagePreview && (
+                    <div className="mt-2">
+                      <img
+                        src={imagePreview}
+                        alt="Preview"
+                        className="w-full max-w-xs h-auto rounded-md border"
+                      />
+                    </div>
+                  )}
+                  <p className="text-xs text-muted-foreground">
+                    This image will be applied to all {selectedEventIds.length} selected events. Recommended size: 1200×630px.
+                  </p>
                 </div>
               </div>
             </div>
