@@ -1,0 +1,73 @@
+{
+  "query": "SELECT id, name, venue, DATE_FORMAT(startDate, '%Y-%m-%d %H:%i') as start_time, DATE_FORMAT(endDate, '%Y-%m-%d %H:%i') as end_time FROM events WHERE venue LIKE '%Spitfire%' OR organizerName LIKE '%Spitfire%' ORDER BY startDate;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT id, name, venue, DATE_FORMAT(startDate, '%Y-%m-%d %H:%i') as start_time, DATE_FORMAT(endDate, '%Y-%m-%d %H:%i') as end_time FROM events WHERE venue LIKE '%Spitfire%' OR organizerName LIKE '%Spitfire%' ORDER BY startDate;",
+  "rows": [
+    {
+      "id": "630001",
+      "name": "Live Music: Barkhouse Boys",
+      "venue": "Spitfire Arms Alehouse",
+      "start_time": "2026-01-02 19:30",
+      "end_time": "2026-01-02 22:30"
+    },
+    {
+      "id": "630002",
+      "name": "Live Music: Mark Hippen",
+      "venue": "Spitfire Arms Alehouse",
+      "start_time": "2026-01-03 19:30",
+      "end_time": "2026-01-03 22:30"
+    },
+    {
+      "id": "630003",
+      "name": "Live Music: Kevin Myers",
+      "venue": "Spitfire Arms Alehouse",
+      "start_time": "2026-01-09 19:30",
+      "end_time": "2026-01-09 22:30"
+    },
+    {
+      "id": "630004",
+      "name": "Trivia Night",
+      "venue": "Spitfire Arms Alehouse",
+      "start_time": "2026-01-13 19:30",
+      "end_time": "NULL"
+    },
+    {
+      "id": "630005",
+      "name": "Live Music: Geoff Kennedy",
+      "venue": "Spitfire Arms Alehouse",
+      "start_time": "2026-01-16 19:30",
+      "end_time": "2026-01-16 22:30"
+    },
+    {
+      "id": "630006",
+      "name": "Trivia Night",
+      "venue": "Spitfire Arms Alehouse",
+      "start_time": "2026-01-20 19:30",
+      "end_time": "2026-01-20 22:30"
+    },
+    {
+      "id": "630007",
+      "name": "Live Music: Tim Vallillee",
+      "venue": "Spitfire Arms Alehouse",
+      "start_time": "2026-01-23 19:30",
+      "end_time": "2026-01-23 22:30"
+    },
+    {
+      "id": "630008",
+      "name": "Live Music: Ken McPherson",
+      "venue": "Spitfire Arms Alehouse",
+      "start_time": "2026-01-24 19:30",
+      "end_time": "2026-01-24 22:30"
+    },
+    {
+      "id": "630009",
+      "name": "Live Music: Jon Cyr",
+      "venue": "Spitfire Arms Alehouse",
+      "start_time": "2026-01-30 19:30",
+      "end_time": "2026-01-30 22:30"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tvenue\tstart_time\tend_time\n630001\tLive Music: Barkhouse Boys\tSpitfire Arms Alehouse\t2026-01-02 19:30\t2026-01-02 22:30\n630002\tLive Music: Mark Hippen\tSpitfire Arms Alehouse\t2026-01-03 19:30\t2026-01-03 22:30\n630003\tLive Music: Kevin Myers\tSpitfire Arms Alehouse\t2026-01-09 19:30\t2026-01-09 22:30\n630004\tTrivia Night\tSpitfire Arms Alehouse\t2026-01-13 19:30\tNULL\n630005\tLive Music: Geoff Kennedy\tSpitfire Arms Alehouse\t2026-01-16 19:30\t2026-01-16 22:30\n630006\tTrivia Night\tSpitfire Arms Alehouse\t2026-01-20 19:30\t2026-01-20 22:30\n630007\tLive Music: Tim Vallillee\tSpitfire Arms Alehouse\t2026-01-23 19:30\t2026-01-23 22:30\n630008\tLive Music: Ken McPherson\tSpitfire Arms Alehouse\t2026-01-24 19:30\t2026-01-24 22:30\n630009\tLive Music: Jon Cyr\tSpitfire Arms Alehouse\t2026-01-30 19:30\t2026-01-30 22:30\n",
+  "stderr": "",
+  "execution_time_ms": 60
+}

@@ -1018,6 +1018,8 @@ export const eventsRouter = router({
           organizerPhone: z.string().optional(),
           organizerWebsite: z.string().url().optional(),
           status: z.enum(["pending", "published", "rejected", "needs-clarification", "closed"]).optional(),
+          startTime: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/).optional(), // HH:MM format
+          endTime: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/).optional(), // HH:MM format
         }),
       })
     )
@@ -1043,6 +1045,42 @@ export const eventsRouter = router({
             await db
               .update(events)
               .set({ name: newName })
+              .where(eq(events.id, event.id));
+            updatedCount++;
+          }
+        }
+      }
+
+      // Handle time updates separately (update time portion while preserving date)
+      if (input.updates.startTime || input.updates.endTime) {
+        const eventsToUpdate = await db
+          .select({ id: events.id, startDate: events.startDate, endDate: events.endDate })
+          .from(events)
+          .where(inArray(events.id, input.eventIds));
+
+        for (const event of eventsToUpdate) {
+          const timeUpdates: any = {};
+          
+          // Update start time if provided
+          if (input.updates.startTime) {
+            const [hours, minutes] = input.updates.startTime.split(':').map(Number);
+            const newStartDate = new Date(event.startDate);
+            newStartDate.setHours(hours, minutes, 0, 0);
+            timeUpdates.startDate = newStartDate;
+          }
+          
+          // Update end time if provided
+          if (input.updates.endTime && event.endDate) {
+            const [hours, minutes] = input.updates.endTime.split(':').map(Number);
+            const newEndDate = new Date(event.endDate);
+            newEndDate.setHours(hours, minutes, 0, 0);
+            timeUpdates.endDate = newEndDate;
+          }
+          
+          if (Object.keys(timeUpdates).length > 0) {
+            await db
+              .update(events)
+              .set(timeUpdates)
               .where(eq(events.id, event.id));
             updatedCount++;
           }

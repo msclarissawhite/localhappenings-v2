@@ -46,6 +46,8 @@ export function BatchEditModal({
     organizerPhone?: boolean;
     organizerWebsite?: boolean;
     status?: boolean;
+    startTime?: boolean;
+    endTime?: boolean;
   }>({});
 
   const { register, handleSubmit, watch, setValue } = useForm();
@@ -79,6 +81,8 @@ export function BatchEditModal({
     if (fieldsToUpdate.organizerPhone) updates.organizerPhone = data.organizerPhone;
     if (fieldsToUpdate.organizerWebsite) updates.organizerWebsite = data.organizerWebsite;
     if (fieldsToUpdate.status) updates.status = data.status;
+    if (fieldsToUpdate.startTime) updates.startTime = data.startTime;
+    if (fieldsToUpdate.endTime) updates.endTime = data.endTime;
 
     if (Object.keys(updates).length === 0) {
       toast.error("Please select at least one field to update");
@@ -193,6 +197,62 @@ export function BatchEditModal({
                   disabled={!fieldsToUpdate.neighborhoodCommunity}
                   placeholder="Enter neighborhood/community"
                 />
+              </div>
+            </div>
+          </div>
+
+          {/* Date & Time */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-sm">Date & Time</h3>
+            <p className="text-sm text-muted-foreground">
+              Update event times across all selected events. The date will remain the same, only the time portion will be updated.
+            </p>
+            
+            <div className="flex items-start gap-3">
+              <Checkbox
+                id="startTime"
+                checked={fieldsToUpdate.startTime || false}
+                onCheckedChange={(checked) =>
+                  setFieldsToUpdate({ ...fieldsToUpdate, startTime: checked as boolean })
+                }
+                className="mt-2"
+              />
+              <div className="flex-1">
+                <Label htmlFor="startTimeInput">Start Time</Label>
+                <Input
+                  id="startTimeInput"
+                  type="time"
+                  {...register("startTime")}
+                  disabled={!fieldsToUpdate.startTime}
+                  placeholder="HH:MM"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Example: 19:30 for 7:30 PM
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <Checkbox
+                id="endTime"
+                checked={fieldsToUpdate.endTime || false}
+                onCheckedChange={(checked) =>
+                  setFieldsToUpdate({ ...fieldsToUpdate, endTime: checked as boolean })
+                }
+                className="mt-2"
+              />
+              <div className="flex-1">
+                <Label htmlFor="endTimeInput">End Time</Label>
+                <Input
+                  id="endTimeInput"
+                  type="time"
+                  {...register("endTime")}
+                  disabled={!fieldsToUpdate.endTime}
+                  placeholder="HH:MM"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Example: 22:30 for 10:30 PM
+                </p>
               </div>
             </div>
           </div>

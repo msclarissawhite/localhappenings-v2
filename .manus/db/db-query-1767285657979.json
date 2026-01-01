@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE events SET startDate = DATE_ADD(DATE(startDate), INTERVAL 19 HOUR) + INTERVAL 30 MINUTE, endDate = DATE_ADD(DATE(endDate), INTERVAL 22 HOUR) + INTERVAL 30 MINUTE, updatedAt = NOW() WHERE venue LIKE '%Spitfire%' OR organizerName LIKE '%Spitfire%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute UPDATE events SET startDate = DATE_ADD(DATE(startDate), INTERVAL 19 HOUR) + INTERVAL 30 MINUTE, endDate = DATE_ADD(DATE(endDate), INTERVAL 22 HOUR) + INTERVAL 30 MINUTE, updatedAt = NOW() WHERE venue LIKE '%Spitfire%' OR organizerName LIKE '%Spitfire%';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 55
+}

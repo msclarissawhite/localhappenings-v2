@@ -2046,3 +2046,15 @@
 - [x] Update backend to return series info with events
 - [x] Test all series enhancements
 - [x] Save checkpoint with enhancements
+
+## CSV Import & Documentation Updates (Jan 2026)
+- [x] Update Spitfire Arms Alehouse events to 7:30pm - 10:30pm
+- [x] Add seriesId field documentation to CSV_IMPORT_GUIDE.md
+- [x] Update event_upload_template.csv with seriesId column
+- [x] Create REFERENCE_IDS.md with accessibility field IDs and event type IDs
+- [ ] Update USER_MANUAL.md with series CSV import instructions
+
+## Admin Dashboard Enhancements (Jan 2026)
+- [x] Add "Select Filtered" button to Published Events tab (keeps existing "Select All")
+- [x] Add time editing capability to batch edit (edit times across different dates)
+- [x] Add "Select Filtered" button to Claim Assignment page

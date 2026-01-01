@@ -1,0 +1,170 @@
+{
+  "query": "SELECT id, name, venue, organizerName, status, startDate FROM events ORDER BY id DESC LIMIT 20;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT id, name, venue, organizerName, status, startDate FROM events ORDER BY id DESC LIMIT 20;",
+  "rows": [
+    {
+      "id": "630009",
+      "name": "Live Music: Jon Cyr",
+      "venue": "Spitfire Arms Alehouse",
+      "organizerName": "Spitfire Arms Alehouse",
+      "status": "published",
+      "startDate": "2026-01-30 00:00:00"
+    },
+    {
+      "id": "630008",
+      "name": "Live Music: Ken McPherson",
+      "venue": "Spitfire Arms Alehouse",
+      "organizerName": "Spitfire Arms Alehouse",
+      "status": "published",
+      "startDate": "2026-01-24 00:00:00"
+    },
+    {
+      "id": "630007",
+      "name": "Live Music: Tim Vallillee",
+      "venue": "Spitfire Arms Alehouse",
+      "organizerName": "Spitfire Arms Alehouse",
+      "status": "published",
+      "startDate": "2026-01-23 00:00:00"
+    },
+    {
+      "id": "630006",
+      "name": "Trivia Night",
+      "venue": "Spitfire Arms Alehouse",
+      "organizerName": "Spitfire Arms Alehouse",
+      "status": "published",
+      "startDate": "2026-01-20 00:00:00"
+    },
+    {
+      "id": "630005",
+      "name": "Live Music: Geoff Kennedy",
+      "venue": "Spitfire Arms Alehouse",
+      "organizerName": "Spitfire Arms Alehouse",
+      "status": "published",
+      "startDate": "2026-01-16 00:00:00"
+    },
+    {
+      "id": "630004",
+      "name": "Trivia Night",
+      "venue": "Spitfire Arms Alehouse",
+      "organizerName": "Spitfire Arms Alehouse",
+      "status": "published",
+      "startDate": "2026-01-13 00:00:00"
+    },
+    {
+      "id": "630003",
+      "name": "Live Music: Kevin Myers",
+      "venue": "Spitfire Arms Alehouse",
+      "organizerName": "Spitfire Arms Alehouse",
+      "status": "published",
+      "startDate": "2026-01-09 00:00:00"
+    },
+    {
+      "id": "630002",
+      "name": "Live Music: Mark Hippen",
+      "venue": "Spitfire Arms Alehouse",
+      "organizerName": "Spitfire Arms Alehouse",
+      "status": "published",
+      "startDate": "2026-01-03 00:00:00"
+    },
+    {
+      "id": "630001",
+      "name": "Live Music: Barkhouse Boys",
+      "venue": "Spitfire Arms Alehouse",
+      "organizerName": "Spitfire Arms Alehouse",
+      "status": "published",
+      "startDate": "2026-01-02 00:00:00"
+    },
+    {
+      "id": "600015",
+      "name": "44386 Flora Wallet with Tandy Leather (Dartmouth)",
+      "venue": "Tandy Leather Halifax - 707",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published",
+      "startDate": "2026-01-28 00:00:00"
+    },
+    {
+      "id": "600014",
+      "name": "Plant Holder Kit with Tandy Leather (Dartmouth)",
+      "venue": "Tandy Leather Halifax - 707",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published",
+      "startDate": "2026-01-24 00:00:00"
+    },
+    {
+      "id": "600013",
+      "name": "702 - Dream Catcher (Canada) with Tandy Leather (Dartmouth)",
+      "venue": "Tandy Leather Halifax - 707",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published",
+      "startDate": "2026-01-23 00:00:00"
+    },
+    {
+      "id": "600012",
+      "name": "No-Sew Blood Knot Dog Leash with Tandy Leather (Dartmouth)",
+      "venue": "Tandy Leather Halifax - 707",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published",
+      "startDate": "2026-01-22 00:00:00"
+    },
+    {
+      "id": "600011",
+      "name": "Intro to Dyes and Finishes with Tandy Leather (Dartmouth)",
+      "venue": "Tandy Leather Halifax - 707",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published",
+      "startDate": "2026-01-21 00:00:00"
+    },
+    {
+      "id": "600010",
+      "name": "Fundamental Leather Crafting: Hand Skiving Leather with Tandy Leather (Dartmouth)",
+      "venue": "Tandy Leather Halifax - 707",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published",
+      "startDate": "2026-01-17 00:00:00"
+    },
+    {
+      "id": "600009",
+      "name": "Basic Sheridan Carving with Tandy Leather (Dartmouth)",
+      "venue": "Tandy Leather Halifax - 707",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published",
+      "startDate": "2026-01-16 00:00:00"
+    },
+    {
+      "id": "600008",
+      "name": "Introduction to Stitching Leather with Tandy Leather (Dartmouth)",
+      "venue": "Tandy Leather Halifax - 707",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published",
+      "startDate": "2026-01-15 00:00:00"
+    },
+    {
+      "id": "600007",
+      "name": "Antiquing 101 with Tandy Leather (Dartmouth)",
+      "venue": "Tandy Leather Halifax - 707",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published",
+      "startDate": "2026-01-14 00:00:00"
+    },
+    {
+      "id": "600006",
+      "name": "Basic Belt Class with Tandy Leather (Dartmouth)",
+      "venue": "Tandy Leather Halifax - 707",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published",
+      "startDate": "2026-01-10 00:00:00"
+    },
+    {
+      "id": "600005",
+      "name": "Tool Sharpening Demo with Tandy Leather (Dartmouth)",
+      "venue": "Tandy Leather Halifax - 707",
+      "organizerName": "Tandy Leather Halifax - 707",
+      "status": "published",
+      "startDate": "2026-01-09 00:00:00"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tvenue\torganizerName\tstatus\tstartDate\n630009\tLive Music: Jon Cyr\tSpitfire Arms Alehouse\tSpitfire Arms Alehouse\tpublished\t2026-01-30 00:00:00\n630008\tLive Music: Ken McPherson\tSpitfire Arms Alehouse\tSpitfire Arms Alehouse\tpublished\t2026-01-24 00:00:00\n630007\tLive Music: Tim Vallillee\tSpitfire Arms Alehouse\tSpitfire Arms Alehouse\tpublished\t2026-01-23 00:00:00\n630006\tTrivia Night\tSpitfire Arms Alehouse\tSpitfire Arms Alehouse\tpublished\t2026-01-20 00:00:00\n630005\tLive Music: Geoff Kennedy\tSpitfire Arms Alehouse\tSpitfire Arms Alehouse\tpublished\t2026-01-16 00:00:00\n630004\tTrivia Night\tSpitfire Arms Alehouse\tSpitfire Arms Alehouse\tpublished\t2026-01-13 00:00:00\n630003\tLive Music: Kevin Myers\tSpitfire Arms Alehouse\tSpitfire Arms Alehouse\tpublished\t2026-01-09 00:00:00\n630002\tLive Music: Mark Hippen\tSpitfire Arms Alehouse\tSpitfire Arms Alehouse\tpublished\t2026-01-03 00:00:00\n630001\tLive Music: Barkhouse Boys\tSpitfire Arms Alehouse\tSpitfire Arms Alehouse\tpublished\t2026-01-02 00:00:00\n600015\t44386 Flora Wallet with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tTandy Leather Halifax - 707\tpublished\t2026-01-28 00:00:00\n600014\tPlant Holder Kit with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tTandy Leather Halifax - 707\tpublished\t2026-01-24 00:00:00\n600013\t702 - Dream Catcher (Canada) with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tTandy Leather Halifax - 707\tpublished\t2026-01-23 00:00:00\n600012\tNo-Sew Blood Knot Dog Leash with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tTandy Leather Halifax - 707\tpublished\t2026-01-22 00:00:00\n600011\tIntro to Dyes and Finishes with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tTandy Leather Halifax - 707\tpublished\t2026-01-21 00:00:00\n600010\tFundamental Leather Crafting: Hand Skiving Leather with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tTandy Leather Halifax - 707\tpublished\t2026-01-17 00:00:00\n600009\tBasic Sheridan Carving with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tTandy Leather Halifax - 707\tpublished\t2026-01-16 00:00:00\n600008\tIntroduction to Stitching Leather with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tTandy Leather Halifax - 707\tpublished\t2026-01-15 00:00:00\n600007\tAntiquing 101 with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tTandy Leather Halifax - 707\tpublished\t2026-01-14 00:00:00\n600006\tBasic Belt Class with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tTandy Leather Halifax - 707\tpublished\t2026-01-10 00:00:00\n600005\tTool Sharpening Demo with Tandy Leather (Dartmouth)\tTandy Leather Halifax - 707\tTandy Leather Halifax - 707\tpublished\t2026-01-09 00:00:00\n",
+  "stderr": "",
+  "execution_time_ms": 55
+}

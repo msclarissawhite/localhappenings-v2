@@ -120,7 +120,43 @@ export function AdminClaimAssignment() {
           </div>
 
           <div>
-            <Label>Select Events to Assign ({selectedEventIds.length} selected, {eventsToAssign.length} shown)</Label>
+            <div className="flex items-center justify-between mb-2">
+              <Label>Select Events to Assign ({selectedEventIds.length} selected, {eventsToAssign.length} shown)</Label>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const filteredIds = eventsToAssign.map(e => e.id);
+                    setSelectedEventIds(filteredIds);
+                    toast.success(`Selected ${filteredIds.length} filtered event(s)`);
+                  }}
+                  disabled={eventsToAssign.length === 0}
+                >
+                  Select Filtered
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const allIds = allEvents.map(e => e.id);
+                    setSelectedEventIds(allIds);
+                    toast.success(`Selected all ${allIds.length} event(s)`);
+                  }}
+                  disabled={allEvents.length === 0}
+                >
+                  Select All
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setSelectedEventIds([])}
+                  disabled={selectedEventIds.length === 0}
+                >
+                  Deselect All
+                </Button>
+              </div>
+            </div>
             <div className="mt-2 max-h-96 overflow-y-auto border rounded-md p-4 space-y-2">
               {isLoading && <p className="text-sm text-muted-foreground">Loading events...</p>}
               

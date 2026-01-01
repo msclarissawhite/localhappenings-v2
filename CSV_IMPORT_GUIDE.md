@@ -42,7 +42,7 @@ Use the provided template file `event_upload_template.csv` located in the projec
 **Column Headers (in order):**
 
 ```
-name,description,province,municipality,neighborhoodCommunity,venue,address,startDate,startTime,endDate,endTime,duration,timeOfDay,isRecurring,recurrenceType,isFree,costMin,costMax,costType,kidsFree,freeCompanion,allAges,familyFriendly,youngChildren,kids,teens,adults,adultsOnly,seniors,isIndoor,isOutdoor,isMixed,shortDuration,dropIn,canReenter,organizerName,organizerType,organizerEmail,organizerPhone,organizerWebsite,displayOrganizerInfo,publicContactName,publicContactEmail,publicContactPhone,notes,imageUrl,eventTypeIds,accessibility
+name,description,province,municipality,neighborhoodCommunity,venue,address,startDate,startTime,endDate,endTime,duration,timeOfDay,isRecurring,recurrenceType,seriesId,isFree,costMin,costMax,costType,kidsFree,freeCompanion,allAges,familyFriendly,youngChildren,kids,teens,adults,adultsOnly,seniors,isIndoor,isOutdoor,isMixed,shortDuration,dropIn,canReenter,organizerName,organizerType,organizerEmail,organizerPhone,organizerWebsite,displayOrganizerInfo,publicContactName,publicContactEmail,publicContactPhone,notes,imageUrl,eventTypeIds,accessibility
 ```
 
 **Key Changes in Version 2.0:**
@@ -89,12 +89,13 @@ name,description,province,municipality,neighborhoodCommunity,venue,address,start
 - The platform automatically calculates and displays "3-day event"
 - For single-day events, leave `endDate` blank or set it equal to `startDate`
 
-#### Recurring Events
+#### Recurring Events & Series
 
 | Field | Format | Example | Notes |
 |-------|--------|---------|-------|
 | `isRecurring` | 0 or 1 | 1 | 1 = recurring, 0 = one-time |
 | `recurrenceType` | Text | "weekly", "monthly", "one-time" | Required if isRecurring=1 |
+| `seriesId` | Integer | 5001 | **NEW:** Links events to an existing series. Leave blank to create a new series automatically. See "Series ID Usage" section below. |
 
 #### Cost Information
 
@@ -337,6 +338,43 @@ The `accessibility` field stores all accessibility information as a JSON object 
 </details>
 
 **Example:** For a yoga and meditation workshop, use `eventTypeIds` value: `90005,90007`
+
+---
+
+### Series ID Usage
+
+The `seriesId` field links recurring events together for batch management. This is useful when you have multiple instances of the same recurring event (e.g., "Weekly Yoga Class" every Monday).
+
+**Two Options:**
+
+1. **Create New Series (Recommended):** Leave `seriesId` **blank** in your CSV. The system will automatically create a new series and assign the same ID to all instances of that recurring event.
+
+2. **Link to Existing Series:** If adding events to an existing series, specify the `seriesId` explicitly (e.g., `5001`). Find existing series IDs in the admin dashboard under "Event Series" or in the `REFERENCE_IDS.md` document.
+
+**Example CSV - New Series (Leave Blank):**
+```csv
+name,startDate,seriesId,isRecurring,...
+"Weekly Yoga Class",2026-01-06,,1,...
+"Weekly Yoga Class",2026-01-13,,1,...
+"Weekly Yoga Class",2026-01-20,,1,...
+```
+
+**Example CSV - Existing Series:**
+```csv
+name,startDate,seriesId,isRecurring,...
+"Weekly Yoga Class",2026-01-27,5001,1,...
+"Weekly Yoga Class",2026-02-03,5001,1,...
+```
+
+**Benefits of Series Grouping:**
+- Batch edit all events in a series at once
+- Batch delete/publish/unpublish series events
+- View all instances of a recurring event together
+- Easier management of long-running recurring events
+
+**Note:** One-time events (`isRecurring=0`) should always have `seriesId` left blank.
+
+For complete series ID reference and examples, see **REFERENCE_IDS.md**.
 
 #### Additional Fields
 

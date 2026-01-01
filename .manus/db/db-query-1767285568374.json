@@ -1,0 +1,66 @@
+{
+  "query": "SELECT id, name, venue, organizerName, startDate, endDate FROM events WHERE (name LIKE '%live music%' OR name LIKE '%Live Music%') ORDER BY startDate;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT id, name, venue, organizerName, startDate, endDate FROM events WHERE (name LIKE '%live music%' OR name LIKE '%Live Music%') ORDER BY startDate;",
+  "rows": [
+    {
+      "id": "630001",
+      "name": "Live Music: Barkhouse Boys",
+      "venue": "Spitfire Arms Alehouse",
+      "organizerName": "Spitfire Arms Alehouse",
+      "startDate": "2026-01-02 00:00:00",
+      "endDate": "2026-01-02 00:00:00"
+    },
+    {
+      "id": "630002",
+      "name": "Live Music: Mark Hippen",
+      "venue": "Spitfire Arms Alehouse",
+      "organizerName": "Spitfire Arms Alehouse",
+      "startDate": "2026-01-03 00:00:00",
+      "endDate": "2026-01-03 00:00:00"
+    },
+    {
+      "id": "630003",
+      "name": "Live Music: Kevin Myers",
+      "venue": "Spitfire Arms Alehouse",
+      "organizerName": "Spitfire Arms Alehouse",
+      "startDate": "2026-01-09 00:00:00",
+      "endDate": "2026-01-09 00:00:00"
+    },
+    {
+      "id": "630005",
+      "name": "Live Music: Geoff Kennedy",
+      "venue": "Spitfire Arms Alehouse",
+      "organizerName": "Spitfire Arms Alehouse",
+      "startDate": "2026-01-16 00:00:00",
+      "endDate": "2026-01-16 00:00:00"
+    },
+    {
+      "id": "630007",
+      "name": "Live Music: Tim Vallillee",
+      "venue": "Spitfire Arms Alehouse",
+      "organizerName": "Spitfire Arms Alehouse",
+      "startDate": "2026-01-23 00:00:00",
+      "endDate": "2026-01-23 00:00:00"
+    },
+    {
+      "id": "630008",
+      "name": "Live Music: Ken McPherson",
+      "venue": "Spitfire Arms Alehouse",
+      "organizerName": "Spitfire Arms Alehouse",
+      "startDate": "2026-01-24 00:00:00",
+      "endDate": "2026-01-24 00:00:00"
+    },
+    {
+      "id": "630009",
+      "name": "Live Music: Jon Cyr",
+      "venue": "Spitfire Arms Alehouse",
+      "organizerName": "Spitfire Arms Alehouse",
+      "startDate": "2026-01-30 00:00:00",
+      "endDate": "2026-01-30 00:00:00"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tvenue\torganizerName\tstartDate\tendDate\n630001\tLive Music: Barkhouse Boys\tSpitfire Arms Alehouse\tSpitfire Arms Alehouse\t2026-01-02 00:00:00\t2026-01-02 00:00:00\n630002\tLive Music: Mark Hippen\tSpitfire Arms Alehouse\tSpitfire Arms Alehouse\t2026-01-03 00:00:00\t2026-01-03 00:00:00\n630003\tLive Music: Kevin Myers\tSpitfire Arms Alehouse\tSpitfire Arms Alehouse\t2026-01-09 00:00:00\t2026-01-09 00:00:00\n630005\tLive Music: Geoff Kennedy\tSpitfire Arms Alehouse\tSpitfire Arms Alehouse\t2026-01-16 00:00:00\t2026-01-16 00:00:00\n630007\tLive Music: Tim Vallillee\tSpitfire Arms Alehouse\tSpitfire Arms Alehouse\t2026-01-23 00:00:00\t2026-01-23 00:00:00\n630008\tLive Music: Ken McPherson\tSpitfire Arms Alehouse\tSpitfire Arms Alehouse\t2026-01-24 00:00:00\t2026-01-24 00:00:00\n630009\tLive Music: Jon Cyr\tSpitfire Arms Alehouse\tSpitfire Arms Alehouse\t2026-01-30 00:00:00\t2026-01-30 00:00:00\n",
+  "stderr": "",
+  "execution_time_ms": 58
+}

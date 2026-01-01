@@ -1412,7 +1412,71 @@ export default function AdminDashboard() {
                   size="sm"
                   onClick={() => {
                     if (publishedEvents && 'events' in publishedEvents) {
+                      // Calculate filtered events using the same logic as the display
+                      let filteredEvents = [...publishedEvents.events];
+                      
+                      // Apply search filter
+                      if (publishedSearchQuery.trim()) {
+                        const query = publishedSearchQuery.toLowerCase();
+                        filteredEvents = filteredEvents.filter(event =>
+                          event.name?.toLowerCase().includes(query) ||
+                          event.organizerName?.toLowerCase().includes(query) ||
+                          event.municipality?.toLowerCase().includes(query) ||
+                          event.province?.toLowerCase().includes(query)
+                        );
+                      }
+                      
+                      // Apply event type filter
+                      if (publishedEventTypeFilter !== "all") {
+                        filteredEvents = filteredEvents.filter(event => 
+                          event.eventType?.toLowerCase() === publishedEventTypeFilter.toLowerCase()
+                        );
+                      }
+                      
+                      // Apply date range filter
+                      const now = new Date();
+                      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                      
+                      if (publishedDateFilter === "upcoming") {
+                        filteredEvents = filteredEvents.filter(event => new Date(event.startDate) >= today);
+                      } else if (publishedDateFilter === "past") {
+                        filteredEvents = filteredEvents.filter(event => new Date(event.startDate) < today);
+                      } else if (publishedDateFilter === "this-week") {
+                        const weekEnd = new Date(today);
+                        weekEnd.setDate(weekEnd.getDate() + 7);
+                        filteredEvents = filteredEvents.filter(event => {
+                          const eventDate = new Date(event.startDate);
+                          return eventDate >= today && eventDate < weekEnd;
+                        });
+                      } else if (publishedDateFilter === "this-month") {
+                        const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+                        filteredEvents = filteredEvents.filter(event => {
+                          const eventDate = new Date(event.startDate);
+                          return eventDate >= today && eventDate <= monthEnd;
+                        });
+                      } else if (publishedDateFilter === "next-month") {
+                        const nextMonthStart = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+                        const nextMonthEnd = new Date(now.getFullYear(), now.getMonth() + 2, 0);
+                        filteredEvents = filteredEvents.filter(event => {
+                          const eventDate = new Date(event.startDate);
+                          return eventDate >= nextMonthStart && eventDate <= nextMonthEnd;
+                        });
+                      }
+                      
+                      setSelectedEvents(new Set(filteredEvents.map(e => e.id)));
+                      toast.success(`Selected ${filteredEvents.length} filtered event(s)`);
+                    }
+                  }}
+                >
+                  Select Filtered
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    if (publishedEvents && 'events' in publishedEvents) {
                       setSelectedEvents(new Set(publishedEvents.events.map(e => e.id)));
+                      toast.success(`Selected all ${publishedEvents.events.length} event(s)`);
                     }
                   }}
                 >
