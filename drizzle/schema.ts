@@ -149,7 +149,6 @@ export const eventTypes = mysqlTable("eventTypes", {
   id: int("id").autoincrement().primaryKey(),
   name: varchar("name", { length: 100 }).notNull().unique(),
   category: mysqlEnum("category", ["family-kids", "arts-culture", "community-social", "recreation-sports", "health-wellness", "markets-festivals", "seasonal", "environment"]).default("community-social").notNull(),
-  isDeprecated: int("isDeprecated").default(0).notNull(), // 0 = active, 1 = deprecated (hidden from primary UI)
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
@@ -490,36 +489,3 @@ export const eventChangeHistory = mysqlTable("eventChangeHistory", {
 
 export type EventChangeHistory = typeof eventChangeHistory.$inferSelect;
 export type InsertEventChangeHistory = typeof eventChangeHistory.$inferInsert;
-
-/**
- * Email templates for admin communication with organizers
- */
-export const emailTemplates = mysqlTable("emailTemplates", {
-  id: int("id").autoincrement().primaryKey(),
-  name: varchar("name", { length: 255 }).notNull(),
-  subject: text("subject").notNull(),
-  body: text("body").notNull(),
-  category: mysqlEnum("category", ["welcome", "clarification", "rejection", "general", "reminder", "announcement"]).default("general").notNull(),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-});
-
-export type EmailTemplate = typeof emailTemplates.$inferSelect;
-export type InsertEmailTemplate = typeof emailTemplates.$inferInsert;
-
-/**
- * Admin notes about organizers for internal tracking
- */
-export const organizerNotes = mysqlTable("organizerNotes", {
-  id: int("id").autoincrement().primaryKey(),
-  organizerId: int("organizerId").notNull(),
-  adminId: int("adminId").notNull(), // user id of admin who created the note
-  note: text("note").notNull(),
-  isFlagged: int("isFlagged").default(0).notNull(), // 0 = normal note, 1 = flagged for review
-  flagReason: text("flagReason"), // Reason for flagging (spam, quality issues, etc.)
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-});
-
-export type OrganizerNote = typeof organizerNotes.$inferSelect;
-export type InsertOrganizerNote = typeof organizerNotes.$inferInsert;

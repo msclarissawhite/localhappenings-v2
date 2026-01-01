@@ -1022,7 +1022,8 @@ export default function SubmitEvent() {
               <h2 className="text-xl font-semibold">Event Types</h2>
             </div>
             <EventTypeSelector
-              selectedTypeIds={selectedEventTypeIds}
+              eventTypes={eventTypes}
+              selectedIds={selectedEventTypeIds}
               onChange={setSelectedEventTypeIds}
             />
           </Card>

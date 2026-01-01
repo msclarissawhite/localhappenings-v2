@@ -1022,17 +1022,6 @@ export const eventsRouter = router({
           endTime: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/).optional(), // HH:MM format
           eventTypeIds: z.array(z.number()).optional(),
           accessibility: z.array(z.string()).optional(),
-          // Cost fields
-          isFree: z.boolean().optional(),
-          costType: z.enum(["fixed", "range", "donation", "pay-what-you-can", "sliding-scale"]).optional(),
-          costMin: z.number().optional(),
-          costMax: z.number().optional(),
-          fixedPrice: z.number().optional(),
-          kidsFree: z.boolean().optional(),
-          // Age groups
-          ageGroups: z.array(z.string()).optional(),
-          // Image (base64 encoded)
-          imageData: z.string().optional(),
         }),
       })
     )
@@ -1111,14 +1100,6 @@ export const eventsRouter = router({
       if (input.updates.organizerPhone !== undefined) updateData.organizerPhone = input.updates.organizerPhone;
       if (input.updates.organizerWebsite !== undefined) updateData.organizerWebsite = input.updates.organizerWebsite;
       if (input.updates.status !== undefined) updateData.status = input.updates.status;
-      
-      // Cost fields
-      if (input.updates.isFree !== undefined) updateData.isFree = input.updates.isFree;
-      if (input.updates.costType !== undefined) updateData.costType = input.updates.costType;
-      if (input.updates.costMin !== undefined) updateData.costMin = input.updates.costMin;
-      if (input.updates.costMax !== undefined) updateData.costMax = input.updates.costMax;
-      if (input.updates.fixedPrice !== undefined) updateData.fixedPrice = input.updates.fixedPrice;
-      if (input.updates.kidsFree !== undefined) updateData.kidsFree = input.updates.kidsFree;
 
       // Update all events with standard fields
       if (Object.keys(updateData).length > 0) {
@@ -1152,61 +1133,6 @@ export const eventsRouter = router({
         
         if (updatedCount === 0) {
           updatedCount = input.eventIds.length;
-        }
-      }
-
-      // Handle age groups update (replace existing)
-      if (input.updates.ageGroups !== undefined) {
-        const ageGroupData: any = {
-          allAges: input.updates.ageGroups.includes('allAges'),
-          familyFriendly: input.updates.ageGroups.includes('familyFriendly'),
-          youngChildren: input.updates.ageGroups.includes('youngChildren'),
-          kids: input.updates.ageGroups.includes('kids'),
-          teens: input.updates.ageGroups.includes('teens'),
-          adults: input.updates.ageGroups.includes('adults'),
-          adultsOnly: input.updates.ageGroups.includes('adultsOnly'),
-          seniors: input.updates.ageGroups.includes('seniors'),
-        };
-        
-        await db
-          .update(events)
-          .set(ageGroupData)
-          .where(inArray(events.id, input.eventIds));
-        
-        if (updatedCount === 0) {
-          updatedCount = input.eventIds.length;
-        }
-      }
-
-      // Handle image upload (applies to all selected events)
-      if (input.updates.imageData) {
-        try {
-          const { processEventImage } = await import("./imageProcessing");
-          const { storagePut } = await import("./storage");
-          const { nanoid } = await import("nanoid");
-          
-          // Extract base64 data and convert to buffer
-          const base64Data = input.updates.imageData.replace(/^data:image\/\w+;base64,/, "");
-          const buffer = Buffer.from(base64Data, "base64");
-          
-          // Process and upload image
-          const processedBuffer = await processEventImage(buffer);
-          const randomSuffix = nanoid(10);
-          const fileKey = `event-images/${Date.now()}-${randomSuffix}.jpg`;
-          const { url } = await storagePut(fileKey, processedBuffer, "image/jpeg");
-          
-          // Update all selected events with the new image URL
-          await db
-            .update(events)
-            .set({ imageUrl: url })
-            .where(inArray(events.id, input.eventIds));
-          
-          if (updatedCount === 0) {
-            updatedCount = input.eventIds.length;
-          }
-        } catch (error) {
-          console.error("[Batch Update] Failed to upload image:", error);
-          throw new Error("Failed to upload image");
         }
       }
 
