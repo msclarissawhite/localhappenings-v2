@@ -39,7 +39,7 @@ export default function AdminDashboard() {
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [reviewAction, setReviewAction] = useState<"published" | "rejected" | "needs-clarification">("published");
   const [selectedEvents, setSelectedEvents] = useState<Set<number>>(new Set());
-  const [activeTab, setActiveTab] = useState<"events" | "pending-edits" | "closed-events" | "organizers" | "feature-requests" | "donations" | "feedback" | "analytics" | "collections" | "banners" | "featured">("events");
+  const [activeTab, setActiveTab] = useState<"events" | "pending-edits" | "published-events" | "closed-events" | "organizers" | "feature-requests" | "donations" | "feedback" | "analytics" | "collections" | "banners" | "featured">("events");
   const [showBulkUpload, setShowBulkUpload] = useState(false);
   const [showBatchEdit, setShowBatchEdit] = useState(false);
 
@@ -55,6 +55,17 @@ export default function AdminDashboard() {
       refetchOnWindowFocus: true,
       staleTime: 0,
       gcTime: 0, // Disable caching completely
+    }
+  );
+
+  const { data: publishedEvents, isLoading: publishedEventsLoading, refetch: refetchPublishedEvents } = trpc.events.list.useQuery(
+    { status: "published", limit: 1000, offset: 0 },
+    { 
+      enabled: isAuthenticated && user?.role === "admin" && activeTab === "published-events",
+      refetchOnMount: true,
+      refetchOnWindowFocus: true,
+      staleTime: 0,
+      gcTime: 0,
     }
   );
 
@@ -340,7 +351,10 @@ export default function AdminDashboard() {
         <div className="flex flex-wrap gap-2 mb-6 border-b pb-2">
           <Button
             variant={activeTab === "events" ? "default" : "ghost"}
-            onClick={() => setActiveTab("events")}
+            onClick={() => {
+              setActiveTab("events");
+              setSelectedEvents(new Set());
+            }}
             className="rounded-b-none"
           >
             <Calendar className="w-4 h-4 mr-2" />
@@ -350,6 +364,7 @@ export default function AdminDashboard() {
             variant={activeTab === "pending-edits" ? "default" : "ghost"}
             onClick={() => {
               setActiveTab("pending-edits");
+              setSelectedEvents(new Set());
               // Invalidate cache to force fresh data from server
               utils.events.list.invalidate();
             }}
@@ -362,6 +377,18 @@ export default function AdminDashboard() {
                 {eventsWithPendingEdits.events.length}
               </Badge>
             )}
+          </Button>
+          <Button
+            variant={activeTab === "published-events" ? "default" : "ghost"}
+            onClick={() => {
+              setActiveTab("published-events");
+              setSelectedEvents(new Set());
+              utils.events.list.invalidate();
+            }}
+            className="rounded-b-none"
+          >
+            <CheckCircle className="w-4 h-4 mr-2" />
+            Published Events
           </Button>
           <Button
             variant={activeTab === "closed-events" ? "default" : "ghost"}
@@ -1182,6 +1209,116 @@ export default function AdminDashboard() {
           <FeaturedEventsManagement />
         )}
 
+        {activeTab === "published-events" && (
+          <>
+            {/* Import/Export Toolbar */}
+            <div className="flex items-center gap-4 mb-4 p-4 bg-muted/30 rounded-lg">
+              <Button
+                variant="outline"
+                onClick={() => setShowBulkUpload(true)}
+              >
+                <Calendar className="w-4 h-4 mr-2" />
+                Bulk Upload CSV
+              </Button>
+              <Button
+                variant="outline"
+                onClick={handleExportAll}
+              >
+                <TrendingUp className="w-4 h-4 mr-2" />
+                Download All Events
+              </Button>
+              {selectedEvents.size > 0 && (
+                <Button
+                  variant="outline"
+                  onClick={handleExportSelected}
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Download Selected ({selectedEvents.size})
+                </Button>
+              )}
+              {selectedEvents.size > 0 && (
+                <Button
+                  variant="default"
+                  onClick={() => setShowBatchEdit(true)}
+                >
+                  Batch Edit ({selectedEvents.size})
+                </Button>
+              )}
+            </div>
+
+            {publishedEventsLoading ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Loading published events...</p>
+              </div>
+            ) : publishedEvents && 'events' in publishedEvents && publishedEvents.events.length > 0 ? (
+              <div className="space-y-4">
+                {publishedEvents.events.map((event) => (
+                  <Card key={event.id} className="p-6">
+                    <div className="flex items-start gap-4">
+                      <Checkbox
+                        checked={selectedEvents.has(event.id)}
+                        onCheckedChange={(checked) => {
+                          const newSelected = new Set(selectedEvents);
+                          if (checked) {
+                            newSelected.add(event.id);
+                          } else {
+                            newSelected.delete(event.id);
+                          }
+                          setSelectedEvents(newSelected);
+                        }}
+                      />
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <h3 className="text-lg font-semibold">{event.name}</h3>
+                          <Badge variant="default">Published</Badge>
+                        </div>
+                        <div className="space-y-1 text-sm text-muted-foreground mb-3">
+                          <div className="flex items-center gap-2">
+                            <Calendar className="w-4 h-4" />
+                            <span>{format(new Date(event.startDate), "MMM d, yyyy 'at' h:mm a")}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <MapPin className="w-4 h-4" />
+                            <span>{event.municipality}, {event.province}</span>
+                          </div>
+                        </div>
+                        <p className="text-sm text-muted-foreground mb-3">
+                          Organizer: {event.organizerName || "Unknown"}
+                        </p>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => window.open(`/event/${event.id}`, "_blank")}
+                        >
+                          View Details
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => {
+                            setSelectedEvent(event);
+                            setShowEditDialog(true);
+                          }}
+                        >
+                          Edit Event
+                        </Button>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <Card className="p-12 text-center">
+                <CheckCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">No published events</h3>
+                <p className="text-muted-foreground">Published events will appear here.</p>
+              </Card>
+            )}
+          </>
+        )}
+
         {activeTab === "closed-events" && (
           <>
             {closedEventsLoading ? (
@@ -1312,6 +1449,8 @@ export default function AdminDashboard() {
           onSuccess={() => {
             setSelectedEvent(null);
             refetch();
+            refetchPublishedEvents();
+            refetchPendingEdits();
           }}
         />
 
@@ -1322,6 +1461,8 @@ export default function AdminDashboard() {
           onSuccess={() => {
             setSelectedEvents(new Set());
             refetch();
+            refetchPublishedEvents();
+            refetchPendingEdits();
           }}
         />
       </div>

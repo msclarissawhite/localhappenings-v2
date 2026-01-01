@@ -1924,3 +1924,18 @@
 - [x] Add exportByIds backend procedure for selective CSV export
 - [x] Verify bulk edit selection works on Pending Events tab (already implemented)
 - [x] Verify checkboxes and selection work correctly
+
+## Admin Dashboard - Published Events Tab
+- [x] Add "Published Events" tab to admin dashboard
+- [x] Display all published events in the new tab
+- [x] Add checkboxes for event selection
+- [x] Enable "Batch Edit" button when events are selected
+- [x] Enable "Download Selected" button when events are selected
+- [x] Ensure selection state is independent from other tabs
+
+- [x] Add "Published Events" tab to admin dashboard
+- [x] Display all published events in the new tab
+- [x] Add checkboxes for event selection
+- [x] Enable "Batch Edit" button when events are selected
+- [x] Enable "Download Selected" button when events are selected
+- [x] Ensure selection state is independent from other tabs
