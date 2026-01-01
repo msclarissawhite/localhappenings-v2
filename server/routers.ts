@@ -23,6 +23,7 @@ import { contactTemplatesRouter } from "./contact-templates-router";
 import { seriesRouter } from "./series-router";
 import { eventTypeMigrationRouter } from "./event-type-migration-router";
 import { popularEventTypesRouter } from "./popular-event-types-router";
+import { organizerManagementRouter } from "./organizer-management-router";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -59,6 +60,7 @@ export const appRouter = router({
   contactTemplates: contactTemplatesRouter,
   eventTypeMigration: eventTypeMigrationRouter,
   popularEventTypes: popularEventTypesRouter,
+  organizerManagement: organizerManagementRouter,
 });
 
 export type AppRouter = typeof appRouter;

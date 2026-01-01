@@ -1,7 +1,7 @@
 # Local Happenings - Organizer Quickstart Guide
 
-**Version:** 1.1  
-**Last Updated:** December 21, 2025  
+**Version:** 1.2  
+**Last Updated:** January 1, 2026  
 **Author:** Manus AI
 
 ---
@@ -32,7 +32,7 @@ The submission form has seven sections. Required fields are marked with an aster
 
 **Environment** indicates whether your event is Indoor, Outdoor, or Mixed Indoor/Outdoor. Select all that apply to accurately describe your venue.
 
-**Event Types** lets you select categories that describe your event from seven categories: Family & Kids, Arts & Culture, Community & Social, Recreation & Sports, Markets & Festivals, Health & Wellness, and Seasonal. Examples include Live Music, Festivals & Fairs, Yoga, Cinema, Games/Gaming, and seasonal events. You can select multiple types. These tags help families discover your event through filtering and appear as badges on event cards.
+**Event Types** lets you select categories that describe your event from six categories with 143 total types: Family & Kids (19), Arts & Culture (22), Community & Social (25), Recreation & Sports (22), Health & Wellness (18), Markets & Festivals (22), and Seasonal (17). Examples include Live Music, Artisan Markets, Yoga, Cinema, Hiking & Trail Meetups, and seasonal events. You can select multiple types. These tags help families discover your event through filtering and appear as badges on event cards. See **REFERENCE_IDS.md** for the complete list.
 
 **Accessibility Information** is mandatory but flexible. For each question, select Yes, No, Unknown, or Not Relevant. The platform values transparency—if you don't know whether your venue has an elevator, select "Unknown" rather than skipping the question. Hover over the tooltip icons (ℹ️) next to each field to understand what information is being requested and why it matters.
 

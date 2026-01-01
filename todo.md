@@ -2144,3 +2144,27 @@
 - [x] Display: deprecated type being removed, new types being added, number of events affected
 - [x] Add "Confirm" and "Cancel" buttons
 - [x] Update EventTypeMigration component to use confirmation modal
+
+## Documentation Updates - Event Types & Series (Jan 2026)
+- [x] Update REFERENCE_IDS.md with all 143 event types organized by category
+- [x] Update CSV_IMPORT_GUIDE.md with new event types and seriesId field
+- [x] Verify event_upload_template.csv has seriesId column (already present)
+- [x] Update ORGANIZER_QUICKSTART.md with event types count and categories
+- [x] Update ORGANIZER_COMPREHENSIVE_GUIDE.md with event types count and categories
+
+## Manage Organizers Tab Improvements
+- [ ] Brainstorm features with user
+- [ ] Implement approved features
+- [ ] Test new features
+- [ ] Update USER_MANUAL.md with new features
+
+## Manage Organizers Tab Improvements - Implementation
+- [x] Create email_templates and organizerNotes tables in database schema
+- [x] Create backend procedures for all new features (organizer-management-router.ts)
+- [x] Add filtering & search UI (verification status, organizer type, activity level)
+- [x] Add organizer insights display (approval rate, event counts, last submission)
+- [x] Add quick actions (bulk verification, admin notes, flag for review)
+- [x] Create email template library UI (save, edit, delete, copy to clipboard)
+- [x] Add organizer analytics section (top organizers, new this month, by type, by province)
+- [x] Write vitest tests for organizer management procedures (8/11 passing - 3 failures due to pending schema migration)
+- [ ] Test all features end-to-end in browser

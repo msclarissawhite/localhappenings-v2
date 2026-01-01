@@ -1,6 +1,6 @@
 # CSV Bulk Import Guide for Local Happenings
 
-**Version 2.0** | **Last Updated:** December 31, 2025
+**Version 2.1** | **Last Updated:** January 1, 2026
 
 This guide explains how to use the CSV bulk import feature to add multiple events to Local Happenings at once. This feature is available only to administrators and is useful for importing seasonal events, recurring activities, or migrating data from other systems.
 
@@ -239,99 +239,194 @@ The `accessibility` field stores all accessibility information as a JSON object 
 
 **Event Type ID Reference Table:**
 
+**Total Active Event Types:** 143 organized into 6 categories
+
+> **💡 Tip:** For the complete reference table with all 143 event types, see **REFERENCE_IDS.md**. Below is a quick reference of the most commonly used types.
+
 <details>
-<summary><strong>Family & Kids (8 types)</strong></summary>
+<summary><strong>Family & Kids (19 types)</strong></summary>
 
 | ID | Name |
 |-----|------|
+| 200001 | After-School Programs |
+| 200002 | Baby & Me Classes |
+| 200003 | Character Meet & Greets |
+| 200004 | Drop-In Play Spaces |
 | 30008 | Face Painting |
+| 200006 | Family Movie Nights |
+| 200005 | Family Swim |
 | 30006 | Kids Crafts |
+| 200007 | Kids Yoga & Movement |
+| 200008 | Outdoor Play Meetups |
+| 200009 | Parent & Tot Groups |
 | 30005 | Petting Zoos / Farms |
 | 30007 | Puppet Shows |
 | 30001 | Seeing Santa |
 | 30003 | Skating |
+| 200010 | STEM for Kids |
 | 30002 | Storytime / Library Events |
+| 200011 | Summer Camps & Day Camps |
 | 30004 | Swimming |
 </details>
 
 <details>
-<summary><strong>Arts & Culture (9 types)</strong></summary>
+<summary><strong>Arts & Culture (22 types)</strong></summary>
 
 | ID | Name |
 |-----|------|
 | 30013 | Art Exhibition |
+| 200015 | Art Workshops |
 | 90003 | Arts & Crafts |
 | 90002 | Cinema |
+| 200019 | Comedy Shows |
 | 30012 | Concert |
+| 200020 | Dance Performances |
+| 200023 | Documentary Screenings |
+| 200022 | Film Screenings |
 | 30014 | Indigenous Events |
 | 30009 | Live Music |
+| 200018 | Maker Fairs |
 | 30015 | Multicultural Festivals |
 | 30011 | Opera |
+| 200017 | Photography Exhibits & Walks |
+| 200016 | Pottery & Ceramics |
+| 200021 | Spoken Word & Poetry |
 | 30010 | Theatre & Performances |
 </details>
 
 <details>
-<summary><strong>Community & Social (7 types)</strong></summary>
+<summary><strong>Community & Social (25 types)</strong></summary>
 
 | ID | Name |
 |-----|------|
+| 120003 | Board Game Nights |
+| 120004 | Book Clubs |
+| 120005 | Coffee Meetups |
 | 30016 | Community Meetings |
+| 120011 | Craft Circles |
 | 30017 | Fundraisers & Charity Events |
+| 200024 | Happy Hours |
+| 120008 | Karaoke |
 | 30018 | Language Meetups |
+| 200027 | Lecture Series |
+| 120006 | Networking Events |
+| 200030 | Newcomer & Immigrant Meetups |
+| 120009 | Open Mic Nights |
+| 120010 | Potlucks |
 | 30020 | Pride Events |
+| 120002 | Pub Trivia |
 | 30019 | Religious / Faith-Based Events |
+| 200025 | Singles Mixers |
+| 200028 | Skill Shares |
+| 200026 | Social Walks |
 | 90004 | Socials & Clubs |
+| 120007 | Speed Dating |
+| 200029 | Study Groups |
+| 120001 | Trivia |
 | 30021 | Workshops & Classes |
 </details>
 
 <details>
-<summary><strong>Recreation & Sports (3 types)</strong></summary>
+<summary><strong>Recreation & Sports (22 types)</strong></summary>
 
 | ID | Name |
 |-----|------|
+| 200035 | Adult Recreational Leagues |
+| 200045 | Camping & Backcountry Trips |
+| 200047 | Climbing & Bouldering |
+| 200038 | Cycling Rides & Tours |
+| 200042 | Disc Golf |
 | 90001 | Games/Gaming |
-| 30023 | Outdoor Adventure |
-| 30022 | Sports & Recreation |
+| 200044 | Hiking & Trail Meetups |
+| 200032 | Individual Sports (Tennis/Golf/Track) |
+| 200046 | Kayaking/Canoeing/Paddleboarding |
+| 200049 | Mountain Biking |
+| 200041 | Pickleball |
+| 200037 | Running Clubs & Fun Runs |
+| 200043 | Skateboarding & BMX |
+| 200039 | Skating Meetups |
+| 200048 | Snow Sports (Ski/Snowboard/Snowshoe) |
+| 200040 | Swimming Clubs |
+| 200031 | Team Sports (Soccer/Hockey/Baseball) |
+| 200033 | Tournaments & Leagues |
+| 200050 | Trail Running |
+| 200036 | Walking Clubs |
+| 200034 | Youth Sports |
 </details>
 
 <details>
-<summary><strong>Health & Wellness (4 types)</strong></summary>
+<summary><strong>Health & Wellness (18 types)</strong></summary>
 
 | ID | Name |
 |-----|------|
-| 90006 | Fitness |
+| 200065 | Acupuncture & Traditional Medicine |
+| 200057 | Breathwork |
+| 200052 | Dance Fitness (Zumba/etc) |
+| 200060 | Grief & Healing Circles |
+| 200063 | Herbalism & Natural Health |
+| 200064 | Holistic Wellness Fairs |
 | 90007 | Meditation |
-| 90008 | Wellness Workshops |
+| 200056 | Mindfulness Sessions |
+| 200066 | Nutrition Workshops |
+| 200051 | Pilates & Barre |
+| 200062 | Reiki & Energy Healing |
+| 200055 | Seniors Fitness |
+| 200061 | Sound Baths |
+| 200058 | Stress & Burnout Support |
+| 200054 | Stretching & Mobility |
+| 200059 | Support Groups |
+| 200053 | Walking for Wellness |
 | 90005 | Yoga |
 </details>
 
 <details>
-<summary><strong>Markets & Festivals (3 types)</strong></summary>
+<summary><strong>Markets & Festivals (22 types)</strong></summary>
 
 | ID | Name |
 |-----|------|
-| 30025 | Craft Shows & Markets |
-| 30024 | Festivals & Fairs |
-| 90024 | Food & Drink |
+| 200082 | Art Festivals |
+| 200068 | Artisan Markets |
+| 200075 | Beer/Wine/Cider Festivals |
+| 200084 | Community Festivals |
+| 200077 | Cultural Festivals |
+| 200067 | Farmers' Markets |
+| 30026 | Food & Drink |
+| 200074 | Food Festivals |
+| 200085 | Food Truck Rallies |
+| 200083 | Heritage Festivals |
+| 200070 | Holiday Markets |
+| 200081 | Kids & Family Festivals |
+| 200080 | Literary Festivals |
+| 200073 | Makers Markets |
+| 200076 | Music Festivals |
+| 200069 | Night Markets |
+| 200072 | Pop-Up Markets |
+| 200079 | Seasonal Festivals |
+| 200078 | Street Festivals & Block Parties |
+| 200086 | Tasting Events |
+| 200087 | Vendor Fairs |
+| 200071 | Vintage & Thrift Markets |
 </details>
 
 <details>
-<summary><strong>Seasonal (15 types)</strong></summary>
+<summary><strong>Seasonal (17 types)</strong></summary>
 
 | ID | Name |
 |-----|------|
-| 90020 | Back to School |
-| 90025 | Canada Day |
-| 90019 | Christmas |
-| 90015 | Easter |
-| 30027 | Fall Events |
-| 90018 | Festive Holidays |
-| 90016 | Halloween |
-| 90026 | Holiday Events |
-| 90013 | New Year |
-| 90023 | Spring Events |
-| 90014 | St. Patrick's Day |
-| 90012 | Summer Events |
+| 90020 | Canada Day |
+| 90025 | Christmas |
+| 90019 | Easter |
+| 90015 | Fall Events |
+| 30027 | Festive Holidays |
+| 90018 | Halloween |
+| 90016 | Holiday Events |
+| 200088 | Holiday Light Displays |
+| 200089 | Holiday Shows & Performances |
+| 90026 | New Year |
+| 200090 | Remembrance Day Events |
+| 90013 | Spring Events |
+| 90023 | St. Patrick's Day |
+| 90014 | Summer Events |
 | 90021 | Thanksgiving |
 | 90022 | Valentine's Day |
 | 90012 | Winter Events |

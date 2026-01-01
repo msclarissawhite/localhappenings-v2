@@ -1,7 +1,7 @@
 # Local Happenings - Organizer Comprehensive Guide
 
-**Version:** 1.1  
-**Last Updated:** December 21, 2025  
+**Version:** 1.2  
+**Last Updated:** January 1, 2026  
 **Author:** Manus AI
 
 ---
@@ -82,7 +82,7 @@ Be thorough with location information. Include the full street address if your e
 
 Answer accessibility questions honestly. If you don't know whether your venue has an elevator, select "Unknown" rather than guessing. Families appreciate transparency and will contact you if they need more details.
 
-**Select relevant event types** to help attendees discover your event. The platform offers 49 event types organized into seven categories: Family & Kids, Arts & Culture, Community & Social, Recreation & Sports, Markets & Festivals, Health & Wellness, and Seasonal. You can select multiple types that apply to your event. For example, a holiday craft fair could be tagged as both "Festive Holidays" and "Craft Shows & Markets," or a yoga workshop could be tagged as both "Yoga" and "Wellness Workshops." Event types appear as badges on event cards and enable filtering in Browse Events, making it easier for families to find activities that match their interests.
+**Select relevant event types** to help attendees discover your event. The platform offers 143 event types organized into six categories: Family & Kids (19 types), Arts & Culture (22 types), Community & Social (25 types), Recreation & Sports (22 types), Health & Wellness (18 types), Markets & Festivals (22 types), and Seasonal (17 types). You can select multiple types that apply to your event. For example, a holiday craft fair could be tagged as both "Holiday Markets" and "Artisan Markets," or a yoga workshop could be tagged as both "Yoga" and "Mindfulness Sessions." Event types appear as badges on event cards and enable filtering in Browse Events, making it easier for families to find activities that match their interests. For the complete list of event types with IDs, see the **REFERENCE_IDS.md** document.
 
 Provide complete organizer contact information. Even if you choose not to display it publicly, admins need a way to reach you if they have questions about your submission.
 
