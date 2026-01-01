@@ -1994,3 +1994,8 @@
 - [x] Add bulk republish documentation
 - [x] Add Published Events tab enhancements (search, bulk actions, filtered export)
 - [x] Verify all recent features are documented
+
+## Admin Dashboard Validation Error Fix
+- [x] Investigate why timeOfDay and costType are returning arrays instead of strings
+- [x] Fix the data type mismatch in the events query
+- [x] Test the fix on /admin page

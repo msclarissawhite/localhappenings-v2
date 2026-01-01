@@ -201,10 +201,17 @@ export async function getEvents(filters: EventFilters = {}) {
   let rawResults = await query;
   
   // Flatten results to include organizer verification status
-  let results = rawResults.map(row => ({
-    ...row.event,
-    organizerIsVerified: row.organizer?.isVerified === 1,
-  }));
+  // Fix enum fields that Drizzle returns as arrays instead of values
+  let results = rawResults.map(row => {
+    const event = row.event;
+    return {
+      ...event,
+      // Explicitly cast enum fields to their actual string values
+      timeOfDay: Array.isArray(event.timeOfDay) ? null : event.timeOfDay,
+      costType: Array.isArray(event.costType) ? null : event.costType,
+      organizerIsVerified: row.organizer?.isVerified === 1,
+    };
+  });
 
   // Apply text search filter
   if (hasSearchTerm) {
