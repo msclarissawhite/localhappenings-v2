@@ -12,7 +12,7 @@ import * as analyticsDb from "./analytics-db";
 import * as organizerDb from "./organizer-db";
 import { findPotentialDuplicates } from "./duplicate-detection";
 import { getDb } from "./db";
-import { events, eventToEventTypes } from "../drizzle/schema";
+import { events } from "../drizzle/schema";
 import { eq, inArray } from "drizzle-orm";
 
 // Validation schemas
@@ -1020,8 +1020,6 @@ export const eventsRouter = router({
           status: z.enum(["pending", "published", "rejected", "needs-clarification", "closed"]).optional(),
           startTime: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/).optional(), // HH:MM format
           endTime: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/).optional(), // HH:MM format
-          eventTypeIds: z.array(z.number()).optional(),
-          accessibility: z.array(z.string()).optional(),
         }),
       })
     )
@@ -1108,56 +1106,6 @@ export const eventsRouter = router({
           .set(updateData)
           .where(inArray(events.id, input.eventIds));
         // If we updated standard fields and haven't counted name updates, count all events
-        if (updatedCount === 0) {
-          updatedCount = input.eventIds.length;
-        }
-      }
-
-      // Handle event types update (replace existing)
-      if (input.updates.eventTypeIds !== undefined) {
-        // First, delete all existing event type associations for these events
-        await db
-          .delete(eventToEventTypes)
-          .where(inArray(eventToEventTypes.eventId, input.eventIds));
-        
-        // Then, insert new event type associations
-        if (input.updates.eventTypeIds.length > 0) {
-          const insertData = input.eventIds.flatMap(eventId =>
-            input.updates.eventTypeIds!.map(typeId => ({
-              eventId,
-              eventTypeId: typeId,
-            }))
-          );
-          await db.insert(eventToEventTypes).values(insertData);
-        }
-        
-        if (updatedCount === 0) {
-          updatedCount = input.eventIds.length;
-        }
-      }
-
-      // Handle accessibility update (replace existing)
-      if (input.updates.accessibility !== undefined) {
-        const accessibilityData: any = {
-          wheelchairAccessible: input.updates.accessibility.includes('wheelchairAccessible'),
-          signLanguage: input.updates.accessibility.includes('signLanguage'),
-          closedCaptioning: input.updates.accessibility.includes('closedCaptioning'),
-          audioDescription: input.updates.accessibility.includes('audioDescription'),
-          accessibleParking: input.updates.accessibility.includes('accessibleParking'),
-          accessibleRestrooms: input.updates.accessibility.includes('accessibleRestrooms'),
-          serviceAnimalsWelcome: input.updates.accessibility.includes('serviceAnimalsWelcome'),
-          sensoryFriendly: input.updates.accessibility.includes('sensoryFriendly'),
-          mobilityAids: input.updates.accessibility.includes('mobilityAids'),
-          braillePrograms: input.updates.accessibility.includes('braillePrograms'),
-          quietSpace: input.updates.accessibility.includes('quietSpace'),
-          lowSensoryLighting: input.updates.accessibility.includes('lowSensoryLighting'),
-        };
-        
-        await db
-          .update(events)
-          .set(accessibilityData)
-          .where(inArray(events.id, input.eventIds));
-        
         if (updatedCount === 0) {
           updatedCount = input.eventIds.length;
         }

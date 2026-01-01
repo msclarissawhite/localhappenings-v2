@@ -2052,16 +2052,9 @@
 - [x] Add seriesId field documentation to CSV_IMPORT_GUIDE.md
 - [x] Update event_upload_template.csv with seriesId column
 - [x] Create REFERENCE_IDS.md with accessibility field IDs and event type IDs
-- [x] Update USER_MANUAL.md with series CSV import instructions
+- [ ] Update USER_MANUAL.md with series CSV import instructions
 
 ## Admin Dashboard Enhancements (Jan 2026)
 - [x] Add "Select Filtered" button to Published Events tab (keeps existing "Select All")
 - [x] Add time editing capability to batch edit (edit times across different dates)
 - [x] Add "Select Filtered" button to Claim Assignment page
-
-## Batch Edit Enhancements - Event Types & Accessibility (Jan 2026)
-- [x] Add event type selection to batch edit modal
-- [x] Add accessibility features checkboxes to batch edit modal
-- [x] Update backend batchUpdate procedure to support event types
-- [x] Update backend batchUpdate procedure to support accessibility features
-- [x] Test batch editing event types and accessibility
