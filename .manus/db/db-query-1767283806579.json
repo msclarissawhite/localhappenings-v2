@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO eventTypes (name, category) VALUES\n('Pub Trivia', 'community-social'),\n('Board Game Nights', 'community-social'),\n('Book Clubs', 'community-social'),\n('Coffee Meetups', 'community-social'),\n('Networking Events', 'community-social'),\n('Speed Dating', 'community-social'),\n('Karaoke', 'community-social'),\n('Open Mic Nights', 'community-social'),\n('Potlucks', 'community-social'),\n('Craft Circles', 'community-social');",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute INSERT INTO eventTypes (name, category) VALUES\n('Pub Trivia', 'community-social'),\n('Board Game Nights', 'community-social'),\n('Book Clubs', 'community-social'),\n('Coffee Meetups', 'community-social'),\n('Networking Events', 'community-social'),\n('Speed Dating', 'community-social'),\n('Karaoke', 'community-social'),\n('Open Mic Nights', 'community-social'),\n('Potlucks', 'community-social'),\n('Craft Circles', 'community-social');",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 84
+}

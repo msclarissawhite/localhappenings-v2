@@ -20,6 +20,7 @@ import { collectionsRouter } from "./collections-router";
 import { bannerRouter } from "./banner-router";
 import { homepageFeaturedRouter } from "./homepage-featured-router";
 import { contactTemplatesRouter } from "./contact-templates-router";
+import { seriesRouter } from "./series-router";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -44,6 +45,7 @@ export const appRouter = router({
   userAuth: userAuthRouter,
   savedLocations: savedLocationsRouter,
   savedEvents: savedEventsRouter,
+  series: seriesRouter,
   featureRequests: featureRequestsRouter,
   donations: donationsRouter,
   feedback: feedbackRouter,

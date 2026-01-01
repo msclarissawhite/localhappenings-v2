@@ -1,4 +1,4 @@
-import { date, decimal, int, json, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { mysqlTable, int, varchar, text, timestamp, mysqlEnum, decimal, date, json } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -53,6 +53,9 @@ export const events = mysqlTable("events", {
   // Recurrence
   isRecurring: int("isRecurring").default(0).notNull(), // 0 = false, 1 = true
   recurrenceType: mysqlEnum("recurrenceType", ["one-time", "weekly", "monthly", "seasonal"]).default("one-time"),
+  
+  // Series Grouping
+  seriesId: int("seriesId"), // Links to eventSeries table for recurring event grouping
   
   // Cost
   isFree: int("isFree").default(0).notNull(),
@@ -120,6 +123,24 @@ export const events = mysqlTable("events", {
 
 export type Event = typeof events.$inferSelect;
 export type InsertEvent = typeof events.$inferInsert;
+
+/**
+ * Event series - Groups of recurring events (e.g., "Weekly Trivia at The Pub")
+ */
+export const eventSeries = mysqlTable("eventSeries", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(), // e.g., "Weekly Trivia at The Pub"
+  description: text("description"), // Optional description of the series
+  slug: varchar("slug", { length: 255 }).notNull().unique(), // URL-friendly identifier
+  organizerId: int("organizerId").notNull(), // Links to organizers table
+  imageUrl: text("imageUrl"), // Optional series image
+  isActive: int("isActive").default(1).notNull(), // 0 = archived, 1 = active
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type EventSeries = typeof eventSeries.$inferSelect;
+export type InsertEventSeries = typeof eventSeries.$inferInsert;
 
 /**
  * Event types/tags - Many-to-many relationship with events
@@ -198,13 +219,12 @@ export const collections = mysqlTable("collections", {
   imageUrl: text("imageUrl"),
   // Filter criteria stored as JSON
   eventTypeIds: json("eventTypeIds").$type<number[]>(), // Array of event type IDs
-  provinces: json("provinces").$type<string[]>(), // Array of province codes
-  municipalities: json("municipalities").$type<string[]>(), // Array of municipality names
-  startDate: date("startDate"), // Optional start date for seasonal collections
-  endDate: date("endDate"), // Optional end date for seasonal collections
-  isActive: int("isActive").default(1).notNull(),
-  isPublished: int("isPublished").default(0).notNull(), // Whether collection landing page is publicly visible
+  provinces: json("provinces").$type<string[]>(),
+  municipalities: json("municipalities").$type<string[]>(),
+  startDate: date("startDate"),
+  endDate: date("endDate"),
   sortOrder: int("sortOrder").default(0).notNull(),
+  isPublished: int("isPublished").default(0).notNull(), // 0 = draft, 1 = published
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -222,18 +242,19 @@ export const collectionToEvents = mysqlTable("collectionToEvents", {
 });
 
 /**
- * Organizer accounts - Separate from admin users, uses magic link authentication
+ * Organizers table - Stores organizer accounts for event management
  */
 export const organizers = mysqlTable("organizers", {
   id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 320 }).notNull().unique(),
-  name: varchar("name", { length: 255 }),
-  organizationName: varchar("organizationName", { length: 255 }),
   phone: varchar("phone", { length: 50 }),
-  isVerified: int("isVerified").default(0).notNull(), // 0 = false, 1 = true
+  website: text("website"),
+  organizerType: mysqlEnum("organizerType", ["business", "nonprofit", "community", "municipality", "school-library", "other"]),
+  loginMethod: varchar("loginMethod", { length: 64 }).default("email").notNull(), // "email" for magic link, "oauth" for Manus OAuth
+  isVerified: int("isVerified").default(0).notNull(), // 0 = unverified, 1 = verified (auto-approval)
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  lastLoginAt: timestamp("lastLoginAt"),
 });
 
 export type Organizer = typeof organizers.$inferSelect;
@@ -244,10 +265,9 @@ export type InsertOrganizer = typeof organizers.$inferInsert;
  */
 export const magicLinkTokens = mysqlTable("magicLinkTokens", {
   id: int("id").autoincrement().primaryKey(),
-  organizerId: int("organizerId").notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
   token: varchar("token", { length: 255 }).notNull().unique(),
   expiresAt: timestamp("expiresAt").notNull(),
-  usedAt: timestamp("usedAt"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
@@ -255,35 +275,24 @@ export type MagicLinkToken = typeof magicLinkTokens.$inferSelect;
 export type InsertMagicLinkToken = typeof magicLinkTokens.$inferInsert;
 
 /**
- * Saved locations for organizers - Remembers frequently used venues
+ * Saved locations for organizers - Reusable venue information
  */
 export const savedLocations = mysqlTable("savedLocations", {
   id: int("id").autoincrement().primaryKey(),
   organizerId: int("organizerId").notNull(),
-  
-  // Location name/label
-  name: varchar("name", { length: 255 }).notNull(), // e.g., "Main Library", "Community Center"
-  
-  // Location details (same fields as events table)
+  name: varchar("name", { length: 255 }).notNull(), // e.g., "Halifax Central Library"
   province: varchar("province", { length: 100 }).notNull(),
   municipality: varchar("municipality", { length: 150 }).notNull(),
   neighborhoodCommunity: varchar("neighborhoodCommunity", { length: 150 }),
   venue: text("venue"),
   address: text("address"),
-  latitude: decimal("latitude", { precision: 10, scale: 7 }), // Geocoded latitude (-90 to 90)
-  longitude: decimal("longitude", { precision: 10, scale: 7 }), // Geocoded longitude (-180 to 180)
-  
-  // Accessibility info (stored as JSON, same structure as events)
-  accessibility: text("accessibility").notNull(),
-  
-  // Indoor/Outdoor defaults
+  latitude: decimal("latitude", { precision: 10, scale: 7 }),
+  longitude: decimal("longitude", { precision: 10, scale: 7 }),
+  accessibility: text("accessibility"), // JSON string with accessibility info
   isIndoor: int("isIndoor").default(0).notNull(),
   isOutdoor: int("isOutdoor").default(0).notNull(),
-  isMixed: int("isMixed").default(0).notNull(), // Mixed Indoor/Outdoor
-  
-  // Default location flag - only one location per organizer can be default
-  isDefault: int("isDefault").default(0).notNull(),
-  
+  isMixed: int("isMixed").default(0).notNull(),
+  isDefault: int("isDefault").default(0).notNull(), // 0 = not default, 1 = default location
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -292,20 +301,65 @@ export type SavedLocation = typeof savedLocations.$inferSelect;
 export type InsertSavedLocation = typeof savedLocations.$inferInsert;
 
 /**
- * Saved events for users - Bookmarking system with email reminders
+ * Contact info templates for organizers - Reusable contact information
+ */
+export const contactTemplates = mysqlTable("contactTemplates", {
+  id: int("id").autoincrement().primaryKey(),
+  organizerId: int("organizerId").notNull(),
+  name: varchar("name", { length: 255 }).notNull(), // e.g., "Business Contact", "Personal Contact"
+  organizerName: varchar("organizerName", { length: 255 }),
+  organizerEmail: varchar("organizerEmail", { length: 320 }),
+  organizerPhone: varchar("organizerPhone", { length: 50 }),
+  organizerWebsite: text("organizerWebsite"),
+  publicContactName: varchar("publicContactName", { length: 255 }),
+  publicContactEmail: varchar("publicContactEmail", { length: 320 }),
+  publicContactPhone: varchar("publicContactPhone", { length: 50 }),
+  isDefault: int("isDefault").default(0).notNull(), // 0 = not default, 1 = default template
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type ContactTemplate = typeof contactTemplates.$inferSelect;
+export type InsertContactTemplate = typeof contactTemplates.$inferInsert;
+
+/**
+ * Event templates for organizers - Reusable event configurations
+ */
+export const eventTemplates = mysqlTable("eventTemplates", {
+  id: int("id").autoincrement().primaryKey(),
+  organizerId: int("organizerId").notNull(),
+  name: varchar("name", { length: 255 }).notNull(), // e.g., "Weekly Storytime Template"
+  templateData: text("templateData").notNull(), // JSON string containing all event fields except date/time
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type EventTemplate = typeof eventTemplates.$inferSelect;
+export type InsertEventTemplate = typeof eventTemplates.$inferInsert;
+
+/**
+ * Organizer images library - Reusable images for events
+ */
+export const organizerImages = mysqlTable("organizerImages", {
+  id: int("id").autoincrement().primaryKey(),
+  organizerId: int("organizerId").notNull(),
+  imageUrl: text("imageUrl").notNull(),
+  fileName: varchar("fileName", { length: 255 }).notNull(),
+  description: text("description"), // Optional description for organizing images
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type OrganizerImage = typeof organizerImages.$inferSelect;
+export type InsertOrganizerImage = typeof organizerImages.$inferInsert;
+
+/**
+ * Saved events for users - Bookmark events with reminder preferences
  */
 export const savedEvents = mysqlTable("savedEvents", {
   id: int("id").autoincrement().primaryKey(),
   userId: int("userId").notNull(),
   eventId: int("eventId").notNull(),
-  
-  // Email reminder preferences
-  reminderPreference: mysqlEnum("reminderPreference", ["none", "24h", "48h", "both"]).default("24h").notNull(),
-  
-  // Tracking
-  reminder24hSent: int("reminder24hSent").default(0).notNull(), // Boolean: has 24h reminder been sent?
-  reminder48hSent: int("reminder48hSent").default(0).notNull(), // Boolean: has 48h reminder been sent?
-  
+  reminderPreference: mysqlEnum("reminderPreference", ["none", "24h", "48h", "both"]).default("none").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
@@ -313,31 +367,17 @@ export type SavedEvent = typeof savedEvents.$inferSelect;
 export type InsertSavedEvent = typeof savedEvents.$inferInsert;
 
 /**
- * Feature requests - User-submitted feature ideas with upvoting
+ * Feature requests from users
  */
 export const featureRequests = mysqlTable("featureRequests", {
   id: int("id").autoincrement().primaryKey(),
-  
-  // Request details
   title: varchar("title", { length: 255 }).notNull(),
   description: text("description").notNull(),
-  
-  // Submitter info (optional - can be anonymous or authenticated)
-  userId: int("userId"), // null if anonymous
-  submitterName: varchar("submitterName", { length: 100 }), // For anonymous submissions
-  submitterEmail: varchar("submitterEmail", { length: 255 }), // For notifications
-  
-  // Status management
-  status: mysqlEnum("status", ["pending", "under_review", "planned", "in_progress", "completed", "declined"]).default("pending").notNull(),
-  adminNotes: text("adminNotes"), // Internal notes for admins
-  
-  // ClickUp integration
-  clickupTaskId: varchar("clickupTaskId", { length: 100 }), // ClickUp task ID for two-way sync
-  clickupTaskUrl: text("clickupTaskUrl"), // Direct link to ClickUp task
-  
-  // Metrics
-  upvoteCount: int("upvoteCount").default(0).notNull(),
-  
+  submitterName: varchar("submitterName", { length: 255 }),
+  submitterEmail: varchar("submitterEmail", { length: 320 }),
+  upvotes: int("upvotes").default(0).notNull(),
+  status: mysqlEnum("status", ["proposed", "under-consideration", "in-review", "parked", "duplicate", "rejected", "approved-for-development"]).default("proposed").notNull(),
+  clickupTaskId: text("clickupTaskId"), // ClickUp task ID for two-way sync
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -351,66 +391,25 @@ export type InsertFeatureRequest = typeof featureRequests.$inferInsert;
 export const featureRequestUpvotes = mysqlTable("featureRequestUpvotes", {
   id: int("id").autoincrement().primaryKey(),
   featureRequestId: int("featureRequestId").notNull(),
-  userId: int("userId").notNull(),
+  userIdentifier: varchar("userIdentifier", { length: 255 }).notNull(), // IP address or user ID
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
-export type FeatureRequestUpvote = typeof featureRequestUpvotes.$inferSelect;
-export type InsertFeatureRequestUpvote = typeof featureRequestUpvotes.$inferInsert;
-
 /**
- * Featured events - Paid promotion for events to appear at top of browse/archive pages
- * $10 per week, 1-8 weeks maximum
- */
-export const featuredEvents = mysqlTable("featuredEvents", {
-  id: int("id").autoincrement().primaryKey(),
-  eventId: int("eventId").notNull(),
-  organizerId: int("organizerId").notNull(),
-  
-  // Duration and pricing
-  weeksPurchased: int("weeksPurchased").notNull(), // 1-8 weeks
-  startDate: timestamp("startDate").notNull(),
-  endDate: timestamp("endDate").notNull(), // Calculated: startDate + (weeksPurchased * 7 days)
-  amountPaid: int("amountPaid").notNull(), // In cents: weeksPurchased * 1000 ($10 per week)
-  
-  // Stripe payment tracking
-  stripePaymentIntentId: varchar("stripePaymentIntentId", { length: 255 }).notNull(),
-  
-  // Status
-  status: mysqlEnum("status", ["active", "expired"]).default("active").notNull(),
-  
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-});
-
-export type FeaturedEvent = typeof featuredEvents.$inferSelect;
-export type InsertFeaturedEvent = typeof featuredEvents.$inferInsert;
-
-/**
- * Donations - Voluntary financial support from community members
- * Supports one-time and recurring monthly donations
+ * Donations from Buy Me a Coffee
  */
 export const donations = mysqlTable("donations", {
   id: int("id").autoincrement().primaryKey(),
-  
-  // Donor information
-  donorName: varchar("donorName", { length: 255 }), // null if anonymous
-  donorEmail: varchar("donorEmail", { length: 320 }).notNull(), // For receipt, not displayed publicly
-  message: text("message"), // Optional message (max 200 chars, enforced in frontend)
-  
-  // Amount
-  amount: int("amount").notNull(), // In cents
-  
-  // Recurring vs one-time
-  isRecurring: int("isRecurring").default(0).notNull(), // 0 = one-time, 1 = monthly recurring
-  
-  // Stripe payment tracking
-  stripePaymentIntentId: varchar("stripePaymentIntentId", { length: 255 }), // For one-time donations
-  stripeSubscriptionId: varchar("stripeSubscriptionId", { length: 255 }), // For recurring donations
-  
-  // Privacy preferences
-  isAnonymous: int("isAnonymous").default(0).notNull(), // 0 = show name, 1 = show "Anonymous Supporter"
-  showAmount: int("showAmount").default(1).notNull(), // 0 = hide amount, 1 = show amount on donor wall
-  
+  donorName: varchar("donorName", { length: 255 }),
+  donorEmail: varchar("donorEmail", { length: 320 }),
+  amount: int("amount").notNull(), // in cents
+  message: text("message"),
+  isRecurring: int("isRecurring").default(0).notNull(),
+  stripePaymentIntentId: text("stripePaymentIntentId"), // Also used for Buy Me a Coffee transaction ID
+  stripeSubscriptionId: text("stripeSubscriptionId"),
+  stripeCustomerId: text("stripeCustomerId"),
+  isAnonymous: int("isAnonymous").default(0).notNull(),
+  showAmount: int("showAmount").default(1).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
@@ -418,125 +417,30 @@ export type Donation = typeof donations.$inferSelect;
 export type InsertDonation = typeof donations.$inferInsert;
 
 /**
- * Organizer Image Library - Reusable images for events
- * Allows organizers to upload and manage a library of photos
- * that can be reused across multiple events
- */
-export const organizerImages = mysqlTable("organizerImages", {
-  id: int("id").autoincrement().primaryKey(),
-  userId: int("userId").notNull(), // References users.id
-  
-  // Image details
-  url: text("url").notNull(), // S3 URL
-  fileKey: text("fileKey").notNull(), // S3 file key for deletion
-  fileName: varchar("fileName", { length: 255 }).notNull(), // Original filename
-  
-  // Optional metadata
-  description: text("description"), // Optional description/caption
-  
-  // Timestamps
-  uploadedAt: timestamp("uploadedAt").defaultNow().notNull(),
-});
-
-export type OrganizerImage = typeof organizerImages.$inferSelect;
-export type InsertOrganizerImage = typeof organizerImages.$inferInsert;
-
-/**
- * Event Templates - Reusable event configurations
- * Allows organizers to save recurring event types as templates
- * for faster event creation with pre-filled fields
- */
-export const eventTemplates = mysqlTable("eventTemplates", {
-  id: int("id").autoincrement().primaryKey(),
-  userId: int("userId").notNull(), // References users.id (organizer)
-  
-  // Template metadata
-  templateName: varchar("templateName", { length: 255 }).notNull(), // User-friendly name
-  description: text("description"), // Optional description of what this template is for
-  
-  // Event data (JSON-encoded event fields)
-  templateData: json("templateData").notNull(), // Stores all event fields as JSON
-  
-  // Timestamps
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-});
-
-export type EventTemplate = typeof eventTemplates.$inferSelect;
-export type InsertEventTemplate = typeof eventTemplates.$inferInsert;
-
-/**
- * Event Feedback - Post-event attendee feedback for listing accuracy
- * Helps identify reliable organizers and improve data quality
+ * Event feedback from attendees
  */
 export const eventFeedback = mysqlTable("eventFeedback", {
   id: int("id").autoincrement().primaryKey(),
-  eventId: int("eventId").notNull(), // References events.id
-  
-  // Feedback responses
-  attended: int("attended").notNull(), // Did they actually attend? (0=no, 1=yes)
-  accuracyRating: int("accuracyRating"), // 1-5 scale, null if didn't attend
-  helpfulDetails: json("helpfulDetails"), // Array of helpful categories
-  inaccurateDetails: json("inaccurateDetails"), // Array of inaccurate categories
-  comments: text("comments"), // Optional free-text feedback
-  
-  // Metadata
-  submittedAt: timestamp("submittedAt").defaultNow().notNull(),
-  
-  // ClickUp sync tracking
-  syncedToClickUp: int("syncedToClickUp").default(0).notNull(), // 0=not synced, 1=synced
-  clickUpSyncedAt: timestamp("clickUpSyncedAt"),
-  
-  // Spam detection
-  isSpam: int("isSpam").default(0).notNull(), // 0=not spam, 1=flagged as spam
-  spamReason: text("spamReason"), // Reason for spam flag (duplicate, rapid_submission, identical_text)
+  eventId: int("eventId").notNull(),
+  attended: int("attended").default(0).notNull(), // 0 = didn't attend, 1 = attended
+  accuracyRating: int("accuracyRating"), // 1-5 stars for listing accuracy
+  comment: text("comment"),
+  submitterEmail: varchar("submitterEmail", { length: 320 }),
+  isSpam: int("isSpam").default(0).notNull(), // 0 = not spam, 1 = flagged as spam
+  spamReason: text("spamReason"), // Reason for spam flag
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
 export type EventFeedback = typeof eventFeedback.$inferSelect;
 export type InsertEventFeedback = typeof eventFeedback.$inferInsert;
 
 /**
- * Event claim tokens - For assigning pre-seeded events to organizers
- */
-export const eventClaimTokens = mysqlTable("event_claim_tokens", {
-  id: int("id").autoincrement().primaryKey(),
-  token: varchar("token", { length: 64 }).notNull().unique(),
-  organizerEmail: varchar("organizerEmail", { length: 320 }).notNull(),
-  eventIds: text("eventIds").notNull(), // JSON array of event IDs to claim
-  claimed: int("claimed").default(0).notNull(), // 0 = not claimed, 1 = claimed
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  claimedAt: timestamp("claimedAt"),
-  expiresAt: timestamp("expiresAt").notNull(), // Tokens expire after 30 days
-});
-
-export type EventClaimToken = typeof eventClaimTokens.$inferSelect;
-export type InsertEventClaimToken = typeof eventClaimTokens.$inferInsert;
-
-/**
- * Event Edit History - Tracks all admin edits to events for audit trail
- */
-export const eventEditHistory = mysqlTable("eventEditHistory", {
-  id: int("id").autoincrement().primaryKey(),
-  eventId: int("eventId").notNull(), // References events.id
-  adminId: int("adminId").notNull(), // References users.id
-  adminName: text("adminName"), // Snapshot of admin name at time of edit
-  changedFields: json("changedFields"), // Object with field names and their old/new values
-  editedAt: timestamp("editedAt").defaultNow().notNull(),
-});
-
-export type EventEditHistory = typeof eventEditHistory.$inferSelect;
-export type InsertEventEditHistory = typeof eventEditHistory.$inferInsert;
-
-/**
- * Feedback Response Templates - Reusable email templates for responding to organizers
- * Helps admins quickly respond to common organizer questions about feedback
+ * Feedback templates for common responses
  */
 export const feedbackTemplates = mysqlTable("feedbackTemplates", {
-  id: int("id").primaryKey().autoincrement(),
+  id: int("id").autoincrement().primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
-  subject: varchar("subject", { length: 500 }).notNull(),
-  body: text("body").notNull(),
-  category: varchar("category", { length: 100 }), // e.g., "accuracy_improvement", "general_inquiry", "technical_support"
+  content: text("content").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -545,48 +449,43 @@ export type FeedbackTemplate = typeof feedbackTemplates.$inferSelect;
 export type InsertFeedbackTemplate = typeof feedbackTemplates.$inferInsert;
 
 /**
- * Event Type Clicks - Analytics tracking for tag filter usage
- * Tracks when users click/filter by event types to understand interest patterns
+ * Event type clicks for analytics
  */
 export const eventTypeClicks = mysqlTable("eventTypeClicks", {
   id: int("id").autoincrement().primaryKey(),
-  eventTypeId: int("eventTypeId").notNull(), // References eventTypes.id
+  eventTypeId: int("eventTypeId").notNull(),
   clickedAt: timestamp("clickedAt").defaultNow().notNull(),
-  // Optional: track user session or IP for more detailed analytics
-  sessionId: varchar("sessionId", { length: 64 }),
 });
 
 export type EventTypeClick = typeof eventTypeClicks.$inferSelect;
 export type InsertEventTypeClick = typeof eventTypeClicks.$inferInsert;
 
-
 /**
- * Contact info templates for organizers
- * Allows organizers to save and reuse different contact information for different event types
- * (e.g., different contact person for kids events vs adult workshops)
+ * Event claim tokens for pre-seeded events
  */
-export const contactInfoTemplates = mysqlTable("contactInfoTemplates", {
+export const eventClaimTokens = mysqlTable("eventClaimTokens", {
   id: int("id").autoincrement().primaryKey(),
-  organizerId: int("organizerId").notNull(),
-  
-  // Template name/label
-  name: varchar("name", { length: 255 }).notNull(), // e.g., "Kids Events Contact", "Workshop Coordinator"
-  
-  // Contact details
-  contactName: varchar("contactName", { length: 255 }).notNull(),
-  contactEmail: varchar("contactEmail", { length: 320 }),
-  contactPhone: varchar("contactPhone", { length: 50 }),
-  contactWebsite: text("contactWebsite"),
-  
-  // Whether this contact info should be displayed publicly by default
-  displayPublicly: int("displayPublicly").default(1).notNull(),
-  
-  // Default template flag - only one template per organizer can be default
-  isDefault: int("isDefault").default(0).notNull(),
-  
+  email: varchar("email", { length: 320 }).notNull(),
+  token: varchar("token", { length: 255 }).notNull().unique(),
+  eventIds: json("eventIds").$type<number[]>().notNull(), // Array of event IDs to claim
+  expiresAt: timestamp("expiresAt").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
-export type ContactInfoTemplate = typeof contactInfoTemplates.$inferSelect;
-export type InsertContactInfoTemplate = typeof contactInfoTemplates.$inferInsert;
+export type EventClaimToken = typeof eventClaimTokens.$inferSelect;
+export type InsertEventClaimToken = typeof eventClaimTokens.$inferInsert;
+
+/**
+ * Event change history for admin tracking
+ */
+export const eventChangeHistory = mysqlTable("eventChangeHistory", {
+  id: int("id").autoincrement().primaryKey(),
+  eventId: int("eventId").notNull(),
+  changedBy: int("changedBy").notNull(), // admin user id
+  changeType: mysqlEnum("changeType", ["created", "edited", "status-changed", "deleted"]).notNull(),
+  changeDetails: text("changeDetails"), // JSON string with before/after values
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type EventChangeHistory = typeof eventChangeHistory.$inferSelect;
+export type InsertEventChangeHistory = typeof eventChangeHistory.$inferInsert;

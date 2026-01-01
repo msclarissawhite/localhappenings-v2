@@ -1,6 +1,6 @@
 import { eq, and } from "drizzle-orm";
 import { getDb } from "./db";
-import { contactInfoTemplates } from "../drizzle/schema";
+import { contactTemplates } from "../drizzle/schema";
 
 /**
  * Get all contact templates for an organizer
@@ -11,9 +11,9 @@ export async function getContactTemplatesByOrganizerId(organizerId: number) {
   
   return await db
     .select()
-    .from(contactInfoTemplates)
-    .where(eq(contactInfoTemplates.organizerId, organizerId))
-    .orderBy(contactInfoTemplates.isDefault, contactInfoTemplates.createdAt);
+    .from(contactTemplates)
+    .where(eq(contactTemplates.organizerId, organizerId))
+    .orderBy(contactTemplates.isDefault, contactTemplates.createdAt);
 }
 
 /**
@@ -35,18 +35,18 @@ export async function createContactTemplate(data: {
   // If setting as default, unset any existing default
   if (data.isDefault === 1) {
     await db
-      .update(contactInfoTemplates)
+      .update(contactTemplates)
       .set({ isDefault: 0 })
-      .where(eq(contactInfoTemplates.organizerId, data.organizerId));
+      .where(eq(contactTemplates.organizerId, data.organizerId));
   }
 
-  const [result] = await db.insert(contactInfoTemplates).values(data);
+  const [result] = await db.insert(contactTemplates).values(data);
   
   // Fetch and return the created template
   const [created] = await db
     .select()
-    .from(contactInfoTemplates)
-    .where(eq(contactInfoTemplates.id, result.insertId))
+    .from(contactTemplates)
+    .where(eq(contactTemplates.id, result.insertId))
     .limit(1);
   
   if (!created) throw new Error("Failed to retrieve created template");
@@ -75,11 +75,11 @@ export async function updateContactTemplate(
   // Verify ownership
   const existing = await db
     .select()
-    .from(contactInfoTemplates)
+    .from(contactTemplates)
     .where(
       and(
-        eq(contactInfoTemplates.id, id),
-        eq(contactInfoTemplates.organizerId, organizerId)
+        eq(contactTemplates.id, id),
+        eq(contactTemplates.organizerId, organizerId)
       )
     )
     .limit(1);
@@ -91,21 +91,21 @@ export async function updateContactTemplate(
   // If setting as default, unset any existing default
   if (data.isDefault === 1) {
     await db
-      .update(contactInfoTemplates)
+      .update(contactTemplates)
       .set({ isDefault: 0 })
-      .where(eq(contactInfoTemplates.organizerId, organizerId));
+      .where(eq(contactTemplates.organizerId, organizerId));
   }
 
   await db
-    .update(contactInfoTemplates)
+    .update(contactTemplates)
     .set(data)
-    .where(eq(contactInfoTemplates.id, id));
+    .where(eq(contactTemplates.id, id));
   
   // Fetch and return the updated template
   const [updated] = await db
     .select()
-    .from(contactInfoTemplates)
-    .where(eq(contactInfoTemplates.id, id))
+    .from(contactTemplates)
+    .where(eq(contactTemplates.id, id))
     .limit(1);
   
   if (!updated) throw new Error("Failed to retrieve updated template");
@@ -122,11 +122,11 @@ export async function deleteContactTemplate(id: number, organizerId: number) {
   // Verify ownership before deleting
   const existing = await db
     .select()
-    .from(contactInfoTemplates)
+    .from(contactTemplates)
     .where(
       and(
-        eq(contactInfoTemplates.id, id),
-        eq(contactInfoTemplates.organizerId, organizerId)
+        eq(contactTemplates.id, id),
+        eq(contactTemplates.organizerId, organizerId)
       )
     )
     .limit(1);
@@ -136,8 +136,8 @@ export async function deleteContactTemplate(id: number, organizerId: number) {
   }
 
   await db
-    .delete(contactInfoTemplates)
-    .where(eq(contactInfoTemplates.id, id));
+    .delete(contactTemplates)
+    .where(eq(contactTemplates.id, id));
 }
 
 /**
@@ -150,11 +150,11 @@ export async function setDefaultContactTemplate(id: number, organizerId: number)
   // Verify ownership
   const existing = await db
     .select()
-    .from(contactInfoTemplates)
+    .from(contactTemplates)
     .where(
       and(
-        eq(contactInfoTemplates.id, id),
-        eq(contactInfoTemplates.organizerId, organizerId)
+        eq(contactTemplates.id, id),
+        eq(contactTemplates.organizerId, organizerId)
       )
     )
     .limit(1);
@@ -165,13 +165,13 @@ export async function setDefaultContactTemplate(id: number, organizerId: number)
 
   // Unset all defaults for this organizer
   await db
-    .update(contactInfoTemplates)
+    .update(contactTemplates)
     .set({ isDefault: 0 })
-    .where(eq(contactInfoTemplates.organizerId, organizerId));
+    .where(eq(contactTemplates.organizerId, organizerId));
 
   // Set the selected template as default
   await db
-    .update(contactInfoTemplates)
+    .update(contactTemplates)
     .set({ isDefault: 1 })
-    .where(eq(contactInfoTemplates.id, id));
+    .where(eq(contactTemplates.id, id));
 }

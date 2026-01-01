@@ -86,6 +86,7 @@ const submitEventSchema = z.object({
   publicContactEmail: z.string().email("Invalid email").optional().or(z.literal("")),
   publicContactPhone: z.string().optional(),
   notes: z.string().optional(),
+  seriesId: z.number().optional(),
 }).refine(
   (data) => {
     // Require either email or phone
@@ -154,6 +155,12 @@ export default function SubmitEvent() {
   // Load contact templates for organizer
   const { data: contactTemplates } = trpc.contactTemplates.list.useQuery(
     { organizerId: organizer?.id || 0 },
+    { enabled: !!organizer }
+  );
+
+  // Load event series for organizer
+  const { data: seriesList } = trpc.series.list.useQuery(
+    undefined,
     { enabled: !!organizer }
   );
 
@@ -1943,10 +1950,53 @@ This transparency helps build trust with your community, even if not every detai
             </div>
           </Card>
 
+          {/* Event Series */}
+          {organizer && seriesList && seriesList.length > 0 && (
+            <Card className="p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground font-semibold text-sm">8</div>
+                <h2 className="text-xl font-semibold">Event Series (Optional)</h2>
+              </div>
+              <p className="text-sm text-muted-foreground mb-4">
+                Link this event to a series (e.g., "Weekly Trivia at The Pub") to help users find all related events together.
+              </p>
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="seriesId">Select Series</Label>
+                  <Select
+                    value={watch("seriesId")?.toString() || "none"}
+                    onValueChange={(value) => {
+                      if (value === "none") {
+                        setValue("seriesId", undefined);
+                      } else {
+                        setValue("seriesId", parseInt(value));
+                      }
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="No series selected" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">No series (standalone event)</SelectItem>
+                      {seriesList.map((series: any) => (
+                        <SelectItem key={series.id} value={series.id.toString()}>
+                          {series.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Don't see your series? Create one in your <Link href="/organizer/dashboard" className="text-primary hover:underline">organizer dashboard</Link>.
+                  </p>
+                </div>
+              </div>
+            </Card>
+          )}
+
           {/* Organizer Details */}
           <Card className="p-6">
             <div className="flex items-center gap-3 mb-4">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground font-semibold text-sm">8</div>
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground font-semibold text-sm">{organizer && seriesList && seriesList.length > 0 ? "9" : "8"}</div>
               <h2 className="text-xl font-semibold">Organizer Details *</h2>
             </div>
             <p className="text-sm text-muted-foreground mb-4">

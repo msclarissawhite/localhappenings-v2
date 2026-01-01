@@ -2005,3 +2005,33 @@
 - [x] Verify it appears in submit form
 - [x] Verify it appears in all filter locations
 - [x] Provide event type ID to user
+
+## Expand Community & Social Event Types
+- [x] Add Pub Trivia event type
+- [x] Add Board Game Nights event type
+- [x] Add Book Clubs event type
+- [x] Add Coffee Meetups event type
+- [x] Add Networking Events event type
+- [x] Add Speed Dating event type
+- [x] Add Karaoke event type
+- [x] Add Open Mic Nights event type
+- [x] Add Potlucks event type
+- [x] Add Craft Circles event type
+- [x] Verify all new types appear in submit form
+- [x] Verify all new types appear in browse filters
+- [ ] Update documentation with new event types
+
+## Event Series Grouping Feature
+- [x] Design database schema for event series (series table with name, description, organizer)
+- [x] Add seriesId foreign key to events table
+- [x] Create tRPC router for series management (create, update, delete, list)
+- [x] Build series creation UI in organizer dashboard
+- [x] Add series selection dropdown to event submission form
+- [ ] Add series selection to event edit forms (admin and organizer)
+- [ ] Create series detail page showing all events in the series
+- [ ] Add series badge/link to event cards
+- [ ] Add series badge/link to event detail pages
+- [ ] Update CSV import to support series assignment
+- [ ] Write vitest tests for series functionality
+- [ ] Update USER_MANUAL.md with series feature
+- [ ] Update ORGANIZER_QUICKSTART_GUIDE.md with series instructions

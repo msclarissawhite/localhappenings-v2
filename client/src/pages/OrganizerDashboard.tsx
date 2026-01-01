@@ -4,11 +4,12 @@ import { trpc } from "@/lib/trpc";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, MapPin, Clock, Edit, Eye, LogOut, MapPinned, Plus, Trash2, Copy, Bookmark, DollarSign, Image, XCircle } from "lucide-react";
+import { Calendar, MapPin, Clock, Edit, Eye, LogOut, MapPinned, Plus, Trash2, Copy, Bookmark, DollarSign, Image, XCircle, Save } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "wouter";
 import { MyImages } from "@/components/MyImages";
 import { EventTemplates } from "@/components/EventTemplates";
+import { SeriesManagement } from "@/components/SeriesManagement";
 
 interface Organizer {
   id: number;
@@ -191,7 +192,7 @@ function SavedEventsContent({ organizerId }: { organizerId: number }) {
 export default function OrganizerDashboard() {
   const [, navigate] = useLocation();
   const [organizer, setOrganizer] = useState<Organizer | null>(null);
-  const [activeTab, setActiveTab] = useState<"events" | "locations" | "contacts" | "saved" | "images" | "templates">("events");
+  const [activeTab, setActiveTab] = useState<"events" | "locations" | "contacts" | "saved" | "images" | "templates" | "series">("events");
 
   useEffect(() => {
     // Check if organizer is logged in
@@ -344,6 +345,14 @@ export default function OrganizerDashboard() {
             <Image className="w-4 h-4 mr-2" />
             My Images
           </Button>
+          <Button
+            variant={activeTab === "series" ? "default" : "ghost"}
+            onClick={() => setActiveTab("series")}
+            className="rounded-b-none"
+          >
+            <Calendar className="w-4 h-4 mr-2" />
+            Event Series
+          </Button>
         </div>
 
         {activeTab === "events" && (
@@ -491,6 +500,7 @@ export default function OrganizerDashboard() {
 
         {activeTab === "images" && <MyImages />}
         {activeTab === "templates" && <EventTemplates />}
+        {activeTab === "series" && <SeriesManagement />}
 
         {activeTab === "contacts" && (
           <div>

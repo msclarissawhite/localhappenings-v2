@@ -1,0 +1,65 @@
+{
+  "query": "SELECT id, name, category FROM eventTypes WHERE category = 'community-social' ORDER BY id DESC LIMIT 11;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT id, name, category FROM eventTypes WHERE category = 'community-social' ORDER BY id DESC LIMIT 11;",
+  "rows": [
+    {
+      "id": "120011",
+      "name": "Craft Circles",
+      "category": "community-social"
+    },
+    {
+      "id": "120010",
+      "name": "Potlucks",
+      "category": "community-social"
+    },
+    {
+      "id": "120009",
+      "name": "Open Mic Nights",
+      "category": "community-social"
+    },
+    {
+      "id": "120008",
+      "name": "Karaoke",
+      "category": "community-social"
+    },
+    {
+      "id": "120007",
+      "name": "Speed Dating",
+      "category": "community-social"
+    },
+    {
+      "id": "120006",
+      "name": "Networking Events",
+      "category": "community-social"
+    },
+    {
+      "id": "120005",
+      "name": "Coffee Meetups",
+      "category": "community-social"
+    },
+    {
+      "id": "120004",
+      "name": "Book Clubs",
+      "category": "community-social"
+    },
+    {
+      "id": "120003",
+      "name": "Board Game Nights",
+      "category": "community-social"
+    },
+    {
+      "id": "120002",
+      "name": "Pub Trivia",
+      "category": "community-social"
+    },
+    {
+      "id": "120001",
+      "name": "Trivia",
+      "category": "community-social"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tcategory\n120011\tCraft Circles\tcommunity-social\n120010\tPotlucks\tcommunity-social\n120009\tOpen Mic Nights\tcommunity-social\n120008\tKaraoke\tcommunity-social\n120007\tSpeed Dating\tcommunity-social\n120006\tNetworking Events\tcommunity-social\n120005\tCoffee Meetups\tcommunity-social\n120004\tBook Clubs\tcommunity-social\n120003\tBoard Game Nights\tcommunity-social\n120002\tPub Trivia\tcommunity-social\n120001\tTrivia\tcommunity-social\n",
+  "stderr": "",
+  "execution_time_ms": 52
+}
