@@ -1,0 +1,31 @@
+{
+  "query": "SELECT DISTINCT category FROM eventTypes;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT DISTINCT category FROM eventTypes;",
+  "rows": [
+    {
+      "category": "arts-culture"
+    },
+    {
+      "category": "family-kids"
+    },
+    {
+      "category": "recreation-sports"
+    },
+    {
+      "category": "health-wellness"
+    },
+    {
+      "category": "community-social"
+    },
+    {
+      "category": "markets-festivals"
+    },
+    {
+      "category": "seasonal"
+    }
+  ],
+  "messages": [],
+  "stdout": "category\narts-culture\nfamily-kids\nrecreation-sports\nhealth-wellness\ncommunity-social\nmarkets-festivals\nseasonal\n",
+  "stderr": "",
+  "execution_time_ms": 54
+}

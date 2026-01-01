@@ -1,0 +1,88 @@
+{
+  "query": "SHOW TABLES;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SHOW TABLES;",
+  "rows": [
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "__drizzle_migrations"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "collectionToEvents"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "collections"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "contactInfoTemplates"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "donations"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "eventEditHistory"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "eventFeedback"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "eventTemplates"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "eventToEventTypes"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "eventTypeClicks"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "eventTypes"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "event_claim_tokens"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "events"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "featureRequestUpvotes"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "featureRequests"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "featuredEvents"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "feedbackTemplates"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "homepageBanners"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "homepageFeaturedEvents"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "magicLinkTokens"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "organizerImages"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "organizers"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "savedEvents"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "savedLocations"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "users"
+    },
+    {
+      "Tables_in_PFhmVPyUG6jUUGKxZvMEwC": "verificationRequests"
+    }
+  ],
+  "messages": [],
+  "stdout": "Tables_in_PFhmVPyUG6jUUGKxZvMEwC\n__drizzle_migrations\ncollectionToEvents\ncollections\ncontactInfoTemplates\ndonations\neventEditHistory\neventFeedback\neventTemplates\neventToEventTypes\neventTypeClicks\neventTypes\nevent_claim_tokens\nevents\nfeatureRequestUpvotes\nfeatureRequests\nfeaturedEvents\nfeedbackTemplates\nhomepageBanners\nhomepageFeaturedEvents\nmagicLinkTokens\norganizerImages\norganizers\nsavedEvents\nsavedLocations\nusers\nverificationRequests\n",
+  "stderr": "",
+  "execution_time_ms": 50
+}

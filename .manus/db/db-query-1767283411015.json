@@ -1,0 +1,42 @@
+{
+  "query": "DESCRIBE eventTypes;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute DESCRIBE eventTypes;",
+  "rows": [
+    {
+      "Field": "id",
+      "Type": "int(11)",
+      "Null": "NO",
+      "Key": "PRI",
+      "Default": "NULL",
+      "Extra": "auto_increment"
+    },
+    {
+      "Field": "name",
+      "Type": "varchar(100)",
+      "Null": "NO",
+      "Key": "UNI",
+      "Default": "NULL",
+      "Extra": ""
+    },
+    {
+      "Field": "category",
+      "Type": "enum('family-kids','arts-culture','community-social','recreation-sports','health-wellness','markets-festivals','seasonal','environment')",
+      "Null": "NO",
+      "Key": "",
+      "Default": "community-social",
+      "Extra": ""
+    },
+    {
+      "Field": "createdAt",
+      "Type": "timestamp",
+      "Null": "NO",
+      "Key": "",
+      "Default": "CURRENT_TIMESTAMP",
+      "Extra": ""
+    }
+  ],
+  "messages": [],
+  "stdout": "Field\tType\tNull\tKey\tDefault\tExtra\nid\tint(11)\tNO\tPRI\tNULL\tauto_increment\nname\tvarchar(100)\tNO\tUNI\tNULL\t\ncategory\tenum('family-kids','arts-culture','community-social','recreation-sports','health-wellness','markets-festivals','seasonal','environment')\tNO\t\tcommunity-social\t\ncreatedAt\ttimestamp\tNO\t\tCURRENT_TIMESTAMP\t\n",
+  "stderr": "",
+  "execution_time_ms": 52
+}

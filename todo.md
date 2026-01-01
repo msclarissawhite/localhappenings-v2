@@ -1999,3 +1999,9 @@
 - [x] Investigate why timeOfDay and costType are returning arrays instead of strings
 - [x] Fix the data type mismatch in the events query
 - [x] Test the fix on /admin page
+
+## Add Trivia Event Type
+- [x] Add "Trivia" event type to database in Community & Social category
+- [x] Verify it appears in submit form
+- [x] Verify it appears in all filter locations
+- [x] Provide event type ID to user

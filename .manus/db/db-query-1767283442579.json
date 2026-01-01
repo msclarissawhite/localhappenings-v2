@@ -1,0 +1,16 @@
+{
+  "query": "SELECT * FROM eventTypes WHERE name = 'Trivia';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT * FROM eventTypes WHERE name = 'Trivia';",
+  "rows": [
+    {
+      "id": "120001",
+      "name": "Trivia",
+      "category": "community-social",
+      "createdAt": "2026-01-01 16:03:57"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tcategory\tcreatedAt\n120001\tTrivia\tcommunity-social\t2026-01-01 16:03:57\n",
+  "stderr": "",
+  "execution_time_ms": 55
+}

@@ -1,0 +1,13 @@
+{
+  "query": "SELECT MAX(id) as max_id FROM eventTypes;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT MAX(id) as max_id FROM eventTypes;",
+  "rows": [
+    {
+      "max_id": "90026"
+    }
+  ],
+  "messages": [],
+  "stdout": "max_id\n90026\n",
+  "stderr": "",
+  "execution_time_ms": 50
+}

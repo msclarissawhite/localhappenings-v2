@@ -1,0 +1,70 @@
+{
+  "query": "SELECT * FROM eventTypes LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT * FROM eventTypes LIMIT 10;",
+  "rows": [
+    {
+      "id": "30001",
+      "name": "Seeing Santa",
+      "category": "family-kids",
+      "createdAt": "2025-12-21 12:23:24"
+    },
+    {
+      "id": "30002",
+      "name": "Storytime / Library Events",
+      "category": "family-kids",
+      "createdAt": "2025-12-21 12:23:24"
+    },
+    {
+      "id": "30003",
+      "name": "Skating",
+      "category": "family-kids",
+      "createdAt": "2025-12-21 12:23:24"
+    },
+    {
+      "id": "30004",
+      "name": "Swimming",
+      "category": "family-kids",
+      "createdAt": "2025-12-21 12:23:24"
+    },
+    {
+      "id": "30005",
+      "name": "Petting Zoos / Farms",
+      "category": "family-kids",
+      "createdAt": "2025-12-21 12:23:24"
+    },
+    {
+      "id": "30006",
+      "name": "Kids Crafts",
+      "category": "family-kids",
+      "createdAt": "2025-12-21 12:23:24"
+    },
+    {
+      "id": "30007",
+      "name": "Puppet Shows",
+      "category": "family-kids",
+      "createdAt": "2025-12-21 12:23:24"
+    },
+    {
+      "id": "30008",
+      "name": "Face Painting",
+      "category": "family-kids",
+      "createdAt": "2025-12-21 12:23:24"
+    },
+    {
+      "id": "30009",
+      "name": "Live Music",
+      "category": "arts-culture",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "30010",
+      "name": "Theatre & Performances",
+      "category": "arts-culture",
+      "createdAt": "2025-12-21 12:23:33"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tcategory\tcreatedAt\n30001\tSeeing Santa\tfamily-kids\t2025-12-21 12:23:24\n30002\tStorytime / Library Events\tfamily-kids\t2025-12-21 12:23:24\n30003\tSkating\tfamily-kids\t2025-12-21 12:23:24\n30004\tSwimming\tfamily-kids\t2025-12-21 12:23:24\n30005\tPetting Zoos / Farms\tfamily-kids\t2025-12-21 12:23:24\n30006\tKids Crafts\tfamily-kids\t2025-12-21 12:23:24\n30007\tPuppet Shows\tfamily-kids\t2025-12-21 12:23:24\n30008\tFace Painting\tfamily-kids\t2025-12-21 12:23:24\n30009\tLive Music\tarts-culture\t2025-12-21 12:23:33\n30010\tTheatre & Performances\tarts-culture\t2025-12-21 12:23:33\n",
+  "stderr": "",
+  "execution_time_ms": 59
+}

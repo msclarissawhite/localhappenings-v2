@@ -1,0 +1,52 @@
+{
+  "query": "SELECT * FROM eventTypes WHERE category LIKE '%Community%' ORDER BY name;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT * FROM eventTypes WHERE category LIKE '%Community%' ORDER BY name;",
+  "rows": [
+    {
+      "id": "30016",
+      "name": "Community Meetings",
+      "category": "community-social",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "30017",
+      "name": "Fundraisers & Charity Events",
+      "category": "community-social",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "30018",
+      "name": "Language Meetups",
+      "category": "community-social",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "30020",
+      "name": "Pride Events",
+      "category": "community-social",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "30019",
+      "name": "Religious / Faith-Based Events",
+      "category": "community-social",
+      "createdAt": "2025-12-21 12:23:33"
+    },
+    {
+      "id": "90004",
+      "name": "Socials & Clubs",
+      "category": "community-social",
+      "createdAt": "2025-12-31 19:49:08"
+    },
+    {
+      "id": "30021",
+      "name": "Workshops & Classes",
+      "category": "community-social",
+      "createdAt": "2025-12-21 12:23:33"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tcategory\tcreatedAt\n30016\tCommunity Meetings\tcommunity-social\t2025-12-21 12:23:33\n30017\tFundraisers & Charity Events\tcommunity-social\t2025-12-21 12:23:33\n30018\tLanguage Meetups\tcommunity-social\t2025-12-21 12:23:33\n30020\tPride Events\tcommunity-social\t2025-12-21 12:23:33\n30019\tReligious / Faith-Based Events\tcommunity-social\t2025-12-21 12:23:33\n90004\tSocials & Clubs\tcommunity-social\t2025-12-31 19:49:08\n30021\tWorkshops & Classes\tcommunity-social\t2025-12-21 12:23:33\n",
+  "stderr": "",
+  "execution_time_ms": 51
+}
