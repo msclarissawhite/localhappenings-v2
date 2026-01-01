@@ -1675,11 +1675,54 @@ export default function AdminDashboard() {
                 <p className="text-muted-foreground">Loading closed events...</p>
               </div>
             ) : closedEvents && 'events' in closedEvents && closedEvents.events.length > 0 ? (
-              <div className="space-y-4">
-                {closedEvents.events.map((event) => (
-                  <Card key={event.id} className="p-6">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
+              <>
+                {selectedEvents.size > 0 && (
+                  <div className="mb-4 flex gap-2">
+                    <Button
+                      variant="default"
+                      onClick={() => {
+                        if (confirm(`Are you sure you want to republish ${selectedEvents.size} selected event(s)? They will become visible to the public again.`)) {
+                          const eventIds = Array.from(selectedEvents);
+                          Promise.all(
+                            eventIds.map(eventId =>
+                              updateStatusMutation.mutateAsync({
+                                eventId,
+                                status: "published",
+                                reviewNotes: "Bulk republished from Closed Events tab"
+                              })
+                            )
+                          ).then(() => {
+                            toast.success(`Successfully republished ${eventIds.length} event(s)`);
+                            setSelectedEvents(new Set());
+                            refetchClosedEvents();
+                            refetchPublishedEvents();
+                          }).catch((error) => {
+                            toast.error("Failed to republish some events");
+                          });
+                        }
+                      }}
+                    >
+                      Bulk Republish ({selectedEvents.size})
+                    </Button>
+                  </div>
+                )}
+                <div className="space-y-4">
+                  {closedEvents.events.map((event) => (
+                    <Card key={event.id} className="p-6">
+                      <div className="flex items-start gap-4">
+                        <Checkbox
+                          checked={selectedEvents.has(event.id)}
+                          onCheckedChange={(checked) => {
+                            const newSelected = new Set(selectedEvents);
+                            if (checked) {
+                              newSelected.add(event.id);
+                            } else {
+                              newSelected.delete(event.id);
+                            }
+                            setSelectedEvents(newSelected);
+                          }}
+                        />
+                        <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
                           <h3 className="text-lg font-semibold">{event.name}</h3>
                           <Badge variant="secondary">Closed</Badge>
@@ -1729,11 +1772,12 @@ export default function AdminDashboard() {
                           <CheckCircle className="w-4 h-4 mr-2" />
                           Reopen Event
                         </Button>
+                        </div>
                       </div>
-                    </div>
-                  </Card>
-                ))}
-              </div>
+                    </Card>
+                  ))}
+                </div>
+              </>
             ) : (
               <Card className="p-12 text-center">
                 <XCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />

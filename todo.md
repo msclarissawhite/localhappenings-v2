@@ -1981,3 +1981,10 @@
 - [x] Add confirmation dialog for bulk status changes
 - [x] Modify CSV download to respect current filters and sorting
 - [x] Update backend to support closed and pending statuses
+
+## Bulk Republish Feature
+- [x] Add bulk republish action to Closed Events tab
+- [x] Add checkbox selection for closed events
+- [x] Add "Bulk Republish" button to move multiple closed events back to published status
+- [x] Add confirmation dialog for bulk republish action
+- [x] Test bulk republish with multiple closed events
