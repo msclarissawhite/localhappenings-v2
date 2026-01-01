@@ -37,6 +37,7 @@ import FeedbackModeration from "@/pages/admin/FeedbackModeration";
 import { FeedbackAnalytics } from "@/pages/admin/FeedbackAnalytics";
 import { CollectionsManagement } from "@/pages/admin/CollectionsManagement";
 import { FeaturedEventsManagement } from "@/pages/admin/FeaturedEventsManagement";
+import { EventTypeMigration } from "@/pages/admin/EventTypeMigration";
 
 export default function AdminDashboard() {
   const { user, isAuthenticated } = useAuth();
@@ -47,7 +48,7 @@ export default function AdminDashboard() {
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [reviewAction, setReviewAction] = useState<"published" | "rejected" | "needs-clarification">("published");
   const [selectedEvents, setSelectedEvents] = useState<Set<number>>(new Set());
-  const [activeTab, setActiveTab] = useState<"events" | "pending-edits" | "published-events" | "closed-events" | "organizers" | "feature-requests" | "donations" | "feedback" | "analytics" | "collections" | "banners" | "featured">("events");
+  const [activeTab, setActiveTab] = useState<"events" | "pending-edits" | "published-events" | "closed-events" | "organizers" | "feature-requests" | "donations" | "feedback" | "analytics" | "collections" | "banners" | "featured" | "event-type-migration">("events");
   const [showBulkUpload, setShowBulkUpload] = useState(false);
   const [showBatchEdit, setShowBatchEdit] = useState(false);
 
@@ -573,6 +574,14 @@ export default function AdminDashboard() {
           >
             <Layers className="w-4 h-4 mr-2" />
             Featured Events
+          </Button>
+          <Button
+            variant={activeTab === "event-type-migration" ? "default" : "ghost"}
+            onClick={() => setActiveTab("event-type-migration")}
+            className="rounded-b-none"
+          >
+            <Repeat className="w-4 h-4 mr-2" />
+            Event Type Migration
           </Button>
         </div>
 
@@ -1319,6 +1328,10 @@ export default function AdminDashboard() {
 
         {activeTab === "featured" && (
           <FeaturedEventsManagement />
+        )}
+
+        {activeTab === "event-type-migration" && (
+          <EventTypeMigration />
         )}
 
         {activeTab === "published-events" && (

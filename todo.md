@@ -2103,3 +2103,40 @@
 - [ ] Update browse/filter UI with new categories
 - [ ] Test new event type system
 - [ ] Update REFERENCE_IDS.md with new taxonomy
+
+
+## Event Type Enhancement Features (Jan 2026)
+
+### Phase 1: Admin Bulk Reassignment Tool
+- [x] Create event type migration suggestions mapping
+- [x] Add backend query to get events by deprecated types
+- [x] Create EventTypeMigration admin component
+- [x] Add "Event Type Migration" tab to admin dashboard
+- [x] Implement bulk reassignment mutation
+- [x] Test migration tool with existing events (5 of 7 tests passing)
+- [ ] Create checkpoint for user testing
+
+### Phase 2: EventTypeSelector Component
+- [ ] Define subcategory mappings (shared/event-type-subcategories.ts)
+- [ ] Add backend query for grouped event types
+- [ ] Create EventTypeSelector component with collapsible UI
+- [ ] Add search/filter functionality
+- [ ] Implement multi-select with chips
+- [ ] Integrate into SubmitEvent form
+- [ ] Integrate into EditEvent form
+- [ ] Integrate into AdminEditEvent form
+- [ ] Integrate into BatchEditModal
+- [ ] Update BrowseEvents filters with new structure
+
+### Phase 3: Popular Types Feature
+- [ ] Create eventTypeUsage tracking table
+- [ ] Add backend mutation to track type usage
+- [ ] Create query to get popular types by category
+- [ ] Update EventTypeSelector to show popular types
+- [ ] Add analytics to admin dashboard
+- [ ] Test popular types display
+
+### Documentation
+- [ ] Update REFERENCE_IDS.md with all new types
+- [ ] Update CSV_IMPORT_GUIDE.md with new types
+- [ ] Update USER_MANUAL.md with new features
