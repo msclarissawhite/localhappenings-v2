@@ -149,6 +149,7 @@ export const eventTypes = mysqlTable("eventTypes", {
   id: int("id").autoincrement().primaryKey(),
   name: varchar("name", { length: 100 }).notNull().unique(),
   category: mysqlEnum("category", ["family-kids", "arts-culture", "community-social", "recreation-sports", "health-wellness", "markets-festivals", "seasonal", "environment"]).default("community-social").notNull(),
+  isDeprecated: int("isDeprecated").default(0).notNull(), // 0 = active, 1 = deprecated (hidden from primary UI)
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 

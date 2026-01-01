@@ -1,0 +1,52 @@
+{
+  "query": "SELECT category, COUNT(*) as total, SUM(CASE WHEN isDeprecated = 1 THEN 1 ELSE 0 END) as deprecated, COUNT(*) - SUM(CASE WHEN isDeprecated = 1 THEN 1 ELSE 0 END) as active FROM eventTypes GROUP BY category ORDER BY category;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 38ttAWeecoi1SEG.c77ad9ee9f43 --database PFhmVPyUG6jUUGKxZvMEwC --execute SELECT category, COUNT(*) as total, SUM(CASE WHEN isDeprecated = 1 THEN 1 ELSE 0 END) as deprecated, COUNT(*) - SUM(CASE WHEN isDeprecated = 1 THEN 1 ELSE 0 END) as active FROM eventTypes GROUP BY category ORDER BY category;",
+  "rows": [
+    {
+      "category": "family-kids",
+      "total": "22",
+      "deprecated": "0",
+      "active": "22"
+    },
+    {
+      "category": "arts-culture",
+      "total": "18",
+      "deprecated": "0",
+      "active": "18"
+    },
+    {
+      "category": "community-social",
+      "total": "25",
+      "deprecated": "0",
+      "active": "25"
+    },
+    {
+      "category": "recreation-sports",
+      "total": "23",
+      "deprecated": "2",
+      "active": "21"
+    },
+    {
+      "category": "health-wellness",
+      "total": "20",
+      "deprecated": "2",
+      "active": "18"
+    },
+    {
+      "category": "markets-festivals",
+      "total": "24",
+      "deprecated": "2",
+      "active": "22"
+    },
+    {
+      "category": "seasonal",
+      "total": "18",
+      "deprecated": "1",
+      "active": "17"
+    }
+  ],
+  "messages": [],
+  "stdout": "category\ttotal\tdeprecated\tactive\nfamily-kids\t22\t0\t22\narts-culture\t18\t0\t18\ncommunity-social\t25\t0\t25\nrecreation-sports\t23\t2\t21\nhealth-wellness\t20\t2\t18\nmarkets-festivals\t24\t2\t22\nseasonal\t18\t1\t17\n",
+  "stderr": "",
+  "execution_time_ms": 52
+}

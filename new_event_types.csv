@@ -1,0 +1,91 @@
+id,name,category,notes
+200001,Toddler & Preschool Activities,family-kids,NEW - Age & Learning
+200002,STEM for Kids,family-kids,NEW - Age & Learning
+200003,Kids Workshops,family-kids,NEW - Age & Learning
+200004,Kids Camps,family-kids,NEW - Age & Learning
+200005,Homeschool Events,family-kids,NEW - Age & Learning
+200006,Kids Shows & Performances,family-kids,NEW - Entertainment
+200007,Character Meet & Greets,family-kids,NEW - Entertainment
+200008,Magicians & Clowns,family-kids,NEW - Entertainment
+200009,Kids Movie Screenings,family-kids,NEW - Entertainment
+200010,Playgroups,family-kids,NEW - Play & Parties
+200011,Birthday Parties,family-kids,NEW - Play & Parties
+200012,Indoor Playgrounds,family-kids,NEW - Play & Parties
+200013,Bounce Houses,family-kids,NEW - Play & Parties
+200014,Family Game Nights,family-kids,NEW - Play & Parties
+200015,Art Workshops,arts-culture,NEW - Visual & Maker Arts
+200016,Pottery & Ceramics,arts-culture,NEW - Visual & Maker Arts
+200017,Photography Exhibits & Walks,arts-culture,NEW - Visual & Maker Arts
+200018,Maker Fairs,arts-culture,NEW - Visual & Maker Arts
+200019,Comedy Shows,arts-culture,NEW - Performing Arts
+200020,Dance Performances,arts-culture,NEW - Performing Arts
+200021,Spoken Word & Poetry,arts-culture,NEW - Performing Arts
+200022,Film Screenings,arts-culture,NEW - Film & Media
+200023,Documentary Screenings,arts-culture,NEW - Film & Media
+200024,Happy Hours,community-social,NEW - Casual Social
+200025,Singles Mixers,community-social,NEW - Casual Social
+200026,Social Walks,community-social,NEW - Casual Social
+200027,Lecture Series,community-social,NEW - Learning & Interest
+200028,Skill Shares,community-social,NEW - Learning & Interest
+200029,Study Groups,community-social,NEW - Learning & Interest
+200030,Newcomer & Immigrant Meetups,community-social,NEW - Identity & Community
+200031,Team Sports (Soccer/Hockey/Baseball),recreation-sports,NEW - Organized & Competitive
+200032,Individual Sports (Tennis/Golf/Track),recreation-sports,NEW - Organized & Competitive
+200033,Tournaments & Leagues,recreation-sports,NEW - Organized & Competitive
+200034,Youth Sports,recreation-sports,NEW - Organized & Competitive
+200035,Adult Recreational Leagues,recreation-sports,NEW - Organized & Competitive
+200036,Walking Clubs,recreation-sports,NEW - Active Lifestyle
+200037,Running Clubs & Fun Runs,recreation-sports,NEW - Active Lifestyle
+200038,Cycling Rides & Tours,recreation-sports,NEW - Active Lifestyle
+200039,Skating Meetups,recreation-sports,NEW - Active Lifestyle
+200040,Swimming Clubs,recreation-sports,NEW - Active Lifestyle
+200041,Pickleball,recreation-sports,NEW - Active Lifestyle
+200042,Disc Golf,recreation-sports,NEW - Active Lifestyle
+200043,Skateboarding & BMX,recreation-sports,NEW - Active Lifestyle
+200044,Hiking & Trail Meetups,recreation-sports,NEW - Outdoor & Adventure
+200045,Camping & Backcountry Trips,recreation-sports,NEW - Outdoor & Adventure
+200046,Kayaking/Canoeing/Paddleboarding,recreation-sports,NEW - Outdoor & Adventure
+200047,Climbing & Bouldering,recreation-sports,NEW - Outdoor & Adventure
+200048,Snow Sports (Ski/Snowboard/Snowshoe),recreation-sports,NEW - Outdoor & Adventure
+200049,Mountain Biking,recreation-sports,NEW - Outdoor & Adventure
+200050,Trail Running,recreation-sports,NEW - Outdoor & Adventure
+200051,Pilates & Barre,health-wellness,NEW - Movement & Body
+200052,Dance Fitness (Zumba/etc),health-wellness,NEW - Movement & Body
+200053,Walking for Wellness,health-wellness,NEW - Movement & Body
+200054,Stretching & Mobility,health-wellness,NEW - Movement & Body
+200055,Seniors Fitness,health-wellness,NEW - Movement & Body
+200056,Mindfulness Sessions,health-wellness,NEW - Mental & Emotional
+200057,Breathwork,health-wellness,NEW - Mental & Emotional
+200058,Stress & Burnout Support,health-wellness,NEW - Mental & Emotional
+200059,Support Groups,health-wellness,NEW - Mental & Emotional
+200060,Grief & Healing Circles,health-wellness,NEW - Mental & Emotional
+200061,Sound Baths,health-wellness,NEW - Holistic & Alternative
+200062,Reiki & Energy Healing,health-wellness,NEW - Holistic & Alternative
+200063,Herbalism & Natural Health,health-wellness,NEW - Holistic & Alternative
+200064,Holistic Wellness Fairs,health-wellness,NEW - Holistic & Alternative
+200065,Acupuncture & Traditional Medicine,health-wellness,NEW - Holistic & Alternative
+200066,Nutrition Workshops,health-wellness,NEW - Holistic & Alternative
+200067,Farmers' Markets,markets-festivals,NEW - Market Types
+200068,Artisan Markets,markets-festivals,NEW - Market Types
+200069,Night Markets,markets-festivals,NEW - Market Types
+200070,Holiday Markets,markets-festivals,NEW - Market Types
+200071,Vintage & Thrift Markets,markets-festivals,NEW - Market Types
+200072,Pop-Up Markets,markets-festivals,NEW - Market Types
+200073,Makers Markets,markets-festivals,NEW - Market Types
+200074,Food Festivals,markets-festivals,NEW - Festival Types
+200075,Beer/Wine/Cider Festivals,markets-festivals,NEW - Festival Types
+200076,Music Festivals,markets-festivals,NEW - Festival Types
+200077,Cultural Festivals,markets-festivals,NEW - Festival Types
+200078,Street Festivals & Block Parties,markets-festivals,NEW - Festival Types
+200079,Seasonal Festivals,markets-festivals,NEW - Festival Types
+200080,Literary Festivals,markets-festivals,NEW - Festival Types
+200081,Kids & Family Festivals,markets-festivals,NEW - Festival Types
+200082,Art Festivals,markets-festivals,NEW - Festival Types
+200083,Heritage Festivals,markets-festivals,NEW - Festival Types
+200084,Community Festivals,markets-festivals,NEW - Festival Types
+200085,Food Truck Rallies,markets-festivals,NEW - Special Events
+200086,Tasting Events,markets-festivals,NEW - Special Events
+200087,Vendor Fairs,markets-festivals,NEW - Special Events
+200088,Holiday Light Displays,seasonal,NEW - Holiday-Specific
+200089,Holiday Shows & Performances,seasonal,NEW - Holiday-Specific
+200090,Remembrance Day Events,seasonal,NEW - Holiday-Specific

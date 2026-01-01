@@ -2088,3 +2088,18 @@
 ## Documentation Update - Community & Social Event Types (Jan 2026)
 - [x] Query database for all community-social category event types
 - [x] Update REFERENCE_IDS.md with complete list of community-social event type IDs
+
+
+## Event Type Taxonomy Expansion & Reorganization (Jan 2026)
+- [x] Analyze all three suggestion files and consolidate unique event types
+- [x] Remove redundant/duplicate suggestions across files
+- [x] Design new category structure with subcategories
+- [x] Create comprehensive list of new event types to add
+- [x] Identify legacy types to deprecate or mark as fallbacks
+- [x] Create database migration script for new event types
+- [x] Update schema with new event types
+- [ ] Update UI to display organized categories/subcategories
+- [ ] Update event submission form with new taxonomy
+- [ ] Update browse/filter UI with new categories
+- [ ] Test new event type system
+- [ ] Update REFERENCE_IDS.md with new taxonomy
