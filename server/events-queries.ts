@@ -93,10 +93,10 @@ export async function listEvents(filters: EventFilters = {}) {
   }
 
   // Build LIMIT/OFFSET
-  const limit = filters.limit || 1000;
-  const offset = filters.offset || 0;
+  const limit = parseInt(String(filters.limit || 1000), 10);
+  const offset = parseInt(String(filters.offset || 0), 10);
 
-  // Main query
+  // Main query - embed LIMIT/OFFSET directly as TiDB doesn't support them as placeholders
   const sql = `
     SELECT 
       events.*,
@@ -105,10 +105,8 @@ export async function listEvents(filters: EventFilters = {}) {
     LEFT JOIN organizers ON events.organizerId = organizers.id
     ${whereClause}
     ${orderBy}
-    LIMIT ? OFFSET ?
+    LIMIT ${limit} OFFSET ${offset}
   `;
-
-  params.push(limit, offset);
 
   console.log('[listEvents] Executing SQL with', params.length, 'params');
   
@@ -125,10 +123,9 @@ export async function listEvents(filters: EventFilters = {}) {
           ett.eventId,
           et.id,
           et.name,
-          et.description,
-          et.icon
-        FROM event_to_event_types ett
-        INNER JOIN event_types et ON ett.eventTypeId = et.id
+          et.category
+        FROM eventToEventTypes ett
+        INNER JOIN eventTypes et ON ett.eventTypeId = et.id
         WHERE ett.eventId IN (${placeholders})
       `;
       
@@ -143,8 +140,7 @@ export async function listEvents(filters: EventFilters = {}) {
         eventTypesMap[row.eventId].push({
           id: row.id,
           name: row.name,
-          description: row.description,
-          icon: row.icon
+          category: row.category
         });
       });
       
@@ -162,8 +158,8 @@ export async function listEvents(filters: EventFilters = {}) {
       ${whereClause}
     `;
     
-    // Remove limit and offset from params for count query
-    const countParams = params.slice(0, -2);
+    // Use all params for count query (limit/offset not in params anymore)
+    const countParams = params;
     const countResult = await query<{ total: number }>(countSql, countParams);
     const total = countResult[0]?.total || 0;
 
@@ -201,10 +197,9 @@ export async function getEventById(id: number) {
     SELECT 
       et.id,
       et.name,
-      et.description,
-      et.icon
-    FROM event_to_event_types ett
-    INNER JOIN event_types et ON ett.eventTypeId = et.id
+      et.category
+    FROM eventToEventTypes ett
+    INNER JOIN eventTypes et ON ett.eventTypeId = et.id
     WHERE ett.eventId = ?
   `;
   

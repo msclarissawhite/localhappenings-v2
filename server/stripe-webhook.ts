@@ -17,6 +17,11 @@ import { sendDonationReceiptEmail } from "./_core/resend-email";
  * Must be registered with express.raw() middleware
  */
 export async function handleStripeWebhook(req: Request, res: Response) {
+  if (!stripe) {
+    console.error("[Stripe Webhook] Stripe is not configured");
+    return res.status(503).send("Stripe not configured");
+  }
+  
   const signature = req.headers["stripe-signature"];
 
   if (!signature || typeof signature !== "string") {

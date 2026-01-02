@@ -7,14 +7,13 @@
 import Stripe from "stripe";
 import { env } from "./env";
 
-if (!env.STRIPE_SECRET_KEY) {
-  throw new Error("STRIPE_SECRET_KEY is not set in environment variables");
-}
-
-export const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-  apiVersion: "2025-12-15.clover",
-  typescript: true,
-});
+// Make Stripe optional - only initialize if key is provided
+export const stripe = env.STRIPE_SECRET_KEY 
+  ? new Stripe(env.STRIPE_SECRET_KEY, {
+      apiVersion: "2025-12-15.clover",
+      typescript: true,
+    })
+  : null;
 
 /**
  * Helper to construct webhook event from raw request body

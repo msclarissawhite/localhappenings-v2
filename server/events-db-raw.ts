@@ -201,10 +201,9 @@ export async function getEventsRaw(filters: EventFilters = {}) {
           ett.eventId,
           et.id,
           et.name,
-          et.description,
-          et.icon
-        FROM event_to_event_types ett
-        INNER JOIN event_types et ON ett.eventTypeId = et.id
+          et.category
+        FROM eventToEventTypes ett
+        INNER JOIN eventTypes et ON ett.eventTypeId = et.id
         WHERE ett.eventId IN (${placeholders})
       `;
       
@@ -218,8 +217,7 @@ export async function getEventsRaw(filters: EventFilters = {}) {
         eventTypesMap[row.eventId].push({
           id: row.id,
           name: row.name,
-          description: row.description,
-          icon: row.icon
+          category: row.category
         });
       });
       

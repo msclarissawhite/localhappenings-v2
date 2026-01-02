@@ -26,6 +26,10 @@ export const donationsRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
+      if (!stripe) {
+        throw new Error("Stripe is not configured. Donations are currently unavailable.");
+      }
+      
       const product = input.isRecurring
         ? PRODUCTS.DONATION_RECURRING
         : PRODUCTS.DONATION_ONE_TIME;
@@ -96,6 +100,10 @@ export const donationsRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
+      if (!stripe) {
+        throw new Error("Stripe is not configured. Portal is currently unavailable.");
+      }
+      
       const session = await stripe.billingPortal.sessions.create({
         customer: input.customerId,
         return_url: `${ctx.req.headers.origin}/donate/thank-you`,
