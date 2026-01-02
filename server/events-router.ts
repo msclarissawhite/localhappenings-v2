@@ -2,7 +2,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import * as eventsDb from "./events-db";
-import { getEventsRaw } from "./events-db-raw";
+import { listEvents, getEventById } from "./events-queries";
 import type { AccessibilityData } from "../shared/types";
 import { notifyOwner } from "./_core/notification";
 import { syncEventToClickUp, updateEventStatusInClickUp, addClickUpComment } from "./_core/clickup";
@@ -203,14 +203,7 @@ export const eventsRouter = router({
 
   // Public: List events with filters
   list: publicProcedure.input(eventFiltersSchema).query(async ({ input }) => {
-    try {
-      // Try raw SQL approach to bypass drizzle-orm issues
-      return await getEventsRaw(input);
-    } catch (error) {
-      console.error('[events.list] Raw SQL query failed:', error);
-      // Fallback to drizzle-orm if raw SQL fails
-      return await eventsDb.getEvents(input);
-    }
+    return await listEvents(input);
   }),
 
   // Check for potential duplicates
